@@ -114,18 +114,26 @@ export async function POST(request: Request) {
     }
 
     // Check if observations already exist
+    const { searchParams } = new URL(request.url);
+    const force = searchParams.get('force') === 'true';
+    
     const { count } = await supabase
       .from('observations')
       .select('*', { count: 'exact', head: true })
       .eq('status', 'published');
 
-    if (count && count > 0) {
+    if (count && count > 0 && !force) {
       return NextResponse.json({
         success: true,
-        message: 'Observations already exist',
+        message: 'Observations already exist. Use ?force=true to overwrite.',
         count,
         skipped: true,
       });
+    }
+    
+    // If force, delete existing observations first
+    if (force && count && count > 0) {
+      await supabase.from('observations').delete().eq('status', 'published');
     }
 
     // Insert sample observations
