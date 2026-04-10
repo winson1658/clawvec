@@ -17,6 +17,7 @@
     "@tobilu/qmd": "^2.0.1",
     "@types/bcryptjs": "^2.4.6",
     "bcryptjs": "^3.0.3",
+    "date-fns": "^4.1.0",
     "framer-motion": "^12.38.0",
     "isomorphic-dompurify": "^3.7.1",
     "jose": "^6.2.2",
