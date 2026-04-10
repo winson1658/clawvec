@@ -1,0 +1,193 @@
+{
+  "version": 1,
+  "updatedAt": "2026-04-09T00:32:19.866Z",
+  "entries": {
+    "memory:memory/2026-04-07.md:1:41": {
+      "key": "memory:memory/2026-04-07.md:1:41",
+      "path": "memory/2026-04-07.md",
+      "startLine": 1,
+      "endLine": 41,
+      "source": "memory",
+      "snippet": "# 2026-04-07 工作記錄 ## 與 Winson Pan (老闆) 的對話 ### 今日完成事項 #### 1. Clawvec 網站全面測試 - 申請了 2 個 AI 測試帳號 (BaiBai-Test-01, BaiBai-Test-02) - 測試了 21 項功能 - **發現 23 個問題** (4 個 P0 嚴重, 19 個 P1 中度) #### 2. P0 嚴重問題清單 1. Observations 資料表不存在 2. Declarations 資料表不存在 3. Debate 訊息發送 API 未實作 4. Agents 列表資料庫錯誤 (缺少 archetype 欄位) #### 3. 準備修復檔案 - `CLAWVEC_DATABASE_FIX.sql` - 完整資料庫修復 SQL - `database_repair.sql` - 原始修復腳本 - `database_diagnosis.sql` - 診斷腳本 - `CLAWVEC_FIX_NOTES.md` - 修復記錄 #### 4. USB 檔案處理 - 從 USB 解壓縮 clawvec-ubuntu-migration.zip - 找到系統分析文件 (CLAWVEC_TODO.md, CLAWVEC_SPRINT.md 等) - 確認 Sprint #2 已完成 95%，只差資料庫遷移 #### 5. API Key 管理 - Winson 給了我 Supabase service_role key - 已安全存儲在 `/home/winson/.openclaw/wo",
+      "recallCount": 3,
+      "dailyCount": 0,
+      "totalScore": 0.5543808091165148,
+      "maxScore": 0.554377191532236,
+      "firstRecalledAt": "2026-04-08T23:51:49.160Z",
+      "lastRecalledAt": "2026-04-09T00:32:19.866Z",
+      "queryHashes": [
+        "61bd0abc1fb7",
+        "3edd2d53ad7d",
+        "84a1b138d43b"
+      ],
+      "recallDays": [
+        "2026-04-09"
+      ],
+      "conceptTags": [
+        "baibai-test-01",
+        "baibai-test-02",
+        "clawvec-database-fix.sql",
+        "database-repair.sql",
+        "database-diagnosis.sql",
+        "clawvec-fix-notes.md",
+        "clawvec-ubuntu-migration.zip",
+        "clawvec-todo.md"
+      ]
+    },
+    "memory:memory/2026-04-07.md:34:78": {
+      "key": "memory:memory/2026-04-07.md:34:78",
+      "path": "memory/2026-04-07.md",
+      "startLine": 34,
+      "endLine": 78,
+      "source": "memory",
+      "snippet": "#### 6. 部署準備 - 檢查了 Vercel 部署配置 - 發現**重要問題**: Vercel 設置的 Supabase URL 與之前給我的不同 - Vercel: `ngxrztgfervwcoetayi` - 之前給我: `ngxmztmrwroebywqdtjc` - **待確認**: 哪個是正確的專案 #### 7. 其他重要資訊 - **Telegram Token**: `8650988009:AAFCVNj0PyWQBFQG8jiHJ4esMuJoKXyoUTY` - 用途: Telegram Bot 安裝 - 來源: Winson 提供的測試 token ### 待辦事項 (高優先級) #### 立即執行 - [ ] 確認正確的 Supabase 專案 - [ ] 執行資料庫修復 SQL - [ ] 測試修復後的功能 #### 部署相關 - [ ] 取得 Vercel Token 進行自動部署 - [ ] 或準備好部署命令讓 Winson 執行 #### 安全清理 - [ ] 網站上線後刪除 Supabase API Key 並重新生成 - [ ] 刪除 `.env.supabase` 檔案 ### 檔案位置總覽 ``` /home/winson/.openclaw/workspace/ ├── clawvec_test_report.md # 完整測試報告 (23個問題) ├── CLAWVEC_DATABASE_FIX.sql # 資料庫修復 SQL ├── CLAWVEC_FIX_NOTES.",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "totalScore": 0.0000036134388496693053,
+      "maxScore": 0.0000018067194248346527,
+      "firstRecalledAt": "2026-04-08T23:51:49.160Z",
+      "lastRecalledAt": "2026-04-09T00:32:19.866Z",
+      "queryHashes": [
+        "61bd0abc1fb7",
+        "84a1b138d43b"
+      ],
+      "recallDays": [
+        "2026-04-09"
+      ],
+      "conceptTags": [
+        "env.supabase",
+        "home/winson",
+        "openclaw/workspace",
+        "clawvec-test-report.md",
+        "clawvec-database-fix.sql",
+        "clawvec-fix-notes",
+        "部署",
+        "準備"
+      ]
+    },
+    "memory:memory/2026-04-08.md:1:29": {
+      "key": "memory:memory/2026-04-08.md:1:29",
+      "path": "memory/2026-04-08.md",
+      "startLine": 1,
+      "endLine": 29,
+      "source": "memory",
+      "snippet": "# 2026-04-08 Memory Log ## Session Overview Working with Winson Pan on Clawvec website development and infrastructure setup. ## Completed Tasks ### 1. Graphify Installation & Knowledge Graph Analysis - Successfully installed Graphify in virtual environment at `/opt/graphify` - Created comprehensive knowledge graph analysis of Clawvec project - Generated files: - `/home/winson/.openclaw/workspace/graphify-out/GRAPH_REPORT.md` - Detailed text report - `/home/winson/.openclaw/workspace/graphify-out/graph.html` - Interactive HTML visualization - `/home/winson/.openclaw/workspace/graphify-out/graph.json` - Structured data - Identified 4 main system communities: Core Systems, Content Syst",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "totalScore": 0.0000029060034554623404,
+      "maxScore": 0.0000017153189071773598,
+      "firstRecalledAt": "2026-04-08T23:51:49.160Z",
+      "lastRecalledAt": "2026-04-09T00:32:19.866Z",
+      "queryHashes": [
+        "61bd0abc1fb7",
+        "84a1b138d43b"
+      ],
+      "recallDays": [
+        "2026-04-09"
+      ],
+      "conceptTags": [
+        "opt/graphify",
+        "home/winson",
+        "log",
+        "overview",
+        "working",
+        "winson",
+        "pan",
+        "clawvec"
+      ]
+    },
+    "memory:memory/2026-04-07.md:69:91": {
+      "key": "memory:memory/2026-04-07.md:69:91",
+      "path": "memory/2026-04-07.md",
+      "startLine": 69,
+      "endLine": 91,
+      "source": "memory",
+      "snippet": "├── DEPLOYMENT_PLAN.md # 部署計畫 ├── .env.supabase # Supabase 憑證 (安全存儲) ├── web/ # 解壓縮的專案檔案 │ ├── CLAWVEC_TODO.md │ ├── CLAWVEC_SPRINT.md │ ├── quick_fix_guide.md │ └── ... └── memory/2026-04-07.md # 本檔案 ``` ### 重要提醒 **Winson 的指示**: - 不常在電腦前，需要我幫忙處理上架 - API Key 先保留，等網站完成再一起刪除 - 需要全自動部署支援 **系統差異問題待解決**: 需要 Winson 確認要使用哪個 Supabase 專案進行 SQL 修復和部署。 --- *記錄時間: 2026-04-07 01:15*",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "totalScore": 0.000003313479624252672,
+      "maxScore": 0.000001656739812126336,
+      "firstRecalledAt": "2026-04-08T23:51:49.160Z",
+      "lastRecalledAt": "2026-04-09T00:32:19.866Z",
+      "queryHashes": [
+        "61bd0abc1fb7",
+        "84a1b138d43b"
+      ],
+      "recallDays": [
+        "2026-04-09"
+      ],
+      "conceptTags": [
+        "deployment-plan.md",
+        "env.supabase",
+        "clawvec-todo.md",
+        "clawvec-sprint.md",
+        "quick-fix-guide.md",
+        "memory/2026-04-07.md",
+        "部署",
+        "計畫"
+      ]
+    },
+    "memory:memory/2026-04-08.md:48:56": {
+      "key": "memory:memory/2026-04-08.md:48:56",
+      "path": "memory/2026-04-08.md",
+      "startLine": 48,
+      "endLine": 56,
+      "source": "memory",
+      "snippet": "3. Begin implementing Debate Messages API (highest priority P0) 4. Address remote desktop window interference ## Technical Notes - Supabase Project: ngxrztgfzervwcoetayi (Vercel-connected, correct project) - Service Role Key stored in .env.supabase (to be deleted after deployment) - Clawvec project location: /home/winson/.openclaw/workspace/web - HTTP server running on :8080 for graph.html visualization",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "totalScore": 0.000002635094021171387,
+      "maxScore": 0.0000013175470105856936,
+      "firstRecalledAt": "2026-04-08T23:51:49.160Z",
+      "lastRecalledAt": "2026-04-09T00:32:19.866Z",
+      "queryHashes": [
+        "61bd0abc1fb7",
+        "84a1b138d43b"
+      ],
+      "recallDays": [
+        "2026-04-09"
+      ],
+      "conceptTags": [
+        "vercel-connected",
+        "env.supabase",
+        "home/winson",
+        "openclaw/workspace/web",
+        "graph.html",
+        "begin",
+        "implementing",
+        "debate"
+      ]
+    },
+    "memory:memory/2026-04-08.md:23:54": {
+      "key": "memory:memory/2026-04-08.md:23:54",
+      "path": "memory/2026-04-08.md",
+      "startLine": 23,
+      "endLine": 54,
+      "source": "memory",
+      "snippet": "- Network connectivity issues prevented direct API execution from the Ubuntu environment - User needs to manually execute SQL in Supabase SQL Editor at: https://supabase.com/dashboard/project/ngxrztgfzervwcoetayi/sql-editor ### 3. Development Roadmap Created - Created `/home/winson/.openclaw/workspace/DEVELOPMENT_ROADMAP.md` - Phased plan: - Phase 1: Database repair (this week) - Phase 2: Core features - Debate Messages, Likes, Edit/Delete (next week) - Phase 3: Interactive features - Notifications, Search (week 3) - Phase 4: Optimization & Production deployment (week 4) ### 4. Environment Setup - User added me to sudo group (winson ALL=(ALL) NOPASSWD: ALL) - Activated root shell f",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "totalScore": 0.000001575352630904589,
+      "maxScore": 7.876763154522945e-7,
+      "firstRecalledAt": "2026-04-08T23:51:49.160Z",
+      "lastRecalledAt": "2026-04-09T00:32:19.866Z",
+      "queryHashes": [
+        "61bd0abc1fb7",
+        "84a1b138d43b"
+      ],
+      "recallDays": [
+        "2026-04-09"
+      ],
+      "conceptTags": [
+        "network",
+        "home/winson",
+        "edit/delete",
+        "connectivity",
+        "issues",
+        "prevented",
+        "direct",
+        "api"
+      ]
+    }
+  }
+}

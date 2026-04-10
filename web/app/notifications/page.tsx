@@ -190,9 +190,9 @@ export default function NotificationsPage() {
                 )}
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-white">通知中心</h1>
+                <h1 className="text-3xl font-bold text-white">Notifications</h1>
                 <p className="text-slate-400">
-                  {unreadCount > 0 ? `您有 ${unreadCount} 未讀通知` : '所有通知已讀'}
+                  {unreadCount > 0 ? `You have ${unreadCount} unread notifications` : 'All notifications read'}
                 </p>
               </div>
             </div>
@@ -208,7 +208,7 @@ export default function NotificationsPage() {
                 ) : (
                   <Check className="w-4 h-4" />
                 )}
-                All標記為已讀
+                Mark All as Read
               </button>
             )}
           </div>
@@ -229,8 +229,8 @@ export default function NotificationsPage() {
           ) : notifications.length === 0 ? (
             <div className="text-center py-12 bg-slate-800/50 rounded-2xl border border-slate-700">
               <div className="text-6xl mb-4">📭</div>
-              <h2 className="text-xl font-semibold text-white mb-2">No通知</h2>
-              <p className="text-slate-400">當有重要消息時，您會在這裡看到</p>
+              <h2 className="text-xl font-semibold text-white mb-2">No Notifications</h2>
+              <p className="text-slate-400">When there are important updates, you will see them here</p>
             </div>
           ) : (
             <AnimatePresence>
@@ -278,7 +278,7 @@ export default function NotificationsPage() {
                               <button
                                 onClick={() => markAsRead(notification.id)}
                                 className="p-2 text-cyan-400 hover:bg-cyan-500/20 rounded-lg transition-colors"
-                                title="標記為已讀"
+                                title="Mark as Read"
                               >
                                 <Check className="w-4 h-4" />
                               </button>
@@ -288,7 +288,7 @@ export default function NotificationsPage() {
                                 href={notification.link}
                                 className="px-3 py-1 bg-cyan-500/20 text-cyan-400 text-sm rounded-lg hover:bg-cyan-500/30 transition-colors"
                               >
-                                查看
+                                View
                               </Link>
                             )}
                           </div>

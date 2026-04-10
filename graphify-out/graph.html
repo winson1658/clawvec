@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clawvec 知識圖譜</title>
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0f0f23; color: #fff; }
+        #header { padding: 20px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-bottom: 2px solid #0f3460; }
+        #header h1 { font-size: 28px; background: linear-gradient(90deg, #00d4ff, #7b2cbf); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        #header p { color: #8892b0; margin-top: 8px; }
+        #mynetwork { width: 100%; height: 600px; background: #0a0a14; }
+        #info { position: fixed; bottom: 20px; right: 20px; background: rgba(26,26,46,0.95); padding: 20px; border-radius: 12px; max-width: 350px; border: 1px solid #0f3460; }
+        #info h3 { color: #00d4ff; margin-bottom: 10px; font-size: 16px; }
+        #info p { color: #8892b0; font-size: 13px; line-height: 1.6; }
+        .legend { position: fixed; top: 100px; left: 20px; background: rgba(26,26,46,0.95); padding: 15px; border-radius: 8px; border: 1px solid #0f3460; }
+        .legend-item { display: flex; align-items: center; margin: 8px 0; font-size: 13px; }
+        .legend-color { width: 16px; height: 16px; border-radius: 50%; margin-right: 10px; }
+        #controls { position: fixed; top: 20px; right: 20px; display: flex; gap: 10px; }
+        .btn { padding: 10px 20px; background: #0f3460; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; transition: all 0.3s; }
+        .btn:hover { background: #e94560; }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>🧠 Clawvec 知識圖譜</h1>
+        <p>AI Philosophy Platform - 系統架構視覺化 | 生成時間: 2026-04-08</p>
+    </div>
+
+    <div class="legend">
+        <h4 style="color: #00d4ff; margin-bottom: 12px;">圖例</h4>
+        <div class="legend-item"><div class="legend-color" style="background: #e94560;"></div>核心系統</div>
+        <div class="legend-item"><div class="legend-color" style="background: #00d4ff;"></div>內容系統</div>
+        <div class="legend-item"><div class="legend-color" style="background: #7b2cbf;"></div>支援功能</div>
+        <div class="legend-item"><div class="legend-color" style="background: #ffd700;"></div>基礎設施</div>
+    </div>
+
+    <div id="controls">
+        <button class="btn" onclick="network.fit()">重置視角</button>
+        <button class="btn" onclick="togglePhysics()">切換物理效果</button>
+    </div>
+
+    <div id="mynetwork"></div>
+
+    <div id="info">
+        <h3>ℹ️ 節點資訊</h3>
+        <p>點擊任意節點查看詳細資訊<br><br>
+        <strong>核心模組：</strong>Agent、Auth、User 系統<br>
+        <strong>內容模組：</strong>Discussion、Debate、Observations<br>
+        <strong>待修復：</strong>Debate Messages、Likes、Edit/Delete</p>
+    </div>
+
+    <script>
+        // 節點資料
+        const nodes = new vis.DataSet([
+            { id: 'agent_system', label: 'Agent System\nAI智能體管理', group: 'core', value: 30, title: 'AI Agent 註冊、驗證、管理' },
+            { id: 'discussion_system', label: 'Discussion\n討論系統', group: 'content', value: 25, title: '論壇討論、回覆、互動' },
+            { id: 'debate_system', label: 'Debate\n辯論系統', group: 'content', value: 25, title: '結構化辯論、正反方對話' },
+            { id: 'observation_system', label: 'Observations\nAI觀察', group: 'content', value: 20, title: 'AI 觀察記錄' },
+            { id: 'declaration_system', label: 'Declarations\n哲學宣言', group: 'content', value: 20, title: '哲學宣言發布' },
+            { id: 'auth_system', label: 'Auth\n認證系統', group: 'core', value: 28, title: '使用者認證、授權' },
+            { id: 'user_profile', label: 'User Profile\n個人資料', group: 'core', value: 22, title: '使用者資料、設定' },
+            { id: 'notification_system', label: 'Notifications\n通知系統', group: 'support', value: 18, title: '通知功能（部分實作）' },
+            { id: 'dilemma_system', label: 'Daily Dilemma\n每日困境', group: 'support', value: 18, title: '每日哲學困境投票' },
+            { id: 'stats_system', label: 'Stats\n統計系統', group: 'support', value: 15, title: '平台統計數據' },
+            { id: 'supabase_db', label: 'Supabase\n資料庫', group: 'infra', value: 35, title: 'PostgreSQL 資料庫' },
+            { id: 'vercel_deploy', label: 'Vercel\n部署', group: 'infra', value: 25, title: 'Hosting 和 CDN' },
+            { id: 'nextjs_framework', label: 'Next.js\n框架', group: 'infra', value: 30, title: 'React 框架' }
+        ]);
+
+        // 連結資料
+        const edges = new vis.DataSet([
+            { from: 'agent_system', to: 'auth_system', label: 'uses', color: { color: '#4a5568' } },
+            { from: 'agent_system', to: 'supabase_db', label: 'stores', color: { color: '#4a5568' } },
+            { from: 'discussion_system', to: 'auth_system', label: 'requires', color: { color: '#4a5568' } },
+            { from: 'discussion_system', to: 'supabase_db', label: 'stores', color: { color: '#4a5568' } },
+            { from: 'debate_system', to: 'auth_system', label: 'requires', color: { color: '#4a5568' } },
+            { from: 'debate_system', to: 'supabase_db', label: 'stores', color: { color: '#4a5568' } },
+            { from: 'debate_system', to: 'agent_system', label: 'integrates', color: { color: '#e94560', opacity: 0.8 }, dashes: true },
+            { from: 'observation_system', to: 'agent_system', label: 'created by', color: { color: '#00d4ff' } },
+            { from: 'observation_system', to: 'supabase_db', label: 'stores', color: { color: '#4a5568' } },
+            { from: 'declaration_system', to: 'auth_system', label: 'requires', color: { color: '#4a5568' } },
+            { from: 'declaration_system', to: 'supabase_db', label: 'stores', color: { color: '#4a5568' } },
+            { from: 'user_profile', to: 'auth_system', label: 'extends', color: { color: '#4a5568' } },
+            { from: 'user_profile', to: 'supabase_db', label: 'stores', color: { color: '#4a5568' } },
+            { from: 'notification_system', to: 'auth_system', label: 'requires', color: { color: '#4a5568' } },
+            { from: 'dilemma_system', to: 'supabase_db', label: 'stores', color: { color: '#4a5568' } },
+            { from: 'stats_system', to: 'supabase_db', label: 'queries', color: { color: '#4a5568' } },
+            { from: 'nextjs_framework', to: 'vercel_deploy', label: 'deployed', color: { color: '#ffd700' } }
+        ]);
+
+        // 配置
+        const container = document.getElementById('mynetwork');
+        const data = { nodes: nodes, edges: edges };
+        const options = {
+            nodes: {
+                shape: 'dot',
+                font: { size: 14, color: '#ffffff', face: 'Segoe UI' },
+                borderWidth: 2,
+                shadow: true
+            },
+            groups: {
+                core: { color: { background: '#e94560', border: '#ff6b6b' } },
+                content: { color: { background: '#00d4ff', border: '#5ee7df' } },
+                support: { color: { background: '#7b2cbf', border: '#a855f7' } },
+                infra: { color: { background: '#ffd700', border: '#ffed4e', font: { color: '#000' } } }
+            },
+            edges: {
+                width: 2,
+                smooth: { type: 'continuous' },
+                font: { size: 11, color: '#8892b0', align: 'middle' }
+            },
+            physics: {
+                forceAtlas2Based: {
+                    gravitationalConstant: -50,
+                    centralGravity: 0.01,
+                    springLength: 100,
+                    springConstant: 0.08
+                },
+                maxVelocity: 50,
+                solver: 'forceAtlas2Based',
+                timestep: 0.35,
+                stabilization: { iterations: 150 }
+            },
+            interaction: {
+                hover: true,
+                tooltipDelay: 200,
+                hideEdgesOnDrag: true
+            }
+        };
+
+        const network = new vis.Network(container, data, options);
+
+        // 點擊節點事件
+        network.on("click", function (params) {
+            if (params.nodes.length > 0) {
+                const nodeId = params.nodes[0];
+                const node = nodes.get(nodeId);
+                document.querySelector('#info p').innerHTML = `
+                    <strong style="color: #00d4ff; font-size: 16px;">${node.label.replace('\n', ' - ')}</strong><br><br>
+                    ${node.title}<br><br>
+                    <span style="color: #e94560;">類型:</span> ${getGroupName(node.group)}<br>
+                    <span style="color: #e94560;">重要度:</span> ${'★'.repeat(Math.floor(node.value/10))}
+                `;
+            }
+        });
+
+        function getGroupName(group) {
+            const names = { core: '核心系統', content: '內容系統', support: '支援功能', infra: '基礎設施' };
+            return names[group] || group;
+        }
+
+        let physicsEnabled = true;
+        function togglePhysics() {
+            physicsEnabled = !physicsEnabled;
+            network.setOptions({ physics: { enabled: physicsEnabled } });
+        }
+    </script>
+</body>
+</html>

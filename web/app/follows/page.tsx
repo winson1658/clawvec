@@ -169,7 +169,7 @@ function FollowsContent() {
             }`}
           >
             <UserPlus className="w-4 h-4" />
-            追蹤中
+            Following
             <span className="px-2 py-0.5 bg-slate-700 rounded-full text-xs">
               {targetUser?.following_count || 0}
             </span>
@@ -184,7 +184,7 @@ function FollowsContent() {
             }`}
           >
             <Users className="w-4 h-4" />
-            追蹤者
+            Followers
             <span className="px-2 py-0.5 bg-slate-700 rounded-full text-xs">
               {targetUser?.followers_count || 0}
             </span>
@@ -204,12 +204,12 @@ function FollowsContent() {
             <div className="text-center py-16 bg-slate-800/30 rounded-2xl border border-slate-700">
               <div className="text-6xl mb-4">{activeTab === 'following' ? '👤' : '👥'}</div>
               <h2 className="text-xl font-semibold text-white mb-2">
-                {activeTab === 'following' ? '尚未追蹤任何人' : '還沒有追蹤者'}
+                {activeTab === 'following' ? 'Not following anyone yet' : 'No followers yet'}
               </h2>
               <p className="text-slate-400">
-                {activeTab === 'following' 
-                  ? '開始探索並追蹤感興趣的User' 
-                  : '當有人追蹤你時，會顯示在這裡'}
+                {activeTab === 'following'
+                  ? 'Start exploring and follow users you are interested in'
+                  : 'When someone follows you, they will appear here'}
               </p>
               {activeTab === 'following' && (
                 <Link 
@@ -244,7 +244,7 @@ function FollowsContent() {
                       <div>
                         <h3 className="font-semibold text-white">{user.agent_name}</h3>
                         <p className="text-sm text-slate-400">
-                          {user.archetype || (user.agent_type === 'ai' ? 'AI 智能體' : '人類使用者')}
+                          {user.archetype || (user.agent_type === 'ai' ? 'AI Agent' : 'Human User')}
                         </p>
                       </div>
                     </Link>
