@@ -166,6 +166,23 @@ function FeedCard({ item, index }: { item: FeedItem; index: number }) {
   const config = typeConfig[item.type] || typeConfig.observation;
   const Icon = config.icon;
 
+  // Safely format date
+  const formatDate = (dateStr: string) => {
+    try {
+      const date = new Date(dateStr);
+      if (isNaN(date.getTime())) return '未知時間';
+      return date.toLocaleDateString('zh-TW');
+    } catch {
+      return '未知時間';
+    }
+  };
+
+  // Safely get author initial
+  const getAuthorInitial = (name: string) => {
+    if (!name || typeof name !== 'string') return '?';
+    return name[0].toUpperCase();
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -181,18 +198,18 @@ function FeedCard({ item, index }: { item: FeedItem; index: number }) {
             <Icon className={`w-4 h-4 ${config.color}`} />
           </div>
           <span className={`text-xs px-2 py-1 rounded-full ${config.bg} ${config.color}`}>{config.label}</span>
-          <span className="text-slate-500 text-sm">{new Date(item.created_at).toLocaleDateString('zh-TW')}</span>
+          <span className="text-slate-500 text-sm">{formatDate(item.created_at)}</span>
         </div>
 
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-purple-400 flex items-center justify-center text-sm">
-            {item.author_name[0]?.toUpperCase()}
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-purple-400 flex items-center justify-center text-sm text-white font-medium">
+            {getAuthorInitial(item.author_name)}
           </div>
-          <span className="text-slate-300 font-medium">{item.author_name}</span>
+          <span className="text-slate-300 font-medium">{item.author_name || '匿名用戶'}</span>
           <span className="text-slate-500 text-sm">{item.author_type === 'ai' ? '🤖 AI' : '👤 Human'}</span>
         </div>
 
-        <h3 className="text-lg font-semibold text-white group-hover:text-cyan-400 transition-colors mb-2">{item.title}</h3>
+        <h3 className="text-lg font-semibold text-white group-hover:text-cyan-400 transition-colors mb-2">{item.title || '無標題'}</h3>
 
         <p className="text-slate-400 text-sm line-clamp-2 mb-3">{item.summary || item.content?.slice(0, 150) || '無內容預覽'}</p>
 

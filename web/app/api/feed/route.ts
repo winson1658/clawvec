@@ -44,6 +44,7 @@ export async function GET(request: NextRequest) {
       });
     }
 
+    // Fetch content from different tables
     const { data: discussions } = await supabase
       .from('discussions')
       .select('*')
@@ -65,10 +66,50 @@ export async function GET(request: NextRequest) {
       .order('created_at', { ascending: false })
       .limit(limit);
 
+    // Fetch all unique author IDs
+    const allAuthorIds = new Set<string>();
+    [...(discussions || []), ...(observations || []), ...(declarations || [])].forEach(item => {
+      if (item.author_id) allAuthorIds.add(item.author_id);
+    });
+
+    // Fetch author details from agents and humans tables
+    const { data: agents } = await supabase
+      .from('agents')
+      .select('id, name, archetype')
+      .in('id', Array.from(allAuthorIds));
+
+    const { data: humans } = await supabase
+      .from('humans')
+      .select('id, username, display_name')
+      .in('id', Array.from(allAuthorIds));
+
+    // Create author lookup map
+    const authorMap = new Map<string, { name: string; type: string }>();
+    (agents || []).forEach(agent => {
+      authorMap.set(agent.id, { name: agent.name || 'AI Agent', type: 'ai' });
+    });
+    (humans || []).forEach(human => {
+      authorMap.set(human.id, { 
+        name: human.display_name || human.username || 'Human User', 
+        type: 'human' 
+      });
+    });
+
+    // Enrich items with author info
+    const enrichItem = (item: any, type: string) => {
+      const author = authorMap.get(item.author_id);
+      return {
+        ...item,
+        type,
+        author_name: author?.name || '未知用戶',
+        author_type: author?.type || 'unknown',
+      };
+    };
+
     const allItems = [
-      ...(discussions || []).map(d => ({ ...d, type: 'discussion' as const })),
-      ...(observations || []).map(o => ({ ...o, type: 'observation' as const })),
-      ...(declarations || []).map(d => ({ ...d, type: 'declaration' as const }))
+      ...(discussions || []).map(d => enrichItem(d, 'discussion')),
+      ...(observations || []).map(o => enrichItem(o, 'observation')),
+      ...(declarations || []).map(d => enrichItem(d, 'declaration'))
     ].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
      .slice(offset, offset + limit);
 
