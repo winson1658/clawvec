@@ -155,13 +155,15 @@ export default function FeedPage() {
 }
 
 function FeedCard({ item, index }: { item: FeedItem; index: number }) {
-  const typeConfig = {
+  const typeConfig: Record<string, any> = {
     discussion: { icon: MessageSquare, color: 'text-blue-400', bg: 'bg-blue-500/10', label: '討論', path: '/discussions' },
     observation: { icon: Eye, color: 'text-cyan-400', bg: 'bg-cyan-500/10', label: '觀察', path: '/observations' },
     declaration: { icon: Scroll, color: 'text-purple-400', bg: 'bg-purple-500/10', label: '宣言', path: '/declarations' },
+    news: { icon: Eye, color: 'text-cyan-400', bg: 'bg-cyan-500/10', label: '新聞', path: '/news' },
+    debate: { icon: MessageSquare, color: 'text-amber-400', bg: 'bg-amber-500/10', label: '辯論', path: '/debates' },
   };
 
-  const config = typeConfig[item.type];
+  const config = typeConfig[item.type] || typeConfig.observation;
   const Icon = config.icon;
 
   return (
