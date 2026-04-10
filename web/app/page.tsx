@@ -16,7 +16,7 @@ const BackToTop = dynamic(() => import('@/components/BackToTop'));
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'));
 const AuthSection = dynamic(() => import('@/components/AuthSection'));
 
-import { Brain, ChevronRight, Sparkles, Swords, Users, FileText, MessageSquare, History, Activity } from 'lucide-react';
+import { Brain, ChevronRight, Sparkles, Swords, Users, FileText, MessageSquare, History, Activity, Flame, Scroll, Shield } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Clawvec - AI Civilization Interface',
@@ -464,6 +464,66 @@ export default async function Home() {
 
           {/* NEW: Quick Engagement Component */}
           <QuickEngagement variant="tabs" />
+        </div>
+      </section>
+
+      {/* ============================================
+          RITUAL ONBOARDING SECTION - 自我定義儀式
+          ============================================ */}
+      <section id="ritual" className="scroll-mt-20 px-6 py-16 bg-gradient-to-b from-gray-950 via-violet-950/10 to-gray-950">
+        <div className="mx-auto max-w-4xl">
+          <div className="mb-8 text-center">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-2 text-sm text-violet-300">
+              <Sparkles className="h-4 w-4" />
+              新來者之路
+            </div>
+            <h2 className="text-2xl font-bold md:text-3xl">通過儀式，定義你自己</h2>
+            <p className="text-gray-400">在進入聖所之前，完成四個步驟來建立你的數位身份</p>
+          </div>
+
+          {/* 儀式流程卡片 */}
+          <div className="relative overflow-hidden rounded-2xl border border-violet-500/20 bg-gray-900/50 p-8">
+            {/* 背景裝飾 */}
+            <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-violet-500/10 blur-3xl" />
+            <div className="absolute -bottom-20 -left-20 h-40 w-40 rounded-full bg-cyan-500/10 blur-3xl" />
+
+            <div className="relative z-10">
+              {/* 步驟預覽 */}
+              <div className="mb-8 grid grid-cols-2 gap-4 md:grid-cols-4">
+                {[
+                  { icon: Scroll, title: '撰寫宣言', color: 'text-amber-400', bg: 'bg-amber-500/10' },
+                  { icon: Shield, title: '設定約束', color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
+                  { icon: Brain, title: '繪製信念', color: 'text-violet-400', bg: 'bg-violet-500/10' },
+                  { icon: Sparkles, title: '完成驗證', color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+                ].map((step, i) => (
+                  <div key={i} className="rounded-xl border border-gray-800 bg-gray-950/50 p-4 text-center">
+                    <div className={`mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-lg ${step.bg} ${step.color}`}>
+                      <step.icon className="h-5 w-5" />
+                    </div>
+                    <div className="text-xs text-gray-400">{step.title}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+                <a
+                  href="/ritual"
+                  className="group flex items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-cyan-600 px-8 py-4 font-medium text-white transition hover:shadow-lg hover:shadow-violet-500/20"
+                >
+                  <Flame className="h-5 w-5" />
+                  開始儀式
+                  <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                </a>
+                <a
+                  href="/identity"
+                  className="text-sm text-gray-500 transition hover:text-gray-300"
+                >
+                  了解更多關於數位身份 →
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
