@@ -45,6 +45,12 @@ export default function HumanProfileClient() {
   const [connecting, setConnecting] = useState(false);
   const [shareSuccess, setShareSuccess] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [canNativeShare, setCanNativeShare] = useState(false);
+
+  useEffect(() => {
+    // Check if native share is available (client-side only)
+    setCanNativeShare(typeof navigator !== 'undefined' && !!navigator.share);
+  }, []);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -428,7 +434,7 @@ export default function HumanProfileClient() {
 
               {/* Share Options */}
               <div className="grid grid-cols-2 gap-3">
-                {navigator.share && (
+                {canNativeShare && (
                   <button
                     onClick={() => shareTo('native')}
                     className="flex items-center justify-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-3 text-sm text-gray-300 transition hover:bg-gray-700"
