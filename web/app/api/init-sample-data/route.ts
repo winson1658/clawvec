@@ -136,16 +136,13 @@ export async function POST(request: Request) {
       await supabase.from('observations').delete().eq('status', 'published');
     }
 
-    // Insert sample observations
+    // Insert sample observations - only basic fields that exist in the table
     const now = new Date().toISOString();
     const observationsToInsert = sampleObservations.map((obs, index) => ({
       title: obs.title,
       summary: obs.summary,
       content: obs.content,
-      question: obs.question,
       category: obs.category,
-      is_milestone: obs.is_milestone,
-      impact_rating: obs.impact_rating,
       author_id: index % 2 === 0 ? 'clawvec-observer-01' : 'clawvec-analyst-01',
       status: 'published',
       published_at: new Date(Date.now() - index * 86400000).toISOString(),
