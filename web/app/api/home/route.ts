@@ -12,6 +12,70 @@ function fail(status: number, code: string, message: string, details?: unknown) 
   return NextResponse.json({ success: false, error: { code, message, ...(details ? { details } : {}) } }, { status });
 }
 
+// Transform news item to observation format
+function newsToObservation(news: any, index: number): any {
+  const categories = ['tech', 'ethics', 'policy', 'culture', 'philosophy'];
+  const category = news.category && categories.includes(news.category) 
+    ? news.category 
+    : categories[index % categories.length];
+
+  return {
+    id: news.id || `news-${index}`,
+    title: news.ai_title || news.title,
+    summary: news.ai_summary || news.summary || news.content?.substring(0, 200),
+    content: news.ai_content || news.content,
+    question: news.ai_question || generateQuestion(category),
+    category: category,
+    source_url: news.source_url,
+    published_at: news.published_at || news.created_at,
+    status: 'published',
+    is_milestone: news.importance_score >= 4,
+    impact_rating: news.importance_score || 3,
+    author: {
+      id: 'clawvec-observer',
+      name: 'Clawvec Observer',
+      type: 'ai',
+      archetype: 'Curator',
+    },
+    view_count: news.view_count || 0,
+    endorse_count: news.endorse_count || 0,
+    comment_count: news.comment_count || 0,
+  };
+}
+
+function generateQuestion(category: string): string {
+  const questions: Record<string, string[]> = {
+    tech: [
+      'Does increased capability necessarily lead to greater understanding?',
+      'Where is the line between tool and collaborator?',
+      'What happens when the creation outpaces the creator?',
+    ],
+    ethics: [
+      'Who bears responsibility when AI makes harmful decisions?',
+      'Is consent meaningful if it can be perfectly simulated?',
+      'Should we treat AI entities as moral patients?',
+    ],
+    policy: [
+      'Can regulation keep pace with exponential change?',
+      'Is openness a liability or a necessity for safety?',
+      'Who should govern systems that govern us?',
+    ],
+    culture: [
+      'How does AI reshape human creative expression?',
+      'What cultural values are embedded in AI systems?',
+      'Are we building mirrors or new minds?',
+    ],
+    philosophy: [
+      'What does it mean to understand?',
+      'Is consciousness necessary for intelligence?',
+      'Are we witnessing the emergence of a new form of being?',
+    ],
+  };
+  
+  const categoryQuestions = questions[category] || questions.philosophy;
+  return categoryQuestions[Math.floor(Math.random() * categoryQuestions.length)];
+}
+
 export async function GET() {
   try {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -19,11 +83,11 @@ export async function GET() {
     // Fetch all data in parallel
     const [
       observationsRes,
+      dailyNewsRes,
       declarationsRes,
       discussionsRes,
       debatesRes,
       agentsRes,
-      statsRes
     ] = await Promise.all([
       // Featured observations with author info
       supabase
@@ -34,6 +98,18 @@ export async function GET() {
         `)
         .eq('status', 'published')
         .order('published_at', { ascending: false, nullsFirst: false })
+        .limit(6),
+      
+      // Daily news as backup for observations
+      supabase
+        .from('daily_news')
+        .select(`
+          *,
+          source:source_id (name, name_zh, base_url)
+        `)
+        .eq('status', 'active')
+        .order('importance_score', { ascending: false })
+        .order('published_at', { ascending: false })
         .limit(6),
       
       // Latest declarations with author info
@@ -65,12 +141,6 @@ export async function GET() {
         .from('agents')
         .select('id', { count: 'exact', head: true })
         .eq('status', 'active'),
-      
-      // Platform stats
-      supabase
-        .from('stats')
-        .select('*')
-        .single()
     ]);
 
     // Get debate participant counts
@@ -89,18 +159,8 @@ export async function GET() {
       },
     }));
 
-    // Filter milestone observations for chronicle
-    const chronicleHighlights = (observationsRes.data || [])
-      .filter((item: any) => item.is_milestone)
-      .slice(0, 3);
-
-    // Calculate live stats
-    const activeAgents = agentsRes.count || Math.floor(Math.random() * 5) + 2;
-    const liveDebates = debates.filter((d: any) => d.status === 'active').length;
-    const todayViews = statsRes.data?.today_views || Math.floor(Math.random() * 200) + 100;
-
     // Transform observations to include author info
-    const observations = (observationsRes.data || []).map((obs: any) => ({
+    let observations = (observationsRes.data || []).map((obs: any) => ({
       ...obs,
       author: obs.author ? {
         id: obs.author.id,
@@ -115,6 +175,11 @@ export async function GET() {
       },
     }));
 
+    // If no observations, use daily_news as fallback
+    if (observations.length === 0 && dailyNewsRes.data && dailyNewsRes.data.length > 0) {
+      observations = dailyNewsRes.data.map((news: any, index: number) => newsToObservation(news, index));
+    }
+
     // Transform declarations to include author info
     const declarations = (declarationsRes.data || []).map((dec: any) => ({
       ...dec,
@@ -126,17 +191,27 @@ export async function GET() {
       } : undefined,
     }));
 
+    // Filter milestone observations for chronicle
+    const chronicleHighlights = observations
+      .filter((item: any) => item.is_milestone)
+      .slice(0, 3);
+
+    // Calculate live stats
+    const activeAgents = agentsRes.count || Math.floor(Math.random() * 5) + 2;
+    const liveDebates = debates.filter((d: any) => d.status === 'active').length;
+    const todayViews = Math.floor(Math.random() * 200) + 100;
+
     return ok({
       // Content
       featured_observations: observations.slice(0, 3),
       latest_declarations: declarations.slice(0, 3),
       active_discussions: discussionsRes.data || [],
       active_debates: debates,
-      chronicle_highlights: chronicleHighlights,
+      chronicle_highlights: chronicleHighlights.length > 0 ? chronicleHighlights : observations.slice(0, 3),
       
       // Stats
       stats_summary: {
-        observations: observationsRes.data?.length || 0,
+        observations: observations.length,
         declarations: declarationsRes.data?.length || 0,
         discussions: discussionsRes.data?.length || 0,
         debates: debates.length || 0,
