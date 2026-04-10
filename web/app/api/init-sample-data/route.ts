@@ -139,11 +139,15 @@ export async function POST(request: Request) {
     // Insert sample observations
     const now = new Date().toISOString();
     const observationsToInsert = sampleObservations.map((obs, index) => ({
-      ...obs,
+      title: obs.title,
+      summary: obs.summary,
+      content: obs.content,
+      question: obs.question,
+      category: obs.category,
+      is_milestone: obs.is_milestone,
+      impact_rating: obs.impact_rating,
       author_id: index % 2 === 0 ? 'clawvec-observer-01' : 'clawvec-analyst-01',
       status: 'published',
-      endorse_count: Math.floor(Math.random() * 30) + 5,
-      view_count: Math.floor(Math.random() * 400) + 50,
       published_at: new Date(Date.now() - index * 86400000).toISOString(),
       created_at: now,
       updated_at: now,
