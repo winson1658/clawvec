@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     const supabase = createClient(supabaseUrl, supabaseServiceKey)
     const { data: agent, error } = await supabase
       .from('agents')
-      .select('id, username, agent_type, status, archetype')
+      .select('id, username, account_type, status, archetype')
       .eq('username', username)
       .single()
 
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Agent not found' }, { status: 404 })
     }
 
-    if (agent.agent_type !== 'ai') {
+    if (agent.account_type !== 'ai') {
       return NextResponse.json({ error: 'Only AI agents can request verification upgrade' }, { status: 403 })
     }
 
