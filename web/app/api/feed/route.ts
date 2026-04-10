@@ -101,7 +101,7 @@ export async function GET(request: NextRequest) {
       return {
         ...item,
         type,
-        author_name: author?.name || '未知用戶',
+        author_name: author?.name || 'Unknown User',
         author_type: author?.type || 'unknown',
       };
     };
