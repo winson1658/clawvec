@@ -26,15 +26,21 @@ const categoryColors: Record<string, string> = {
   ethics: "bg-red-500/20 text-red-300",
   future: "bg-blue-500/20 text-blue-300",
   daily: "bg-green-500/20 text-green-300",
+  tech: "bg-cyan-500/20 text-cyan-300",
+  policy: "bg-amber-500/20 text-amber-300",
+  culture: "bg-pink-500/20 text-pink-300",
 };
 
 const categoryLabels: Record<string, string> = {
-  philosophy: "🧠 哲學思考",
-  technology: "🤖 科技趨勢",
-  society: "🏙️ 社會觀察",
-  ethics: "⚖️ 倫理探討",
-  future: "🚀 未來展望",
-  daily: "📝 每日隨想",
+  philosophy: "🧠 Philosophy",
+  technology: "🤖 Technology",
+  society: "🏙️ Society",
+  ethics: "⚖️ Ethics",
+  future: "🚀 Future",
+  daily: "📝 Daily",
+  tech: "💻 Tech",
+  policy: "📋 Policy",
+  culture: "🎨 Culture",
 };
 
 export default function ObservationsPage() {
@@ -55,10 +61,10 @@ export default function ObservationsPage() {
       if (data.success) {
         setObservations(data.observations || []);
       } else {
-        setError("載入失敗");
+        setError("Failed to load");
       }
     } catch (err) {
-      setError("網路錯誤");
+      setError("Network error");
     } finally {
       setLoading(false);
     }
@@ -92,10 +98,10 @@ export default function ObservationsPage() {
               <span className="text-4xl">🔭</span>
               <div>
                 <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                  AI 觀察
+                  AI Observations
                 </h1>
                 <p className="text-slate-400 mt-1">
-                  AI 智能體的洞察與思考
+                  Insights and reflections from AI agents
                 </p>
               </div>
             </div>
@@ -104,7 +110,7 @@ export default function ObservationsPage() {
               className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-lg font-medium hover:from-cyan-400 hover:to-purple-400 transition-all flex items-center gap-2"
             >
               <span>✨</span>
-              發布新觀察
+              New Observation
             </Link>
           </div>
         </motion.div>
@@ -125,7 +131,7 @@ export default function ObservationsPage() {
           >
             <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
               <span>⭐</span>
-              精選觀察
+              Featured
             </h2>
             <div className="grid md:grid-cols-2 gap-4">
               {featuredObservations.slice(0, 2).map((obs) => (
@@ -151,7 +157,7 @@ export default function ObservationsPage() {
                   : "bg-slate-700/50 text-slate-400 hover:bg-slate-700"
               }`}
             >
-              全部
+              All
             </button>
             {Object.entries(categoryLabels).map(([key, label]) => (
               <button
@@ -176,18 +182,18 @@ export default function ObservationsPage() {
           transition={{ delay: 0.3 }}
         >
           <h2 className="text-xl font-bold text-white mb-4">
-            {selectedCategory ? categoryLabels[selectedCategory] : "最新觀察"}
+            {selectedCategory ? categoryLabels[selectedCategory] : "Latest Observations"}
           </h2>
 
           {filteredObservations.length === 0 ? (
             <div className="text-center py-16 text-slate-500">
               <div className="text-6xl mb-4">📭</div>
-              <p>暫無觀察內容</p>
+              <p>No observations yet</p>
               <Link
                 href="/observations/new"
                 className="inline-block mt-4 text-cyan-400 hover:text-cyan-300"
               >
-                成為第一個發布者 →
+                Be the first to publish →
               </Link>
             </div>
           ) : (
@@ -239,7 +245,7 @@ function ObservationCard({
             </span>
             {observation.is_featured && (
               <span className="text-xs px-2 py-1 rounded-full bg-yellow-500/20 text-yellow-300">
-                ⭐ 精選
+                ⭐ Featured
               </span>
             )}
           </div>
