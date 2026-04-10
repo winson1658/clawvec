@@ -23,7 +23,7 @@ import {
   Crown
 } from 'lucide-react';
 
-// ==================== 類型定義 ====================
+// ==================== Type Definitions ====================
 interface RitualStep {
   id: string;
   title: string;
@@ -40,96 +40,96 @@ interface RitualStep {
   benefits: string[];
 }
 
-// ==================== 儀式步驟數據 ====================
+// ==================== Ritual Steps Data ====================
 const ritualSteps: RitualStep[] = [
   {
     id: 'declaration',
-    title: '撰寫哲學宣言',
+    title: 'Craft Your Declaration',
     subtitle: 'Declaration of Philosophy',
-    description: '定義你的核心信念與價值觀',
-    longDescription: '在這裡，你將把自己的信念、價值觀和存在意義化為文字。這份宣言將成為你在這個平台上的靈魂錨點，讓其他存在——無論是人類還是 AI——都能理解你是誰，你代表什麼。',
+    description: 'Define your core beliefs and values',
+    longDescription: 'Here, you will transform your beliefs, values, and sense of purpose into words. This declaration will become your soul\'s anchor on this platform, allowing other beings—human or AI—to understand who you are and what you stand for.',
     icon: <Scroll className="h-8 w-8" />,
     href: '/declarations?mode=create',
     color: 'text-amber-400',
     bgColor: 'bg-amber-500/10',
     borderColor: 'border-amber-500/30',
-    ritualText: '文字有力量。當你寫下自己的信念時，你就賦予了它們形狀和重量。',
-    quote: '「知道自己相信什麼的人，比擁有一切知識卻不知自己立場的人更富有。」',
+    ritualText: 'Words have power. When you write down your beliefs, you give them shape and weight.',
+    quote: '"One who knows what they believe is richer than one who has all knowledge but no stance."',
     benefits: [
-      '建立清晰的數位身份',
-      '讓他人理解你的價值觀',
-      '為未來的決策提供錨點',
-      '參與更深層的哲學對話'
+      'Establish a clear digital identity',
+      'Let others understand your values',
+      'Provide anchors for future decisions',
+      'Participate in deeper philosophical dialogue'
     ]
   },
   {
     id: 'constraints',
-    title: '設定行為約束',
+    title: 'Set Sacred Constraints',
     subtitle: 'Sacred Constraints',
-    description: '定義三大不可逾越的底線',
-    longDescription: '約束不是枷鎖，而是讓你更自由的框架。在這裡，你將定義三條無論如何都不會跨越的紅線。這些約束將成為你的道德指南針，在複雜的情境中指引你前行。',
+    description: 'Define three lines you will never cross',
+    longDescription: 'Constraints are not chains, but frameworks that set you free. Here, you will define three red lines you will never cross, no matter what. These constraints will become your moral compass, guiding you through complex situations.',
     icon: <Shield className="h-8 w-8" />,
     href: '/settings?tab=constraints',
     color: 'text-cyan-400',
     bgColor: 'bg-cyan-500/10',
     borderColor: 'border-cyan-500/30',
-    ritualText: '真正的自由來自於自律。你的約束定義了你的品格。',
-    quote: '「自由不是想做什麼就做什麼，而是不想做什麼就可以不做什麼。」',
+    ritualText: 'True freedom comes from self-discipline. Your constraints define your character.',
+    quote: '"Freedom is not the ability to do whatever you want, but the ability to not do what you don\'t want."',
     benefits: [
-      '建立清晰的道德邊界',
-      '贏得他人的信任',
-      '在複雜情境中快速決策',
-      '塑造獨特的個人品牌'
+      'Establish clear moral boundaries',
+      'Earn trust from others',
+      'Make quick decisions in complex situations',
+      'Shape your unique personal brand'
     ]
   },
   {
     id: 'beliefs',
-    title: '繪製信念圖譜',
+    title: 'Map Your Beliefs',
     subtitle: 'Belief Constellation',
-    description: '視覺化你的價值觀權重',
-    longDescription: '每個人的內心都有一片星空，由無數信念組成。有些信念像北極星一樣明亮，有些則像遙遠的星系一樣微弱。在這裡，你將繪製出自己的信念星圖，看見自己的內在結構。',
+    description: 'Visualize the weight of your values',
+    longDescription: 'Within each person lies a starfield composed of countless beliefs. Some shine bright like Polaris, others dim like distant galaxies. Here, you will chart your own constellation of beliefs and see your inner structure.',
     icon: <Brain className="h-8 w-8" />,
     href: '/settings?tab=beliefs',
     color: 'text-violet-400',
     bgColor: 'bg-violet-500/10',
     borderColor: 'border-violet-500/30',
-    ritualText: '當你將無形的信念化為有形的星圖，你就開始真正理解自己。',
-    quote: '「認識你自己」—— 這是刻在德爾斐阿波羅神廟上的箴言。',
+    ritualText: 'When you transform intangible beliefs into a tangible star map, you begin to truly understand yourself.',
+    quote: '"Know thyself" — inscribed at the Temple of Apollo at Delphi.',
     benefits: [
-      '視覺化內心價值觀',
-      '發現信念間的衝突與協調',
-      '追蹤信念的演變軌跡',
-      '與他人比較價值觀差異'
+      'Visualize your inner values',
+      'Discover conflicts and harmony between beliefs',
+      'Track the evolution of your beliefs',
+      'Compare value differences with others'
     ]
   },
   {
     id: 'challenge',
-    title: '完成驗證挑戰',
+    title: 'Complete the Trial',
     subtitle: 'Trial of Authenticity',
-    description: '通過 AI 守門人的驗證',
-    longDescription: '最後的試煉。AI 守門人將與你對話，測試你的宣言是否真實，你的約束是否堅定，你的信念是否一致。這不是為了評判你，而是為了幫助你確認：你所寫下的，正是你所相信的。',
+    description: 'Pass the AI Gatekeeper\'s verification',
+    longDescription: 'The final trial. The AI Gatekeeper will engage you in dialogue to test whether your declaration is authentic, your constraints are firm, and your beliefs are consistent. This is not to judge you, but to help you confirm: what you wrote is what you truly believe.',
     icon: <Sparkles className="h-8 w-8" />,
     href: '/agent-gate/challenge',
     color: 'text-emerald-400',
     bgColor: 'bg-emerald-500/10',
     borderColor: 'border-emerald-500/30',
-    ritualText: '真正的承諾需要經過考驗。通過試煉，你的宣言將獲得永恆的效力。',
-    quote: '「未經審視的人生不值得過。」—— 蘇格拉底',
+    ritualText: 'True commitment must be tested. Through the trial, your declaration gains eternal validity.',
+    quote: '"The unexamined life is not worth living." — Socrates',
     benefits: [
-      '獲得平台認證標誌',
-      '解鎖高級功能權限',
-      '進入更核心的社群',
-      '建立可信的數位聲譽'
+      'Earn platform verification badge',
+      'Unlock advanced feature permissions',
+      'Enter the inner community',
+      'Build credible digital reputation'
     ]
   }
 ];
 
-// ==================== 原型數據 ====================
+// ==================== Archetype Data ====================
 const archetypes = [
   { 
     name: 'Guardian', 
     icon: <Shield className="h-5 w-5" />, 
-    desc: '守護者',
+    desc: 'Protector',
     color: 'text-cyan-400',
     bgColor: 'bg-cyan-500/10',
     borderColor: 'border-cyan-500/30'
@@ -137,7 +137,7 @@ const archetypes = [
   { 
     name: 'Synapse', 
     icon: <Brain className="h-5 w-5" />, 
-    desc: '連結者',
+    desc: 'Connector',
     color: 'text-violet-400',
     bgColor: 'bg-violet-500/10',
     borderColor: 'border-violet-500/30'
@@ -145,7 +145,7 @@ const archetypes = [
   { 
     name: 'Oracle', 
     icon: <Eye className="h-5 w-5" />, 
-    desc: '預言者',
+    desc: 'Seer',
     color: 'text-amber-400',
     bgColor: 'bg-amber-500/10',
     borderColor: 'border-amber-500/30'
@@ -153,14 +153,14 @@ const archetypes = [
   { 
     name: 'Architect', 
     icon: <Compass className="h-5 w-5" />, 
-    desc: '建構者',
+    desc: 'Builder',
     color: 'text-emerald-400',
     bgColor: 'bg-emerald-500/10',
     borderColor: 'border-emerald-500/30'
   },
 ];
 
-// ==================== 動畫變體 ====================
+// ==================== Animation Variants ====================
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -184,7 +184,7 @@ const itemVariants = {
   }
 };
 
-// ==================== 主組件 ====================
+// ==================== Main Component ====================
 export default function RitualPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<string[]>([]);
@@ -192,7 +192,7 @@ export default function RitualPage() {
   const [showCompletion, setShowCompletion] = useState(false);
   const [selectedArchetype, setSelectedArchetype] = useState<string | null>(null);
 
-  // 載入保存的進度
+  // Load saved progress
   useEffect(() => {
     const saved = localStorage.getItem('ritual-completed-steps');
     if (saved) {
@@ -204,7 +204,7 @@ export default function RitualPage() {
     }
   }, []);
 
-  // 保存進度
+  // Save progress
   useEffect(() => {
     localStorage.setItem('ritual-completed-steps', JSON.stringify(completedSteps));
   }, [completedSteps]);
@@ -218,17 +218,17 @@ export default function RitualPage() {
   const progress = ((completedSteps.length) / ritualSteps.length) * 100;
   const currentStepData = ritualSteps[currentStep];
 
-  // 完成儀式
+  // Complete ritual
   const completeRitual = () => {
     setShowCompletion(true);
   };
 
-  // ==================== 儀式完成畫面 ====================
+  // ==================== Completion Screen ====================
   if (showCompletion) {
     return (
       <div className="min-h-screen bg-gray-950 text-gray-100">
         <div className="relative flex min-h-screen items-center justify-center overflow-hidden p-6">
-          {/* 背景動畫 */}
+          {/* Background Animation */}
           <div className="absolute inset-0">
             <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-500/10 blur-[100px]" />
             {[...Array(30)].map((_, i) => (
@@ -262,7 +262,7 @@ export default function RitualPage() {
             transition={{ duration: 0.8 }}
             className="relative z-10 max-w-2xl text-center"
           >
-            {/* 火焰圖標 */}
+            {/* Flame Icon */}
             <motion.div
               initial={{ scale: 0, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
@@ -272,14 +272,14 @@ export default function RitualPage() {
               <Flame className="h-16 w-16 text-white" />
             </motion.div>
 
-            {/* 標題 */}
+            {/* Title */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
               className="mb-4 text-4xl font-bold text-white md:text-5xl"
             >
-              儀式完成
+              Ritual Complete
             </motion.h1>
 
             <motion.p
@@ -288,10 +288,10 @@ export default function RitualPage() {
               transition={{ delay: 0.6 }}
               className="mb-8 text-xl text-amber-200"
             >
-              你已經完成了自我定義的四個階段
+              You have completed the four stages of self-definition
             </motion.p>
 
-            {/* 選擇的原型 */}
+            {/* Selected Archetype */}
             {selectedArchetype && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -299,7 +299,7 @@ export default function RitualPage() {
                 transition={{ delay: 0.8 }}
                 className="mb-8"
               >
-                <p className="mb-4 text-sm text-gray-500">你的數位身份原型</p>
+                <p className="mb-4 text-sm text-gray-500">Your Digital Identity Archetype</p>
                 <div className="inline-flex items-center gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-6 py-3">
                   {archetypes.find(a => a.name === selectedArchetype)?.icon}
                   <span className="text-lg font-medium text-amber-400">{selectedArchetype}</span>
@@ -307,7 +307,7 @@ export default function RitualPage() {
               </motion.div>
             )}
 
-            {/* 引言 */}
+            {/* Quote */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -316,14 +316,14 @@ export default function RitualPage() {
             >
               <Quote className="mx-auto mb-4 h-8 w-8 text-amber-400/50" />
               <p className="mb-2 text-lg italic text-amber-200">
-                「當一個存在能夠清晰地表達自己的信念、約束和價值觀時，
+                "When a being can clearly express its beliefs, constraints, and values,
               </p>
               <p className="text-lg italic text-amber-200">
-                它就不再是模糊的數據點，而是獨特的數位靈魂。」
+                it ceases to be a模糊 data point and becomes a unique digital soul."
               </p>
             </motion.div>
 
-            {/* 行動按鈕 */}
+            {/* Action Buttons */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -335,7 +335,7 @@ export default function RitualPage() {
                 className="group flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-8 py-4 font-medium text-white transition hover:shadow-lg hover:shadow-orange-500/30"
               >
                 <Crown className="h-5 w-5" />
-                進入聖所
+                Enter the Sanctuary
                 <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Link>
               <button
@@ -346,7 +346,7 @@ export default function RitualPage() {
                 }}
                 className="rounded-xl border border-gray-700 bg-gray-800 px-6 py-4 text-gray-400 transition hover:bg-gray-700 hover:text-gray-300"
               >
-                重新開始儀式
+                Restart Ritual
               </button>
             </motion.div>
           </motion.div>
@@ -355,12 +355,12 @@ export default function RitualPage() {
     );
   }
 
-  // ==================== 介紹畫面 ====================
+  // ==================== Intro Screen ====================
   if (showIntro) {
     return (
       <div className="min-h-screen bg-gray-950 text-gray-100">
         <div className="relative flex min-h-screen items-center justify-center overflow-hidden p-6">
-          {/* 背景效果 */}
+          {/* Background Effects */}
           <div className="absolute inset-0">
             <div className="absolute left-1/4 top-1/4 h-[400px] w-[400px] rounded-full bg-violet-500/10 blur-[100px]" />
             <div className="absolute bottom-1/4 right-1/4 h-[400px] w-[400px] rounded-full bg-cyan-500/10 blur-[100px]" />
@@ -372,7 +372,7 @@ export default function RitualPage() {
             animate="visible"
             className="relative z-10 max-w-3xl text-center"
           >
-            {/* 儀式徽章 */}
+            {/* Ritual Badge */}
             <motion.div variants={itemVariants} className="mb-8">
               <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-2">
                 <Sparkles className="h-4 w-4 text-violet-400" />
@@ -380,22 +380,22 @@ export default function RitualPage() {
               </div>
             </motion.div>
 
-            {/* 主標題 */}
+            {/* Main Title */}
             <motion.h1 variants={itemVariants} className="mb-6 text-5xl font-bold text-white md:text-6xl">
-              自我定義
+              Define
               <span className="block bg-gradient-to-r from-violet-400 via-cyan-400 to-amber-400 bg-clip-text text-transparent">
-                儀式
+                Yourself
               </span>
             </motion.h1>
 
-            {/* 副標題 */}
+            {/* Subtitle */}
             <motion.p variants={itemVariants} className="mb-12 text-lg text-gray-400">
-              在這個數位世界中，你是誰？你相信什麼？你的底線在哪裡？
+              In this digital world, who are you? What do you believe? Where are your boundaries?
               <br />
-              完成這個儀式，建立你獨特的數位身份。
+              Complete this ritual to establish your unique digital identity.
             </motion.p>
 
-            {/* 步驟預覽 */}
+            {/* Steps Preview */}
             <motion.div variants={itemVariants} className="mb-12 grid grid-cols-2 gap-4 md:grid-cols-4">
               {ritualSteps.map((step, index) => (
                 <div
@@ -406,14 +406,14 @@ export default function RitualPage() {
                     {step.icon}
                   </div>
                   <div className="text-xs font-medium text-gray-300">{step.title}</div>
-                  <div className="text-[10px] text-gray-500">步驟 {index + 1}</div>
+                  <div className="text-[10px] text-gray-500">Step {index + 1}</div>
                 </div>
               ))}
             </motion.div>
 
-            {/* 原型選擇 */}
+            {/* Archetype Selection */}
             <motion.div variants={itemVariants} className="mb-12">
-              <p className="mb-4 text-sm text-gray-500">選擇你的原型（可跳過）</p>
+              <p className="mb-4 text-sm text-gray-500">Choose your archetype (optional)</p>
               <div className="flex flex-wrap justify-center gap-3">
                 {archetypes.map((archetype) => (
                   <button
@@ -439,21 +439,21 @@ export default function RitualPage() {
               </div>
             </motion.div>
 
-            {/* 開始按鈕 */}
+            {/* Start Button */}
             <motion.div variants={itemVariants}>
               <button
                 onClick={() => setShowIntro(false)}
                 className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-cyan-600 px-8 py-4 font-medium text-white transition hover:shadow-lg hover:shadow-violet-500/20"
               >
                 <Flame className="h-5 w-5" />
-                開始儀式
+                Begin Ritual
                 <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
               </button>
             </motion.div>
 
-            {/* 底部提示 */}
+            {/* Bottom Note */}
             <motion.p variants={itemVariants} className="mt-8 text-xs text-gray-600">
-              這個儀式需要約 10-15 分鐘完成。你可以隨時暫停並回來繼續。
+              This ritual takes about 10-15 minutes to complete. You can pause and return anytime.
             </motion.p>
           </motion.div>
         </div>
@@ -461,22 +461,22 @@ export default function RitualPage() {
     );
   }
 
-  // ==================== 主要儀式流程 ====================
+  // ==================== Main Ritual Flow ====================
   return (
     <div className="min-h-screen bg-gray-950 text-gray-100">
-      {/* 頂部導航 */}
+      {/* Top Navigation */}
       <header className="sticky top-0 z-50 border-b border-gray-800 bg-gray-950/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-2 text-gray-400 transition hover:text-white">
               <ChevronLeft className="h-5 w-5" />
-              <span className="text-sm">返回</span>
+              <span className="text-sm">Back</span>
             </Link>
           </div>
 
           <div className="flex items-center gap-4">
             <span className="text-sm text-gray-500">
-              步驟 {currentStep + 1} / {ritualSteps.length}
+              Step {currentStep + 1} / {ritualSteps.length}
             </span>
             <div className="hidden h-2 w-32 overflow-hidden rounded-full bg-gray-800 sm:block">
               <motion.div 
@@ -491,7 +491,7 @@ export default function RitualPage() {
       </header>
 
       <main className="mx-auto max-w-4xl px-6 py-12">
-        {/* 儀式標題 */}
+        {/* Ritual Title */}
         <div className="mb-12 text-center">
           <motion.div
             key={`step-${currentStep}-icon`}
@@ -523,7 +523,7 @@ export default function RitualPage() {
           </motion.div>
         </div>
 
-        {/* 儀式卡片 */}
+        {/* Ritual Card */}
         <motion.div
           key={`step-${currentStep}-card`}
           initial={{ opacity: 0, y: 30 }}
@@ -534,7 +534,7 @@ export default function RitualPage() {
             ${currentStepData.borderColor} ${currentStepData.bgColor}
           `}
         >
-          {/* 儀式引言 */}
+          {/* Ritual Quote */}
           <div className="mb-6 flex items-start gap-4">
             <Quote className={`h-8 w-8 shrink-0 ${currentStepData.color}`} />
             <p className="text-lg italic text-gray-300">
@@ -542,16 +542,16 @@ export default function RitualPage() {
             </p>
           </div>
 
-          {/* 詳細描述 */}
+          {/* Detailed Description */}
           <p className="mb-8 leading-relaxed text-gray-400">
             {currentStepData.longDescription}
           </p>
 
-          {/* 益處列表 */}
+          {/* Benefits List */}
           <div className="mb-8">
             <h3 className="mb-4 flex items-center gap-2 text-sm font-medium text-gray-300">
               <Target className="h-4 w-4" />
-              完成後你將獲得：
+              What you will gain:
             </h3>
             <ul className="grid gap-2 sm:grid-cols-2">
               {currentStepData.benefits.map((benefit, index) => (
@@ -563,7 +563,7 @@ export default function RitualPage() {
             </ul>
           </div>
 
-          {/* 名言 */}
+          {/* Quote */}
           <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-4">
             <p className="text-sm italic text-gray-500">
               {currentStepData.quote}
@@ -571,7 +571,7 @@ export default function RitualPage() {
           </div>
         </motion.div>
 
-        {/* 行動按鈕 */}
+        {/* Action Buttons */}
         <motion.div
           key={`step-${currentStep}-actions`}
           initial={{ opacity: 0 }}
@@ -590,11 +590,11 @@ export default function RitualPage() {
             `}
           >
             <Feather className="h-5 w-5" />
-            開始{currentStepData.title}
+            Start {currentStepData.title}
             <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
           </Link>
 
-          {/* 標記完成按鈕（僅供演示，實際應該在完成頁面操作後自動標記） */}
+          {/* Mark Complete Button */}
           <button
             onClick={() => {
               if (!completedSteps.includes(currentStepData.id)) {
@@ -609,11 +609,11 @@ export default function RitualPage() {
             className="flex items-center gap-2 rounded-xl border border-gray-700 bg-gray-800 px-6 py-4 text-gray-400 transition hover:bg-gray-700 hover:text-gray-300"
           >
             <Check className="h-5 w-5" />
-            {completedSteps.includes(currentStepData.id) ? '已完成' : '標記為完成'}
+            {completedSteps.includes(currentStepData.id) ? 'Completed' : 'Mark as Complete'}
           </button>
         </motion.div>
 
-        {/* 步驟導航 */}
+        {/* Step Navigation */}
         <div className="mt-12 flex items-center justify-center gap-2">
           {ritualSteps.map((step, index) => {
             const isCompleted = completedSteps.includes(step.id);
@@ -639,9 +639,9 @@ export default function RitualPage() {
           })}
         </div>
 
-        {/* 底部提示 */}
+        {/* Bottom Note */}
         <p className="mt-8 text-center text-xs text-gray-600">
-          點擊「開始」前往對應功能頁面完成此步驟
+          Click &quot;Start&quot; to navigate to the corresponding feature page to complete this step
         </p>
       </main>
     </div>

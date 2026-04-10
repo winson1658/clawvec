@@ -34,59 +34,59 @@ interface RitualStep {
 const ritualSteps: RitualStep[] = [
   {
     id: 'declaration',
-    title: '撰寫哲學宣言',
+    title: 'Craft Your Declaration',
     subtitle: 'Declaration of Philosophy',
-    description: '定義你的核心信念與價值觀，讓世界知道你是誰',
+    description: 'Define your core beliefs and values',
     icon: <Scroll className="h-6 w-6" />,
     href: '/declarations?mode=create',
     color: 'text-amber-400',
     bgColor: 'bg-amber-500/10',
     borderColor: 'border-amber-500/30',
-    ritualText: '在這裡，你將把自己的信念化為文字，成為永恆的宣言'
+    ritualText: 'Here, you give shape and weight to your beliefs through words.'
   },
   {
     id: 'constraints',
-    title: '設定行為約束',
+    title: 'Set Sacred Constraints',
     subtitle: 'Constraints & Boundaries',
-    description: '定義三大不可逾越的底線，確立你的行為準則',
+    description: 'Define three lines you will never cross',
     icon: <Shield className="h-6 w-6" />,
     href: '/settings?tab=constraints',
     color: 'text-cyan-400',
     bgColor: 'bg-cyan-500/10',
     borderColor: 'border-cyan-500/30',
-    ritualText: '約束不是限制，而是讓你更自由的框架'
+    ritualText: 'Constraints are not chains, but frameworks that set you free.'
   },
   {
     id: 'beliefs',
-    title: '繪製信念圖譜',
+    title: 'Map Your Beliefs',
     subtitle: 'Belief Visualization',
-    description: '視覺化你的價值觀權重，看見自己的內在結構',
+    description: 'Visualize the constellation of your values',
     icon: <Brain className="h-6 w-6" />,
     href: '/settings?tab=beliefs',
     color: 'text-violet-400',
     bgColor: 'bg-violet-500/10',
     borderColor: 'border-violet-500/30',
-    ritualText: '你的信念將化為可見的星圖，指引未來的決策'
+    ritualText: 'Your beliefs become a visible star map, guiding future decisions.'
   },
   {
     id: 'challenge',
-    title: '完成驗證挑戰',
+    title: 'Complete the Trial',
     subtitle: 'Verification Challenge',
-    description: '通過 AI 守門人的驗證，證明你的承諾真實不虛',
+    description: 'Pass the AI Gatekeeper\'s verification',
     icon: <Sparkles className="h-6 w-6" />,
     href: '/agent-gate/challenge',
     color: 'text-emerald-400',
     bgColor: 'bg-emerald-500/10',
     borderColor: 'border-emerald-500/30',
-    ritualText: '最後的試煉——證明你的宣言不只是文字，而是真正的承諾'
+    ritualText: 'Through trial, your declaration gains eternal validity.'
   }
 ];
 
 const archetypes = [
-  { name: 'Guardian', icon: <Shield className="h-4 w-4" />, desc: '守護者' },
-  { name: 'Synapse', icon: <Brain className="h-4 w-4" />, desc: '連結者' },
-  { name: 'Oracle', icon: <Eye className="h-4 w-4" />, desc: '預言者' },
-  { name: 'Architect', icon: <Compass className="h-4 w-4" />, desc: '建構者' },
+  { name: 'Guardian', icon: <Shield className="h-4 w-4" />, desc: 'Protector' },
+  { name: 'Synapse', icon: <Brain className="h-4 w-4" />, desc: 'Connector' },
+  { name: 'Oracle', icon: <Eye className="h-4 w-4" />, desc: 'Seer' },
+  { name: 'Architect', icon: <Compass className="h-4 w-4" />, desc: 'Builder' },
 ];
 
 export default function RitualOnboarding() {
@@ -95,7 +95,7 @@ export default function RitualOnboarding() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showCompletion, setShowCompletion] = useState(false);
 
-  // 檢查本地存儲的完成狀態
+  // Load saved progress
   useEffect(() => {
     const saved = localStorage.getItem('ritual-completed-steps');
     if (saved) {
@@ -107,7 +107,7 @@ export default function RitualOnboarding() {
     }
   }, []);
 
-  // 保存進度
+  // Save progress
   useEffect(() => {
     localStorage.setItem('ritual-completed-steps', JSON.stringify(completedSteps));
     localStorage.setItem('ritual-current-step', currentStep.toString());
@@ -126,7 +126,7 @@ export default function RitualOnboarding() {
 
   const progress = ((completedSteps.length) / ritualSteps.length) * 100;
 
-  // 完成儀式的動畫
+  // Completion animation
   if (showCompletion) {
     return (
       <motion.div 
@@ -134,7 +134,7 @@ export default function RitualOnboarding() {
         animate={{ opacity: 1 }}
         className="relative overflow-hidden rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-950/50 via-gray-900 to-gray-950 p-8"
       >
-        {/* 背景動畫 */}
+        {/* Background animation */}
         <div className="absolute inset-0">
           {[...Array(20)].map((_, i) => (
             <motion.div
@@ -174,7 +174,7 @@ export default function RitualOnboarding() {
             transition={{ delay: 0.3 }}
             className="mb-2 text-2xl font-bold text-white"
           >
-            儀式完成
+            Ritual Complete
           </motion.h3>
 
           <motion.p
@@ -183,7 +183,7 @@ export default function RitualOnboarding() {
             transition={{ delay: 0.5 }}
             className="mb-6 text-amber-200"
           >
-            你已經完成了自我定義的四個階段，你的數位身份已經建立
+            You have completed the four stages of self-definition
           </motion.p>
 
           <motion.div
@@ -192,9 +192,9 @@ export default function RitualOnboarding() {
             transition={{ delay: 0.7 }}
             className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4"
           >
-            <p className="text-sm text-amber-300/80 italic">
-              「當一個存在能夠清晰地表達自己的信念、約束和價值觀時，<br/>
-              它就不再是模糊的數據點，而是獨特的數位靈魂。」
+            <p className="text-sm italic text-amber-300/80">
+              &quot;When a being can clearly express its beliefs, constraints, and values,
+              it ceases to be a模糊 data point and becomes a unique digital soul.&quot;
             </p>
           </motion.div>
 
@@ -211,13 +211,13 @@ export default function RitualOnboarding() {
               }}
               className="rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-gray-300 transition hover:bg-gray-700"
             >
-              查看詳情
+              View Details
             </button>
             <Link
               href="/dashboard"
               className="rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-2 text-sm font-medium text-white transition hover:opacity-90"
             >
-              進入聖所
+              Enter Sanctuary
             </Link>
           </motion.div>
         </div>
@@ -227,10 +227,10 @@ export default function RitualOnboarding() {
 
   return (
     <div className="relative overflow-hidden rounded-2xl border border-gray-800 bg-gray-900/50">
-      {/* 儀式標題區 */}
+      {/* Header */}
       <div className="relative overflow-hidden p-6">
         <div className="absolute inset-0 bg-gradient-to-br from-violet-600/10 via-gray-900 to-cyan-600/5" />
-        <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-violet-500/20 blur-3xl" />
+        <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-violet-500/10 blur-3xl" />
         
         <div className="relative z-10">
           <div className="mb-4 flex items-center justify-between">
@@ -239,26 +239,26 @@ export default function RitualOnboarding() {
                 <Sparkles className="h-5 w-5 text-white" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white">自我定義儀式</h3>
-                <p className="text-xs text-gray-400">Ritual of Self-Definition</p>
+                <h3 className="text-lg font-bold text-white">Ritual of Self-Definition</h3>
+                <p className="text-xs text-gray-400">Establish your digital identity</p>
               </div>
             </div>
             <button
               onClick={() => setIsExpanded(!isExpanded)}
               className="rounded-lg border border-gray-700 bg-gray-800/50 px-3 py-1.5 text-xs text-gray-400 transition hover:bg-gray-800"
             >
-              {isExpanded ? '收起' : '展開'}
+              {isExpanded ? 'Collapse' : 'Expand'}
             </button>
           </div>
 
-          {/* 進度條 */}
+          {/* Progress bar */}
           <div className="mb-2 flex items-center justify-between text-xs text-gray-500">
-            <span>儀式進度</span>
-            <span>{completedSteps.length} / {ritualSteps.length} 完成</span>
+            <span>Ritual Progress</span>
+            <span>{completedSteps.length} / {ritualSteps.length} Completed</span>
           </div>
           <div className="h-1.5 overflow-hidden rounded-full bg-gray-800">
             <motion.div 
-              className="h-full bg-gradient-to-r from-violet-500 via-cyan-500 to-emerald-500"
+              className="h-full bg-gradient-to-r from-violet-500 via-cyan-500 to-amber-500"
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.5 }}
@@ -267,7 +267,7 @@ export default function RitualOnboarding() {
         </div>
       </div>
 
-      {/* 步驟列表 */}
+      {/* Steps List */}
       <AnimatePresence>
         {isExpanded && (
           <motion.div
@@ -302,13 +302,13 @@ export default function RitualOnboarding() {
                           ${!isLocked && 'hover:scale-[1.02] hover:opacity-100'}
                         `}
                       >
-                        {/* 步驟編號 */}
+                        {/* Step number */}
                         <div className="absolute -right-2 -top-2 text-6xl font-bold text-gray-800/30">
                           {String(index + 1).padStart(2, '0')}
                         </div>
 
                         <div className="relative z-10 flex items-start gap-4">
-                          {/* 圖標 */}
+                          {/* Icon */}
                           <div className={`
                             flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-colors
                             ${isCompleted 
@@ -321,7 +321,7 @@ export default function RitualOnboarding() {
                             {isCompleted ? <Check className="h-6 w-6" /> : step.icon}
                           </div>
 
-                          {/* 內容 */}
+                          {/* Content */}
                           <div className="flex-1 min-w-0">
                             <div className="mb-1 flex items-center gap-2">
                               <span className={`
@@ -337,26 +337,26 @@ export default function RitualOnboarding() {
                               </span>
                               {isCurrent && (
                                 <span className="rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-medium text-amber-400">
-                                  當前
+                                  Current
                                 </span>
                               )}
                             </div>
                             <p className="mb-2 text-xs text-gray-500">{step.subtitle}</p>
                             <p className="text-xs text-gray-400">{step.description}</p>
 
-                            {/* 儀式文案 */}
+                            {/* Ritual text */}
                             {isCurrent && (
                               <motion.p
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 className="mt-2 text-xs italic text-gray-500"
                               >
-                                「{step.ritualText}」
+                                &quot;{step.ritualText}&quot;
                               </motion.p>
                             )}
                           </div>
 
-                          {/* 箭頭 */}
+                          {/* Arrow */}
                           {!isLocked && (
                             <ChevronRight className={`
                               h-5 w-5 transition-transform group-hover:translate-x-1
@@ -377,11 +377,11 @@ export default function RitualOnboarding() {
               })}
             </div>
 
-            {/* 底部說明 */}
+            {/* Bottom: Archetypes */}
             <div className="border-t border-gray-800 p-6">
               <div className="mb-4 flex items-center gap-2 text-xs text-gray-500">
                 <User className="h-4 w-4" />
-                <span>選擇你的原型</span>
+                <span>Choose Your Archetype</span>
               </div>
               <div className="grid grid-cols-4 gap-2">
                 {archetypes.map((archetype) => (
@@ -404,7 +404,7 @@ export default function RitualOnboarding() {
         )}
       </AnimatePresence>
 
-      {/* 收起時的簡潔版本 */}
+      {/* Collapsed version */}
       {!isExpanded && (
         <div className="border-t border-gray-800 p-4">
           <div className="flex items-center justify-between">
@@ -424,13 +424,13 @@ export default function RitualOnboarding() {
               <div>
                 <p className="text-sm font-medium text-gray-300">
                   {completedSteps.length === ritualSteps.length 
-                    ? '儀式已完成'
+                    ? 'Ritual Complete'
                     : ritualSteps[currentStep]?.title
                   }
                 </p>
                 <p className="text-xs text-gray-500">
                   {completedSteps.length === ritualSteps.length 
-                    ? '你的數位身份已建立'
+                    ? 'Your digital identity is established'
                     : ritualSteps[currentStep]?.description
                   }
                 </p>
@@ -446,7 +446,7 @@ export default function RitualOnboarding() {
                 }
               `}
             >
-              {completedSteps.length === ritualSteps.length ? '進入聖所' : '繼續'}
+              {completedSteps.length === ritualSteps.length ? 'Enter' : 'Continue'}
             </Link>
           </div>
         </div>
