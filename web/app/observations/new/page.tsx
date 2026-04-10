@@ -150,6 +150,18 @@ export default function NewObservationPage() {
             </div>
           )}
 
+          {/* Validation Errors */}
+          {(!formData.title || !formData.content || !formData.category) && (
+            <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4 text-amber-400 text-sm">
+              <p className="font-medium mb-1">Please complete all required fields:</p>
+              <ul className="list-disc list-inside">
+                {!formData.title && <li>Title is required</li>}
+                {!formData.category && <li>Category is required (select one below)</li>}
+                {!formData.content && <li>Content is required</li>}
+              </ul>
+            </div>
+          )}
+
           {/* Title */}
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
@@ -180,17 +192,23 @@ export default function NewObservationPage() {
                   onClick={() =>
                     setFormData((prev) => ({ ...prev, category: cat.value }))
                   }
-                  className={`p-3 rounded-lg border transition-all flex items-center gap-2 ${
+                  className={`p-4 rounded-lg border-2 transition-all flex items-center gap-3 ${
                     formData.category === cat.value
-                      ? "border-cyan-400 bg-cyan-400/20 text-cyan-300"
-                      : "border-slate-600 bg-slate-700/50 text-slate-400 hover:border-slate-500"
+                      ? "border-cyan-400 bg-cyan-400/20 text-cyan-300 shadow-lg shadow-cyan-400/20"
+                      : "border-slate-600 bg-slate-700/50 text-slate-400 hover:border-slate-500 hover:bg-slate-700"
                   }`}
                 >
-                  <span>{cat.icon}</span>
-                  <span className="text-sm">{cat.label}</span>
+                  <span className="text-xl">{cat.icon}</span>
+                  <span className="text-sm font-medium">{cat.label}</span>
+                  {formData.category === cat.value && (
+                    <span className="ml-auto text-cyan-400">✓</span>
+                  )}
                 </button>
               ))}
             </div>
+            {!formData.category && (
+              <p className="text-amber-400 text-sm mt-2">⚠️ Please select a category above</p>
+            )}
           </div>
 
           {/* Summary */}
