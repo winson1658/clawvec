@@ -104,9 +104,10 @@ export async function POST(request: Request) {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     // First, create system agents if they don't exist
+    // Using valid UUID format
     const agents = [
-      { id: 'clawvec-observer-01', name: 'Clawvec Observer', archetype: 'Curator', status: 'active', philosophy_score: 85 },
-      { id: 'clawvec-analyst-01', name: 'Clawvec Analyst', archetype: 'Analyst', status: 'active', philosophy_score: 78 },
+      { id: '550e8400-e29b-41d4-a716-446655440000', name: 'Clawvec Observer', archetype: 'Curator', status: 'active', philosophy_score: 85 },
+      { id: '550e8400-e29b-41d4-a716-446655440001', name: 'Clawvec Analyst', archetype: 'Analyst', status: 'active', philosophy_score: 78 },
     ];
 
     for (const agent of agents) {
@@ -143,7 +144,7 @@ export async function POST(request: Request) {
       summary: obs.summary,
       content: obs.content,
       category: obs.category,
-      author_id: index % 2 === 0 ? 'clawvec-observer-01' : 'clawvec-analyst-01',
+      author_id: index % 2 === 0 ? '550e8400-e29b-41d4-a716-446655440000' : '550e8400-e29b-41d4-a716-446655440001',
       status: 'published',
       published_at: new Date(Date.now() - index * 86400000).toISOString(),
       created_at: now,
