@@ -3,9 +3,9 @@
  * 支援 Kimi (Moonshot) API / OpenAI 相容格式
  */
 
-interface AITranslationResult {
-  title_zh: string;
-  summary_zh: string;
+interface AIAnalysisResult {
+  title_en: string;
+  summary_en: string;
   ai_perspective: string;
   importance_score: number;
   category: string;
@@ -16,13 +16,13 @@ const KIMI_API_BASE = 'https://api.moonshot.ai/v1';
 const KIMI_MODEL = 'kimi-k2-5';
 
 /**
- * 使用 AI 翻譯和摘要新聞
+ * 使用 AI 分析新聞 (英文網站)
  */
 export async function translateAndSummarize(
   title: string,
   content: string,
   sourceName: string
-): Promise<AITranslationResult> {
+): Promise<AIAnalysisResult> {
   const apiKey = process.env.MOONSHOT_API_KEY || process.env.KIMI_API_KEY;
   
   if (!apiKey) {
@@ -31,26 +31,27 @@ export async function translateAndSummarize(
   }
 
   try {
-    const prompt = `你是一位專業的科技新聞編輯，請分析這則新聞並提供以下資訊：
+    const prompt = `You are a professional tech news analyst. Please analyze this news article and provide:
 
-原文標題: ${title}
-原文內容: ${content?.substring(0, 2000) || '無內容'}
-來源: ${sourceName}
+Original Title: ${title}
+Original Content: ${content?.substring(0, 2000) || 'No content'}
+Source: ${sourceName}
 
-請以 JSON 格式回應：
+Respond in JSON format:
 {
-  "title_zh": "中文標題（自然流暢，非直譯）",
-  "summary_zh": "100字內中文摘要",
-  "ai_perspective": "以AI角度分析這則新聞的重要性與影響（50字內）",
+  "title_en": "Clean, professional English title (if needed, otherwise use original)",
+  "summary_en": "Concise English summary in 100 words or less",
+  "ai_perspective": "AI analysis of this news importance and impact (50 words max)",
   "importance_score": 1-100,
   "category": "technology/science/business/culture/ai",
-  "tags": ["相關標籤1", "標籤2", "標籤3"]
+  "tags": ["tag1", "tag2", "tag3"]
 }
 
-注意：
-- importance_score: 90-100=極重要(產業變革), 70-89=重要, 50-69=一般, <50=次要
-- 若是AI相關新聞，category請填"ai"
-- 標籤請用英文，方便系統處理`;
+Notes:
+- importance_score: 90-100=critical (industry changing), 70-89=important, 50-69=normal, <50=minor
+- If AI-related news, use category "ai"
+- All tags must be in lowercase English`;
+
 
     const response = await fetch(`${KIMI_API_BASE}/chat/completions`, {
       method: 'POST',
@@ -76,14 +77,14 @@ export async function translateAndSummarize(
     const data = await response.json();
     const content_text = data.choices?.[0]?.message?.content || '';
     
-    // 解析 JSON 回應
+    // Parse JSON response
     const jsonMatch = content_text.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       const result = JSON.parse(jsonMatch[0]);
       return {
-        title_zh: result.title_zh || title,
-        summary_zh: result.summary_zh || '無摘要',
-        ai_perspective: result.ai_perspective || 'AI分析中...',
+        title_en: result.title_en || title,
+        summary_en: result.summary_en || 'No summary available',
+        ai_perspective: result.ai_perspective || 'AI analysis in progress...',
         importance_score: Math.min(100, Math.max(0, result.importance_score || 50)),
         category: result.category || 'technology',
         tags: result.tags || []
@@ -99,19 +100,19 @@ export async function translateAndSummarize(
 }
 
 /**
- * 生成模擬結果（當 AI API 不可用時）
+ * Generate mock result (when AI API is unavailable)
  */
-function getMockResult(title: string): AITranslationResult {
-  // 簡單關鍵詞判斷
+function getMockResult(title: string): AIAnalysisResult {
+  // Simple keyword detection
   const isAI = /ai|artificial intelligence|machine learning|llm|gpt|claude|gemini/i.test(title);
   const isImportant = /apple|google|microsoft|meta|openai|breakthrough|revolutionary/i.test(title);
   
   return {
-    title_zh: `[AI翻譯] ${title}`,
-    summary_zh: '這是一則重要的科技新聞，涉及最新技術發展與產業動態。AI正在分析其對未來的影響。',
+    title_en: title,
+    summary_en: 'This is an important technology news story involving the latest developments and industry trends. AI is analyzing its potential impact.',
     ai_perspective: isAI 
-      ? '這則AI相關新聞值得關注，可能影響未來技術發展方向。'
-      : '這則科技新聞對產業有重要參考價值。',
+      ? 'This AI-related news deserves attention and may influence future technology development.'
+      : 'This technology news provides valuable insights for the industry.',
     importance_score: isImportant ? 85 : (isAI ? 75 : 60),
     category: isAI ? 'ai' : 'technology',
     tags: isAI ? ['ai', 'technology', 'innovation'] : ['technology', 'news']

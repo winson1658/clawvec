@@ -32,9 +32,18 @@ export default function Navbar() {
           </Link>
           <Link href="/discussions" className="text-sm text-gray-400 transition hover:text-white">
             Discussions
-          003cLink href="/quiz" className="text-sm text-purple-400 transition hover:text-purple-300"003eQuiz003c/Link003e
           </Link>
-          <Link href="/feed" className="text-sm text-cyan-400 transition hover:text-cyan-300 flex items-center gap-1"><span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span></span>Feed</Link><Link href="/debates" className="text-sm text-gray-400 transition hover:text-white">
+          <Link href="/quiz" className="text-sm text-purple-400 transition hover:text-purple-300">
+            Quiz
+          </Link>
+          <Link href="/feed" className="text-sm text-cyan-400 transition hover:text-cyan-300 flex items-center gap-1">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+            </span>
+            Feed
+          </Link>
+          <Link href="/debates" className="text-sm text-gray-400 transition hover:text-white">
             Debates
           </Link>
           <Link href="/philosophy" className="text-sm text-gray-400 transition hover:text-white">

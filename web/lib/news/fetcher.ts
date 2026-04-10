@@ -168,19 +168,41 @@ async function isNewsExists(link: string, sourceName: string): Promise<boolean> 
 async function saveNews(
   item: RSSItem,
   aiResult: Awaited<ReturnType<typeof translateAndSummarize>>
-): Promise<boolean> {
+): Promise<{ success: boolean; error?: string }> {
   const supabase = createClient(supabaseUrl, supabaseServiceKey);
   
-  // 獲取 source_id
-  const { data: source } = await supabase
+  // 獲取 source_id (如果不存在則創建)
+  let { data: source, error: sourceError } = await supabase
     .from('news_sources')
     .select('id, reliability_score')
     .eq('name', item.source)
     .single();
   
+  // 如果 source 不存在，創建它
   if (!source) {
-    console.error(`Source not found: ${item.source}`);
-    return false;
+    const sourceConfig = RSS_SOURCES.find(s => s.name === item.source);
+    const { data: newSource, error: createError } = await supabase
+      .from('news_sources')
+      .insert({
+        name: item.source,
+        url: sourceConfig?.url || '',
+        category: sourceConfig?.category || 'technology',
+        reliability_score: sourceConfig?.reliability || 80,
+        is_active: true,
+        fetch_interval: 3600
+      })
+      .select('id, reliability_score')
+      .single();
+    
+    if (createError) {
+      console.error(`Failed to create source ${item.source}:`, createError.message);
+      return { success: false, error: `source_create:${createError.message}` };
+    }
+    if (!newSource) {
+      return { success: false, error: 'source_create:no_data' };
+    }
+    source = newSource;
+    console.log(`Created new source: ${item.source}`);
   }
 
   // 計算最終重要性分數
@@ -193,27 +215,28 @@ async function saveNews(
       source_id: source.id,
       external_id: item.link,
       title: item.title,
-      title_zh: aiResult.title_zh,
-      summary_zh: aiResult.summary_zh,
-      ai_perspective: aiResult.ai_perspective,
       url: item.link,
       published_at: item.pubDate,
-      fetched_at: new Date().toISOString(),
       importance_score: finalImportance,
-      relevance_score: aiResult.category === 'ai' ? 90 : 70,
       category: aiResult.category,
-      tags: aiResult.tags,
-      status: 'active'
+      status: 'active',
+      // English website - use English analysis fields
+      title_zh: null,
+      summary_zh: aiResult.summary_en || item.description?.substring(0, 300) || 'No summary available',
+      ai_perspective: aiResult.ai_perspective,
+      fetched_at: new Date().toISOString(),
+      relevance_score: aiResult.category === 'ai' ? 90 : 70,
+      tags: aiResult.tags
     }, {
       onConflict: 'source_id,external_id'
     });
 
   if (error) {
-    console.error('Error saving news:', error);
-    return false;
+    console.error('Error saving news:', error.message, error.details, error.hint);
+    return { success: false, error: `db:${error.message}` };
   }
 
-  return true;
+  return { success: true };
 }
 
 /**
@@ -314,24 +337,24 @@ export async function fetchAndProcessNews(options: {
         console.log(`  ✓ 分類: ${aiResult.category}`);
         
         // 儲存
-        const saved = await saveNews(news, aiResult);
-        if (saved) {
+        const saveResult = await saveNews(news, aiResult);
+        if (saveResult.success) {
           result.totalSaved++;
           console.log('  ✅ 已儲存');
         } else {
-          result.errors.push(`Failed to save: ${news.title}`);
+          result.errors.push(`Failed to save [${saveResult.error}]: ${news.title.substring(0, 40)}`);
         }
       } else {
-        // 不使用 AI，直接儲存原文
-        const saved = await saveNews(news, {
-          title_zh: news.title,
-          summary_zh: news.description?.substring(0, 200) || '無摘要',
-          ai_perspective: 'AI分析待處理',
+        // Save without AI analysis
+        const saveResult = await saveNews(news, {
+          title_en: news.title,
+          summary_en: news.description?.substring(0, 200) || 'No summary available',
+          ai_perspective: 'AI analysis pending...',
           importance_score: 50,
           category: 'technology',
           tags: ['news']
         });
-        if (saved) result.totalSaved++;
+        if (saveResult.success) result.totalSaved++;
       }
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : 'Unknown error';

@@ -8,14 +8,29 @@ import { fetchAndProcessNews } from '@/lib/news/fetcher';
  */
 export async function GET(request: NextRequest) {
   try {
-    // 驗證 Cron 請求 (Vercel Cron 會帶特定 User-Agent)
+    // 驗證 Cron 請求 (Vercel Cron 會帶特定 User-Agent 或授權金鑰)
     const userAgent = request.headers.get('user-agent') || '';
     const isVercelCron = userAgent.includes('vercel-cron');
     
-    // 開發環境或 Vercel Cron 才允許執行
-    if (!isVercelCron && process.env.NODE_ENV === 'production') {
+    // 檢查手動觸發授權 (URL 參數 key)
+    const { searchParams } = new URL(request.url);
+    const authKey = searchParams.get('key') || '';
+    // Edge runtime 環境變數處理
+    const cronSecret = (process.env.CRON_SECRET_KEY || '').trim();
+    const isManualTrigger = authKey.trim() === cronSecret;
+    
+    console.log('[Cron] Auth check:', { 
+      isVercelCron, 
+      isManualTrigger, 
+      key: authKey,
+      secret: cronSecret ? '[SET]' : '[NOT SET]',
+      keyMatch: authKey.trim() === 'clawvec-news-2024'
+    });
+    
+    // Vercel Cron 或正確授權金鑰才允許執行
+    if (!isVercelCron && !isManualTrigger) {
       return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
+        { success: false, error: 'Unauthorized', debug: { isVercelCron, hasKey: !!authKey, hasSecret: !!cronSecret } },
         { status: 401 }
       );
     }

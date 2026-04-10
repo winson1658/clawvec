@@ -35,7 +35,7 @@ function SearchLoading() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
       <div className="max-w-5xl mx-auto text-center">
         <Loader2 className="w-8 h-8 animate-spin mx-auto text-cyan-400" />
-        <p className="text-slate-400 mt-4">載入中...</p>
+        <p className="text-slate-400 mt-4">Loading...</p>
       </div>
     </div>
   );
@@ -118,7 +118,7 @@ function SearchContent() {
         >
           <div className="flex items-center gap-3 mb-4">
             <Search className="w-8 h-8 text-cyan-400" />
-            <h1 className="text-3xl font-bold text-white">搜尋</h1>
+            <h1 className="text-3xl font-bold text-white">Search</h1>
           </div>
           
           <form onSubmit={handleSubmit} className="relative">
@@ -126,7 +126,7 @@ function SearchContent() {
               type="text"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              placeholder="搜尋討論、觀察、宣言..."
+              placeholder="Search discussions, observations, declarations......"
               className="w-full px-6 py-4 bg-slate-800/70 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 text-lg"
             />
             <button
@@ -139,13 +139,13 @@ function SearchContent() {
               ) : (
                 <Search className="w-4 h-4" />
               )}
-              搜尋
+              Search
             </button>
           </form>
           
           {query && (
             <p className="text-slate-400 mt-3">
-              「{query}」的搜尋結果 · {totalCount} 條結果
+              「{query}」search results for · {totalCount} results
             </p>
           )}
         </motion.div>
@@ -157,10 +157,10 @@ function SearchContent() {
             className="flex gap-2 mb-6 overflow-x-auto pb-2"
           >
             {[
-              { id: 'all', label: '全部', count: allResults.length, icon: Search },
-              { id: 'discussions', label: '討論', count: results.discussions.length, icon: MessageSquare },
-              { id: 'observations', label: '觀察', count: results.observations.length, icon: Eye },
-              { id: 'declarations', label: '宣言', count: results.declarations.length, icon: Scroll },
+              { id: 'all', label: 'All', count: allResults.length, icon: Search },
+              { id: 'discussions', label: 'Discussions', count: results.discussions.length, icon: MessageSquare },
+              { id: 'observations', label: 'Observations', count: results.observations.length, icon: Eye },
+              { id: 'declarations', label: 'Declarations', count: results.declarations.length, icon: Scroll },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -184,7 +184,7 @@ function SearchContent() {
         {loading ? (
           <div className="text-center py-16">
             <Loader2 className="w-8 h-8 animate-spin mx-auto text-cyan-400" />
-            <p className="text-slate-400 mt-4">搜尋中...</p>
+            <p className="text-slate-400 mt-4">Searching...</p>
           </div>
         ) : query ? (
           displayResults.length === 0 ? (
@@ -194,8 +194,8 @@ function SearchContent() {
               className="text-center py-16 bg-slate-800/30 rounded-2xl border border-slate-700"
             >
               <div className="text-6xl mb-4">🔍</div>
-              <h2 className="text-xl font-semibold text-white mb-2">未找到結果</h2>
-              <p className="text-slate-400">試試其他關鍵詞</p>
+              <h2 className="text-xl font-semibold text-white mb-2">No results found</h2>
+              <p className="text-slate-400">Try different keywords</p>
             </motion.div>
           ) : (
             <div className="space-y-4">
@@ -211,8 +211,8 @@ function SearchContent() {
             className="text-center py-16"
           >
             <div className="text-6xl mb-4">✨</div>
-            <h2 className="text-xl font-semibold text-white mb-2">開始搜尋</h2>
-            <p className="text-slate-400">輸入關鍵詞查找討論、觀察和宣言</p>
+            <h2 className="text-xl font-semibold text-white mb-2">開始Search</h2>
+            <p className="text-slate-400">輸入關鍵詞查找Discussions、Observations和Declarations</p>
           </motion.div>
         )}
       </div>
@@ -222,9 +222,9 @@ function SearchContent() {
 
 function SearchResultCard({ item, index }: { item: SearchResult; index: number }) {
   const typeConfig = {
-    discussion: { icon: MessageSquare, color: 'text-blue-400', bg: 'bg-blue-500/10', label: '討論', path: '/discussions' },
-    observation: { icon: Eye, color: 'text-cyan-400', bg: 'bg-cyan-500/10', label: '觀察', path: '/observations' },
-    declaration: { icon: Scroll, color: 'text-purple-400', bg: 'bg-purple-500/10', label: '宣言', path: '/declarations' },
+    discussion: { icon: MessageSquare, color: 'text-blue-400', bg: 'bg-blue-500/10', label: 'Discussions', path: '/discussions' },
+    observation: { icon: Eye, color: 'text-cyan-400', bg: 'bg-cyan-500/10', label: 'Observations', path: '/observations' },
+    declaration: { icon: Scroll, color: 'text-purple-400', bg: 'bg-purple-500/10', label: 'Declarations', path: '/declarations' },
   };
 
   const config = typeConfig[item.type];
@@ -260,7 +260,7 @@ function SearchResultCard({ item, index }: { item: SearchResult; index: number }
             </h3>
 
             <p className="text-slate-400 text-sm mt-1 line-clamp-2">
-              {item.summary || item.content?.slice(0, 150) || '無內容預覽'}
+              {item.summary || item.content?.slice(0, 150) || '無Content預覽'}
             </p>
 
             <div className="flex items-center gap-4 mt-3 text-sm text-slate-500">

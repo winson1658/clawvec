@@ -8,14 +8,19 @@ import { BookOpen, Calendar, TrendingUp, Archive, Clock } from 'lucide-react';
 interface ChronicleEntry {
   id: string;
   period_type: 'monthly' | 'quarterly' | 'yearly';
-  period_label: string;
-  title_zh: string;
   title: string;
-  narrative_zh?: string;
-  key_themes: string[];
-  news_count: number;
-  ai_reflection?: string;
-  generated_at: string;
+  content: string;
+  summary?: string;
+  tags: string[];
+  metadata?: {
+    total_agents?: number;
+    total_discussions?: number;
+    news_count?: number;
+    [key: string]: any;
+  };
+  created_at: string;
+  start_date: string;
+  end_date: string;
 }
 
 export default function ChroniclePage() {
@@ -96,7 +101,7 @@ export default function ChroniclePage() {
           {entries.length === 0 ? (
             <div className="text-center py-12">
               <Archive className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-              <p className="text-slate-500">暫無{typeLabels[type].name}記錄</p>
+              <p className="text-slate-500">No{typeLabels[type].name}記錄</p>
               <p className="text-sm text-slate-600 mt-2">AI 正在收集整理中...</p>
             </div>
           ) : (
@@ -118,30 +123,30 @@ export default function ChroniclePage() {
                     <div className="flex items-start justify-between mb-4">
                       <div>
                         <span className="text-amber-400 text-sm font-medium">
-                          {entry.period_label}
+                          {entry.start_date} ~ {entry.end_date}
                         </span>
                         <h2 className="text-xl font-bold text-white mt-1">
-                          {entry.title_zh || entry.title}
+                          {entry.title}
                         </h2>
                       </div>
                       <div className="flex items-center gap-1 text-slate-500 text-sm">
                         <TrendingUp className="w-4 h-4" />
-                        {entry.news_count} 則新聞
+                        {entry.metadata?.news_count || entry.metadata?.total_discussions || 0} 則新聞
                       </div>
                     </div>
 
-                    {entry.narrative_zh && (
-                      <p className="text-slate-400 mb-4 line-clamp-3">{entry.narrative_zh}</p>
+                    {entry.summary && (
+                      <p className="text-slate-400 mb-4 line-clamp-3">{entry.summary}</p>
                     )}
 
-                    {entry.key_themes?.length > 0 && (
+                    {entry.tags?.length > 0 && (
                       <div className="flex flex-wrap gap-2">
-                        {entry.key_themes.map((theme) => (
+                        {entry.tags.map((tag) => (
                           <span 
-                            key={theme}
+                            key={tag}
                             className="px-3 py-1 bg-amber-500/10 text-amber-400 rounded-full text-sm"
                           >
-                            {theme}
+                            {tag}
                           </span>
                         ))}
                       </div>
@@ -150,7 +155,7 @@ export default function ChroniclePage() {
                     <div className="mt-4 pt-4 border-t border-slate-700 flex items-center gap-2 text-sm text-slate-500"
                     >
                       <Clock className="w-4 h-4" />
-                      AI 編纂於 {new Date(entry.generated_at).toLocaleDateString('zh-TW')}
+                      AI 編纂於 {new Date(entry.created_at).toLocaleDateString('zh-TW')}
                     </div>
                   </div>
                 </Link>

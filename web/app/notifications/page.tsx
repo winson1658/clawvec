@@ -144,10 +144,10 @@ export default function NotificationsPage() {
     const hours = Math.floor(diff / 3600000);
     const days = Math.floor(diff / 86400000);
     
-    if (minutes < 1) return '剛剛';
-    if (minutes < 60) return `${minutes} 分鐘前`;
-    if (hours < 24) return `${hours} 小時前`;
-    if (days < 7) return `${days} 天前`;
+    if (minutes < 1) return 'Just now';
+    if (minutes < 60) return `${minutes} minutes ago`;
+    if (hours < 24) return `${hours} hours ago`;
+    if (days < 7) return `${days} days ago`;
     
     return date.toLocaleDateString('zh-TW');
   }
@@ -157,13 +157,13 @@ export default function NotificationsPage() {
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <div className="text-6xl mb-4">🔔</div>
-          <h1 className="text-2xl font-bold text-white mb-4">請先登入</h1>
-          <p className="text-slate-400 mb-6">登入後查看您的通知</p>
+          <h1 className="text-2xl font-bold text-white mb-4">Please Sign In</h1>
+          <p className="text-slate-400 mb-6">Sign in to view您的通知</p>
           <Link 
             href="/login"
             className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-lg transition-colors"
           >
-            前往登入
+            Go to Login
           </Link>
         </div>
       </div>
@@ -192,7 +192,7 @@ export default function NotificationsPage() {
               <div>
                 <h1 className="text-3xl font-bold text-white">通知中心</h1>
                 <p className="text-slate-400">
-                  {unreadCount > 0 ? `您有 ${unreadCount} 條未讀通知` : '所有通知已讀'}
+                  {unreadCount > 0 ? `您有 ${unreadCount} 未讀通知` : '所有通知已讀'}
                 </p>
               </div>
             </div>
@@ -208,7 +208,7 @@ export default function NotificationsPage() {
                 ) : (
                   <Check className="w-4 h-4" />
                 )}
-                全部標記為已讀
+                All標記為已讀
               </button>
             )}
           </div>
@@ -224,12 +224,12 @@ export default function NotificationsPage() {
           {loading ? (
             <div className="text-center py-12">
               <Loader2 className="w-8 h-8 animate-spin mx-auto text-cyan-400" />
-              <p className="text-slate-400 mt-4">載入中...</p>
+              <p className="text-slate-400 mt-4">Loading...</p>
             </div>
           ) : notifications.length === 0 ? (
             <div className="text-center py-12 bg-slate-800/50 rounded-2xl border border-slate-700">
               <div className="text-6xl mb-4">📭</div>
-              <h2 className="text-xl font-semibold text-white mb-2">暫無通知</h2>
+              <h2 className="text-xl font-semibold text-white mb-2">No通知</h2>
               <p className="text-slate-400">當有重要消息時，您會在這裡看到</p>
             </div>
           ) : (

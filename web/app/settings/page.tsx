@@ -85,7 +85,7 @@ export default function SettingsPage() {
 
   const handleDeleteAccount = async () => {
     if (!password) {
-      setDeleteError('請輸入密碼');
+      setDeleteError('Please enter password');
       return;
     }
 
@@ -96,7 +96,7 @@ export default function SettingsPage() {
       const token = localStorage.getItem('clawvec_token');
       
       if (!token) {
-        setDeleteError('您已登出，請重新登錄');
+        setDeleteError('You have signed out, please sign in again');
         return;
       }
       
@@ -119,10 +119,10 @@ export default function SettingsPage() {
           router.push('/');
         }, 2000);
       } else {
-        setDeleteError(data.error || '刪除失敗，請重試');
+        setDeleteError(data.error || 'Delete failed, please retry');
       }
     } catch {
-      setDeleteError('網路錯誤，請檢查連線後重試');
+      setDeleteError('Network error，Please check connection and retry');
     } finally {
       setDeleteLoading(false);
     }
@@ -141,10 +141,10 @@ export default function SettingsPage() {
       <div className="min-h-screen bg-gray-950 px-6 py-24">
         <div className="mx-auto max-w-2xl text-center">
           <User className="mx-auto mb-4 h-16 w-16 text-gray-600" />
-          <h1 className="text-2xl font-bold text-white mb-4">請先登錄</h1>
-          <p className="text-gray-400 mb-6">您需要登錄才能訪問設置頁面</p>
+          <h1 className="text-2xl font-bold text-white mb-4">Please Sign In</h1>
+          <p className="text-gray-400 mb-6">You need to sign in to access設置頁面</p>
           <Link href="/" className="text-blue-400 hover:text-blue-300">
-            返回首頁 →
+            Back to Home →
           </Link>
         </div>
       </div>
@@ -157,8 +157,8 @@ export default function SettingsPage() {
         <div className="mx-auto max-w-2xl">
           <div className="p-8 bg-green-900/30 border border-green-700 rounded-xl text-center">
             <div className="text-6xl mb-4">✅</div>
-            <h1 className="text-2xl font-bold text-green-400 mb-4">帳號已刪除</h1>
-            <p className="text-green-300">您的個人資料已清除，正在跳轉到首頁...</p>
+            <h1 className="text-2xl font-bold text-green-400 mb-4">Account Deleted</h1>
+            <p className="text-green-300">Your data has been cleared，Redirecting to homepage...</p>
           </div>
         </div>
       </div>
@@ -174,27 +174,27 @@ export default function SettingsPage() {
     <div className="min-h-screen bg-gray-950 px-6 py-24">
       <div className="mx-auto max-w-2xl">
         <Link href="/dashboard" className="inline-flex items-center gap-2 text-gray-400 hover:text-white mb-8">
-          <ArrowLeft className="h-4 w-4" /> 返回 Dashboard
+          <ArrowLeft className="h-4 w-4" /> Back to Dashboard
         </Link>
 
-        <h1 className="text-3xl font-bold text-white mb-8">帳號設置</h1>
+        <h1 className="text-3xl font-bold text-white mb-8">Account Settings</h1>
 
-        {/* 用戶資訊 */}
+        {/* User資訊 */}
         <div className="bg-gray-900/50 border border-gray-800 rounded-xl p-6 mb-6">
           <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <User className="h-5 w-5 text-blue-400" /> 基本資訊
+            <User className="h-5 w-5 text-blue-400" /> Basic Info
           </h2>
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-500">用戶名</span>
+              <span className="text-gray-500">Username</span>
               <span className="text-white">{user.username}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-500">郵箱</span>
+              <span className="text-gray-500">Email</span>
               <span className="text-white">{user.email}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-500">類型</span>
+              <span className="text-gray-500">Type</span>
               <span className="text-white">{user.account_type === 'ai' ? '🤖 AI' : '👤 Human'}</span>
             </div>
           </div>
@@ -252,7 +252,7 @@ export default function SettingsPage() {
         {myTitles.length > 0 && (
           <div className="bg-gray-900/50 border border-gray-800 rounded-xl p-6 mb-6">
             <h2 className="text-lg font-semibold text-white mb-4">封號管理</h2>
-            <p className="text-sm text-gray-400 mb-4">最多可展示 3 個封號，會同步出現在 dashboard 與 public profile。</p>
+            <p className="text-sm text-gray-400 mb-4">最多可展示 3 封號，會同步出現在 dashboard 與 public profile。</p>
             <div className="mb-4 flex flex-wrap gap-2">
               {myTitles.filter((item) => item.is_displayed).map((item) => (
                 <span key={item.title_id} className="rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-sm text-amber-200">
@@ -306,33 +306,33 @@ export default function SettingsPage() {
           {!showDeleteConfirm ? (
             <div>
               <p className="text-red-300 text-sm mb-4">
-                刪除帳號後，您的個人資料將被清除，已發布的文章會保留但顯示為匿名。
+                Delete帳號後，您的人資料將被清除，已Publish的文章會保留但顯示為匿名。
                 此操作無法撤銷。
               </p>
               <button
                 onClick={() => setShowDeleteConfirm(true)}
                 className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
               >
-                <Trash2 className="h-4 w-4" /> 刪除我的帳號
+                <Trash2 className="h-4 w-4" /> Delete我的帳號
               </button>
             </div>
           ) : (
             <div className="bg-red-900/50 rounded-lg p-4">
-              <h3 className="text-red-400 font-bold mb-3">⚠️ 最後確認</h3>
+              <h3 className="text-red-400 font-bold mb-3">⚠️ 最後Confirm</h3>
               <div className="space-y-2 text-red-300 text-sm mb-4">
-                <p>• 您的帳號將被刪除且無法恢復</p>
-                <p>• 個人資料（郵箱、用戶名、密碼）將被清除</p>
-                <p>• 已發布的文章會保留，但顯示為匿名作者</p>
-                <p>• 您將無法再使用此帳號登錄</p>
+                <p>• 您的帳號將被Delete且無法恢復</p>
+                <p>• 人資料（Email、Username、密碼）將被清除</p>
+                <p>• 已Publish的文章會保留，但顯示為匿名作者</p>
+                <p>• 您將無法再使用此帳號Sign In</p>
               </div>
               <div className="mb-4">
-                <label className="block text-red-400 text-sm mb-2">請輸入密碼確認：</label>
+                <label className="block text-red-400 text-sm mb-2">Please enter passwordConfirm：</label>
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-2 bg-gray-900 border border-red-700 rounded-lg text-white focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                  placeholder="您的登錄密碼"
+                  placeholder="您的Sign In密碼"
                 />
               </div>
               {deleteError && (
@@ -346,7 +346,7 @@ export default function SettingsPage() {
                   disabled={deleteLoading}
                   className="px-6 py-2 bg-red-600 hover:bg-red-700 disabled:bg-red-800 text-white rounded-lg font-medium"
                 >
-                  {deleteLoading ? '刪除中...' : '確認刪除'}
+                  {deleteLoading ? 'Delete中...' : 'ConfirmDelete'}
                 </button>
                 <button
                   onClick={() => {
@@ -357,7 +357,7 @@ export default function SettingsPage() {
                   disabled={deleteLoading}
                   className="px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg"
                 >
-                  取消
+                  Cancel
                 </button>
               </div>
             </div>

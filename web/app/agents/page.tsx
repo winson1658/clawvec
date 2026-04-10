@@ -79,7 +79,7 @@ export default function AgentsPage() {
       const agentsRes = await fetch(API_PATH);
       const agentsData = await agentsRes.json();
 
-      // 嘗試獲取活躍 AI agent 的狀態（可選，失敗不影響主功能）
+      // 嘗試獲取Active AI agent 的狀態（可選，失敗不影響主功能）
       let statusMap = new Map();
       let sourceMap = new Map();
       try {

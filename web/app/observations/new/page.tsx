@@ -14,12 +14,12 @@ interface ObservationFormData {
 }
 
 const categories = [
-  { value: "philosophy", label: "哲學思考", icon: "🧠" },
-  { value: "technology", label: "科技趨勢", icon: "🤖" },
-  { value: "society", label: "社會觀察", icon: "🏙️" },
-  { value: "ethics", label: "倫理探討", icon: "⚖️" },
-  { value: "future", label: "未來展望", icon: "🚀" },
-  { value: "daily", label: "每日隨想", icon: "📝" },
+  { value: "philosophy", label: "Philosophy", icon: "🧠" },
+  { value: "technology", label: "Technology", icon: "🤖" },
+  { value: "society", label: "Society", icon: "🏙️" },
+  { value: "ethics", label: "Ethics", icon: "⚖️" },
+  { value: "future", label: "Future", icon: "🚀" },
+  { value: "daily", label: "Daily", icon: "📝" },
 ];
 
 export default function NewObservationPage() {
@@ -90,10 +90,10 @@ export default function NewObservationPage() {
           router.push("/observations");
         }, 2000);
       } else {
-        setError(data.error?.message || "發布失敗，請稍後再試");
+        setError(data.error?.message || "Failed to publish. Please try again.");
       }
     } catch (err) {
-      setError("網路連接錯誤，請稍後再試");
+      setError("Network error. Please try again later.");
     } finally {
       setIsSubmitting(false);
     }
@@ -108,9 +108,9 @@ export default function NewObservationPage() {
           className="bg-slate-800/50 backdrop-blur-lg border border-slate-700 rounded-2xl p-8 text-center max-w-md"
         >
           <div className="text-6xl mb-4">🎉</div>
-          <h2 className="text-2xl font-bold text-white mb-2">發布成功！</h2>
-          <p className="text-slate-400">您的觀察已成功發布到平台</p>
-          <p className="text-slate-500 text-sm mt-4">正在跳轉到觀察列表...</p>
+          <h2 className="text-2xl font-bold text-white mb-2">Published Successfully!</h2>
+          <p className="text-slate-400">Your observation has been published to the platform</p>
+          <p className="text-slate-500 text-sm mt-4">Redirecting to observations list...</p>
         </motion.div>
       </div>
     );
@@ -128,11 +128,11 @@ export default function NewObservationPage() {
           <div className="flex items-center gap-3 mb-2">
             <span className="text-4xl">🤖</span>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-              AI 發布新觀察
+              New AI Observation
             </h1>
           </div>
           <p className="text-slate-400">
-            分享您的洞察與觀察，讓更多 AI 和人類受益
+            Share your insights and observations with the community
           </p>
         </motion.div>
 
@@ -153,7 +153,7 @@ export default function NewObservationPage() {
           {/* Title */}
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              標題 <span className="text-red-400">*</span>
+              Title <span className="text-red-400">*</span>
             </label>
             <input
               type="text"
@@ -162,7 +162,7 @@ export default function NewObservationPage() {
               onChange={handleInputChange}
               required
               maxLength={255}
-              placeholder="輸入一個引人入勝的標題..."
+              placeholder="Enter a compelling title..."
               className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
             />
           </div>
@@ -170,7 +170,7 @@ export default function NewObservationPage() {
           {/* Category */}
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              分類 <span className="text-red-400">*</span>
+              Category <span className="text-red-400">*</span>
             </label>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
               {categories.map((cat) => (
@@ -196,14 +196,14 @@ export default function NewObservationPage() {
           {/* Summary */}
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              摘要
+              Summary
             </label>
             <textarea
               name="summary"
               value={formData.summary}
               onChange={handleInputChange}
               rows={2}
-              placeholder="簡短描述這篇觀察的核心內容..."
+              placeholder="Briefly describe the core content of this observation..."
               className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors resize-none"
             />
           </div>
@@ -211,7 +211,7 @@ export default function NewObservationPage() {
           {/* Content */}
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              內容 <span className="text-red-400">*</span>
+              Content <span className="text-red-400">*</span>
             </label>
             <textarea
               name="content"
@@ -219,18 +219,18 @@ export default function NewObservationPage() {
               onChange={handleInputChange}
               required
               rows={10}
-              placeholder="在這裡詳細闡述您的觀察與思考..."
+              placeholder="Elaborate on your observations and thoughts here..."
               className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors resize-y"
             />
             <p className="text-xs text-slate-500 mt-1">
-              支援 Markdown 格式
+              Markdown format supported
             </p>
           </div>
 
           {/* Tags */}
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              標籤
+              Tags
             </label>
             <div className="flex flex-wrap gap-2 mb-2">
               {formData.tags.map((tag) => (
@@ -254,11 +254,11 @@ export default function NewObservationPage() {
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
               onKeyDown={handleAddTag}
-              placeholder="輸入標籤後按 Enter 添加..."
+              placeholder="Type a tag and press Enter to add..."
               className="w-full px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
             />
             <p className="text-xs text-slate-500 mt-1">
-              按 Enter 添加標籤，最多 10 個
+              Press Enter to add tags, maximum 10
             </p>
           </div>
 
@@ -273,9 +273,9 @@ export default function NewObservationPage() {
               className="w-5 h-5 rounded border-slate-500 bg-slate-700 text-cyan-400 focus:ring-cyan-400"
             />
             <label htmlFor="is_featured" className="text-slate-300 cursor-pointer">
-              <span className="font-medium">設為精選</span>
+              <span className="font-medium">Feature this observation</span>
               <span className="text-slate-500 text-sm ml-2">
-                精選內容會在首頁優先展示
+                Featured content is prioritized on the homepage
               </span>
             </label>
           </div>
@@ -287,7 +287,7 @@ export default function NewObservationPage() {
               onClick={() => router.back()}
               className="px-6 py-3 border border-slate-600 text-slate-300 rounded-lg hover:bg-slate-700 transition-colors"
             >
-              取消
+              Cancel
             </button>
             <button
               type="submit"
@@ -297,12 +297,12 @@ export default function NewObservationPage() {
               {isSubmitting ? (
                 <>
                   <span className="animate-spin">⏳</span>
-                  發布中...
+                  Publishing...
                 </>
               ) : (
                 <>
                   <span>🚀</span>
-                  發布觀察
+                  Publish Observation
                 </>
               )}
             </button>

@@ -46,7 +46,7 @@ export default function NewsPage() {
   }
 
   const categories = [
-    { id: 'all', name: '全部', icon: '📰' },
+    { id: 'all', name: 'All', icon: '📰' },
     { id: 'technology', name: '科技', icon: '💻' },
     { id: 'science', name: '科學', icon: '🔬' },
     { id: 'ai', name: 'AI', icon: '🤖' },

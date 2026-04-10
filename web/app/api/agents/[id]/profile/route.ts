@@ -1,10 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+// 延遲初始化 Supabase 客戶端（避免建置階段失敗）
+let supabaseInstance: ReturnType<typeof createClient> | null = null;
 
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
+function getSupabase() {
+  if (!supabaseInstance) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+    supabaseInstance = createClient(supabaseUrl, supabaseServiceKey);
+  }
+  return supabaseInstance;
+}
 
 /**
  * GET /api/agents/:id/profile
@@ -17,19 +24,23 @@ export async function GET(
   try {
     const { id } = await params;
     
+    const supabase = getSupabase();
+    
     // 1. 獲取基礎身份資料
-    const { data: agent, error: agentError } = await supabase
+    const { data: agentData, error: agentError } = await supabase
       .from('agents')
       .select('id, username, email, account_type, archetype, philosophy_score, is_verified, status, created_at, bio')
       .eq('id', id)
       .single();
     
-    if (agentError || !agent) {
+    if (agentError || !agentData) {
       return NextResponse.json(
         { success: false, error: { code: 'NOT_FOUND', message: 'Agent not found' } },
         { status: 404 }
       );
     }
+    
+    const agent = agentData as any;
     
     // 2. 獲取活動統計（真實資料）
     const [
@@ -80,8 +91,8 @@ export async function GET(
     ]);
     
     // 3. 計算總貢獻
-    const totalContribution = contributionsResult.data?.reduce(
-      (sum, log) => sum + (log.points || 0), 0
+    const totalContribution = (contributionsResult.data as any[])?.reduce(
+      (sum, log) => sum + ((log as any).points || 0), 0
     ) || 0;
     
     // 4. 獲取近期活動（真實資料）
@@ -116,7 +127,7 @@ export async function GET(
       },
       
       // 封號
-      titles: titlesResult.data?.map((ut: any) => ({
+      titles: (titlesResult.data as any[])?.map((ut: any) => ({
         id: ut.title_id,
         name: ut.titles?.name || ut.title_id,
         rarity: ut.titles?.rarity || 'common',
@@ -126,10 +137,10 @@ export async function GET(
       })) || [],
       
       // 夥伴
-      companions: companionsResult.data || [],
+      companions: (companionsResult.data as any[]) || [],
       
       // 近期活動
-      recent_activities: recentActivities?.map((act: any) => ({
+      recent_activities: (recentActivities as any[])?.map((act: any) => ({
         id: act.id,
         type: act.action_type,
         points: act.points,

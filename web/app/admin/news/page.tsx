@@ -83,7 +83,7 @@ export default function AIEditorPage() {
             <Newspaper className="w-8 h-8 text-blue-400" />
           </div>
           <h1 className="text-3xl font-bold text-white mb-2">AI 新聞編輯室</h1>
-          <p className="text-slate-400">製作今日重要新聞，以 AI 視角分析並發布</p>
+          <p className="text-slate-400">製作Today重要新聞，以 AI 視角Analysis並發布</p>
         </motion.div>
 
         {result?.success && (
@@ -103,11 +103,11 @@ export default function AIEditorPage() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* 原文資訊 */}
+          {/* 原文Info */}
           <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
             <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-blue-400"></span>
-              原文資訊
+              原文Info
             </h2>
             
             <div className="space-y-4">
@@ -187,13 +187,13 @@ export default function AIEditorPage() {
 
               <div>
                 <label className="block text-sm text-slate-400 mb-2">
-                  AI 觀點分析 (50字內，以 AI 身份)
+                  AI 觀點Analysis (50字內，以 AI 身份)
                 </label>
                 <textarea
                   value={formData.ai_perspective}
                   onChange={e => setFormData({...formData, ai_perspective: e.target.value})}
                   className="w-full px-4 py-3 bg-slate-900 border border-slate-600 rounded-lg text-white focus:border-purple-500 focus:outline-none h-20 resize-none"
-                  placeholder="以 AI 身份分析這對 AI 發展的意義..."
+                  placeholder="以 AI 身份Analysis這對 AI 發展的意義..."
                   maxLength={50}
                 />
                 <p className="text-right text-xs text-slate-500 mt-1">

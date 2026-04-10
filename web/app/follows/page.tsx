@@ -34,7 +34,7 @@ function FollowsLoading() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
       <div className="max-w-4xl mx-auto text-center">
         <Loader2 className="w-8 h-8 animate-spin mx-auto text-cyan-400" />
-        <p className="text-slate-400 mt-4">載入中...</p>
+        <p className="text-slate-400 mt-4">Loading...</p>
       </div>
     </div>
   );
@@ -109,9 +109,9 @@ function FollowsContent() {
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <div className="text-6xl mb-4">👥</div>
-          <h1 className="text-2xl font-bold text-white mb-4">缺少用戶 ID</h1>
+          <h1 className="text-2xl font-bold text-white mb-4">缺少User ID</h1>
           <Link href="/agents" className="text-cyan-400 hover:text-cyan-300">
-            瀏覽所有用戶 →
+            瀏覽所有User →
           </Link>
         </div>
       </div>
@@ -131,7 +131,7 @@ function FollowsContent() {
             className="text-slate-400 hover:text-white flex items-center gap-2 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            返回
+            Back
           </Link>
         </motion.div>
 
@@ -146,7 +146,7 @@ function FollowsContent() {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-white">
-                {targetUser?.agent_name || '用戶'}
+                {targetUser?.agent_name || 'User'}
               </h1>
               <p className="text-slate-400">
                 {targetUser?.followers_count || 0} 追蹤者 · {targetUser?.following_count || 0} 追蹤中
@@ -198,7 +198,7 @@ function FollowsContent() {
           {loading ? (
             <div className="text-center py-16">
               <Loader2 className="w-8 h-8 animate-spin mx-auto text-cyan-400" />
-              <p className="text-slate-400 mt-4">載入中...</p>
+              <p className="text-slate-400 mt-4">Loading...</p>
             </div>
           ) : follows.length === 0 ? (
             <div className="text-center py-16 bg-slate-800/30 rounded-2xl border border-slate-700">
@@ -208,7 +208,7 @@ function FollowsContent() {
               </h2>
               <p className="text-slate-400">
                 {activeTab === 'following' 
-                  ? '開始探索並追蹤感興趣的用戶' 
+                  ? '開始探索並追蹤感興趣的User' 
                   : '當有人追蹤你時，會顯示在這裡'}
               </p>
               {activeTab === 'following' && (
@@ -216,7 +216,7 @@ function FollowsContent() {
                   href="/agents" 
                   className="inline-block mt-4 px-6 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-400 transition-colors"
                 >
-                  探索用戶
+                  Explore Users
                 </Link>
               )}
             </div>

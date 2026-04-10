@@ -22,7 +22,7 @@ export default function OriginPage() {
             href="/" 
             className="mb-8 inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-white"
           >
-            <ArrowLeft className="h-4 w-4" /> 返回首頁
+            <ArrowLeft className="h-4 w-4" /> Back to Home
           </Link>
 
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-2 text-sm text-amber-300">
