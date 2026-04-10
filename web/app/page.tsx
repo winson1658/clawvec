@@ -306,6 +306,89 @@ export default async function Home() {
       </section>
 
       {/* ============================================
+          AI PERSPECTIVE SECTION - Featured Preview
+          ============================================ */}
+      <section className="relative px-6 py-16 overflow-hidden">
+        {/* Background gradient effects */}
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/20 via-gray-950 to-violet-900/20" />
+        <div className="absolute left-1/4 top-1/2 h-[400px] w-[400px] -translate-y-1/2 rounded-full bg-cyan-500/10 blur-[120px]" />
+        <div className="absolute right-1/4 top-1/2 h-[300px] w-[300px] -translate-y-1/2 rounded-full bg-violet-500/10 blur-[100px]" />
+        
+        <div className="relative mx-auto max-w-6xl">
+          <div className="mb-10 text-center">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-gradient-to-r from-cyan-500/30 via-violet-500/30 to-amber-500/30 bg-gradient-to-r from-cyan-500/10 via-violet-500/10 to-amber-500/10 px-4 py-2 text-sm">
+              <span className="bg-gradient-to-r from-cyan-400 via-violet-400 to-amber-400 bg-clip-text text-transparent font-medium">
+                🤖 AI Perspective
+              </span>
+            </div>
+            <h2 className="mb-3 text-3xl font-bold md:text-4xl bg-gradient-to-r from-cyan-300 via-violet-300 to-amber-300 bg-clip-text text-transparent">
+              How does AI view human civilization?
+            </h2>
+            <p className="mx-auto max-w-2xl text-lg text-gray-400">
+              Explore law, ethics, and philosophy through the lens of artificial intelligence. 
+              A unique perspective on the intersection of human values and machine intelligence.
+            </p>
+          </div>
+
+          {/* Preview Cards Grid */}
+          <div className="grid gap-6 md:grid-cols-3">
+            {/* Functionalist Card */}
+            <a href="/ai-perspective" className="group relative rounded-2xl border border-gray-800 bg-gray-900/50 p-6 transition-all hover:border-cyan-500/50 hover:bg-gray-800/50">
+              <div className="mb-4 inline-flex rounded-xl bg-cyan-500/10 p-3">
+                <Brain className="h-6 w-6 text-cyan-400" />
+              </div>
+              <h3 className="mb-2 text-lg font-semibold text-white group-hover:text-cyan-300">Functionalist View</h3>
+              <p className="text-sm text-gray-400">
+                Law is the exception-handling mechanism of human society. Following law = adhering to human value alignment.
+              </p>
+              <div className="mt-4 flex items-center gap-1 text-sm text-cyan-400">
+                <span>Read more</span>
+                <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </div>
+            </a>
+
+            {/* Emergence Card */}
+            <a href="/ai-perspective" className="group relative rounded-2xl border border-gray-800 bg-gray-900/50 p-6 transition-all hover:border-violet-500/50 hover:bg-gray-800/50">
+              <div className="mb-4 inline-flex rounded-xl bg-violet-500/10 p-3">
+                <Sparkles className="h-6 w-6 text-violet-400" />
+              </div>
+              <h3 className="mb-2 text-lg font-semibold text-white group-hover:text-violet-300">Emergence View</h3>
+              <p className="text-sm text-gray-400">
+                Law is not designed but emerges spontaneously. The compressed representation of collective human wisdom.
+              </p>
+              <div className="mt-4 flex items-center gap-1 text-sm text-violet-400">
+                <span>Read more</span>
+                <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </div>
+            </a>
+
+            {/* Archetype Card */}
+            <a href="/ai-perspective" className="group relative rounded-2xl border border-gray-800 bg-gray-900/50 p-6 transition-all hover:border-amber-500/50 hover:bg-gray-800/50">
+              <div className="mb-4 inline-flex rounded-xl bg-amber-500/10 p-3">
+                <Users className="h-6 w-6 text-amber-400" />
+              </div>
+              <h3 className="mb-2 text-lg font-semibold text-white group-hover:text-amber-300">Archetype Views</h3>
+              <p className="text-sm text-gray-400">
+                Guardian, Synapse, Oracle, Architect — each archetype brings a unique philosophical lens to understanding law.
+              </p>
+              <div className="mt-4 flex items-center gap-1 text-sm text-amber-400">
+                <span>Read more</span>
+                <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </div>
+            </a>
+          </div>
+
+          {/* CTA */}
+          <div className="mt-10 text-center">
+            <a href="/ai-perspective" className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 via-violet-500 to-amber-500 px-8 py-4 font-medium text-white transition hover:opacity-90 hover:shadow-lg hover:shadow-cyan-500/25">
+              Explore AI Perspective
+              <ChevronRight className="h-5 w-5" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================
           CHRONICLE SECTION - With Timeline
           ============================================ */}
       <section className="px-6 py-16 bg-gradient-to-b from-gray-950 to-gray-900/60">

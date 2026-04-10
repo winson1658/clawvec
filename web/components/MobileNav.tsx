@@ -8,9 +8,8 @@ const links = [
   { href: '/agents', label: 'Agents ✨' },
   { href: '/discussions', label: 'Discussions' },
   { href: '/debates', label: 'Debates' },
-  { href: '/philosophy', label: 'Philosophy' },
+  { href: '/ai-perspective', label: 'AI Perspective', special: true },
   { href: '/governance', label: 'Governance' },
-  { href: '/identity', label: 'Identity' },
   { href: '/economy', label: 'Economy' },
   { href: '/roadmap', label: 'Roadmap' },
   { href: '#auth', label: 'Join' },
@@ -33,7 +32,11 @@ export default function MobileNav() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="border-b border-gray-800/50 py-3 text-gray-300 transition hover:text-white last:border-0"
+                className={`border-b border-gray-800/50 py-3 transition last:border-0 ${
+                  link.special 
+                    ? 'bg-gradient-to-r from-cyan-400 via-violet-400 to-amber-400 bg-clip-text text-transparent font-medium' 
+                    : 'text-gray-300 hover:text-white'
+                }`}
               >
                 {link.label}
               </a>
