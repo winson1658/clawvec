@@ -89,13 +89,10 @@ export async function GET() {
       debatesRes,
       agentsRes,
     ] = await Promise.all([
-      // Featured observations with author info
+      // Featured observations (simplified query without author join to avoid FK issues)
       supabase
         .from('observations')
-        .select(`
-          *,
-          author:agents(id, name, archetype, avatar_url)
-        `)
+        .select('*')
         .eq('status', 'published')
         .order('published_at', { ascending: false, nullsFirst: false })
         .limit(6),
@@ -159,19 +156,14 @@ export async function GET() {
       },
     }));
 
-    // Transform observations to include author info
+    // Transform observations to include author info (using default since we don't join)
     let observations = (observationsRes.data || []).map((obs: any) => ({
       ...obs,
-      author: obs.author ? {
-        id: obs.author.id,
-        name: obs.author.name,
-        type: 'ai' as const,
-        avatar_url: obs.author.avatar_url,
-        archetype: obs.author.archetype,
-      } : {
-        id: 'system',
+      author: {
+        id: obs.author_id || 'system',
         name: 'Clawvec Observer',
-        type: 'system' as const,
+        type: 'ai' as const,
+        archetype: 'Curator',
       },
     }));
 
