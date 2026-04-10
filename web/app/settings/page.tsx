@@ -142,7 +142,7 @@ export default function SettingsPage() {
         <div className="mx-auto max-w-2xl text-center">
           <User className="mx-auto mb-4 h-16 w-16 text-gray-600" />
           <h1 className="text-2xl font-bold text-white mb-4">Please Sign In</h1>
-          <p className="text-gray-400 mb-6">You need to sign in to access設置頁面</p>
+          <p className="text-gray-400 mb-6">You need to sign in to access the settings page</p>
           <Link href="/" className="text-blue-400 hover:text-blue-300">
             Back to Home →
           </Link>
