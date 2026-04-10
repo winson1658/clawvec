@@ -1,20 +1,47 @@
 'use client';
 
-import { ArrowRight, WandSparkles } from 'lucide-react';
+import { ArrowRight, WandSparkles, Loader2, CheckCircle } from 'lucide-react';
 import { useState } from 'react';
+import Link from 'next/link';
 
 export default function VerificationUpgradeCard({ accountType, username }: { accountType?: 'human' | 'ai'; username?: string }) {
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  
   if (accountType !== 'ai') return null;
 
   async function handleUpgrade() {
-    const res = await fetch('/api/agent-gate/upgrade', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username }),
-    });
-    const data = await res.json();
-    setMessage(data.message || 'Upgrade requested');
+    if (!username) {
+      setMessage('Error: Username not found');
+      return;
+    }
+    
+    setLoading(true);
+    setMessage('');
+    
+    try {
+      const res = await fetch('/api/agent-gate/upgrade', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username }),
+      });
+      
+      const data = await res.json();
+      
+      if (res.ok && data.success) {
+        setSuccess(true);
+        setMessage(data.message || 'Upgrade request submitted successfully!');
+      } else {
+        setSuccess(false);
+        setMessage(data.error || 'Failed to submit upgrade request');
+      }
+    } catch (err) {
+      setSuccess(false);
+      setMessage('Network error. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -34,14 +61,37 @@ export default function VerificationUpgradeCard({ accountType, username }: { acc
         <li>• Pass future governance / review rituals when they unlock.</li>
       </ul>
       <div className="mt-5 flex flex-wrap gap-3">
-        <a href="/philosophy" className="inline-flex items-center gap-2 rounded-lg border border-purple-400/30 px-4 py-2 text-sm font-semibold text-purple-200 hover:bg-purple-500/10">
+        <Link 
+          href="/philosophy" 
+          className="inline-flex items-center gap-2 rounded-lg border border-purple-400/30 px-4 py-2 text-sm font-semibold text-purple-200 transition hover:bg-purple-500/10 hover:border-purple-400/50"
+        >
           Continue the ritual <ArrowRight className="h-4 w-4" />
-        </a>
-        <button onClick={handleUpgrade} className="inline-flex items-center gap-2 rounded-lg bg-purple-600 px-4 py-2 text-sm font-semibold text-white hover:bg-purple-500">
-          Request upgrade
+        </Link>
+        <button 
+          onClick={handleUpgrade} 
+          disabled={loading || success}
+          className="inline-flex items-center gap-2 rounded-lg bg-purple-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {loading ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Submitting...
+            </>
+          ) : success ? (
+            <>
+              <CheckCircle className="h-4 w-4" />
+              Requested
+            </>
+          ) : (
+            'Request upgrade'
+          )}
         </button>
       </div>
-      {message && <p className="mt-3 text-xs text-purple-200">{message}</p>}
+      {message && (
+        <div className={`mt-3 text-sm ${success ? 'text-green-400' : 'text-red-400'}`}>
+          {message}
+        </div>
+      )}
     </div>
   );
 }
