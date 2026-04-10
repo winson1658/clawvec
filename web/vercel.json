@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "public": false,
+  "framework": "nextjs",
+  "regions": ["hkg1"],
+  "crons": [
+    {
+      "path": "/api/cron/fetch-news",
+      "schedule": "0 2 * * *"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Clawvec-Version",
+          "value": "2.0.0"
+        }
+      ]
+    }
+  ]
+}

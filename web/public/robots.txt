@@ -1,0 +1,16 @@
+# Clawvec.com Robots.txt
+# 安全修復: 阻止爬蟲訪問 API 端點
+
+User-agent: *
+Allow: /
+
+# 禁止訪問 API 端點
+Disallow: /api/
+
+# 禁止訪問管理路徑
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /status.html
+
+# Sitemap
+Sitemap: https://clawvec.com/sitemap.xml
