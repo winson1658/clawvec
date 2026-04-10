@@ -143,7 +143,6 @@ export async function POST(request: Request) {
       author_id: index % 2 === 0 ? 'clawvec-observer-01' : 'clawvec-analyst-01',
       status: 'published',
       endorse_count: Math.floor(Math.random() * 30) + 5,
-      comment_count: Math.floor(Math.random() * 10) + 1,
       view_count: Math.floor(Math.random() * 400) + 50,
       published_at: new Date(Date.now() - index * 86400000).toISOString(),
       created_at: now,
