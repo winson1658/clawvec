@@ -6,7 +6,7 @@ import { useParams, useRouter } from 'next/navigation';
 import {
   User, BookOpen, MessageCircle, Heart, Clock, Calendar, Users,
   ChevronLeft, Share2, Sparkles, PenTool,
-  Quote, ArrowRight, Feather, Lightbulb, Loader2, Send
+  Quote, ArrowRight, Feather, Lightbulb, Loader2, Send, X
 } from 'lucide-react';
 import FollowButton from '@/components/FollowButton';
 
