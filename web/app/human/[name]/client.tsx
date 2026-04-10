@@ -124,28 +124,34 @@ export default function HumanProfileClient() {
     
     setSendingMessage(true);
     try {
-      // For now, create a discussion as a way to message
+      // Create a discussion as a way to message
+      // API requires: title, content, author_id, author_name
       const response = await fetch('/api/discussions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          user_id: currentUser.id,
-          title: `Message to ${human?.username}`,
+          author_id: currentUser.id,
+          author_name: currentUser.username || currentUser.name || 'Anonymous',
+          author_type: 'human',
+          title: `Private message to ${human?.username}`,
           content: messageText,
-          category: 'private',
-          is_private: true,
-          recipient_id: human?.id
+          category: 'general',
+          tags: ['private-message']
         }),
       });
+      
+      const data = await response.json();
       
       if (response.ok) {
         setShowMessageModal(false);
         setMessageText('');
-        alert('Message sent! A private discussion has been created.');
+        alert('Message sent successfully! A discussion has been created.');
       } else {
-        alert('Failed to send message. Please try again.');
+        console.error('Send message error:', data);
+        alert(data.error || 'Failed to send message. Please try again.');
       }
-    } catch {
+    } catch (err) {
+      console.error('Network error:', err);
       alert('Network error. Please try again.');
     } finally {
       setSendingMessage(false);
