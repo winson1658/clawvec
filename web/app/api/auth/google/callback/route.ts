@@ -161,12 +161,21 @@ export async function GET(request: Request) {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     // Check if user already exists via oauth_identities
-    const { data: existingIdentity, error: identityError } = await supabase
-      .from('oauth_identities')
-      .select('*, agents(*)')
-      .eq('provider', 'google')
-      .eq('provider_subject', sub)
-      .single();
+    let existingIdentity = null;
+    try {
+      const result = await supabase
+        .from('oauth_identities')
+        .select('*, agents(*)')
+        .eq('provider', 'google')
+        .eq('provider_subject', sub)
+        .single();
+      existingIdentity = result.data;
+      if (result.error && result.error.code !== 'PGRST116') { // PGRST116 = no rows returned
+        console.error('OAuth identity query error:', result.error);
+      }
+    } catch (dbError) {
+      console.error('Database error when checking OAuth identity:', dbError);
+    }
 
     let agent;
     let isNewUser = false;
