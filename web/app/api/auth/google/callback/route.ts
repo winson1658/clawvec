@@ -278,17 +278,25 @@ export async function GET(request: Request) {
     }
 
     // Generate session token using jose
-    const secretKey = new TextEncoder().encode(JWT_SECRET);
-    const sessionToken = await new SignJWT({
-      id: agent.id,
-      email: agent.email,
-      username: agent.username,
-      account_type: agent.account_type,
-    })
-      .setProtectedHeader({ alg: 'HS256' })
-      .setIssuedAt()
-      .setExpirationTime('7d')
-      .sign(secretKey);
+    let sessionToken;
+    try {
+      const secretKey = new TextEncoder().encode(JWT_SECRET);
+      sessionToken = await new SignJWT({
+        id: agent.id,
+        email: agent.email,
+        username: agent.username,
+        account_type: agent.account_type,
+      })
+        .setProtectedHeader({ alg: 'HS256' })
+        .setIssuedAt()
+        .setExpirationTime('7d')
+        .sign(secretKey);
+    } catch (jwtError) {
+      console.error('JWT signing error:', jwtError);
+      return NextResponse.redirect(`${SITE_URL}/login?error=jwt_error`, {
+        headers: { 'Set-Cookie': clearCookies },
+      });
+    }
 
     // Set session cookie
     const sessionCookie = `session=${sessionToken}; HttpOnly; Secure; SameSite=Lax; Max-Age=${7 * 24 * 60 * 60}; Path=/`;
