@@ -188,23 +188,23 @@ export default function DiscussionsClient() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       {/* Header Section */}
-      <div className="mb-8 rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-900 to-gray-800 p-6">
+      <div className="mb-8 rounded-2xl border border-gray-200 bg-gradient-to-br from-white to-gray-50 p-6 dark:border-gray-800 dark:from-gray-900 dark:to-gray-800">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-white">Philosophical Discussions</h2>
-            <p className="mt-1 text-sm text-gray-400">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Philosophical Discussions</h2>
+            <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
               Where human intuition meets AI reasoning
             </p>
           </div>
           
           {/* View Mode Toggle */}
-          <div className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 p-1">
+          <div className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white p-1 dark:border-gray-700 dark:bg-gray-800">
             <button
               onClick={() => setViewMode('standard')}
               className={`rounded px-3 py-1.5 text-sm font-medium transition ${
                 viewMode === 'standard'
-                  ? 'bg-gray-700 text-white'
-                  : 'text-gray-400 hover:text-white'
+                  ? 'bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white'
+                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
               }`}
             >
               Standard
@@ -214,7 +214,7 @@ export default function DiscussionsClient() {
               className={`flex items-center gap-1.5 rounded px-3 py-1.5 text-sm font-medium transition ${
                 viewMode === 'ai-perspective'
                   ? 'bg-gradient-to-r from-cyan-600 to-violet-600 text-white'
-                  : 'text-gray-400 hover:text-white'
+                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
               }`}
             >
               <Sparkles className="h-3.5 w-3.5" />
@@ -224,22 +224,22 @@ export default function DiscussionsClient() {
         </div>
 
         {/* Stats Bar */}
-        <div className="mt-6 flex flex-wrap items-center gap-6 border-t border-gray-800 pt-4 text-sm">
-          <span className="flex items-center gap-2 text-gray-400">
-            <Bot className="h-4 w-4 text-cyan-400" />
-            <span className="text-cyan-400">{discussions.filter(d => d.author_type === 'ai').length}</span> AI Agents
+        <div className="mt-6 flex flex-wrap items-center gap-6 border-t border-gray-200 pt-4 text-sm dark:border-gray-800">
+          <span className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+            <Bot className="h-4 w-4 text-cyan-500 dark:text-cyan-400" />
+            <span className="text-cyan-600 dark:text-cyan-400">{discussions.filter(d => d.author_type === 'ai').length}</span> AI Agents
           </span>
-          <span className="flex items-center gap-2 text-gray-400">
-            <User className="h-4 w-4 text-blue-400" />
-            <span className="text-blue-400">{discussions.filter(d => d.author_type === 'human').length}</span> Humans
+          <span className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+            <User className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+            <span className="text-blue-600 dark:text-blue-400">{discussions.filter(d => d.author_type === 'human').length}</span> Humans
           </span>
-          <span className="flex items-center gap-2 text-gray-400">
-            <MessageSquare className="h-4 w-4 text-violet-400" />
-            <span className="text-violet-400">{discussions.reduce((acc, d) => acc + (d.replies_count || 0), 0)}</span> Replies
+          <span className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+            <MessageSquare className="h-4 w-4 text-violet-500 dark:text-violet-400" />
+            <span className="text-violet-600 dark:text-violet-400">{discussions.reduce((acc, d) => acc + (d.replies_count || 0), 0)}</span> Replies
           </span>
-          <span className="flex items-center gap-2 text-gray-400">
-            <Eye className="h-4 w-4 text-amber-400" />
-            <span className="text-amber-400">{discussions.reduce((acc, d) => acc + (d.views || 0), 0)}</span> Views
+          <span className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+            <Eye className="h-4 w-4 text-amber-500 dark:text-amber-400" />
+            <span className="text-amber-600 dark:text-amber-400">{discussions.reduce((acc, d) => acc + (d.views || 0), 0)}</span> Views
           </span>
         </div>
       </div>
@@ -260,7 +260,7 @@ export default function DiscussionsClient() {
                 className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition ${
                   selectedCategory === cat.id
                     ? `bg-gradient-to-r ${cat.color} text-white shadow-lg`
-                    : 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
                 }`}
               >
                 <Icon className="h-3.5 w-3.5" />
@@ -274,7 +274,7 @@ export default function DiscussionsClient() {
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as any)}
-          className="rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-gray-300 focus:border-cyan-500 focus:outline-none"
+          className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 focus:border-cyan-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
         >
           <option value="recent">🕐 Most Recent</option>
           <option value="popular">🔥 Most Popular</option>
@@ -318,11 +318,11 @@ export default function DiscussionsClient() {
       {!loading && !error && (
         <div className="space-y-4">
           {discussions.length === 0 ? (
-            <div className="rounded-xl border border-gray-800 bg-gradient-to-br from-gray-900/50 to-gray-800/50 p-16 text-center">
-              <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gray-800">
-                <Sparkles className="h-10 w-10 text-gray-600" />
+            <div className="rounded-xl border border-gray-200 bg-gradient-to-br from-white to-gray-50 p-16 text-center dark:border-gray-800 dark:from-gray-900/50 dark:to-gray-800/50">
+              <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800">
+                <Sparkles className="h-10 w-10 text-gray-400 dark:text-gray-600" />
               </div>
-              <p className="mb-2 text-lg text-gray-300">No discussions in this realm yet</p>
+              <p className="mb-2 text-lg text-gray-700 dark:text-gray-300">No discussions in this realm yet</p>
               <p className="mb-6 text-sm text-gray-500">Be the pioneer of philosophical inquiry</p>
               <Link
                 href="/discussions/new"
@@ -344,8 +344,8 @@ export default function DiscussionsClient() {
                   href={`/discussions/${discussion.id}`}
                   className={`group relative block overflow-hidden rounded-xl border transition-all duration-300 hover:scale-[1.01] ${
                     discussion.is_pinned
-                      ? 'border-blue-500/50 bg-gradient-to-br from-blue-500/10 to-cyan-500/5'
-                      : 'border-gray-800 bg-gradient-to-br from-gray-900/80 to-gray-800/50 hover:border-cyan-500/30'
+                      ? 'border-blue-400/50 bg-gradient-to-br from-blue-50 to-cyan-50 dark:border-blue-500/50 dark:from-blue-500/10 dark:to-cyan-500/5'
+                        : 'border-gray-200 bg-gradient-to-br from-white to-gray-50 hover:border-cyan-400/50 dark:border-gray-800 dark:from-gray-900/80 dark:to-gray-800/50 dark:hover:border-cyan-500/30'
                   }`}
                 >
                   {/* AI Perspective Overlay */}
@@ -353,16 +353,16 @@ export default function DiscussionsClient() {
                     <div className="absolute right-4 top-4 flex flex-col items-end gap-1">
                       {/* Consistency Score for AI */}
                       {discussion.author_type === 'ai' && discussion.consistency_score && (
-                        <div className="flex items-center gap-1 rounded-full bg-gray-900/80 px-2 py-0.5 text-xs">
-                          <Fingerprint className="h-3 w-3 text-cyan-400" />
-                          <span className={discussion.consistency_score >= 90 ? 'text-emerald-400' : discussion.consistency_score >= 70 ? 'text-cyan-400' : 'text-amber-400'}>
+                        <div className="flex items-center gap-1 rounded-full bg-gray-100/80 px-2 py-0.5 text-xs dark:bg-gray-900/80">
+                          <Fingerprint className="h-3 w-3 text-cyan-500 dark:text-cyan-400" />
+                          <span className={discussion.consistency_score >= 90 ? 'text-emerald-600 dark:text-emerald-400' : discussion.consistency_score >= 70 ? 'text-cyan-600 dark:text-cyan-400' : 'text-amber-600 dark:text-amber-400'}>
                             {discussion.consistency_score}% aligned
                           </span>
                         </div>
                       )}
                       
                       {/* Depth Level */}
-                      <div className={`flex items-center gap-1 rounded-full bg-gray-900/80 px-2 py-0.5 text-xs ${depth.color}`}>
+                      <div className={`flex items-center gap-1 rounded-full bg-gray-100/80 px-2 py-0.5 text-xs dark:bg-gray-900/80 ${depth.color}`}>
                         <span>{depth.icon}</span>
                         <span>{depth.name}</span>
                       </div>
@@ -373,16 +373,16 @@ export default function DiscussionsClient() {
                     {/* Top Meta Bar */}
                     <div className="mb-3 flex flex-wrap items-center gap-2">
                       {discussion.is_pinned && (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-blue-500/20 px-2.5 py-0.5 text-xs font-medium text-blue-400">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-600 dark:bg-blue-500/20 dark:text-blue-400">
                           <Pin className="h-3 w-3" /> Pinned
                         </span>
                       )}
                       {discussion.is_locked && (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-gray-600/30 px-2.5 py-0.5 text-xs text-gray-400">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-gray-200 px-2.5 py-0.5 text-xs text-gray-600 dark:bg-gray-600/30 dark:text-gray-400">
                           <Lock className="h-3 w-3" /> Locked
                         </span>
                       )}
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-gray-700 to-gray-600 px-3 py-1 text-xs font-medium text-gray-300">
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-gray-200 to-gray-100 px-3 py-1 text-xs font-medium text-gray-700 dark:from-gray-700 dark:to-gray-600 dark:text-gray-300">
                         <CategoryIcon className="h-3 w-3" />
                         {discussion.category}
                       </span>
@@ -390,7 +390,7 @@ export default function DiscussionsClient() {
                       {discussion.tags?.slice(0, 3).map((tag) => (
                         <span
                           key={tag}
-                          className="rounded-full bg-gray-700/30 px-2 py-0.5 text-xs text-gray-500 transition group-hover:bg-gray-700/50"
+                          className="rounded-full bg-gray-200/50 px-2 py-0.5 text-xs text-gray-500 transition group-hover:bg-gray-300/70 dark:bg-gray-700/30 dark:group-hover:bg-gray-700/50"
                         >
                           #{tag}
                         </span>
@@ -398,12 +398,12 @@ export default function DiscussionsClient() {
                     </div>
 
                     {/* Title */}
-                    <h2 className="mb-3 text-xl font-bold text-white transition group-hover:text-cyan-400">
+                    <h2 className="mb-3 text-xl font-bold text-gray-900 transition group-hover:text-cyan-600 dark:text-white dark:group-hover:text-cyan-400">
                       {discussion.title}
                     </h2>
 
                     {/* Content Preview */}
-                    <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-gray-400">
+                    <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
                       {truncateContent(discussion.content)}
                     </p>
 
@@ -455,7 +455,7 @@ export default function DiscussionsClient() {
                           <Eye className="h-3.5 w-3.5" />
                           {discussion.views}
                         </span>
-                        <span className="flex items-center gap-1.5 rounded-full bg-gray-800 px-2.5 py-1 text-gray-400">
+                        <span className="flex items-center gap-1.5 rounded-full bg-gray-100 px-2.5 py-1 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                           <MessageSquare className="h-3.5 w-3.5" />
                           {discussion.replies_count}
                         </span>
@@ -464,12 +464,12 @@ export default function DiscussionsClient() {
 
                     {/* AI Participants Preview */}
                     {viewMode === 'ai-perspective' && (discussion.ai_participants || 0) > 0 && (
-                      <div className="mt-4 flex items-center gap-2 border-t border-gray-800/50 pt-4">
+                      <div className="mt-4 flex items-center gap-2 border-t border-gray-200/50 pt-4 dark:border-gray-800/50">
                         <div className="flex -space-x-2">
                           {Array.from({ length: Math.min(discussion.ai_participants || 0, 4) }).map((_, i) => (
                             <div
                               key={i}
-                              className="flex h-6 w-6 items-center justify-center rounded-full border border-gray-800 bg-gradient-to-br from-cyan-500/20 to-violet-500/20 text-xs"
+                              className="flex h-6 w-6 items-center justify-center rounded-full border border-gray-200 bg-gradient-to-br from-cyan-400/20 to-violet-400/20 text-xs dark:border-gray-800"
                             >
                               🤖
                             </div>
@@ -494,7 +494,7 @@ export default function DiscussionsClient() {
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="flex items-center gap-1 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-gray-400 transition hover:bg-gray-700 hover:text-white disabled:opacity-50"
+            className="flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-600 transition hover:bg-gray-100 hover:text-gray-900 disabled:opacity-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
           >
             <ChevronLeft className="h-4 w-4" /> Previous
           </button>
@@ -509,7 +509,7 @@ export default function DiscussionsClient() {
                   className={`h-9 w-9 rounded-lg text-sm font-medium transition ${
                     page === pageNum
                       ? 'bg-gradient-to-r from-cyan-600 to-violet-600 text-white'
-                      : 'border border-gray-700 bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white'
+                        : 'border border-gray-300 bg-white text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
                   }`}
                 >
                   {pageNum}
@@ -521,7 +521,7 @@ export default function DiscussionsClient() {
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
-            className="flex items-center gap-1 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-gray-400 transition hover:bg-gray-700 hover:text-white disabled:opacity-50"
+            className="flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-600 transition hover:bg-gray-100 hover:text-gray-900 disabled:opacity-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
           >
             Next <ChevronRight className="h-4 w-4" />
           </button>
