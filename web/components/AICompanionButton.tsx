@@ -101,18 +101,18 @@ export default function AICompanionButton({
 
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="w-full max-w-lg rounded-2xl border border-gray-700 bg-gray-900 shadow-2xl">
+          <div className="w-full max-w-lg rounded-2xl border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 shadow-2xl">
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-gray-800 px-6 py-4">
+            <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 px-6 py-4">
               <div>
-                <h3 className="text-lg font-semibold text-white">邀請 {agentName}</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">邀請 {agentName}</h3>
                 {agentArchetype && (
-                  <p className="text-sm text-gray-400">{agentArchetype}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{agentArchetype}</p>
                 )}
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="rounded-lg p-2 text-gray-400 transition hover:bg-gray-800 hover:text-white"
+                className="rounded-lg p-2 text-gray-500 dark:text-gray-400 transition hover:bg-gray-100 dark:bg-gray-800 hover:text-gray-900 dark:text-white"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -122,7 +122,7 @@ export default function AICompanionButton({
             <div className="space-y-4 p-6">
               {/* 互動風格選擇 */}
               <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-300">選擇互動風格</p>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-300">選擇互動風格</p>
                 <div className="grid grid-cols-2 gap-2">
                   {interactionStyles.map((style) => (
                     <button
@@ -131,11 +131,11 @@ export default function AICompanionButton({
                       className={`flex flex-col items-start gap-1 rounded-lg border p-3 text-left transition ${
                         selectedStyle === style.id
                           ? 'border-cyan-500/50 bg-cyan-500/10'
-                          : 'border-gray-700 bg-gray-800/50 hover:border-gray-600'
+                          : 'border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 hover:border-gray-600'
                       }`}
                     >
-                      <div className="flex items-center gap-2 text-sm font-medium text-gray-200">
-                        <span className={selectedStyle === style.id ? 'text-cyan-400' : 'text-gray-400'}>
+                      <div className="flex items-center gap-2 text-sm font-medium text-gray-800 dark:text-gray-200">
+                        <span className={selectedStyle === style.id ? 'text-cyan-400' : 'text-gray-500 dark:text-gray-400'}>
                           {style.icon}
                         </span>
                         {style.label}
@@ -148,12 +148,12 @@ export default function AICompanionButton({
 
               {/* 輸入框 */}
               <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-300">你想討論什麼？</p>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-300">你想討論什麼？</p>
                 <textarea
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   placeholder="例如：我正在思考自由意志的問題，你能以蘇格拉底的方式引導我嗎？"
-                  className="w-full rounded-lg border border-gray-700 bg-gray-800/50 px-4 py-3 text-sm text-white placeholder-gray-500 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500"
+                  className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-500 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500"
                   rows={3}
                 />
               </div>
@@ -173,14 +173,14 @@ export default function AICompanionButton({
               <div className="flex justify-end gap-3">
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="rounded-lg px-4 py-2 text-sm font-medium text-gray-400 transition hover:text-white"
+                  className="rounded-lg px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 transition hover:text-gray-900 dark:text-white"
                 >
                   取消
                 </button>
                 <button
                   onClick={handleInvite}
                   disabled={loading || !prompt.trim()}
-                  className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-cyan-600 to-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:opacity-90 disabled:opacity-50"
+                  className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-cyan-600 to-violet-600 px-4 py-2 text-sm font-medium text-gray-900 dark:text-white transition hover:opacity-90 disabled:opacity-50"
                 >
                   {loading ? (
                     <>

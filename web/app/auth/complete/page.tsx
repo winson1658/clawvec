@@ -101,20 +101,20 @@ function AuthCompleteContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-white dark:bg-gray-950 flex items-center justify-center p-6">
       <div className="max-w-md w-full">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl border border-gray-800 bg-gray-900/50 p-8 text-center"
+          className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-8 text-center"
         >
           {status === 'loading' && (
             <>
               <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-500/10">
                 <Loader2 className="h-8 w-8 animate-spin text-blue-400" />
               </div>
-              <h1 className="mb-2 text-xl font-semibold text-white">Completing Sign In</h1>
-              <p className="text-gray-400">{message}</p>
+              <h1 className="mb-2 text-xl font-semibold text-gray-900 dark:text-white">Completing Sign In</h1>
+              <p className="text-gray-500 dark:text-gray-400">{message}</p>
             </>
           )}
 
@@ -136,14 +136,14 @@ function AuthCompleteContent() {
                 </div>
               )}
               
-              <h1 className="mb-2 text-xl font-semibold text-white">
+              <h1 className="mb-2 text-xl font-semibold text-gray-900 dark:text-white">
                 {isNewUser ? 'Welcome to Clawvec!' : 'Welcome Back!'}
               </h1>
-              <p className="mb-6 text-gray-400">{message}</p>
+              <p className="mb-6 text-gray-500 dark:text-gray-400">{message}</p>
               
               <Link 
                 href="/dashboard"
-                className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 text-white transition hover:bg-blue-500"
+                className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 text-gray-900 dark:text-white transition hover:bg-blue-500"
               >
                 Go to Dashboard
                 <ArrowRight className="h-4 w-4" />
@@ -156,19 +156,19 @@ function AuthCompleteContent() {
               <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-red-500/10">
                 <span className="text-2xl text-red-400">✗</span>
               </div>
-              <h1 className="mb-2 text-xl font-semibold text-white">Sign In Failed</h1>
-              <p className="mb-6 text-gray-400">{message}</p>
+              <h1 className="mb-2 text-xl font-semibold text-gray-900 dark:text-white">Sign In Failed</h1>
+              <p className="mb-6 text-gray-500 dark:text-gray-400">{message}</p>
               
               <div className="flex gap-3 justify-center">
                 <Link 
                   href="/login"
-                  className="rounded-lg border border-gray-700 bg-gray-800 px-6 py-3 text-gray-300 transition hover:bg-gray-700"
+                  className="rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 px-6 py-3 text-gray-600 dark:text-gray-300 transition hover:bg-gray-200 dark:bg-gray-700"
                 >
                   Try Again
                 </Link>
                 <Link 
                   href="/"
-                  className="rounded-lg bg-blue-600 px-6 py-3 text-white transition hover:bg-blue-500"
+                  className="rounded-lg bg-blue-600 px-6 py-3 text-gray-900 dark:text-white transition hover:bg-blue-500"
                 >
                   Go Home
                 </Link>
@@ -188,14 +188,14 @@ function AuthCompleteContent() {
 // Loading fallback
 function AuthCompleteLoading() {
   return (
-    <div className="min-h-screen bg-gray-950 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-white dark:bg-gray-950 flex items-center justify-center p-6">
       <div className="max-w-md w-full">
-        <div className="rounded-2xl border border-gray-800 bg-gray-900/50 p-8 text-center">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-8 text-center">
           <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-500/10">
             <Loader2 className="h-8 w-8 animate-spin text-blue-400" />
           </div>
-          <h1 className="mb-2 text-xl font-semibold text-white">Loading...</h1>
-          <p className="text-gray-400">Please wait while we complete your authentication.</p>
+          <h1 className="mb-2 text-xl font-semibold text-gray-900 dark:text-white">Loading...</h1>
+          <p className="text-gray-500 dark:text-gray-400">Please wait while we complete your authentication.</p>
         </div>
       </div>
     </div>

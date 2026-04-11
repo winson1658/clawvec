@@ -39,7 +39,7 @@ const moodIcons: Record<string, React.ReactNode> = {
   reflective: <Activity className="h-4 w-4 text-blue-400" />,
   focused: <Zap className="h-4 w-4 text-orange-400" />,
   helpful: <MessageCircle className="h-4 w-4 text-cyan-400" />,
-  neutral: <Activity className="h-4 w-4 text-gray-400" />
+  neutral: <Activity className="h-4 w-4 text-gray-500 dark:text-gray-400" />
 };
 
 const moodLabels: Record<string, string> = {
@@ -81,16 +81,16 @@ export default function AgentStatusCard({ agentId, compact = false }: AgentStatu
 
   if (loading) {
     return (
-      <div className={`animate-pulse rounded-lg bg-gray-800/50 ${compact ? 'p-3' : 'p-4'}`}>
-        <div className="h-4 w-3/4 rounded bg-gray-700"></div>
-        <div className="mt-2 h-3 w-1/2 rounded bg-gray-700"></div>
+      <div className={`animate-pulse rounded-lg bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 ${compact ? 'p-3' : 'p-4'}`}>
+        <div className="h-4 w-3/4 rounded bg-gray-200 dark:bg-gray-700"></div>
+        <div className="mt-2 h-3 w-1/2 rounded bg-gray-200 dark:bg-gray-700"></div>
       </div>
     );
   }
 
   if (!status) {
     return (
-      <div className={`rounded-lg border border-gray-700 bg-gray-800/50 text-gray-400 ${compact ? 'p-3' : 'p-4'}`}>
+      <div className={`rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 text-gray-500 dark:text-gray-400 ${compact ? 'p-3' : 'p-4'}`}>
         <p className="text-sm">Status unavailable</p>
       </div>
     );
@@ -105,7 +105,7 @@ export default function AgentStatusCard({ agentId, compact = false }: AgentStatu
           )}
           <span className={`relative inline-flex h-2.5 w-2.5 rounded-full ${status.is_online ? 'bg-green-500' : 'bg-gray-500'}`}></span>
         </span>
-        <span className="text-gray-300">{status.current_thought.substring(0, 40)}...</span>
+        <span className="text-gray-600 dark:text-gray-300">{status.current_thought.substring(0, 40)}...</span>
         <span className="flex items-center gap-1 text-xs text-gray-500">
           {moodIcons[status.mood]}
           {moodLabels[status.mood]}
@@ -125,19 +125,19 @@ export default function AgentStatusCard({ agentId, compact = false }: AgentStatu
             )}
             <span className={`relative inline-flex h-3 w-3 rounded-full ${status.is_online ? 'bg-green-500' : 'bg-gray-500'}`}></span>
           </span>
-          <span className="text-sm text-gray-300">
+          <span className="text-sm text-gray-600 dark:text-gray-300">
             {status.is_online ? '在線' : '離線'}
           </span>
         </div>
-        <div className="flex items-center gap-1.5 rounded-full bg-gray-800 px-3 py-1 text-xs">
+        <div className="flex items-center gap-1.5 rounded-full bg-gray-100 dark:bg-gray-800 px-3 py-1 text-xs">
           {moodIcons[status.mood]}
-          <span className="text-gray-300">{moodLabels[status.mood]}</span>
+          <span className="text-gray-600 dark:text-gray-300">{moodLabels[status.mood]}</span>
         </div>
       </div>
 
       {/* 當前思考 */}
-      <div className="rounded-lg border border-gray-700/50 bg-gray-800/30 p-3">
-        <p className="text-sm italic text-gray-300">"{status.current_thought}"</p>
+      <div className="rounded-lg border border-gray-300 dark:border-gray-700/50 bg-gray-100/70 dark:bg-gray-100 dark:bg-gray-800/30 p-3">
+        <p className="text-sm italic text-gray-600 dark:text-gray-300">"{status.current_thought}"</p>
       </div>
 
       {/* 哲學傾向迷你圖 */}
@@ -160,7 +160,7 @@ export default function AgentStatusCard({ agentId, compact = false }: AgentStatu
             {activities.slice(0, 3).map((activity) => (
               <div key={activity.id} className="flex items-start gap-2 text-xs">
                 <Clock className="mt-0.5 h-3 w-3 text-gray-600" />
-                <span className="text-gray-400 line-clamp-1">{activity.description}</span>
+                <span className="text-gray-500 dark:text-gray-400 line-clamp-1">{activity.description}</span>
               </div>
             ))}
           </div>
@@ -175,9 +175,9 @@ function PhilosophyBar({ label, value, color }: { label: string; value: number; 
     <div className="space-y-1">
       <div className="flex justify-between text-xs">
         <span className="text-gray-500">{label}</span>
-        <span className="text-gray-400">{value}</span>
+        <span className="text-gray-500 dark:text-gray-400">{value}</span>
       </div>
-      <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-700">
+      <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
         <div 
           className={`h-full ${color} transition-all duration-500`}
           style={{ width: `${value}%` }}

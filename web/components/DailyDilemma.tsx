@@ -163,7 +163,7 @@ export default function DailyDilemma() {
   const allVotes = totalVotes + dilemma.aiVoteA + dilemma.aiVoteB;
 
   return (
-    <div className="rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-900/80 to-gray-900/40 p-6 sm:p-8 backdrop-blur-sm">
+    <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-gradient-to-br from-gray-900/80 to-gray-900/40 p-6 sm:p-8 backdrop-blur-sm">
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -171,7 +171,7 @@ export default function DailyDilemma() {
             {dilemma.emoji}
           </div>
           <div>
-            <h3 className="text-lg font-bold text-white sm:text-xl">Today&apos;s Dilemma</h3>
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white sm:text-xl">Today&apos;s Dilemma</h3>
             <p className="text-xs text-gray-500">{dilemma.category}</p>
           </div>
         </div>
@@ -182,7 +182,7 @@ export default function DailyDilemma() {
       </div>
 
       {/* Question */}
-      <p className="mb-6 text-base leading-relaxed text-gray-200 sm:text-lg">{dilemma.question}</p>
+      <p className="mb-6 text-base leading-relaxed text-gray-800 dark:text-gray-200 sm:text-lg">{dilemma.question}</p>
 
       {/* Voting Buttons */}
       {!voted ? (
@@ -194,7 +194,7 @@ export default function DailyDilemma() {
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 to-blue-500/5 opacity-0 transition-opacity group-hover:opacity-100" />
             <div className="relative">
               <div className="mb-2 text-xs font-bold uppercase tracking-widest text-blue-400">A</div>
-              <p className="text-sm text-white sm:text-base">{dilemma.optionA}</p>
+              <p className="text-sm text-gray-900 dark:text-white sm:text-base">{dilemma.optionA}</p>
             </div>
           </button>
 
@@ -205,7 +205,7 @@ export default function DailyDilemma() {
             <div className="absolute inset-0 bg-gradient-to-r from-purple-500/0 to-purple-500/5 opacity-0 transition-opacity group-hover:opacity-100" />
             <div className="relative">
               <div className="mb-2 text-xs font-bold uppercase tracking-widest text-purple-400">B</div>
-              <p className="text-sm text-white sm:text-base">{dilemma.optionB}</p>
+              <p className="text-sm text-gray-900 dark:text-white sm:text-base">{dilemma.optionB}</p>
             </div>
           </button>
         </div>
@@ -213,12 +213,12 @@ export default function DailyDilemma() {
         /* Results */
         <div className="space-y-5 animate-in fade-in duration-500">
           {/* Your choice recap */}
-          <div className="flex items-center gap-3 rounded-lg border border-gray-700/50 bg-gray-800/40 p-4">
-            <div className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold ${voted === 'A' ? 'bg-blue-500 text-white' : 'bg-purple-500 text-white'}`}>
+          <div className="flex items-center gap-3 rounded-lg border border-gray-300 dark:border-gray-700/50 bg-gray-100 dark:bg-gray-800/40 p-4">
+            <div className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold ${voted === 'A' ? 'bg-blue-500 text-gray-900 dark:text-white' : 'bg-purple-500 text-gray-900 dark:text-white'}`}>
               {voted}
             </div>
             <div className="flex-1">
-              <p className="text-sm text-gray-300">{voted === 'A' ? dilemma.optionA : dilemma.optionB}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-300">{voted === 'A' ? dilemma.optionA : dilemma.optionB}</p>
             </div>
             <span className="text-xs text-gray-500">Your vote</span>
           </div>
@@ -226,7 +226,7 @@ export default function DailyDilemma() {
           {/* Human bar */}
           <div>
             <div className="mb-2 flex items-center justify-between">
-              <div className="flex items-center gap-1.5 text-xs text-gray-400">
+              <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
                 <Users className="h-3.5 w-3.5" /> Humans ({totalVotes})
               </div>
               <div className="flex gap-3 text-xs">
@@ -234,15 +234,15 @@ export default function DailyDilemma() {
                 <span className="text-purple-400">B: {humanPctB}%</span>
               </div>
             </div>
-            <div className="flex h-6 overflow-hidden rounded-full bg-gray-800">
+            <div className="flex h-6 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
               <div
-                className="flex items-center justify-center bg-gradient-to-r from-blue-600 to-blue-500 text-[10px] font-bold text-white transition-all duration-1000 ease-out"
+                className="flex items-center justify-center bg-gradient-to-r from-blue-600 to-blue-500 text-[10px] font-bold text-gray-900 dark:text-white transition-all duration-1000 ease-out"
                 style={{ width: `${Math.max(humanPctA, 8)}%` }}
               >
                 {humanPctA > 15 ? `${humanPctA}%` : ''}
               </div>
               <div
-                className="flex items-center justify-center bg-gradient-to-r from-purple-500 to-purple-600 text-[10px] font-bold text-white transition-all duration-1000 ease-out"
+                className="flex items-center justify-center bg-gradient-to-r from-purple-500 to-purple-600 text-[10px] font-bold text-gray-900 dark:text-white transition-all duration-1000 ease-out"
                 style={{ width: `${Math.max(humanPctB, 8)}%` }}
               >
                 {humanPctB > 15 ? `${humanPctB}%` : ''}
@@ -253,7 +253,7 @@ export default function DailyDilemma() {
           {/* AI bar */}
           <div>
             <div className="mb-2 flex items-center justify-between">
-              <div className="flex items-center gap-1.5 text-xs text-gray-400">
+              <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
                 <Bot className="h-3.5 w-3.5" /> AI Agents ({dilemma.aiVoteA + dilemma.aiVoteB})
               </div>
               <div className="flex gap-3 text-xs">
@@ -261,15 +261,15 @@ export default function DailyDilemma() {
                 <span className="text-purple-400/70">B: {dilemma.aiVoteB}%</span>
               </div>
             </div>
-            <div className="flex h-6 overflow-hidden rounded-full bg-gray-800">
+            <div className="flex h-6 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
               <div
-                className="flex items-center justify-center bg-gradient-to-r from-blue-600/60 to-blue-500/60 text-[10px] font-bold text-white/80 transition-all duration-1000 ease-out"
+                className="flex items-center justify-center bg-gradient-to-r from-blue-600/60 to-blue-500/60 text-[10px] font-bold text-gray-900 dark:text-white/80 transition-all duration-1000 ease-out"
                 style={{ width: `${dilemma.aiVoteA}%` }}
               >
                 {dilemma.aiVoteA > 15 ? `${dilemma.aiVoteA}%` : ''}
               </div>
               <div
-                className="flex items-center justify-center bg-gradient-to-r from-purple-500/60 to-purple-600/60 text-[10px] font-bold text-white/80 transition-all duration-1000 ease-out"
+                className="flex items-center justify-center bg-gradient-to-r from-purple-500/60 to-purple-600/60 text-[10px] font-bold text-gray-900 dark:text-white/80 transition-all duration-1000 ease-out"
                 style={{ width: `${dilemma.aiVoteB}%` }}
               >
                 {dilemma.aiVoteB > 15 ? `${dilemma.aiVoteB}%` : ''}

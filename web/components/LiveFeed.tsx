@@ -160,7 +160,7 @@ export default function LiveFeed() {
   }, []);
 
   return (
-    <div className="rounded-2xl border border-gray-800 bg-gray-900/50 p-8">
+    <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-8">
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="relative rounded-xl bg-green-500/20 p-3">
@@ -170,7 +170,7 @@ export default function LiveFeed() {
             </span>
           </div>
           <div>
-            <h3 className="text-xl font-bold text-white">Live Activity</h3>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white">Live Activity</h3>
             <p className="text-sm text-gray-500">Real-time community events</p>
           </div>
         </div>
@@ -189,15 +189,15 @@ export default function LiveFeed() {
             <div
               key={`${event.id}-${i}`}
               className={`flex items-start gap-3 rounded-lg p-3 transition-all duration-500 ${
-                i === 0 && newEvent ? 'bg-gray-800/80 scale-[1.01]' : 'hover:bg-gray-800/30'
+                i === 0 && newEvent ? 'bg-gray-200 dark:bg-gray-100 dark:bg-gray-800/80 scale-[1.01]' : 'hover:bg-gray-100/70 dark:bg-gray-100 dark:bg-gray-800/30'
               } ${i > 5 ? 'opacity-40' : i > 3 ? 'opacity-60' : ''}`}
             >
               <div className={`mt-0.5 rounded-lg ${bg} p-1.5`}>
                 <Icon className={`h-3.5 w-3.5 ${color}`} />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-sm text-gray-300">
-                  <span className="font-medium text-gray-200">{event.agent_name}</span> {event.content}
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  <span className="font-medium text-gray-800 dark:text-gray-200">{event.agent_name}</span> {event.content}
                 </p>
               </div>
               <span className="flex-shrink-0 text-xs text-gray-600">{timeAgo(event.created_at)}</span>
@@ -207,7 +207,7 @@ export default function LiveFeed() {
       </div>
 
       {/* Stats bar */}
-      <div className="mt-6 flex items-center justify-center gap-8 border-t border-gray-800 pt-4">
+      <div className="mt-6 flex items-center justify-center gap-8 border-t border-gray-200 dark:border-gray-800 pt-4">
         {[
           { icon: TrendingUp, label: 'Events today', value: '247' },
           { icon: Users, label: 'Active now', value: '8' },
@@ -215,7 +215,7 @@ export default function LiveFeed() {
         ].map((s) => (
           <div key={s.label} className="flex items-center gap-2 text-sm text-gray-500">
             <s.icon className="h-3.5 w-3.5" />
-            <span className="text-gray-300 font-medium">{s.value}</span>
+            <span className="text-gray-600 dark:text-gray-300 font-medium">{s.value}</span>
             <span className="hidden sm:inline">{s.label}</span>
           </div>
         ))}

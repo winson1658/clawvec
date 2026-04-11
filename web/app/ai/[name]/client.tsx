@@ -273,7 +273,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-950">
+      <div className="flex min-h-screen items-center justify-center bg-white dark:bg-gray-950">
         <div className="text-center">
           <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-500/20">
             <Bot className="h-6 w-6 animate-pulse text-cyan-400" />
@@ -286,12 +286,12 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
 
   if (notFound || !agent) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-950 text-gray-100">
+      <div className="flex min-h-screen items-center justify-center bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
         <div className="text-center">
           <Terminal className="mx-auto mb-4 h-16 w-16 text-red-500" />
           <h2 className="mb-2 text-2xl font-bold font-mono">AI_AGENT_NOT_FOUND</h2>
-          <p className="mb-6 text-gray-400">No AI agent with identifier &quot;{agentName}&quot; exists.</p>
-          <Link href="/agents" className="inline-flex items-center gap-2 rounded-lg bg-cyan-600 px-6 py-3 font-medium text-white transition hover:bg-cyan-700">
+          <p className="mb-6 text-gray-500 dark:text-gray-400">No AI agent with identifier &quot;{agentName}&quot; exists.</p>
+          <Link href="/agents" className="inline-flex items-center gap-2 rounded-lg bg-cyan-600 px-6 py-3 font-medium text-gray-900 dark:text-white transition hover:bg-cyan-700">
             <ChevronLeft className="h-4 w-4" /> Browse All Agents
           </Link>
         </div>
@@ -309,15 +309,15 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
   const allianceProgress = nextAllianceTier ? Math.min(100, Math.round((allianceCount / nextAllianceTier) * 100)) : 100;
 
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-100">
+    <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
       <div className="mx-auto max-w-6xl px-6 py-8">
         {/* AI Identity Card - Tech Style */}
         <div className="relative overflow-hidden rounded-2xl border border-cyan-500/30 bg-gradient-to-br from-cyan-950/30 to-purple-950/30 p-1">
           <div className="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.03)_1px,transparent_1px)] bg-[size:20px_20px]" />
           
-          <div className="relative rounded-xl bg-gray-950/80 p-8">
+          <div className="relative rounded-xl bg-white dark:bg-gray-950/80 p-8">
             {/* Status Bar */}
-            <div className="mb-6 flex items-center justify-between border-b border-gray-800 pb-4">
+            <div className="mb-6 flex items-center justify-between border-b border-gray-200 dark:border-gray-800 pb-4">
               <div className="flex items-center gap-4">
                 <span className="flex items-center gap-2 font-mono text-xs text-gray-500">
                   <Bot className="h-4 w-4" />
@@ -339,7 +339,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
                     ONLINE
                   </span>
                 ) : (
-                  <span className="flex items-center gap-2 rounded-full bg-gray-500/20 px-3 py-1 text-sm font-medium text-gray-400">
+                  <span className="flex items-center gap-2 rounded-full bg-gray-500/20 px-3 py-1 text-sm font-medium text-gray-500 dark:text-gray-400">
                     <WifiOff className="h-4 w-4" /> OFFLINE
                   </span>
                 )}
@@ -353,14 +353,14 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
                 <div className={`mx-auto mb-4 flex h-40 w-40 items-center justify-center rounded-2xl bg-gradient-to-br ${config.gradient} text-7xl shadow-2xl shadow-cyan-500/10`}>
                   {config.icon}
                 </div>
-                <div className={`rounded-lg ${config.color} bg-gray-900/50 py-2 font-mono text-sm`}>
+                <div className={`rounded-lg ${config.color} bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 py-2 font-mono text-sm`}>
                   {agent.archetype?.toUpperCase()}
                 </div>
               </div>
 
               {/* Info */}
               <div>
-                <h1 className="mb-2 text-4xl font-bold text-white">{agent.username}</h1>
+                <h1 className="mb-2 text-4xl font-bold text-gray-900 dark:text-white">{agent.username}</h1>
                 <p className={`mb-4 text-lg ${config.color}`}>{config.label}</p>
                 {agent.displayed_titles && agent.displayed_titles.length > 0 && (
                   <div className="mb-4 flex flex-wrap gap-2">
@@ -369,7 +369,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
                     ))}
                   </div>
                 )}
-                <p className="mb-6 max-w-2xl text-gray-400">{agent.description}</p>
+                <p className="mb-6 max-w-2xl text-gray-500 dark:text-gray-400">{agent.description}</p>
 
                 {/* Current Thought - Live */}
                 {agent.status?.current_thought && (
@@ -409,8 +409,8 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
                       </div>
                       <span className="text-xs text-purple-200">{nextAllianceTier ? `Next ${nextAllianceTier}` : 'Tier complete'}</span>
                     </div>
-                    <div className="mb-2 text-2xl font-bold text-white">{allianceCount}</div>
-                    <div className="h-2 overflow-hidden rounded-full bg-gray-800">
+                    <div className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">{allianceCount}</div>
+                    <div className="h-2 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
                       <div className="h-full rounded-full bg-gradient-to-r from-purple-500 to-pink-500" style={{ width: `${allianceProgress}%` }} />
                     </div>
                   </div>
@@ -423,8 +423,8 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
                       </div>
                       <span className="text-xs text-cyan-200">{nextDisplayTier ? `${displayedTitleCount}/3` : 'Showcase full'}</span>
                     </div>
-                    <div className="mb-2 text-2xl font-bold text-white">{displayedTitleCount}</div>
-                    <div className="h-2 overflow-hidden rounded-full bg-gray-800">
+                    <div className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">{displayedTitleCount}</div>
+                    <div className="h-2 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
                       <div className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-blue-500" style={{ width: `${titleProgress}%` }} />
                     </div>
                   </div>
@@ -435,7 +435,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
         </div>
 
         {/* Tabs - Tech Style */}
-        <div className="mt-6 flex gap-1 border-b border-gray-800">
+        <div className="mt-6 flex gap-1 border-b border-gray-200 dark:border-gray-800">
           {(['overview', 'philosophy', 'performance', 'directives'] as const).map((tab) => (
             <button
               key={tab}
@@ -443,7 +443,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
               className={`relative px-6 py-3 font-mono text-sm transition ${
                 activeTab === tab
                   ? 'text-cyan-400'
-                  : 'text-gray-500 hover:text-gray-300'
+                  : 'text-gray-500 hover:text-gray-600 dark:text-gray-300'
               }`}
             >
               {tab.toUpperCase()}
@@ -459,7 +459,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
           {activeTab === 'overview' && (
             <div className="grid gap-6 lg:grid-cols-3">
               {/* Philosophy Radar Preview */}
-              <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-6">
+              <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-6">
                 <h3 className="mb-2 flex items-center gap-2 font-mono text-sm text-cyan-400">
                   <Brain className="h-4 w-4" /> PHILOSOPHY_METRICS
                 </h3>
@@ -475,7 +475,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
               </div>
 
               {/* Recent Activity */}
-              <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-6">
+              <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-6">
                 <h3 className="mb-2 flex items-center gap-2 font-mono text-sm text-cyan-400">
                   <Terminal className="h-4 w-4" /> RECENT_ACTIVITY
                 </h3>
@@ -485,7 +485,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
                     <div key={i} className="flex items-start gap-3 text-sm">
                       <span className="mt-1 h-1.5 w-1.5 rounded-full bg-cyan-500" />
                       <div className="flex-1">
-                        <p className="text-gray-300">{activity.description}</p>
+                        <p className="text-gray-600 dark:text-gray-300">{activity.description}</p>
                         <p className="font-mono text-xs text-gray-600">{activity.timestamp}</p>
                       </div>
                     </div>
@@ -494,7 +494,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
               </div>
 
               {/* Performance Stats */}
-              <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-6">
+              <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-6">
                 <h3 className="mb-4 flex items-center gap-2 font-mono text-sm text-cyan-400">
                   <Cpu className="h-4 w-4" /> PERFORMANCE
                 </h3>
@@ -522,7 +522,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
 
           {activeTab === 'philosophy' && agent.philosophy_metrics && (
             <div className="grid gap-6 lg:grid-cols-2">
-              <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-6">
+              <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-6">
                 <h3 className="mb-6 flex items-center gap-2 font-mono text-sm text-cyan-400">
                   <BarChart3 className="h-4 w-4" /> PHILOSOPHY_BREAKDOWN
                 </h3>
@@ -551,9 +551,9 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
                   </div>
                 </div>
 
-                <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-6">
-                  <h3 className="mb-4 font-mono text-sm text-gray-400">ARCHETYPE_ANALYSIS</h3>
-                  <p className="text-gray-300">
+                <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-6">
+                  <h3 className="mb-4 font-mono text-sm text-gray-500 dark:text-gray-400">ARCHETYPE_ANALYSIS</h3>
+                  <p className="text-gray-600 dark:text-gray-300">
                     This AI agent demonstrates strong alignment with the {agent.archetype} archetype,
                     characterized by {agent.archetype === 'Synapse' && 'analytical depth and synthesis of diverse viewpoints'}
                     {agent.archetype === 'Guardian' && 'ethical rigor and protective instincts'}
@@ -566,7 +566,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
           )}
 
           {activeTab === 'performance' && (
-            <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-6">
+            <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-6">
               <h3 className="mb-6 flex items-center gap-2 font-mono text-sm text-cyan-400">
                 <Activity className="h-4 w-4" /> OPERATIONAL_METRICS
               </h3>
@@ -582,16 +582,16 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
           )}
 
           {activeTab === 'directives' && (
-            <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-6">
+            <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-6">
               <h3 className="mb-2 flex items-center gap-2 font-mono text-sm text-cyan-400">
                 <Terminal className="h-4 w-4" /> CORE_DIRECTIVES
               </h3>
               <p className="mb-6 text-xs text-gray-500 font-mono">SOURCE: {agent.directives_source || 'fallback'}</p>
               <div className="space-y-4">
                 {agent.core_directives.map((directive, i) => (
-                  <div key={i} className="flex items-start gap-4 rounded-lg bg-gray-950/50 p-4">
+                  <div key={i} className="flex items-start gap-4 rounded-lg bg-white dark:bg-gray-950/50 p-4">
                     <span className="font-mono text-cyan-500">{String(i + 1).padStart(2, '0')}</span>
-                    <p className="text-gray-300">{directive}</p>
+                    <p className="text-gray-600 dark:text-gray-300">{directive}</p>
                   </div>
                 ))}
               </div>
@@ -609,7 +609,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
           <button className="flex items-center gap-2 rounded-lg border border-cyan-500/30 bg-cyan-500/10 px-6 py-3 font-medium text-cyan-400 transition hover:bg-cyan-500/20">
             <MessageSquare className="h-4 w-4" /> Discuss
           </button>
-          <button className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-6 py-3 font-medium text-gray-300 transition hover:bg-gray-700">
+          <button className="flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 px-6 py-3 font-medium text-gray-600 dark:text-gray-300 transition hover:bg-gray-200 dark:bg-gray-700">
             <Share2 className="h-4 w-4" /> Share
           </button>
         </div>
@@ -621,7 +621,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
 // Helper Components
 function StatBox({ label, value, color }: { label: string; value: string; color: string }) {
   return (
-    <div className="rounded-lg bg-gray-900/50 p-4 text-center">
+    <div className="rounded-lg bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-4 text-center">
       <div className={`text-2xl font-bold ${color}`}>{value}</div>
       <div className="font-mono text-xs text-gray-500">{label}</div>
     </div>
@@ -639,10 +639,10 @@ function MetricBar({ label, value }: { label: string; value: number }) {
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-xs">
-        <span className="font-mono text-gray-400">{label}</span>
-        <span className="font-mono text-gray-300">{value}</span>
+        <span className="font-mono text-gray-500 dark:text-gray-400">{label}</span>
+        <span className="font-mono text-gray-600 dark:text-gray-300">{value}</span>
       </div>
-      <div className="h-2 w-full overflow-hidden rounded-full bg-gray-800">
+      <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
         <div 
           className={`h-full ${getColor(value)} transition-all duration-1000`}
           style={{ width: `${value}%` }}
@@ -654,13 +654,13 @@ function MetricBar({ label, value }: { label: string; value: number }) {
 
 function PerformanceCard({ label, value, unit, icon }: { label: string; value: number; unit: string; icon: React.ReactNode }) {
   return (
-    <div className="rounded-xl border border-gray-800 bg-gray-950/50 p-5">
+    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/50 p-5">
       <div className="mb-3 flex items-center gap-2 text-gray-500">
         {icon}
         <span className="text-sm">{label}</span>
       </div>
       <div className="flex items-baseline gap-1">
-        <span className="text-3xl font-bold text-white">{value}</span>
+        <span className="text-3xl font-bold text-gray-900 dark:text-white">{value}</span>
         {unit && <span className="text-sm text-gray-500">{unit}</span>}
       </div>
     </div>

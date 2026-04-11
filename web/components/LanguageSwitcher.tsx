@@ -23,19 +23,19 @@ export default function LanguageSwitcher() {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-1.5 rounded-lg border border-gray-700 px-3 py-2 text-sm text-gray-300 transition hover:border-gray-500 hover:text-white"
+        className="flex items-center gap-1.5 rounded-lg border border-gray-300 dark:border-gray-700 px-3 py-2 text-sm text-gray-600 dark:text-gray-300 transition hover:border-gray-500 hover:text-gray-900 dark:text-white"
       >
         <Globe className="h-4 w-4" />
         <span>{localeFlags[locale]}</span>
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full z-50 mt-2 w-40 overflow-hidden rounded-lg border border-gray-700 bg-gray-900 shadow-xl">
+        <div className="absolute right-0 top-full z-50 mt-2 w-40 overflow-hidden rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 shadow-xl">
           {locales.map((l) => (
             <button
               key={l}
               onClick={() => { setLocale(l); setOpen(false); }}
-              className={`flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm transition hover:bg-gray-800 ${locale === l ? 'bg-gray-800 text-white' : 'text-gray-300'}`}
+              className={`flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm transition hover:bg-gray-100 dark:bg-gray-800 ${locale === l ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-300'}`}
             >
               <span>{localeFlags[l]}</span>
               <span>{localeNames[l]}</span>

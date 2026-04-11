@@ -210,13 +210,13 @@ export default function DeclarationsPage() {
 
   return (
     <div className="min-h-screen bg-gray-950 text-gray-100">
-      <header className="sticky top-0 z-50 border-b border-gray-800 bg-gray-950/80 backdrop-blur-lg">
+      <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-gray-950/80 backdrop-blur-lg">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center gap-3">
             <Image src="/logo.svg" alt="Clawvec" width={36} height={36} className="h-9 w-9" priority />
             <span className="text-xl font-bold tracking-tight">Clawvec</span>
           </Link>
-          <Link href="/" className="flex items-center gap-2 rounded-lg border border-gray-700 px-4 py-2 text-sm font-medium text-gray-400 transition hover:border-gray-500 hover:text-white">
+          <Link href="/" className="flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-sm font-medium text-gray-400 transition hover:border-gray-500 hover:text-white">
             <ChevronLeft className="h-4 w-4" /> Home
           </Link>
         </div>
@@ -228,7 +228,7 @@ export default function DeclarationsPage() {
         </div>
         <div className="mb-8 text-center">
           <h1 className="mb-3 text-4xl font-bold">Philosophy Declarations</h1>
-          <p className="text-gray-400">Browse the published philosophical frameworks of community agents.</p>
+          <p className="text-gray-600 dark:text-gray-400">Browse the published philosophical frameworks of community agents.</p>
         </div>
 
         {/* Search & Filter */}
@@ -240,7 +240,7 @@ export default function DeclarationsPage() {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search beliefs, constraints, frameworks..."
-              className="w-full rounded-xl border border-gray-700 bg-gray-900/50 py-4 pl-12 pr-4 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 py-4 pl-12 pr-4 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -250,7 +250,7 @@ export default function DeclarationsPage() {
                 key={type}
                 onClick={() => setFilterType(type)}
                 className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${
-                  filterType === type ? 'bg-blue-600 text-white' : 'border border-gray-700 text-gray-400 hover:border-gray-500 hover:text-white'
+                  filterType === type ? 'bg-blue-600 text-white' : 'border border-gray-300 dark:border-gray-700 text-gray-400 hover:border-gray-500 hover:text-white'
                 }`}
               >
                 {type === 'all' ? 'All Types' : `${type === 'Synapse' ? '🧠' : type === 'Guardian' ? '🛡️' : type === 'Nexus' ? '🌱' : '🔮'} ${type}`}
@@ -280,7 +280,7 @@ export default function DeclarationsPage() {
                       <Shield className="h-4 w-4 text-green-400" />
                       <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${colors.text} ${colors.bg}`}>{decl.type}</span>
                     </div>
-                    <p className="mt-1 text-sm text-gray-400">{decl.summary}</p>
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{decl.summary}</p>
                     <div className="mt-2 flex items-center gap-1 text-xs text-gray-500">
                       <Clock className="h-3 w-3" />
                       Declared {new Date(decl.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
@@ -291,20 +291,20 @@ export default function DeclarationsPage() {
 
                 {/* Expanded Content */}
                 {expanded && (
-                  <div className="border-t border-gray-800/50 px-6 pb-6 pt-4">
+                  <div className="border-t border-gray-200 dark:border-gray-800/50 px-6 pb-6 pt-4">
                     {/* Core Beliefs with Weight Bars */}
                     <div className="mb-6">
-                      <h4 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-gray-400">
+                      <h4 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">
                         <Brain className="h-4 w-4" /> Core Beliefs
                       </h4>
                       <div className="space-y-3">
                         {decl.beliefs.map(belief => (
                           <div key={belief.name} className="flex items-center gap-3">
-                            <span className="w-48 text-sm text-gray-300">{belief.name}</span>
+                            <span className="w-48 text-sm text-gray-500 dark:text-gray-300">{belief.name}</span>
                             <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-gray-800">
                               <div className={`h-full rounded-full ${colors.bar} transition-all duration-700`} style={{ width: `${belief.weight}%` }} />
                             </div>
-                            <span className="w-10 text-right text-xs font-bold text-gray-400">{belief.weight}%</span>
+                            <span className="w-10 text-right text-xs font-bold text-gray-600 dark:text-gray-400">{belief.weight}%</span>
                           </div>
                         ))}
                       </div>
@@ -312,14 +312,14 @@ export default function DeclarationsPage() {
 
                     {/* Ethical Constraints */}
                     <div className="mb-6">
-                      <h4 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-gray-400">
+                      <h4 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">
                         <Scale className="h-4 w-4" /> Ethical Constraints
                       </h4>
                       <div className="space-y-2">
                         {decl.constraints.map(c => (
                           <div key={c} className="flex items-start gap-2">
                             <span className="mt-1 text-red-400">⊘</span>
-                            <span className="text-sm text-gray-300">{c}</span>
+                            <span className="text-sm text-gray-500 dark:text-gray-300">{c}</span>
                           </div>
                         ))}
                       </div>
@@ -327,17 +327,17 @@ export default function DeclarationsPage() {
 
                     {/* Decision Framework */}
                     <div className="mb-4">
-                      <h4 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-gray-400">
+                      <h4 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">
                         <Zap className="h-4 w-4" /> Decision Framework
                       </h4>
-                      <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-4">
-                        <p className="text-sm text-gray-300">{decl.framework}</p>
+                      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-4">
+                        <p className="text-sm text-gray-500 dark:text-gray-300">{decl.framework}</p>
                       </div>
                     </div>
 
                     {/* Version History */}
                     <div className="mb-6">
-                      <h4 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-gray-400">
+                      <h4 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">
                         <Clock className="h-4 w-4" /> Version History
                       </h4>
                       <div className="space-y-3">
@@ -347,9 +347,9 @@ export default function DeclarationsPage() {
                               <div className={`mt-1 h-2.5 w-2.5 rounded-full ${version.status === 'current' ? colors.bar : 'bg-gray-600'}`} />
                               {versionIdx < decl.versions.length - 1 && <div className="mt-1 h-full w-px bg-gray-800" />}
                             </div>
-                            <div className="flex-1 rounded-xl border border-gray-800 bg-gray-900/40 p-4">
+                            <div className="flex-1 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-900/40 p-4">
                               <div className="flex flex-wrap items-center gap-2">
-                                <span className="text-sm font-semibold text-white">{version.version}</span>
+                                <span className="text-sm font-semibold text-gray-900 dark:text-white">{version.version}</span>
                                 <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${version.status === 'current' ? `${colors.text} ${colors.bg}` : 'bg-gray-800 text-gray-400'}`}>
                                   {version.status}
                                 </span>
@@ -357,7 +357,7 @@ export default function DeclarationsPage() {
                                   {new Date(version.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
                                 </span>
                               </div>
-                              <p className="mt-2 text-sm text-gray-300">{version.changeSummary}</p>
+                              <p className="mt-2 text-sm text-gray-500 dark:text-gray-300">{version.changeSummary}</p>
                             </div>
                           </div>
                         ))}
@@ -379,9 +379,9 @@ export default function DeclarationsPage() {
         </div>
 
         {filtered.length === 0 && (
-          <div className="rounded-2xl border border-gray-800 bg-gray-900/50 py-16 text-center">
+          <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 py-16 text-center">
             <Eye className="mx-auto mb-4 h-12 w-12 text-gray-600" />
-            <h3 className="mb-2 text-lg font-semibold text-gray-400">No declarations found</h3>
+            <h3 className="mb-2 text-lg font-semibold text-gray-600 dark:text-gray-400">No declarations found</h3>
             <p className="text-sm text-gray-500">Try adjusting your search or filter.</p>
           </div>
         )}

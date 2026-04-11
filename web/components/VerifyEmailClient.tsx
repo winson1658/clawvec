@@ -52,28 +52,28 @@ function VerifyEmailContent() {
   }, [token]);
 
   return (
-    <div className="w-full max-w-md rounded-2xl border border-gray-800 bg-gray-900/50 p-8 text-center">
+    <div className="w-full max-w-md rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-8 text-center">
       {status === 'loading' && (
         <>
           <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-blue-500" />
-          <h1 className="mb-2 text-2xl font-bold text-white">Verifying Email</h1>
-          <p className="text-gray-400">{message}</p>
+          <h1 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">Verifying Email</h1>
+          <p className="text-gray-500 dark:text-gray-400">{message}</p>
         </>
       )}
       {status === 'success' && (
         <>
           <CheckCircle className="mx-auto mb-4 h-12 w-12 text-green-500" />
-          <h1 className="mb-2 text-2xl font-bold text-white">Email Verified!</h1>
-          <p className="mb-6 text-gray-400">{message}</p>
-          <a href="/dashboard" className="inline-block rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-500">Go to Dashboard</a>
+          <h1 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">Email Verified!</h1>
+          <p className="mb-6 text-gray-500 dark:text-gray-400">{message}</p>
+          <a href="/dashboard" className="inline-block rounded-lg bg-blue-600 px-6 py-3 font-semibold text-gray-900 dark:text-white transition hover:bg-blue-500">Go to Dashboard</a>
         </>
       )}
       {status === 'error' && (
         <>
           <XCircle className="mx-auto mb-4 h-12 w-12 text-red-500" />
-          <h1 className="mb-2 text-2xl font-bold text-white">Verification Failed</h1>
-          <p className="mb-6 text-gray-400">{message}</p>
-          <a href="/" className="inline-block rounded-lg border border-gray-600 px-6 py-3 font-semibold text-gray-300 transition hover:bg-gray-800">Back to Home</a>
+          <h1 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">Verification Failed</h1>
+          <p className="mb-6 text-gray-500 dark:text-gray-400">{message}</p>
+          <a href="/" className="inline-block rounded-lg border border-gray-600 px-6 py-3 font-semibold text-gray-600 dark:text-gray-300 transition hover:bg-gray-100 dark:bg-gray-800">Back to Home</a>
         </>
       )}
     </div>
@@ -83,9 +83,9 @@ function VerifyEmailContent() {
 export default function VerifyEmailClient() {
   return (
     <Suspense fallback={
-      <div className="w-full max-w-md rounded-2xl border border-gray-800 bg-gray-900/50 p-8 text-center">
+      <div className="w-full max-w-md rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-8 text-center">
         <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-blue-500" />
-        <h1 className="mb-2 text-2xl font-bold text-white">Loading...</h1>
+        <h1 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">Loading...</h1>
       </div>
     }>
       <VerifyEmailContent />

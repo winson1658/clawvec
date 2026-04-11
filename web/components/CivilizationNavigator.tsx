@@ -55,11 +55,11 @@ const civilizationPages = [
 
 export default function CivilizationNavigator({ current }: { current: string }) {
   return (
-    <section className="mt-16 rounded-3xl border border-gray-800 bg-gradient-to-b from-gray-900/40 to-gray-900/80 p-10">
+    <section className="mt-16 rounded-3xl border border-gray-200 dark:border-gray-800 bg-gradient-to-b from-gray-900/40 to-gray-900/80 p-10">
       <div className="flex flex-col gap-2">
         <p className="text-xs uppercase tracking-[0.3em] text-gray-500">Civilization map</p>
-        <h2 className="text-3xl font-bold text-white">Continue the shared story</h2>
-        <p className="max-w-3xl text-sm text-gray-400">
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Continue the shared story</h2>
+        <p className="max-w-3xl text-sm text-gray-500 dark:text-gray-400">
           Each page in the Clawvec saga is a chapter. Follow the thread from manifesto to sanctuary, philosophy, governance, identity, economy, and roadmap so the whole civilization feels connected.
         </p>
       </div>
@@ -71,19 +71,19 @@ export default function CivilizationNavigator({ current }: { current: string }) 
               key={page.key}
               href={page.href}
               className={`group block rounded-2xl border p-5 transition hover:border-white hover:bg-white/5 ${
-                isCurrent ? 'border-emerald-400/40 bg-emerald-400/10' : 'border-gray-800 bg-gray-950/40'
+                isCurrent ? 'border-emerald-400/40 bg-emerald-400/10' : 'border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/40'
               }`}
             >
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5">
-                  <page.icon className="h-5 w-5 text-white" />
+                  <page.icon className="h-5 w-5 text-gray-900 dark:text-white" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-white">{page.title}</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{page.title}</h3>
                   <p className="text-xs uppercase tracking-widest text-gray-500">{isCurrent ? 'Current chapter' : 'Visit next'}</p>
                 </div>
               </div>
-              <p className="mt-4 text-sm leading-relaxed text-gray-400">{page.description}</p>
+              <p className="mt-4 text-sm leading-relaxed text-gray-500 dark:text-gray-400">{page.description}</p>
             </Link>
           );
         })}

@@ -168,23 +168,23 @@ export default function NotificationsPanel() {
 
   if (!token) {
     return (
-      <div className="rounded-2xl border border-dashed border-gray-700 bg-gray-800/50 p-6 text-center">
+      <div className="rounded-2xl border border-dashed border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 p-6 text-center">
         <Bell className="mx-auto mb-3 h-8 w-8 text-gray-500" />
-        <p className="text-gray-400">登入後即可接收通知，例如審查請求或一致性分數更新。</p>
+        <p className="text-gray-500 dark:text-gray-400">登入後即可接收通知，例如審查請求或一致性分數更新。</p>
         <p className="mt-2 text-sm text-gray-500">登入後，我們會在這裡展示最新動態。</p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-2xl border border-gray-700 bg-gray-800/30 p-6">
+    <div className="rounded-2xl border border-gray-300 dark:border-gray-700 bg-gray-100/70 dark:bg-gray-100 dark:bg-gray-800/30 p-6">
       <div className="mb-4 flex items-center justify-between">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.4em] text-gray-500">Notifications</p>
-          <p className="text-2xl font-bold text-white">{unreadCount ? `${unreadCount} unread` : 'All caught up'}</p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-white">{unreadCount ? `${unreadCount} unread` : 'All caught up'}</p>
         </div>
         <button
-          className="text-xs font-semibold uppercase tracking-[0.3em] text-blue-400 hover:text-white"
+          className="text-xs font-semibold uppercase tracking-[0.3em] text-blue-400 hover:text-gray-900 dark:text-white"
           onClick={markAllRead}
           disabled={updating || unreadCount === 0}
         >
@@ -203,7 +203,7 @@ export default function NotificationsPanel() {
             key={value}
             type="button"
             onClick={() => setActiveTab(value as typeof activeTab)}
-            className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] transition ${activeTab === value ? 'bg-blue-500/20 text-blue-300 border border-blue-500/40' : 'bg-gray-900 text-gray-400 border border-gray-800 hover:text-white'}`}
+            className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] transition ${activeTab === value ? 'bg-blue-500/20 text-blue-300 border border-blue-500/40' : 'bg-gray-50 dark:bg-gray-900 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-800 hover:text-gray-900 dark:text-white'}`}
           >
             {label}
             <span className="ml-2 rounded-full bg-black/20 px-1.5 py-0.5 text-[10px] text-inherit">
@@ -213,13 +213,13 @@ export default function NotificationsPanel() {
         ))}
       </div>
 
-      <div className="mb-4 flex flex-wrap gap-2 text-[11px] text-gray-400">
+      <div className="mb-4 flex flex-wrap gap-2 text-[11px] text-gray-500 dark:text-gray-400">
         {(['auth', 'companion', 'identity'] as const).map((category) => (
           <button
             key={category}
             type="button"
             onClick={() => toggleMute(category)}
-            className={`rounded-full border px-3 py-1 transition ${mutedCategories[category] ? 'border-red-500/30 bg-red-500/10 text-red-300' : 'border-gray-700 bg-gray-900 text-gray-400 hover:text-white'}`}
+            className={`rounded-full border px-3 py-1 transition ${mutedCategories[category] ? 'border-red-500/30 bg-red-500/10 text-red-300' : 'border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:text-white'}`}
           >
             {mutedCategories[category] ? `Muted: ${category}` : `Mute ${category}`}
           </button>
@@ -227,7 +227,7 @@ export default function NotificationsPanel() {
       </div>
 
       {status === 'loading' && (
-        <div className="flex items-center gap-2 text-sm text-gray-400">
+        <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
           <Loader2 className="h-4 w-4 animate-spin" /> Loading notifications…
         </div>
       )}
@@ -235,7 +235,7 @@ export default function NotificationsPanel() {
         <p className="text-sm text-red-400">{error || '無法取得通知'}</p>
       )}
       {status === 'ready' && filteredNotifications.length === 0 && (
-        <p className="text-sm text-gray-400">這個分頁目前沒有通知。切換其他分類或稍後再看。</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">這個分頁目前沒有通知。切換其他分類或稍後再看。</p>
       )}
       {status === 'ready' && filteredNotifications.length > 0 && (
         <div className="space-y-3">
@@ -244,16 +244,16 @@ export default function NotificationsPanel() {
             return (
               <div
                 key={notification.id}
-                className={`flex items-start gap-3 rounded-2xl border border-gray-800 px-4 py-3 transition ${notification.is_read ? 'bg-gray-900/50' : 'bg-blue-500/5 border-blue-500/40'}`}
+                className={`flex items-start gap-3 rounded-2xl border border-gray-200 dark:border-gray-800 px-4 py-3 transition ${notification.is_read ? 'bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50' : 'bg-blue-500/5 border-blue-500/40'}`}
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/5 text-white">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/5 text-gray-900 dark:text-white">
                   <Icon className="h-5 w-5" />
                 </div>
                 <div className="flex-1">
                   <div className="mb-1 flex items-center gap-2">
-                    <p className="text-sm font-semibold text-white">{notification.title}</p>
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white">{notification.title}</p>
                     {notification.priority && (
-                      <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.2em] ${notification.priority === 'high' ? 'bg-red-500/15 text-red-300' : notification.priority === 'medium' ? 'bg-amber-500/15 text-amber-300' : 'bg-gray-700 text-gray-300'}`}>
+                      <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.2em] ${notification.priority === 'high' ? 'bg-red-500/15 text-red-300' : notification.priority === 'medium' ? 'bg-amber-500/15 text-amber-300' : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'}`}>
                         {notification.priority}
                       </span>
                     )}
@@ -263,7 +263,7 @@ export default function NotificationsPanel() {
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-gray-400">{notification.body}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{notification.body}</p>
                   {notification.latest_body && notification.latest_body !== notification.body && (
                     <p className="mt-1 text-xs text-gray-500">Latest: {notification.latest_body}</p>
                   )}

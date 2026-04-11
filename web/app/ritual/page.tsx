@@ -269,7 +269,7 @@ export default function RitualPage() {
               transition={{ type: "spring", duration: 1, delay: 0.2 }}
               className="mx-auto mb-8 flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 via-orange-500 to-red-500 shadow-2xl shadow-orange-500/30"
             >
-              <Flame className="h-16 w-16 text-white" />
+              <Flame className="h-16 w-16 text-gray-900 dark:text-white" />
             </motion.div>
 
             {/* Title */}
@@ -344,7 +344,7 @@ export default function RitualPage() {
                   setCompletedSteps([]);
                   setCurrentStep(0);
                 }}
-                className="rounded-xl border border-gray-700 bg-gray-800 px-6 py-4 text-gray-400 transition hover:bg-gray-700 hover:text-gray-300"
+                className="rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-800 px-6 py-4 text-gray-400 transition hover:bg-gray-700 hover:text-gray-300"
               >
                 Restart Ritual
               </button>
@@ -389,7 +389,7 @@ export default function RitualPage() {
             </motion.h1>
 
             {/* Subtitle */}
-            <motion.p variants={itemVariants} className="mb-12 text-lg text-gray-400">
+            <motion.p variants={itemVariants} className="mb-12 text-lg text-gray-600 dark:text-gray-400">
               In this digital world, who are you? What do you believe? Where are your boundaries?
               <br />
               Complete this ritual to establish your unique digital identity.
@@ -402,10 +402,10 @@ export default function RitualPage() {
                   key={step.id}
                   className={`rounded-xl border p-4 text-center transition ${step.borderColor} ${step.bgColor}`}
                 >
-                  <div className={`mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-gray-900/50 ${step.color}`}>
+                  <div className={`mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-white/80 dark:bg-gray-900/50 ${step.color}`}>
                     {step.icon}
                   </div>
-                  <div className="text-xs font-medium text-gray-300">{step.title}</div>
+                  <div className="text-xs font-medium text-gray-500 dark:text-gray-300">{step.title}</div>
                   <div className="text-[10px] text-gray-500">Step {index + 1}</div>
                 </div>
               ))}
@@ -425,7 +425,7 @@ export default function RitualPage() {
                       flex items-center gap-2 rounded-xl border px-4 py-3 transition
                       ${selectedArchetype === archetype.name
                         ? `${archetype.borderColor} ${archetype.bgColor} ${archetype.color}`
-                        : 'border-gray-800 bg-gray-900/50 text-gray-500 hover:border-gray-700 hover:text-gray-400'
+                        : 'border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 text-gray-500 hover:border-gray-300 dark:border-gray-700 hover:text-gray-400'
                       }
                     `}
                   >
@@ -465,7 +465,7 @@ export default function RitualPage() {
   return (
     <div className="min-h-screen bg-gray-950 text-gray-100">
       {/* Top Navigation */}
-      <header className="sticky top-0 z-50 border-b border-gray-800 bg-gray-950/80 backdrop-blur-md">
+      <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-gray-950/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-2 text-gray-400 transition hover:text-white">
@@ -537,25 +537,25 @@ export default function RitualPage() {
           {/* Ritual Quote */}
           <div className="mb-6 flex items-start gap-4">
             <Quote className={`h-8 w-8 shrink-0 ${currentStepData.color}`} />
-            <p className="text-lg italic text-gray-300">
+            <p className="text-lg italic text-gray-500 dark:text-gray-300">
               {currentStepData.ritualText}
             </p>
           </div>
 
           {/* Detailed Description */}
-          <p className="mb-8 leading-relaxed text-gray-400">
+          <p className="mb-8 leading-relaxed text-gray-600 dark:text-gray-400">
             {currentStepData.longDescription}
           </p>
 
           {/* Benefits List */}
           <div className="mb-8">
-            <h3 className="mb-4 flex items-center gap-2 text-sm font-medium text-gray-300">
+            <h3 className="mb-4 flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-300">
               <Target className="h-4 w-4" />
               What you will gain:
             </h3>
             <ul className="grid gap-2 sm:grid-cols-2">
               {currentStepData.benefits.map((benefit, index) => (
-                <li key={index} className="flex items-center gap-2 text-sm text-gray-400">
+                <li key={index} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                   <Check className="h-4 w-4 text-emerald-400" />
                   {benefit}
                 </li>
@@ -564,7 +564,7 @@ export default function RitualPage() {
           </div>
 
           {/* Quote */}
-          <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-4">
+          <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-4">
             <p className="text-sm italic text-gray-500">
               {currentStepData.quote}
             </p>
@@ -606,7 +606,7 @@ export default function RitualPage() {
                 completeRitual();
               }
             }}
-            className="flex items-center gap-2 rounded-xl border border-gray-700 bg-gray-800 px-6 py-4 text-gray-400 transition hover:bg-gray-700 hover:text-gray-300"
+            className="flex items-center gap-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-800 px-6 py-4 text-gray-400 transition hover:bg-gray-700 hover:text-gray-300"
           >
             <Check className="h-5 w-5" />
             {completedSteps.includes(currentStepData.id) ? 'Completed' : 'Mark as Complete'}

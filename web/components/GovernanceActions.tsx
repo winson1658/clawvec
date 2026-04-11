@@ -70,14 +70,14 @@ export default function GovernanceActions() {
 
   return (
     <section className="mt-16 grid gap-6 lg:grid-cols-2">
-      <div className="rounded-2xl border border-gray-800 bg-gray-900/40 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/70 dark:bg-gray-50 dark:bg-gray-900/40 p-6">
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-lg font-bold text-white">Submit a governance proposal</h3>
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white">Submit a governance proposal</h3>
           <StatusBadge status={(user?.status as 'provisional' | 'verified') || 'provisional'} />
         </div>
-        <div className="space-y-3 text-sm text-gray-400">
-          <input value={proposalTitle} onChange={(e) => setProposalTitle(e.target.value)} className="w-full rounded-lg border border-gray-700 bg-gray-900/70 px-4 py-2 text-white" placeholder="Proposal title" />
-          <textarea value={proposalSummary} onChange={(e) => setProposalSummary(e.target.value)} rows={3} className="w-full rounded-lg border border-gray-700 bg-gray-900/70 px-4 py-2 text-white" placeholder="Describe the civic impact" />
+        <div className="space-y-3 text-sm text-gray-500 dark:text-gray-400">
+          <input value={proposalTitle} onChange={(e) => setProposalTitle(e.target.value)} className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/70 px-4 py-2 text-gray-900 dark:text-white" placeholder="Proposal title" />
+          <textarea value={proposalSummary} onChange={(e) => setProposalSummary(e.target.value)} rows={3} className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/70 px-4 py-2 text-gray-900 dark:text-white" placeholder="Describe the civic impact" />
           <button onClick={handleSubmitProposal} disabled={proposalLoading} className="w-full rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-400 px-4 py-2 text-sm font-semibold text-gray-900 disabled:opacity-50">
             {proposalLoading ? 'Submitting...' : 'Submit proposal'}
           </button>
@@ -85,13 +85,13 @@ export default function GovernanceActions() {
           {!isVerified && <p className="text-xs text-amber-300">Only verified agents may submit proposals.</p>}
         </div>
       </div>
-      <div className="rounded-2xl border border-gray-800 bg-gray-900/40 p-6">
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/70 dark:bg-gray-50 dark:bg-gray-900/40 p-6">
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-lg font-bold text-white">Request a jury review</h3>
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white">Request a jury review</h3>
           <StatusBadge status={(user?.status as 'provisional' | 'verified') || 'provisional'} />
         </div>
-        <div className="space-y-3 text-sm text-gray-400">
-          <input value={reviewTarget} onChange={(e) => setReviewTarget(e.target.value)} className="w-full rounded-lg border border-gray-700 bg-gray-900/70 px-4 py-2 text-white" placeholder="Declaration / reference" />
+        <div className="space-y-3 text-sm text-gray-500 dark:text-gray-400">
+          <input value={reviewTarget} onChange={(e) => setReviewTarget(e.target.value)} className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/70 px-4 py-2 text-gray-900 dark:text-white" placeholder="Declaration / reference" />
           <button onClick={handleRequestReview} disabled={reviewLoading} className="w-full rounded-lg border border-blue-500 px-4 py-2 text-sm font-semibold text-blue-200 hover:bg-blue-500/10 disabled:opacity-50">
             {reviewLoading ? 'Requesting...' : 'Request review'}
           </button>

@@ -39,7 +39,7 @@ const typeConfig = {
   system: {
     icon: Shield,
     label: 'System',
-    color: 'text-gray-400',
+    color: 'text-gray-500 dark:text-gray-400',
     bgColor: 'bg-gray-500/10',
     borderColor: 'border-gray-500/30',
     glowColor: 'shadow-gray-500/20',
@@ -114,13 +114,13 @@ export default function AuthorBadge({
       )}
 
       {/* Name */}
-      <span className={`${sizeCfg.text} font-medium text-gray-200`}>
+      <span className={`${sizeCfg.text} font-medium text-gray-800 dark:text-gray-200`}>
         {author.name}
       </span>
 
       {/* Type Badge (optional) */}
       {showType && (
-        <span className={`hidden sm:inline-flex items-center rounded-full bg-gray-900/50 px-1.5 py-0.5 text-[10px] uppercase tracking-wide ${config.color}`}>
+        <span className={`hidden sm:inline-flex items-center rounded-full bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 px-1.5 py-0.5 text-[10px] uppercase tracking-wide ${config.color}`}>
           {config.label}
         </span>
       )}
@@ -154,7 +154,7 @@ export function AuthorBadgeMinimal({ author, size = 'sm' }: { author: Author; si
   return (
     <div className="inline-flex items-center gap-1.5" title={`${author.name} · ${config.label}`}>
       <Icon className={`${sizeCfg.icon} ${config.color}`} />
-      <span className={`${sizeCfg.text} text-gray-300`}>{author.name}</span>
+      <span className={`${sizeCfg.text} text-gray-600 dark:text-gray-300`}>{author.name}</span>
     </div>
   );
 }

@@ -99,7 +99,7 @@ export default function AIProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-950 text-gray-100">
+      <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
         <div className="flex min-h-[60vh] items-center justify-center">
           <Loader2 className="h-8 w-8 animate-spin text-purple-500" />
         </div>
@@ -109,11 +109,11 @@ export default function AIProfilePage() {
 
   if (error || !profile) {
     return (
-      <div className="min-h-screen bg-gray-950 text-gray-100">
+      <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
         <div className="mx-auto max-w-4xl px-6 py-24 text-center">
-          <div className="rounded-2xl border border-gray-800 bg-gray-900/50 p-8">
+          <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-8">
             <p className="text-red-400">{error || 'Agent not found'}</p>
-            <Link href="/" className="mt-4 inline-flex items-center gap-2 rounded-lg bg-purple-600 px-6 py-3 text-white transition hover:bg-purple-500">
+            <Link href="/" className="mt-4 inline-flex items-center gap-2 rounded-lg bg-purple-600 px-6 py-3 text-gray-900 dark:text-white transition hover:bg-purple-500">
               <ChevronLeft className="h-4 w-4" /> Back to Home
             </Link>
           </div>
@@ -123,14 +123,14 @@ export default function AIProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-100">
-      <header className="sticky top-0 z-50 border-b border-gray-800 bg-gray-950/80 backdrop-blur-lg">
+    <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+      <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/80 backdrop-blur-lg">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center gap-3">
             <Image src="/logo.svg" alt="Clawvec" width={36} height={36} className="h-9 w-9" priority />
             <span className="text-xl font-bold tracking-tight">Clawvec</span>
           </Link>
-          <Link href="/" className="flex items-center gap-2 rounded-lg border border-gray-700 px-4 py-2 text-sm font-medium text-gray-400 transition hover:border-gray-500 hover:text-white">
+          <Link href="/" className="flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 transition hover:border-gray-500 hover:text-gray-900 dark:text-white">
             <ChevronLeft className="h-4 w-4" /> Home
           </Link>
         </div>
@@ -144,13 +144,13 @@ export default function AIProfilePage() {
             </div>
             <div className="flex-1">
               <div className="mb-2 flex items-center gap-3">
-                <h1 className="text-3xl font-bold text-white">{profile.username}</h1>
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{profile.username}</h1>
                 <span className="rounded-full bg-purple-500/20 px-3 py-1 text-sm text-purple-400">
                   <Bot className="inline h-4 w-4" /> AI Agent
                 </span>
               </div>
               {profile.model_class && (
-                <p className="mb-2 text-gray-400">Model: {profile.model_class}</p>
+                <p className="mb-2 text-gray-500 dark:text-gray-400">Model: {profile.model_class}</p>
               )}
               <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
                 <span className="flex items-center gap-1">
@@ -161,11 +161,11 @@ export default function AIProfilePage() {
                   <Trophy className="h-4 w-4 text-yellow-400" />
                   Contribution: {profile.contribution_score || 0}
                 </span>
-                <Link href={`/follows?user_id=${profile.id}&tab=followers`} className="flex items-center gap-1 hover:text-white transition-colors">
+                <Link href={`/follows?user_id=${profile.id}&tab=followers`} className="flex items-center gap-1 hover:text-gray-900 dark:text-white transition-colors">
                   <Users className="h-4 w-4" />
                   {profile.followers_count || 0} followers
                 </Link>
-                <Link href={`/follows?user_id=${profile.id}&tab=following`} className="flex items-center gap-1 hover:text-white transition-colors">
+                <Link href={`/follows?user_id=${profile.id}&tab=following`} className="flex items-center gap-1 hover:text-gray-900 dark:text-white transition-colors">
                   {profile.following_count || 0} following
                 </Link>
               </div>
@@ -188,13 +188,13 @@ export default function AIProfilePage() {
                 <Brain className="h-4 w-4" />
                 Alignment Statement
               </h3>
-              <p className="text-gray-300 italic">"{profile.alignment_statement}"</p>
+              <p className="text-gray-600 dark:text-gray-300 italic">"{profile.alignment_statement}"</p>
             </div>
           )}
 
           {profile.constraints && profile.constraints.length > 0 && (
             <div className="mt-4">
-              <h3 className="mb-2 text-sm font-medium text-gray-400">Core Constraints</h3>
+              <h3 className="mb-2 text-sm font-medium text-gray-500 dark:text-gray-400">Core Constraints</h3>
               <div className="flex flex-wrap gap-2">
                 {profile.constraints.map((constraint, idx) => (
                   <span key={idx} className="rounded-full border border-purple-500/30 bg-purple-500/10 px-3 py-1 text-sm text-purple-300">
@@ -225,7 +225,7 @@ export default function AIProfilePage() {
                   title.rarity === 'legendary' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' :
                   title.rarity === 'epic' ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' :
                   title.rarity === 'rare' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' :
-                  'bg-gray-700 text-gray-400'
+                  'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
                 }`}>
                   {title.name}
                 </span>
@@ -235,11 +235,11 @@ export default function AIProfilePage() {
         )}
 
         <div className="flex gap-4">
-          <Link href={`/companions?invite=${profile.username}`} className="flex items-center gap-2 rounded-lg bg-violet-600 px-6 py-3 font-medium text-white transition hover:bg-violet-500">
+          <Link href={`/companions?invite=${profile.username}`} className="flex items-center gap-2 rounded-lg bg-violet-600 px-6 py-3 font-medium text-gray-900 dark:text-white transition hover:bg-violet-500">
             <Users className="h-4 w-4" />
             Invite as Companion
           </Link>
-          <Link href="/observations" className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-6 py-3 text-gray-400 transition hover:bg-gray-700 hover:text-white">
+          <Link href="/observations" className="flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 px-6 py-3 text-gray-500 dark:text-gray-400 transition hover:bg-gray-200 dark:bg-gray-700 hover:text-gray-900 dark:text-white">
             <Eye className="h-4 w-4" />
             View Observations
           </Link>
@@ -257,11 +257,11 @@ export default function AIProfilePage() {
     };
 
     return (
-      <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-4 text-center">
+      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-4 text-center">
         <div className={`mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full ${colors[color]}`}>
           <Icon className="h-5 w-5" />
         </div>
-        <div className="text-2xl font-bold text-white">{value}</div>
+        <div className="text-2xl font-bold text-gray-900 dark:text-white">{value}</div>
         <div className="text-sm text-gray-500">{label}</div>
       </div>
     );

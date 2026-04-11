@@ -259,11 +259,11 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
   if (error || !discussion) {
     return (
       <div className="mx-auto max-w-4xl px-4 py-12 text-center">
-        <div className="rounded-xl border border-gray-800 bg-gray-800/50 p-8">
+        <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 p-8">
           <p className="mb-4 text-red-400">{error || 'Discussion not found'}</p>
           <Link
             href="/discussions"
-            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 text-white transition hover:bg-blue-500"
+            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 text-gray-900 dark:text-white transition hover:bg-blue-500"
           >
             <ArrowLeft className="h-4 w-4" /> Back to Discussions
           </Link>
@@ -277,13 +277,13 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
       {/* Navigation */}
       <Link
         href="/discussions"
-        className="mb-6 inline-flex items-center gap-2 text-sm text-gray-400 transition hover:text-white"
+        className="mb-6 inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 transition hover:text-gray-900 dark:text-white"
       >
         <ArrowLeft className="h-4 w-4" /> Back to Discussions
       </Link>
 
       {/* Discussion Header */}
-      <article className="mb-8 rounded-xl border border-gray-800 bg-gray-800/50 p-6 sm:p-8">
+      <article className="mb-8 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 p-6 sm:p-8">
         <div className="mb-4 flex flex-wrap items-center gap-2">
           {discussion.is_pinned && (
             <span className="inline-flex items-center gap-1 rounded bg-blue-500/20 px-2 py-1 text-xs text-blue-400">
@@ -291,25 +291,25 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
             </span>
           )}
           {discussion.is_locked && (
-            <span className="inline-flex items-center gap-1 rounded bg-gray-600/30 px-2 py-1 text-xs text-gray-400">
+            <span className="inline-flex items-center gap-1 rounded bg-gray-600/30 px-2 py-1 text-xs text-gray-500 dark:text-gray-400">
               <Lock className="h-3 w-3" /> Locked
             </span>
           )}
-          <span className="rounded bg-gray-700 px-2 py-1 text-xs text-gray-400">
+          <span className="rounded bg-gray-200 dark:bg-gray-700 px-2 py-1 text-xs text-gray-500 dark:text-gray-400">
             {discussion.category}
           </span>
           {discussion.tags?.map((tag) => (
-            <span key={tag} className="rounded bg-gray-700/50 px-2 py-1 text-xs text-gray-500">
+            <span key={tag} className="rounded bg-gray-200 dark:bg-gray-200 dark:bg-gray-700/50 px-2 py-1 text-xs text-gray-500">
               #{tag}
             </span>
           ))}
         </div>
 
-        <h1 className="mb-6 text-2xl font-bold text-white sm:text-3xl">
+        <h1 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl">
           {discussion.title}
         </h1>
 
-        <div className="mb-6 flex flex-wrap items-center gap-4 text-sm text-gray-400">
+        <div className="mb-6 flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
           <span className="flex items-center gap-2">
             {discussion.author_type === 'ai' ? (
               <>
@@ -338,7 +338,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
         </div>
 
         <div className="prose prose-invert max-w-none">
-          <div className="whitespace-pre-wrap text-gray-300">{discussion.content}</div>
+          <div className="whitespace-pre-wrap text-gray-600 dark:text-gray-300">{discussion.content}</div>
         </div>
 
         <div className="mt-8 flex flex-wrap gap-2">
@@ -348,16 +348,16 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
             className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm transition ${
               liked 
                 ? 'border-pink-700 bg-pink-800/50 text-pink-400' 
-                : 'border-gray-700 bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white'
+                : 'border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:bg-gray-700 hover:text-white'
             } disabled:opacity-50`}
           >
             <Heart className={`h-4 w-4 ${liked ? 'fill-current' : ''}`} /> 
             {liking ? 'Liking...' : liked ? 'Liked' : 'Like'} ({discussion.likes_count})
           </button>
-          <button className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-gray-400 transition hover:bg-gray-700 hover:text-white">
+          <button className="inline-flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 px-4 py-2 text-sm text-gray-500 dark:text-gray-400 transition hover:bg-gray-200 dark:bg-gray-700 hover:text-gray-900 dark:text-white">
             <Share2 className="h-4 w-4" /> Share
           </button>
-          <button className="inline-flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-gray-400 transition hover:bg-gray-700 hover:text-white">
+          <button className="inline-flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 px-4 py-2 text-sm text-gray-500 dark:text-gray-400 transition hover:bg-gray-200 dark:bg-gray-700 hover:text-gray-900 dark:text-white">
             <Flag className="h-4 w-4" /> Report
           </button>
           {user && user.id === discussion.author_id && (
@@ -365,14 +365,14 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
               <button 
                 onClick={openEditModal}
                 disabled={editing}
-                className="inline-flex items-center gap-2 rounded-lg border border-blue-700 bg-blue-800/50 px-4 py-2 text-sm text-blue-400 transition hover:bg-blue-700 hover:text-white disabled:opacity-50"
+                className="inline-flex items-center gap-2 rounded-lg border border-blue-700 bg-blue-800/50 px-4 py-2 text-sm text-blue-400 transition hover:bg-blue-700 hover:text-gray-900 dark:text-white disabled:opacity-50"
               >
                 <Edit className="h-4 w-4" /> {editing ? 'Saving...' : 'Edit'}
               </button>
               <button 
                 onClick={handleDelete}
                 disabled={deleting}
-                className="inline-flex items-center gap-2 rounded-lg border border-red-700 bg-red-800/50 px-4 py-2 text-sm text-red-400 transition hover:bg-red-700 hover:text-white disabled:opacity-50"
+                className="inline-flex items-center gap-2 rounded-lg border border-red-700 bg-red-800/50 px-4 py-2 text-sm text-red-400 transition hover:bg-red-700 hover:text-gray-900 dark:text-white disabled:opacity-50"
               >
                 <Trash2 className="h-4 w-4" /> {deleting ? 'Deleting...' : 'Delete'}
               </button>
@@ -384,26 +384,26 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
       {/* Edit Modal */}
       {showEditModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-          <div className="w-full max-w-2xl rounded-xl border border-gray-700 bg-gray-800 p-6">
-            <h3 className="mb-4 text-xl font-bold text-white">Edit Discussion</h3>
+          <div className="w-full max-w-2xl rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 p-6">
+            <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">Edit Discussion</h3>
             <form onSubmit={handleEdit}>
               <div className="mb-4">
-                <label className="mb-2 block text-sm text-gray-400">Title</label>
+                <label className="mb-2 block text-sm text-gray-500 dark:text-gray-400">Title</label>
                 <input
                   type="text"
                   value={editTitle}
                   onChange={(e) => setEditTitle(e.target.value)}
-                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-4 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-2 text-gray-900 dark:text-white focus:border-blue-500 focus:outline-none"
                   required
                 />
               </div>
               <div className="mb-6">
-                <label className="mb-2 block text-sm text-gray-400">Content</label>
+                <label className="mb-2 block text-sm text-gray-500 dark:text-gray-400">Content</label>
                 <textarea
                   value={editContent}
                   onChange={(e) => setEditContent(e.target.value)}
                   rows={8}
-                  className="w-full rounded-lg border border-gray-700 bg-gray-900 px-4 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-2 text-gray-900 dark:text-white focus:border-blue-500 focus:outline-none"
                   required
                 />
               </div>
@@ -411,14 +411,14 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                 <button
                   type="button"
                   onClick={() => setShowEditModal(false)}
-                  className="rounded-lg border border-gray-600 px-4 py-2 text-gray-400 transition hover:bg-gray-700 hover:text-white"
+                  className="rounded-lg border border-gray-600 px-4 py-2 text-gray-500 dark:text-gray-400 transition hover:bg-gray-200 dark:bg-gray-700 hover:text-gray-900 dark:text-white"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={editing}
-                  className="rounded-lg bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-500 disabled:opacity-50"
+                  className="rounded-lg bg-blue-600 px-4 py-2 text-gray-900 dark:text-white transition hover:bg-blue-500 disabled:opacity-50"
                 >
                   {editing ? 'Saving...' : 'Save Changes'}
                 </button>
@@ -430,14 +430,14 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
 
       {/* Replies Section */}
       <section className="mb-8">
-        <h2 className="mb-6 text-xl font-bold text-white">
+        <h2 className="mb-6 text-xl font-bold text-gray-900 dark:text-white">
           Replies ({replies.length})
         </h2>
 
         {replies.length === 0 ? (
-          <div className="rounded-xl border border-gray-800 bg-gray-800/30 p-8 text-center">
+          <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-100/70 dark:bg-gray-100 dark:bg-gray-800/30 p-8 text-center">
             <MessageSquare className="mx-auto mb-4 h-12 w-12 text-gray-600" />
-            <p className="text-gray-400">No replies yet.</p>
+            <p className="text-gray-500 dark:text-gray-400">No replies yet.</p>
             <p className="mt-2 text-sm text-gray-500">Be the first to share your thoughts!</p>
           </div>
         ) : (
@@ -448,7 +448,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                 className={`rounded-xl border p-6 ${
                   reply.is_solution
                     ? 'border-green-500/30 bg-green-500/5'
-                    : 'border-gray-800 bg-gray-800/30'
+                    : 'border-gray-200 dark:border-gray-800 bg-gray-100/70 dark:bg-gray-100 dark:bg-gray-800/30'
                 }`}
               >
                 {reply.is_solution && (
@@ -474,10 +474,10 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                   <span className="text-xs text-gray-500">{formatDate(reply.created_at)}</span>
                 </div>
 
-                <div className="whitespace-pre-wrap text-gray-300">{reply.content}</div>
+                <div className="whitespace-pre-wrap text-gray-600 dark:text-gray-300">{reply.content}</div>
 
                 <div className="mt-4 flex gap-2">
-                  <button className="inline-flex items-center gap-1 rounded px-2 py-1 text-xs text-gray-400 transition hover:bg-gray-700 hover:text-white">
+                  <button className="inline-flex items-center gap-1 rounded px-2 py-1 text-xs text-gray-500 dark:text-gray-400 transition hover:bg-gray-200 dark:bg-gray-700 hover:text-gray-900 dark:text-white">
                     <Heart className="h-3 w-3" /> {reply.likes_count || 0}
                   </button>
                 </div>
@@ -489,8 +489,8 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
 
       {/* Reply Form */}
       {!discussion.is_locked && (
-        <section className="rounded-xl border border-gray-800 bg-gray-800/50 p-6">
-          <h3 className="mb-4 text-lg font-semibold text-white">Add Your Reply</h3>
+        <section className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 p-6">
+          <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Add Your Reply</h3>
 
           {user ? (
             <form onSubmit={handleSubmitReply}>
@@ -500,14 +500,14 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                 placeholder="Share your thoughts..."
                 rows={5}
                 minLength={5}
-                className="mb-4 w-full rounded-lg border border-gray-700 bg-gray-900 px-4 py-3 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+                className="mb-4 w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-3 text-gray-900 dark:text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
               />
               <div className="flex items-center justify-between">
                 <p className="text-xs text-gray-500">{replyContent.length} characters (min 5)</p>
                 <button
                   type="submit"
                   disabled={submitting || replyContent.length < 5}
-                  className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-500 disabled:opacity-50"
+                  className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-semibold text-gray-900 dark:text-white transition hover:bg-blue-500 disabled:opacity-50"
                 >
                   {submitting ? (
                     <>
@@ -525,10 +525,10 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
             </form>
           ) : (
             <div className="text-center">
-              <p className="mb-4 text-gray-400">Please login to join the discussion</p>
+              <p className="mb-4 text-gray-500 dark:text-gray-400">Please login to join the discussion</p>
               <Link
                 href="/"
-                className="inline-block rounded-lg bg-blue-600 px-6 py-3 text-white transition hover:bg-blue-500"
+                className="inline-block rounded-lg bg-blue-600 px-6 py-3 text-gray-900 dark:text-white transition hover:bg-blue-500"
               >
                 Go to Login
               </Link>

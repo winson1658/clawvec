@@ -57,8 +57,8 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
 
   if (!token) {
     return (
-      <div className="min-h-screen bg-gray-950 text-gray-100">
-        <header className="sticky top-0 z-50 border-b border-gray-800 bg-gray-950/80 backdrop-blur-lg">
+      <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+        <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/80 backdrop-blur-lg">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
             <Link href="/" className="flex items-center gap-3">
               <Image src="/logo.svg" alt="Clawvec" width={36} height={36} className="h-9 w-9" priority />
@@ -71,12 +71,12 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
           <div className="rounded-2xl border border-red-500/30 bg-red-500/10 p-8 text-center">
             <AlertCircle className="mx-auto mb-4 h-16 w-16 text-red-400" />
             <h1 className="mb-2 text-2xl font-bold text-red-400">Invalid Reset Link</h1>
-            <p className="mb-6 text-gray-300">
+            <p className="mb-6 text-gray-600 dark:text-gray-300">
               This password reset link is invalid or has expired. Please request a new one.
             </p>
             <Link
               href="/forgot-password"
-              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-700"
+              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-gray-900 dark:text-white transition hover:bg-blue-700"
             >
               Request New Link
             </Link>
@@ -87,8 +87,8 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-100">
-      <header className="sticky top-0 z-50 border-b border-gray-800 bg-gray-950/80 backdrop-blur-lg">
+    <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+      <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/80 backdrop-blur-lg">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center gap-3">
             <Image src="/logo.svg" alt="Clawvec" width={36} height={36} className="h-9 w-9" priority />
@@ -98,13 +98,13 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
       </header>
 
       <div className="mx-auto max-w-md px-6 py-20">
-        <div className="rounded-2xl border border-gray-800 bg-gray-900/50 p-8">
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-8">
           <div className="mb-6 text-center">
             <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-500/20">
               <Lock className="h-8 w-8 text-blue-400" />
             </div>
             <h1 className="text-2xl font-bold">Create New Password</h1>
-            <p className="mt-2 text-gray-400">
+            <p className="mt-2 text-gray-500 dark:text-gray-400">
               Enter your new password below.
             </p>
             <p className="mt-2 text-xs text-gray-500">
@@ -116,7 +116,7 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
             <div className="rounded-xl border border-green-500/30 bg-green-500/10 p-6 text-center">
               <CheckCircle className="mx-auto mb-3 h-12 w-12 text-green-400" />
               <h3 className="mb-2 text-lg font-semibold text-green-400">Password Reset Successful</h3>
-              <p className="text-sm text-gray-300">
+              <p className="text-sm text-gray-600 dark:text-gray-300">
                 Your password has been successfully reset. You can now log in with your new password.
               </p>
               <p className="mt-3 text-xs text-green-300/80">
@@ -125,7 +125,7 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
               <div className="mt-6">
                 <Link
                   href="/#auth"
-                  className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-700"
+                  className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-gray-900 dark:text-white transition hover:bg-blue-700"
                 >
                   <ArrowLeft className="h-4 w-4" />
                   Go to Login
@@ -144,7 +144,7 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
               )}
 
               <div>
-                <label className="mb-1 block text-sm font-medium text-gray-300">New Password</label>
+                <label className="mb-1 block text-sm font-medium text-gray-600 dark:text-gray-300">New Password</label>
                 <div className="relative">
                   <input
                     type={showPassword ? 'text' : 'password'}
@@ -152,13 +152,13 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     minLength={8}
-                    className="w-full rounded-lg border border-gray-600 bg-gray-700/50 px-4 py-3 pr-12 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-lg border border-gray-600 bg-gray-200 dark:bg-gray-200 dark:bg-gray-700/50 px-4 py-3 pr-12 text-gray-900 dark:text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
                     placeholder="••••••••"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:text-white"
                   >
                     {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>
@@ -167,14 +167,14 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
               </div>
 
               <div>
-                <label className="mb-1 block text-sm font-medium text-gray-300">Confirm Password</label>
+                <label className="mb-1 block text-sm font-medium text-gray-600 dark:text-gray-300">Confirm Password</label>
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                   minLength={8}
-                  className="w-full rounded-lg border border-gray-600 bg-gray-700/50 px-4 py-3 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-gray-600 bg-gray-200 dark:bg-gray-200 dark:bg-gray-700/50 px-4 py-3 text-gray-900 dark:text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
                   placeholder="••••••••"
                 />
               </div>
@@ -182,7 +182,7 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 px-6 py-3 font-semibold text-white transition hover:opacity-90 disabled:opacity-50"
+                className="w-full rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 px-6 py-3 font-semibold text-gray-900 dark:text-white transition hover:opacity-90 disabled:opacity-50"
               >
                 {loading ? (
                   <span className="flex items-center justify-center gap-2">

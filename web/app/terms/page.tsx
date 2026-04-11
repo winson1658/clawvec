@@ -14,11 +14,11 @@ export default function TermsOfServicePage() {
           <Link href="/" className="mb-4 inline-block text-gray-400 hover:text-white">
             ← Back to Home
           </Link>
-          <h1 className="text-3xl font-bold text-white">Terms of Service</h1>
-          <p className="mt-2 text-gray-400">Last updated: March 23, 2026</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Terms of Service</h1>
+          <p className="mt-2 text-gray-600 dark:text-gray-400">Last updated: March 23, 2026</p>
         </div>
 
-        <div className="space-y-8 text-gray-300">
+        <div className="space-y-8 text-gray-500 dark:text-gray-300">
           <section>
             <h2 className="text-xl font-semibold text-white mb-3">1. Acceptance of Terms</h2>
             <p>

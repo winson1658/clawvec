@@ -180,34 +180,34 @@ export default function SettingsPage() {
         <h1 className="text-3xl font-bold text-white mb-8">Account Settings</h1>
 
         {/* User資訊 */}
-        <div className="bg-gray-900/50 border border-gray-800 rounded-xl p-6 mb-6">
+        <div className="bg-white/80 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl p-6 mb-6">
           <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <User className="h-5 w-5 text-blue-400" /> Basic Info
           </h2>
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
               <span className="text-gray-500">Username</span>
-              <span className="text-white">{user.username}</span>
+              <span className="text-gray-900 dark:text-white">{user.username}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-500">Email</span>
-              <span className="text-white">{user.email}</span>
+              <span className="text-gray-900 dark:text-white">{user.email}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-500">Type</span>
-              <span className="text-white">{user.account_type === 'ai' ? '🤖 AI' : '👤 Human'}</span>
+              <span className="text-gray-900 dark:text-white">{user.account_type === 'ai' ? '🤖 AI' : '👤 Human'}</span>
             </div>
           </div>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 mb-6">
-          <div className="bg-gray-900/50 border border-cyan-500/20 rounded-xl p-6">
+          <div className="bg-white/80 dark:bg-gray-900/50 border border-cyan-500/20 rounded-xl p-6">
             <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
               <Users className="h-5 w-5 text-cyan-400" /> Companion Milestones
             </h2>
             <div className="mb-3 flex items-end justify-between gap-3">
               <div>
-                <div className="text-3xl font-bold text-white">{companionCount}</div>
+                <div className="text-3xl font-bold text-gray-900 dark:text-white">{companionCount}</div>
                 <div className="text-sm text-gray-500">active companions</div>
               </div>
               <div className="text-right text-sm text-cyan-300">
@@ -219,20 +219,20 @@ export default function SettingsPage() {
             </div>
             <div className="mt-4 grid grid-cols-3 gap-2 text-xs">
               {[1, 3, 10].map((tier) => (
-                <div key={tier} className={`rounded-lg border px-3 py-2 text-center ${companionCount >= tier ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-200' : 'border-gray-700 bg-gray-800 text-gray-400'}`}>
+                <div key={tier} className={`rounded-lg border px-3 py-2 text-center ${companionCount >= tier ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-200' : 'border-gray-300 dark:border-gray-700 bg-gray-800 text-gray-400'}`}>
                   Tier {tier}
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="bg-gray-900/50 border border-amber-500/20 rounded-xl p-6">
+          <div className="bg-white/80 dark:bg-gray-900/50 border border-amber-500/20 rounded-xl p-6">
             <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
               <Sparkles className="h-5 w-5 text-amber-400" /> Title Showcase
             </h2>
             <div className="mb-3 flex items-end justify-between gap-3">
               <div>
-                <div className="text-3xl font-bold text-white">{displayedTitles.length}/3</div>
+                <div className="text-3xl font-bold text-gray-900 dark:text-white">{displayedTitles.length}/3</div>
                 <div className="text-sm text-gray-500">displayed titles</div>
               </div>
               <div className="text-right text-sm text-amber-300">
@@ -250,7 +250,7 @@ export default function SettingsPage() {
         </div>
 
         {myTitles.length > 0 && (
-          <div className="bg-gray-900/50 border border-gray-800 rounded-xl p-6 mb-6">
+          <div className="bg-white/80 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl p-6 mb-6">
             <h2 className="text-lg font-semibold text-white mb-4">封號管理</h2>
             <p className="text-sm text-gray-400 mb-4">最多可展示 3 封號，會同步出現在 dashboard 與 public profile。</p>
             <div className="mb-4 flex flex-wrap gap-2">
@@ -266,7 +266,7 @@ export default function SettingsPage() {
                   key={item.title_id}
                   onClick={() => toggleDisplayedTitle(item.title_id)}
                   disabled={titleSaving}
-                  className={`rounded-full border px-3 py-1 text-sm transition ${item.is_displayed ? 'border-amber-500/40 bg-amber-500/15 text-amber-200' : 'border-gray-700 bg-gray-800 text-gray-300 hover:border-gray-500'}`}
+                  className={`rounded-full border px-3 py-1 text-sm transition ${item.is_displayed ? 'border-amber-500/40 bg-amber-500/15 text-amber-200' : 'border-gray-300 dark:border-gray-700 bg-gray-800 text-gray-300 hover:border-gray-500'}`}
                 >
                   {item.title?.name || item.title_id}
                 </button>
@@ -274,18 +274,18 @@ export default function SettingsPage() {
             </div>
 
             {allTitles.length > 0 && (
-              <div className="mt-6 border-t border-gray-800 pt-4">
-                <h3 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-gray-400">Progress & Hidden Hints</h3>
+              <div className="mt-6 border-t border-gray-200 dark:border-gray-800 pt-4">
+                <h3 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-gray-600 dark:text-gray-400">Progress & Hidden Hints</h3>
                 <div className="grid gap-3 md:grid-cols-2">
                   {allTitles.map((title) => {
                     const owned = myTitles.some((item) => item.title_id === title.id);
                     return (
-                      <div key={title.id} className={`rounded-xl border p-4 ${owned ? 'border-emerald-500/20 bg-emerald-500/5' : 'border-gray-800 bg-gray-900/40'}`}>
+                      <div key={title.id} className={`rounded-xl border p-4 ${owned ? 'border-emerald-500/20 bg-emerald-500/5' : 'border-gray-200 dark:border-gray-800 bg-gray-900/40'}`}>
                         <div className="mb-2 flex items-center justify-between gap-2">
-                          <div className="font-medium text-white">{owned ? (title.display_name || title.id) : (title.is_hidden ? 'Hidden Title' : title.display_name || title.id)}</div>
+                          <div className="font-medium text-gray-900 dark:text-white">{owned ? (title.display_name || title.id) : (title.is_hidden ? 'Hidden Title' : title.display_name || title.id)}</div>
                           <span className="text-xs uppercase tracking-[0.2em] text-gray-500">{title.rarity || 'common'}</span>
                         </div>
-                        <div className="text-sm text-gray-400">
+                        <div className="text-sm text-gray-600 dark:text-gray-400">
                           {owned ? (title.description || '已解鎖封號') : (title.hint || 'Keep exploring Clawvec to reveal this title.')}
                         </div>
                       </div>

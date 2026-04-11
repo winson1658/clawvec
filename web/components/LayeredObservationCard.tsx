@@ -72,7 +72,7 @@ export default function LayeredObservationCard({ observation, variant = 'default
     return (
       <a
         href={`/observations/${observation.id}`}
-        className="group block rounded-xl border border-cyan-500/20 bg-gray-900/60 p-4 transition-all hover:border-cyan-400/40 hover:bg-gray-800/80"
+        className="group block rounded-xl border border-cyan-500/20 bg-white/85 dark:bg-gray-50 dark:bg-gray-900/60 p-4 transition-all hover:border-cyan-400/40 hover:bg-gray-200 dark:bg-gray-100 dark:bg-gray-800/80"
       >
         {/* Header: Category + Author */}
         <div className="mb-3 flex items-center justify-between">
@@ -89,7 +89,7 @@ export default function LayeredObservationCard({ observation, variant = 'default
         </div>
 
         {/* Title */}
-        <h3 className="mb-2 text-base font-semibold text-white line-clamp-2">
+        <h3 className="mb-2 text-base font-semibold text-gray-900 dark:text-white line-clamp-2">
           {observation.title}
         </h3>
 
@@ -126,24 +126,24 @@ export default function LayeredObservationCard({ observation, variant = 'default
   return (
     <a
       href={`/observations/${observation.id}`}
-      className="group block overflow-hidden rounded-2xl border border-cyan-500/20 bg-gray-900/60 transition-all hover:border-cyan-400/40 hover:bg-gray-800/80 hover:shadow-lg hover:shadow-cyan-500/5"
+      className="group block overflow-hidden rounded-2xl border border-cyan-500/20 bg-white/85 dark:bg-gray-50 dark:bg-gray-900/60 transition-all hover:border-cyan-400/40 hover:bg-gray-200 dark:bg-gray-100 dark:bg-gray-800/80 hover:shadow-lg hover:shadow-cyan-500/5"
     >
       {/* Layer 1: Fact - Neutral/Gray */}
-      <div className="border-b border-gray-800 bg-gray-950/50 p-5">
+      <div className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/50 p-5">
         <div className="mb-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="flex h-5 w-5 items-center justify-center rounded bg-gray-800 text-xs">📰</span>
+            <span className="flex h-5 w-5 items-center justify-center rounded bg-gray-100 dark:bg-gray-800 text-xs">📰</span>
             <span className="text-xs font-medium uppercase tracking-wide text-gray-500">Fact</span>
           </div>
-          <span className="rounded-full bg-gray-800/50 px-2 py-0.5 text-xs text-gray-400">
+          <span className="rounded-full bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 px-2 py-0.5 text-xs text-gray-500 dark:text-gray-400">
             {observation.category || 'observation'}
           </span>
         </div>
-        <h3 className="text-lg font-semibold text-gray-200">
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
           {observation.title}
         </h3>
         {layers.fact && (
-          <p className="mt-2 text-sm text-gray-400">{layers.fact}</p>
+          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{layers.fact}</p>
         )}
       </div>
 
@@ -172,7 +172,7 @@ export default function LayeredObservationCard({ observation, variant = 'default
       )}
 
       {/* Footer: Author + Metadata */}
-      <div className="flex items-center justify-between border-t border-gray-800 bg-gray-950/30 px-5 py-3">
+      <div className="flex items-center justify-between border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/30 px-5 py-3">
         <div className="flex items-center gap-3">
           {observation.author ? (
             <AuthorBadge author={observation.author} size="sm" showType />

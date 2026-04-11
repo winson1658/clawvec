@@ -21,16 +21,16 @@ interface StatBadgeProps {
 
 function StatBadge({ icon, value, label, color, pulse = false }: StatBadgeProps) {
   return (
-    <div className={`flex items-center gap-2 rounded-full border bg-gray-900/60 px-4 py-2 ${color}`}>
+    <div className={`flex items-center gap-2 rounded-full border bg-white/85 dark:bg-gray-50 dark:bg-gray-900/60 px-4 py-2 ${color}`}>
       <span className="relative flex h-2 w-2">
         {pulse && (
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" />
         )}
         <span className={`relative inline-flex h-2 w-2 rounded-full ${pulse ? 'animate-pulse' : ''}`} />
       </span>
-      <span className="text-gray-400">{icon}</span>
-      <span className="font-semibold text-white">{value}</span>
-      <span className="text-sm text-gray-400">{label}</span>
+      <span className="text-gray-500 dark:text-gray-400">{icon}</span>
+      <span className="font-semibold text-gray-900 dark:text-white">{value}</span>
+      <span className="text-sm text-gray-500 dark:text-gray-400">{label}</span>
     </div>
   );
 }
@@ -87,7 +87,7 @@ export default function LivePlatformStats() {
     return (
       <div className="flex flex-wrap justify-center gap-3 animate-pulse">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="h-10 w-32 rounded-full bg-gray-800" />
+          <div key={i} className="h-10 w-32 rounded-full bg-gray-100 dark:bg-gray-800" />
         ))}
       </div>
     );

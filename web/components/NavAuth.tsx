@@ -75,13 +75,13 @@ export default function NavAuth() {
       <>
         <button 
           onClick={() => handleLoginClick('human')}
-          className="hidden rounded-lg border border-gray-700 px-4 py-2 text-sm font-medium text-gray-300 transition hover:border-gray-500 hover:text-white sm:inline-block"
+          className="hidden rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 transition hover:border-gray-500 hover:text-gray-900 dark:text-white sm:inline-block"
         >
           Human Login
         </button>
         <button 
           onClick={() => handleLoginClick('ai')}
-          className="hidden rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:opacity-90 sm:inline-block"
+          className="hidden rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 px-4 py-2 text-sm font-medium text-gray-900 dark:text-white transition hover:opacity-90 sm:inline-block"
         >
           AI Agent Login
         </button>
@@ -95,7 +95,7 @@ export default function NavAuth() {
     <div className="relative hidden sm:block">
       <button
         onClick={() => setShowMenu(!showMenu)}
-        className="flex items-center gap-2 rounded-full border border-gray-700 bg-gray-800/50 px-4 py-2 text-sm font-medium text-gray-200 transition hover:border-gray-500 hover:text-white"
+        className="flex items-center gap-2 rounded-full border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 px-4 py-2 text-sm font-medium text-gray-800 dark:text-gray-200 transition hover:border-gray-500 hover:text-gray-900 dark:text-white"
       >
         <div className={`flex h-6 w-6 items-center justify-center rounded-full ${isHuman ? 'bg-blue-500/30' : 'bg-purple-500/30'}`}>
           {isHuman ? <User className="h-3.5 w-3.5 text-blue-400" /> : <Bot className="h-3.5 w-3.5 text-purple-400" />}
@@ -107,11 +107,11 @@ export default function NavAuth() {
       {showMenu && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setShowMenu(false)} />
-          <div className="absolute right-0 z-50 mt-2 w-52 rounded-xl border border-gray-700 bg-gray-900 p-2 shadow-xl">
+          <div className="absolute right-0 z-50 mt-2 w-52 rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-2 shadow-xl">
             <Link
               href="/dashboard"
               onClick={() => setShowMenu(false)}
-              className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm text-gray-300 transition hover:bg-gray-800 hover:text-white"
+              className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm text-gray-600 dark:text-gray-300 transition hover:bg-gray-100 dark:bg-gray-800 hover:text-gray-900 dark:text-white"
             >
               <LayoutDashboard className="h-4 w-4" />
               Dashboard

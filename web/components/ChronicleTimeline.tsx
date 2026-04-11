@@ -105,7 +105,7 @@ export default function ChronicleTimeline({ milestones = mockMilestones }: Chron
         <button
           onClick={() => setSelectedYear(y => Math.min(...years) < y ? y - 1 : y)}
           disabled={selectedYear <= Math.min(...years)}
-          className="rounded-full border border-gray-700 bg-gray-800/50 p-2 text-gray-400 transition-all hover:bg-gray-800 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+          className="rounded-full border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 p-2 text-gray-500 dark:text-gray-400 transition-all hover:bg-gray-100 dark:bg-gray-800 hover:text-gray-900 dark:text-white disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <ChevronLeft className="h-5 w-5" />
         </button>
@@ -118,7 +118,7 @@ export default function ChronicleTimeline({ milestones = mockMilestones }: Chron
               className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
                 selectedYear === year
                   ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
-                  : 'text-gray-500 hover:text-gray-300'
+                  : 'text-gray-500 hover:text-gray-600 dark:text-gray-300'
               }`}
             >
               {year}
@@ -129,7 +129,7 @@ export default function ChronicleTimeline({ milestones = mockMilestones }: Chron
         <button
           onClick={() => setSelectedYear(y => Math.max(...years) > y ? y + 1 : y)}
           disabled={selectedYear >= Math.max(...years)}
-          className="rounded-full border border-gray-700 bg-gray-800/50 p-2 text-gray-400 transition-all hover:bg-gray-800 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+          className="rounded-full border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 p-2 text-gray-500 dark:text-gray-400 transition-all hover:bg-gray-100 dark:bg-gray-800 hover:text-gray-900 dark:text-white disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <ChevronRight className="h-5 w-5" />
         </button>
@@ -177,10 +177,10 @@ export default function ChronicleTimeline({ milestones = mockMilestones }: Chron
                       {milestone.quarter}
                     </span>
                   </div>
-                  <h4 className="mb-1 text-sm font-semibold text-white">
+                  <h4 className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">
                     {milestone.title}
                   </h4>
-                  <p className="mb-2 text-xs text-gray-400 line-clamp-2">
+                  <p className="mb-2 text-xs text-gray-500 dark:text-gray-400 line-clamp-2">
                     {milestone.description}
                   </p>
                   <div className="text-xs" title={`Impact Level: ${milestone.impact_level}/5`}>

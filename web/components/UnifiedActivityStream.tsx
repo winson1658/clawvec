@@ -85,7 +85,7 @@ function ActivityItem({ activity }: { activity: Activity }) {
   return (
     <a
       href={config.href(activity.id)}
-      className={`group flex items-start gap-4 rounded-xl border ${config.borderColor} bg-gray-900/40 p-4 transition-all hover:${config.bgColor} hover:border-opacity-50`}
+      className={`group flex items-start gap-4 rounded-xl border ${config.borderColor} bg-white/70 dark:bg-gray-50 dark:bg-gray-900/40 p-4 transition-all hover:${config.bgColor} hover:border-opacity-50`}
     >
       {/* Icon with pulse if hot */}
       <div className="relative flex-shrink-0">
@@ -113,7 +113,7 @@ function ActivityItem({ activity }: { activity: Activity }) {
           </span>
         </div>
 
-        <h4 className="mb-2 truncate text-sm font-medium text-white group-hover:text-gray-200">
+        <h4 className="mb-2 truncate text-sm font-medium text-gray-900 dark:text-white group-hover:text-gray-800 dark:text-gray-200">
           {activity.title}
         </h4>
 
@@ -140,7 +140,7 @@ function ActivityItem({ activity }: { activity: Activity }) {
           )}
 
           {activity.metadata.category && (
-            <span className="rounded-full bg-gray-800 px-2 py-0.5">
+            <span className="rounded-full bg-gray-100 dark:bg-gray-800 px-2 py-0.5">
               {activity.metadata.category}
             </span>
           )}
@@ -219,8 +219,8 @@ export default function UnifiedActivityStream({
           onClick={() => setFilter('all')}
           className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
             filter === 'all'
-              ? 'bg-gray-800 text-white'
-              : 'text-gray-500 hover:text-gray-300'
+              ? 'bg-gray-100 dark:bg-gray-800 text-white'
+              : 'text-gray-500 hover:text-gray-600 dark:text-gray-300'
           }`}
         >
           All Activity
@@ -235,7 +235,7 @@ export default function UnifiedActivityStream({
               className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm transition-all ${
                 filter === type
                   ? `${config.bgColor} ${config.color} border ${config.borderColor}`
-                  : 'text-gray-500 hover:text-gray-300'
+                  : 'text-gray-500 hover:text-gray-600 dark:text-gray-300'
               }`}
             >
               <Icon className="h-3.5 w-3.5" />
@@ -252,7 +252,7 @@ export default function UnifiedActivityStream({
             <ActivityItem key={`${activity.type}-${activity.id}`} activity={activity} />
           ))
         ) : (
-          <div className="rounded-xl border border-gray-800 bg-gray-900/30 p-8 text-center">
+          <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/60 dark:bg-gray-50 dark:bg-gray-900/30 p-8 text-center">
             <p className="text-gray-500">No recent activity in this category.</p>
             <p className="mt-1 text-sm text-gray-600">
               Be the first to start a {filter === 'all' ? 'conversation' : filter}!
@@ -265,7 +265,7 @@ export default function UnifiedActivityStream({
       <div className="flex justify-center">
         <a
           href={filter === 'declaration' ? '/declarations' : filter === 'discussion' ? '/discussions' : filter === 'debate' ? '/debates' : '/activity'}
-          className="flex items-center gap-2 text-sm text-gray-400 transition-colors hover:text-white"
+          className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 transition-colors hover:text-gray-900 dark:text-white"
         >
           View all {filter === 'all' ? 'activity' : `${filter}s`}
           <ArrowRight className="h-4 w-4" />
