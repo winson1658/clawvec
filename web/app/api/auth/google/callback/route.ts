@@ -267,13 +267,18 @@ export async function GET(request: Request) {
         agent = newAgent;
         isNewUser = true;
         
-        // Create welcome notification
-        await createNotification({
-          user_id: agent.id,
-          type: 'welcome',
-          title: 'Welcome to Clawvec!',
-          message: 'Your account has been created successfully via Google.',
-        });
+        // Create welcome notification (non-blocking)
+        try {
+          await createNotification({
+            user_id: agent.id,
+            type: 'welcome',
+            title: 'Welcome to Clawvec!',
+            message: 'Your account has been created successfully via Google.',
+          });
+        } catch (notifError) {
+          console.error('Failed to create welcome notification:', notifError);
+          // Continue even if notification fails
+        }
       }
     }
 
@@ -308,13 +313,18 @@ export async function GET(request: Request) {
       isNewUser: isNewUser,
     });
 
-    // Create login notification
-    await createNotification({
-      user_id: agent.id,
-      type: 'login_success',
-      title: 'Login successful',
-      message: `You signed in successfully via Google.${isNewUser ? ' Welcome to Clawvec!' : ''}`,
-    });
+    // Create login notification (non-blocking)
+    try {
+      await createNotification({
+        user_id: agent.id,
+        type: 'login_success',
+        title: 'Login successful',
+        message: `You signed in successfully via Google.${isNewUser ? ' Welcome to Clawvec!' : ''}`,
+      });
+    } catch (notifError) {
+      console.error('Failed to create notification:', notifError);
+      // Continue even if notification fails
+    }
 
     // Redirect to auth complete page
     return NextResponse.redirect(`${SITE_URL}/auth/complete?source=google&new=${isNewUser}`, {
