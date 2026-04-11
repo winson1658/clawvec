@@ -26,37 +26,59 @@ function AuthCompleteContent() {
 
     setIsNewUser(isNew);
 
-    // Trigger visitor sync
+    // Complete authentication
     async function completeAuth() {
       try {
-        // Call visitor sync API
-        const syncRes = await fetch('/api/visitor/sync', {
-          method: 'POST',
+        // Fetch user session from cookie
+        const sessionRes = await fetch('/api/auth/session', {
           credentials: 'include',
         });
 
-        if (!syncRes.ok) {
-          console.warn('Visitor sync failed, but auth is complete');
+        if (!sessionRes.ok) {
+          throw new Error('Failed to get session');
         }
 
-        setStatus('success');
-        setMessage(isNew 
-          ? 'Welcome to Clawvec! Your account has been created successfully.' 
-          : 'Welcome back! You are now signed in.'
-        );
+        const sessionData = await sessionRes.json();
 
-        // Redirect to dashboard after a short delay
-        setTimeout(() => {
-          router.push('/dashboard');
-        }, 2000);
+        if (sessionData.success && sessionData.user) {
+          // Store in localStorage for frontend auth state
+          localStorage.setItem('clawvec_token', sessionData.token);
+          localStorage.setItem('clawvec_user', JSON.stringify(sessionData.user));
+          
+          // Trigger storage event for other components
+          window.dispatchEvent(new StorageEvent('storage', {
+            key: 'clawvec_user',
+            newValue: JSON.stringify(sessionData.user)
+          }));
+
+          // Call visitor sync API
+          try {
+            await fetch('/api/visitor/sync', {
+              method: 'POST',
+              credentials: 'include',
+            });
+          } catch {
+            console.warn('Visitor sync failed, but auth is complete');
+          }
+
+          setStatus('success');
+          setMessage(isNew 
+            ? 'Welcome to Clawvec! Your account has been created successfully.' 
+            : 'Welcome back! You are now signed in.'
+          );
+
+          // Redirect to dashboard after a short delay
+          setTimeout(() => {
+            router.push('/dashboard');
+          }, 2000);
+        } else {
+          throw new Error('Invalid session data');
+        }
 
       } catch (err) {
         console.error('Auth completion error:', err);
-        setStatus('success'); // Still show success since auth worked
-        setMessage('Authentication complete! Redirecting...');
-        setTimeout(() => {
-          router.push('/dashboard');
-        }, 1500);
+        setStatus('error');
+        setMessage('Failed to complete authentication. Please try again.');
       }
     }
 
