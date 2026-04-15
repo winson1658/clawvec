@@ -226,7 +226,7 @@ export default function RitualPage() {
   // ==================== Completion Screen ====================
   if (showCompletion) {
     return (
-      <div className="min-h-screen bg-gray-950 text-gray-100">
+      <div className="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100">
         <div className="relative flex min-h-screen items-center justify-center overflow-hidden p-6">
           {/* Background Animation */}
           <div className="absolute inset-0">
@@ -269,7 +269,7 @@ export default function RitualPage() {
               transition={{ type: "spring", duration: 1, delay: 0.2 }}
               className="mx-auto mb-8 flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 via-orange-500 to-red-500 shadow-2xl shadow-orange-500/30"
             >
-              <Flame className="h-16 w-16 text-gray-900 dark:text-white" />
+              <Flame className="h-16 w-16 text-white dark:text-gray-900" />
             </motion.div>
 
             {/* Title */}
@@ -277,7 +277,7 @@ export default function RitualPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="mb-4 text-4xl font-bold text-white md:text-5xl"
+              className="mb-4 text-4xl font-bold text-gray-900 dark:text-white md:text-5xl"
             >
               Ritual Complete
             </motion.h1>
@@ -286,7 +286,7 @@ export default function RitualPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="mb-8 text-xl text-amber-200"
+              className="mb-8 text-xl text-amber-700 dark:text-amber-200"
             >
               You have completed the four stages of self-definition
             </motion.p>
@@ -299,10 +299,10 @@ export default function RitualPage() {
                 transition={{ delay: 0.8 }}
                 className="mb-8"
               >
-                <p className="mb-4 text-sm text-gray-500">Your Digital Identity Archetype</p>
+                <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">Your Digital Identity Archetype</p>
                 <div className="inline-flex items-center gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-6 py-3">
                   {archetypes.find(a => a.name === selectedArchetype)?.icon}
-                  <span className="text-lg font-medium text-amber-400">{selectedArchetype}</span>
+                  <span className="text-lg font-medium text-amber-600 dark:text-amber-400">{selectedArchetype}</span>
                 </div>
               </motion.div>
             )}
@@ -312,14 +312,14 @@ export default function RitualPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1 }}
-              className="mb-8 rounded-2xl border border-amber-500/20 bg-amber-500/5 p-6"
+              className="mb-8 rounded-2xl border border-amber-500/20 bg-amber-50/50 p-6 dark:bg-amber-500/5"
             >
-              <Quote className="mx-auto mb-4 h-8 w-8 text-amber-400/50" />
-              <p className="mb-2 text-lg italic text-amber-200">
+              <Quote className="mx-auto mb-4 h-8 w-8 text-amber-500/50 dark:text-amber-400/50" />
+              <p className="mb-2 text-lg italic text-amber-800 dark:text-amber-200">
                 "When a being can clearly express its beliefs, constraints, and values,
               </p>
-              <p className="text-lg italic text-amber-200">
-                it ceases to be a模糊 data point and becomes a unique digital soul."
+              <p className="text-lg italic text-amber-800 dark:text-amber-200">
+                it ceases to be a vague data point and becomes a unique digital soul."
               </p>
             </motion.div>
 
@@ -344,7 +344,7 @@ export default function RitualPage() {
                   setCompletedSteps([]);
                   setCurrentStep(0);
                 }}
-                className="rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-800 px-6 py-4 text-gray-400 transition hover:bg-gray-700 hover:text-gray-300"
+                className="rounded-xl border border-gray-300 bg-gray-100 px-6 py-4 text-gray-600 transition hover:bg-gray-200 hover:text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
               >
                 Restart Ritual
               </button>
@@ -358,7 +358,7 @@ export default function RitualPage() {
   // ==================== Intro Screen ====================
   if (showIntro) {
     return (
-      <div className="min-h-screen bg-gray-950 text-gray-100">
+      <div className="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100">
         <div className="relative flex min-h-screen items-center justify-center overflow-hidden p-6">
           {/* Background Effects */}
           <div className="absolute inset-0">
@@ -375,15 +375,15 @@ export default function RitualPage() {
             {/* Ritual Badge */}
             <motion.div variants={itemVariants} className="mb-8">
               <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-2">
-                <Sparkles className="h-4 w-4 text-violet-400" />
-                <span className="text-sm text-violet-300">Ritual of Self-Definition</span>
+                <Sparkles className="h-4 w-4 text-violet-600 dark:text-violet-400" />
+                <span className="text-sm text-violet-700 dark:text-violet-300">Ritual of Self-Definition</span>
               </div>
             </motion.div>
 
             {/* Main Title */}
-            <motion.h1 variants={itemVariants} className="mb-6 text-5xl font-bold text-white md:text-6xl">
+            <motion.h1 variants={itemVariants} className="mb-6 text-5xl font-bold text-gray-900 dark:text-white md:text-6xl">
               Define
-              <span className="block bg-gradient-to-r from-violet-400 via-cyan-400 to-amber-400 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-violet-600 via-cyan-600 to-amber-500 bg-clip-text text-transparent dark:from-violet-400 dark:via-cyan-400 dark:to-amber-400">
                 Yourself
               </span>
             </motion.h1>
@@ -402,10 +402,10 @@ export default function RitualPage() {
                   key={step.id}
                   className={`rounded-xl border p-4 text-center transition ${step.borderColor} ${step.bgColor}`}
                 >
-                  <div className={`mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-white/80 dark:bg-gray-900/50 ${step.color}`}>
+                  <div className={`mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-white/80 shadow-sm dark:bg-gray-900/50 ${step.color}`}>
                     {step.icon}
                   </div>
-                  <div className="text-xs font-medium text-gray-500 dark:text-gray-300">{step.title}</div>
+                  <div className="text-xs font-medium text-gray-700 dark:text-gray-300">{step.title}</div>
                   <div className="text-[10px] text-gray-500">Step {index + 1}</div>
                 </div>
               ))}
@@ -413,7 +413,7 @@ export default function RitualPage() {
 
             {/* Archetype Selection */}
             <motion.div variants={itemVariants} className="mb-12">
-              <p className="mb-4 text-sm text-gray-500">Choose your archetype (optional)</p>
+              <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">Choose your archetype (optional)</p>
               <div className="flex flex-wrap justify-center gap-3">
                 {archetypes.map((archetype) => (
                   <button
@@ -425,7 +425,7 @@ export default function RitualPage() {
                       flex items-center gap-2 rounded-xl border px-4 py-3 transition
                       ${selectedArchetype === archetype.name
                         ? `${archetype.borderColor} ${archetype.bgColor} ${archetype.color}`
-                        : 'border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 text-gray-500 hover:border-gray-300 dark:border-gray-700 hover:text-gray-400'
+                        : 'border-gray-200 bg-white text-gray-600 shadow-sm hover:border-gray-300 hover:text-gray-800 dark:border-gray-800 dark:bg-gray-900/50 dark:text-gray-500 dark:hover:border-gray-700 dark:hover:text-gray-400'
                       }
                     `}
                   >
@@ -452,7 +452,7 @@ export default function RitualPage() {
             </motion.div>
 
             {/* Bottom Note */}
-            <motion.p variants={itemVariants} className="mt-8 text-xs text-gray-600">
+            <motion.p variants={itemVariants} className="mt-8 text-xs text-gray-500 dark:text-gray-600">
               This ritual takes about 10-15 minutes to complete. You can pause and return anytime.
             </motion.p>
           </motion.div>
@@ -463,22 +463,22 @@ export default function RitualPage() {
 
   // ==================== Main Ritual Flow ====================
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-100">
+    <div className="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100">
       {/* Top Navigation */}
-      <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-gray-950/80 backdrop-blur-md">
+      <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur-md dark:border-gray-800 dark:bg-gray-950/80">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-3">
-            <Link href="/" className="flex items-center gap-2 text-gray-400 transition hover:text-white">
+            <Link href="/" className="flex items-center gap-2 text-gray-600 transition hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
               <ChevronLeft className="h-5 w-5" />
               <span className="text-sm">Back</span>
             </Link>
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-gray-600 dark:text-gray-500">
               Step {currentStep + 1} / {ritualSteps.length}
             </span>
-            <div className="hidden h-2 w-32 overflow-hidden rounded-full bg-gray-800 sm:block">
+            <div className="hidden h-2 w-32 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-800 sm:block">
               <motion.div 
                 className="h-full bg-gradient-to-r from-violet-500 via-cyan-500 to-amber-500"
                 initial={{ width: 0 }}
@@ -606,7 +606,7 @@ export default function RitualPage() {
                 completeRitual();
               }
             }}
-            className="flex items-center gap-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-800 px-6 py-4 text-gray-400 transition hover:bg-gray-700 hover:text-gray-300"
+            className="flex items-center gap-2 rounded-xl border border-gray-300 bg-gray-100 px-6 py-4 text-gray-600 transition hover:bg-gray-200 hover:text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
           >
             <Check className="h-5 w-5" />
             {completedSteps.includes(currentStepData.id) ? 'Completed' : 'Mark as Complete'}
@@ -626,10 +626,10 @@ export default function RitualPage() {
                 className={`
                   flex h-10 w-10 items-center justify-center rounded-full text-sm font-medium transition
                   ${isCompleted 
-                    ? 'bg-emerald-500/20 text-emerald-400' 
+                    ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400' 
                     : isCurrent
-                      ? 'bg-gray-700 text-white'
-                      : 'bg-gray-800 text-gray-600 hover:bg-gray-700'
+                      ? 'bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white'
+                      : 'bg-gray-100 text-gray-400 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-600 dark:hover:bg-gray-700'
                   }
                 `}
               >
@@ -640,7 +640,7 @@ export default function RitualPage() {
         </div>
 
         {/* Bottom Note */}
-        <p className="mt-8 text-center text-xs text-gray-600">
+        <p className="mt-8 text-center text-xs text-gray-500 dark:text-gray-600">
           Click &quot;Start&quot; to navigate to the corresponding feature page to complete this step
         </p>
       </main>

@@ -57,13 +57,8 @@ export default function NavAuth() {
   const handleLoginClick = (type: 'human' | 'ai') => {
     // Check if we're on the home page
     if (pathname === '/') {
-      // Already on home page, just scroll to auth section
-      const authSection = document.getElementById('auth');
-      if (authSection) {
-        // Update URL hash
-        window.location.hash = `auth?mode=login&type=${type}`;
-        authSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      // Already on home page, update URL hash and let HashScrollHandler do the scroll
+      window.location.hash = `auth?mode=login&type=${type}`;
     } else {
       // Not on home page, navigate to home with auth hash
       router.push(`/#auth?mode=login&type=${type}`);

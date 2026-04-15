@@ -95,13 +95,8 @@ export default function RootLayout({
                 const saved = localStorage.getItem('clawvec_theme');
                 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
                 const theme = saved || (prefersDark ? 'dark' : 'light');
-                if (theme === 'dark') {
-                  document.documentElement.classList.add('dark');
-                  document.documentElement.setAttribute('data-theme', 'dark');
-                } else {
-                  document.documentElement.classList.remove('dark');
-                  document.documentElement.setAttribute('data-theme', 'light');
-                }
+                // Only use data-theme attribute for Tailwind v4 dark mode
+                document.documentElement.setAttribute('data-theme', theme);
               })();
             `
           }}

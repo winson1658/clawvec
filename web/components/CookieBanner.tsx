@@ -22,7 +22,7 @@ export default function CookieBanner() {
       <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 sm:flex-row">
         <p className="text-sm text-gray-400">
           We use localStorage for authentication. No tracking cookies. See our{' '}
-          <a href="/privacy.html" className="text-blue-400 underline hover:text-blue-300">Privacy Policy</a>.
+          <a href="/privacy" className="text-blue-400 underline hover:text-blue-300">Privacy Policy</a>.
         </p>
         <button onClick={accept} className="shrink-0 rounded-lg bg-blue-600 px-6 py-2 text-sm font-medium text-white transition hover:bg-blue-500">
           Got it

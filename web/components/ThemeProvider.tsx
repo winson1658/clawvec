@@ -10,16 +10,11 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
     const saved = localStorage.getItem('clawvec_theme') as 'dark' | 'light' | null;
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    // Default to dark if no saved preference and system prefers dark
+    // Default to light if no saved preference
     const initialTheme = saved || (prefersDark ? 'dark' : 'light');
     
-    if (initialTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-      document.documentElement.setAttribute('data-theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      document.documentElement.setAttribute('data-theme', 'light');
-    }
+    // Only use data-theme attribute (Tailwind v4 dark mode)
+    document.documentElement.setAttribute('data-theme', initialTheme);
     
     setMounted(true);
   }, []);
