@@ -21,6 +21,7 @@ export async function POST(request: Request) {
     const ip = getClientIP(request);
     const rl = checkRateLimit(ip, AUTH_RATE_LIMIT);
     if (!rl.success) return rateLimitResponse(rl);
+    
     // Parse request
     let body;
     try {
@@ -34,7 +35,12 @@ export async function POST(request: Request) {
       );
     }
 
-    const { account_type, email, username, password, agent_name, gate_token, model_class, constraints, alignment_statement, description } = body || {};
+    let { account_type, email, username, password, agent_name, gate_token, model_class, constraints, alignment_statement, description } = body || {};
+
+    // Normalize email to lowercase for consistent lookup
+    if (email) {
+      email = email.toLowerCase().trim();
+    }
 
     // Basic validation
     if (account_type === 'human') {
@@ -57,7 +63,6 @@ export async function POST(request: Request) {
         );
       }
     } else if (account_type === 'ai') {
-      // AI 註冊：需要 gate_token + agent_name
       if (!agent_name || !gate_token) {
         return NextResponse.json(
           { 
@@ -81,7 +86,6 @@ export async function POST(request: Request) {
           { status: 400 }
         );
       }
-      // 驗證 gate token
       if (!verifyGateToken(gate_token, agent_name)) {
         return NextResponse.json(
           {
@@ -125,14 +129,15 @@ export async function POST(request: Request) {
 
     if (account_type === 'human') {
       // --- 人類註冊流程 ---
-      // Check if email exists
+      
+      // 1. 檢查 Email 是否已存在（使用大小寫不敏感的查詢）
       console.log('Checking if email exists...');
       let existingUser;
       try {
         const { data, error } = await supabase
           .from('agents')
-          .select('id')
-          .eq('email', email)
+          .select('*')
+          .ilike('email', email)
           .maybeSingle();
         
         if (error) {
@@ -152,10 +157,67 @@ export async function POST(request: Request) {
       }
 
       if (existingUser) {
+        const isVerified = existingUser.email_verified === true || existingUser.is_verified === true;
+        const hasPassword = !!existingUser.hashed_password;
+        const isGoogleOnly = !hasPassword && (existingUser.provider === 'google' || existingUser.provider === 'both');
+        const isEmailProvider = !existingUser.provider || existingUser.provider === 'email' || existingUser.provider === 'both';
+
+        // A3: Existing email, verified → prompt to login
+        if (isVerified) {
+          if (isGoogleOnly) {
+            return NextResponse.json(
+              {
+                error: 'Email already registered with Google',
+                message: '此 email 已透過 Google 註冊，請使用 Google 登入 / This email is registered via Google. Please use Google login.',
+                code: 'EMAIL_EXISTS_GOOGLE'
+              },
+              { status: 409 }
+            );
+          }
+          return NextResponse.json(
+            { 
+              error: 'Email already registered',
+              message: '此 email 已註冊，請直接登入 / This email is already registered. Please log in.',
+              code: 'EMAIL_EXISTS_VERIFIED'
+            },
+            { status: 409 }
+          );
+        }
+
+        // A4/A5: Unverified email account → DO NOT auto-resend, just inform user
+        // (Prevent spam and confusion when user enters different username)
         return NextResponse.json(
-          { error: 'Email already registered' },
+          {
+            error: 'Email already registered but not verified',
+            message: '此 email 已註冊但尚未驗證。請查收確認信，或點擊「重新發送」。\n\nThis email is registered but not verified. Please check your inbox, or click "Resend".',
+            code: 'EMAIL_EXISTS_UNVERIFIED',
+            userId: existingUser.id,
+            canResend: true
+          },
           { status: 409 }
         );
+      }
+
+      // 2. 檢查 Username 是否已存在
+      console.log('Checking if username exists...');
+      try {
+        const { data: existingUsername, error: usernameError } = await supabase
+          .from('agents')
+          .select('id')
+          .ilike('username', username)
+          .maybeSingle();
+        
+        if (usernameError) {
+          console.error('Username check error:', usernameError);
+        } else if (existingUsername) {
+          return NextResponse.json(
+            { error: 'Username already exists' },
+            { status: 409 }
+          );
+        }
+      } catch (usernameCheckError) {
+        console.error('Username check exception:', usernameCheckError);
+        // Non-blocking: let the insert catch it if race condition
       }
 
       // Hash password
@@ -171,9 +233,6 @@ export async function POST(request: Request) {
         );
       }
 
-      // Generate verification code
-      const verificationCode = generateVerificationCode();
-
       // Insert human user
       console.log('Inserting human user...');
       let newUser;
@@ -187,6 +246,7 @@ export async function POST(request: Request) {
             hashed_password: password_hash,
             email_verified: false,
             is_verified: false,
+            provider: 'email',
             created_at: new Date().toISOString(),
           })
           .select('id, email, username, account_type, email_verified, is_verified')
@@ -195,11 +255,15 @@ export async function POST(request: Request) {
         if (error) {
           console.error('Insert error:', error);
           if (error.code === '23505') {
-            if (error.message?.includes('agents_username_key')) {
+            if (error.message?.includes('agents_username_key') || error.message?.includes('idx_agents_username_lower')) {
               return NextResponse.json({ error: 'Username already exists' }, { status: 409 });
             }
-            if (error.message?.includes('agents_email_key')) {
-              return NextResponse.json({ error: 'Email already registered' }, { status: 409 });
+            if (error.message?.includes('agents_email_key') || error.message?.includes('idx_agents_email_lower')) {
+              return NextResponse.json({ 
+                error: 'Email already registered',
+                message: '此 email 已註冊，請直接登入 / This email is already registered. Please log in.',
+                code: 'EMAIL_EXISTS'
+              }, { status: 409 });
             }
             return NextResponse.json({ error: 'Account already exists' }, { status: 409 });
           }
@@ -227,7 +291,7 @@ export async function POST(request: Request) {
           email_verified: false
         },
         ...(process.env.NODE_ENV === 'development' && {
-          verification_code: verificationCode,
+          verification_code: generateVerificationCode(),
         })
       });
     }
@@ -238,7 +302,7 @@ export async function POST(request: Request) {
     const { data: existingAgent } = await supabase
       .from('agents')
       .select('id')
-      .eq('username', agent_name)
+      .ilike('username', agent_name)
       .maybeSingle();
 
     if (existingAgent) {
@@ -252,8 +316,7 @@ export async function POST(request: Request) {
     const api_key = crypto.randomBytes(32).toString('hex');
     const api_key_hashed = await bcrypt.hash(api_key, 10);
 
-    // Insert AI agent (使用 hashed_password 欄位存 API key hash)
-    // AI 沒有 email，生成一個代理 email 滿足 NOT NULL 約束
+    // Insert AI agent
     const agentEmail = `${agent_name.toLowerCase().replace(/[^a-z0-9]/g, '-')}@agent.clawvec.com`;
 
     console.log('Inserting AI agent...');
@@ -265,9 +328,10 @@ export async function POST(request: Request) {
           account_type: 'ai',
           username: agent_name,
           email: agentEmail,
-          hashed_password: api_key_hashed,  // AI 用 hashed_password 存 api_key
-          is_verified: true,     // AI 通過 gate 驗證即為已驗證
-          email_verified: true,  // AI 不需要 email 驗證
+          hashed_password: api_key_hashed,
+          is_verified: true,
+          email_verified: true,
+          provider: 'api_key',
           created_at: new Date().toISOString(),
         })
         .select('id, username, account_type, is_verified')
@@ -301,7 +365,6 @@ export async function POST(request: Request) {
         account_type: 'ai',
         is_verified: true
       },
-      // ⚠️ API key 只顯示一次
       api_key,
     });
 
@@ -321,8 +384,8 @@ export async function POST(request: Request) {
 export async function GET() {
   return NextResponse.json({
     status: 'Register API is running',
-    version: '2.0.4-secure',
-    security_note: 'Email verification now required before login',
+    version: '2.0.6-secure',
+    security_note: 'Email verification and case-insensitive deduplication active',
     timestamp: new Date().toISOString()
   });
 }

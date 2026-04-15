@@ -53,12 +53,15 @@ export async function POST(request: Request) {
     const passwordHash = await bcrypt.hash(password, 10);
 
     // Update password and clear reset token
+    // Use 'hashed_password' field (not 'password_hash')
     const { error: updateError } = await supabase
       .from('agents')
       .update({
-        password_hash: passwordHash,
+        hashed_password: passwordHash,
         reset_token: null,
         reset_expires: null,
+        // If this was a Google-only account, it now has a password too
+        provider: 'both',
         updated_at: new Date().toISOString(),
       })
       .eq('id', user.id);

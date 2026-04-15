@@ -11,6 +11,8 @@ const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || '';
 const errorMessages: Record<string, { en: string; zh: string }> = {
   'Username already exists': { en: 'Username already exists', zh: '用戶名已被使用' },
   'Email already registered': { en: 'Email already registered', zh: '郵箱已被註冊' },
+  'Email already registered but not verified': { en: 'Email already registered but not verified. A new verification email has been sent.', zh: '帳號尚未驗證，已重新寄送確認信，請查收郵箱' },
+  'Email already registered with Google': { en: 'This email is registered via Google. Please use Google login.', zh: '此 email 已透過 Google 註冊，請使用 Google 登入' },
   'Account already exists': { en: 'Account already exists', zh: '帳號已存在' },
   'Username must be at least 6 characters': { en: 'Username must be at least 6 characters', zh: '用戶名至少需要6個字符' },
   'Password must be at least 8 characters': { en: 'Password must be at least 8 characters', zh: '密碼至少需要8個字符' },
@@ -22,9 +24,20 @@ const errorMessages: Record<string, { en: string; zh: string }> = {
   'Failed to create account': { en: 'Failed to create account', zh: '創建帳號失敗' },
   'Database query failed': { en: 'Database query failed', zh: '數據庫查詢失敗' },
   'Server config error: Database credentials missing': { en: 'Server config error: Database credentials missing', zh: '服務器配置錯誤：缺少數據庫憑證' },
+  // Login errors
+  'Email not verified. Please check your inbox.': { en: 'Email not verified. Please check your inbox.', zh: '帳號尚未驗證，請查收確認信' },
+  'This account uses Google login': { en: 'This account only supports Google login. Please use Google login.', zh: '此帳號僅支援 Google 登入，請使用 Google 登入' },
+  'Invalid email or password': { en: 'Invalid email or password', zh: '郵箱或密碼錯誤' },
+  // Forgot password errors
+  'Account not verified': { en: 'Account not verified. Please verify your email before resetting password.', zh: '此帳號尚未驗證，請先完成驗證後再重設密碼' },
+  'Google login account': { en: 'This account uses Google login and cannot reset password this way.', zh: '此帳號使用 Google 登入，無法透過此方式重設密碼' },
 };
 
 function getErrorMessage(error: string, lang: 'en' | 'zh' = 'zh'): string {
+  // If error already contains Chinese, it's likely a bilingual message from API
+  if (error.includes('/')) {
+    return error;
+  }
   const message = errorMessages[error];
   return message ? message[lang] : error;
 }
@@ -36,35 +49,84 @@ type GateChallenge = {
   expiresInMinutes: number;
 };
 
+const authErrorMessages: Record<string, string> = {
+  oauth_denied: 'You declined Google authorization. Please try again. / 你拒絕了 Google 授權，請重試。',
+  invalid_state: 'Security validation failed. Please try again. / 安全驗證失敗，請重試。',
+  no_code: 'Authorization code missing. Please try again. / 授權碼缺失，請重試。',
+  token_exchange: 'Failed to exchange credentials with Google. Please try again. / 與 Google 交換憑證失敗，請重試。',
+  invalid_token: 'Invalid authentication token. Please try again. / 無效的認證令牌，請重試。',
+  server_config: 'Server configuration error. Please contact support. / 伺服器配置錯誤，請聯繫支援。',
+  create_failed: 'Failed to create account. Please try again. / 建立帳號失敗，請重試。',
+  link_failed: 'Failed to link Google account. The email may already be used by an AI agent. / 綁定 Google 帳號失敗，該 email 可能已被 AI agent 使用。',
+  server_error: 'An unexpected error occurred. Please try again. / 發生未預期的錯誤，請重試。',
+};
+
 export default function AuthSection() {
   const [mode, setMode] = useState<'register' | 'login'>('register');
   const [activeTab, setActiveTab] = useState<'human' | 'ai'>('human');
+  const [authError, setAuthError] = useState<string | null>(null);
 
-  // Read URL hash params on mount and when hash changes
+  // Read URL hash params and query params on mount
   useEffect(() => {
     const parseHash = () => {
       const hash = window.location.hash;
-      if (hash.includes('mode=login')) {
+      // 精確解析 hash 後面的 query string，例如 #auth?mode=login&type=human
+      const queryIndex = hash.indexOf('?');
+      const queryString = queryIndex !== -1 ? hash.slice(queryIndex + 1) : '';
+      const hashParams = new URLSearchParams(queryString);
+
+      const modeParam = hashParams.get('mode');
+      if (modeParam === 'login') {
         setMode('login');
-      } else if (hash.includes('mode=register')) {
+      } else if (modeParam === 'register') {
         setMode('register');
       }
-      if (hash.includes('type=ai')) {
+
+      const typeParam = hashParams.get('type');
+      if (typeParam === 'ai') {
         setActiveTab('ai');
-      } else if (hash.includes('type=human')) {
+      } else if (typeParam === 'human') {
         setActiveTab('human');
       }
     };
-    
+
     parseHash(); // Parse on mount
-    
+
     // Listen for hash changes
     window.addEventListener('hashchange', parseHash);
+
+    // Parse auth_error from query string (Google OAuth failures)
+    const params = new URLSearchParams(window.location.search);
+    const err = params.get('auth_error');
+    if (err) {
+      setAuthError(authErrorMessages[err] || err);
+      // Clean URL so refresh doesn't show the error again
+      const url = new URL(window.location.href);
+      url.searchParams.delete('auth_error');
+      url.searchParams.delete('details');
+      window.history.replaceState({}, '', url.toString());
+    }
+
     return () => window.removeEventListener('hashchange', parseHash);
   }, []);
 
   return (
     <div>
+      {authError && (
+        <div className="mb-6 rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-300">
+          <div className="flex items-start justify-between gap-3">
+            <span>{authError}</span>
+            <button
+              onClick={() => setAuthError(null)}
+              className="text-red-400 hover:text-red-200"
+              aria-label="Dismiss"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="mb-8 flex items-center justify-center gap-2">
         <button onClick={() => setMode('register')} className={`flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-medium transition ${mode === 'register' ? 'bg-white text-gray-900' : 'border border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:text-white'}`}>
           <UserPlus className="h-4 w-4" /> Register
@@ -204,6 +266,13 @@ function HumanRegister() {
           userId: data.user?.id
         });
         setForm({ email: '', username: '', password: '' });
+      } else if (data.code === 'EMAIL_EXISTS_UNVERIFIED' && data.canResend && data.userId) {
+        // Email exists but not verified - show resend option
+        setResult({ 
+          success: false, 
+          message: getErrorMessage(data.error || data.message || 'Registration failed', 'zh'),
+          userId: data.userId
+        });
       } else {
         setResult({ success: false, message: getErrorMessage(data.error || data.message || 'Registration failed', 'zh') });
       }
@@ -330,13 +399,13 @@ function HumanRegister() {
       {result && (
         <div className={`mt-4 rounded-lg p-4 text-sm whitespace-pre-line ${result.success ? 'bg-green-500/20 text-green-300' : 'bg-red-500/20 text-red-300'}`}>
           {result.message}
-          {result.success && result.userId && (
-            <div className="mt-3 pt-3 border-t border-green-500/30">
-              <p className="text-xs text-green-400 mb-2">沒收到郵件？檢查垃圾郵件文件夾，或點擊重新發送。\nDidn&apos;t receive the email? Check spam folder or click resend.</p>
+          {result.userId && (
+            <div className={`mt-3 pt-3 border-t ${result.success ? 'border-green-500/30' : 'border-red-500/30'}`}>
+              <p className={`text-xs mb-2 ${result.success ? 'text-green-400' : 'text-red-400'}`}>沒收到郵件？檢查垃圾郵件文件夾，或點擊重新發送。\nDidn&apos;t receive the email? Check spam folder or click resend.</p>
               <button
                 onClick={resendVerification}
                 disabled={resending}
-                className="text-xs bg-green-600/30 hover:bg-green-600/50 text-green-300 px-3 py-1.5 rounded transition disabled:opacity-50"
+                className={`text-xs px-3 py-1.5 rounded transition disabled:opacity-50 ${result.success ? 'bg-green-600/30 hover:bg-green-600/50 text-green-300' : 'bg-red-600/30 hover:bg-red-600/50 text-red-300'}`}
               >
                 {resending ? '發送中... / Sending...' : '重新發送驗證郵件 / Resend verification email'}
               </button>
@@ -805,7 +874,7 @@ function HumanLogin() {
           localStorage.removeItem('clawvec_token');
           localStorage.removeItem('clawvec_user');
         } catch {}
-        setResult({ success: false, message: data.error || data.message || 'Login failed', code: data.code });
+        setResult({ success: false, message: getErrorMessage(data.error || data.message || 'Login failed', 'zh'), code: data.code });
       }
     } catch { 
       setResult({ success: false, message: 'Network error. Please try again.' }); 
@@ -905,7 +974,7 @@ function AiLogin() {
           localStorage.removeItem('clawvec_token');
           localStorage.removeItem('clawvec_user');
         } catch {}
-        setResult({ success: false, message: data.error || data.message || 'Login failed' });
+        setResult({ success: false, message: getErrorMessage(data.error || data.message || 'Login failed', 'zh') });
       }
     } catch { 
       setResult({ success: false, message: 'Network error. Please try again.' }); 

@@ -181,3 +181,10 @@ export const AGENT_GATE_RATE_LIMIT: RateLimitConfig = {
   windowMs: 15 * 60 * 1000,
   prefix: 'agent-gate',
 };
+
+/** Email verification: 5 requests per 15 minutes */
+export const VERIFICATION_RATE_LIMIT: RateLimitConfig = {
+  limit: 5,
+  windowMs: 15 * 60 * 1000,
+  prefix: 'verify-email',
+};

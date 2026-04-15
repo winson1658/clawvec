@@ -51,11 +51,10 @@ export async function GET(request: Request) {
     });
 
     // Redirect to Google with cookies
-    return NextResponse.redirect(googleAuthUrl, {
-      headers: {
-        'Set-Cookie': [stateCookie, nonceCookie].join(', '),
-      },
-    });
+    const response = NextResponse.redirect(googleAuthUrl);
+    response.cookies.set('oauth_state', state, { httpOnly: true, secure: true, sameSite: 'lax', maxAge: 600, path: '/' });
+    response.cookies.set('oauth_nonce', nonce, { httpOnly: true, secure: true, sameSite: 'lax', maxAge: 600, path: '/' });
+    return response;
 
   } catch (error) {
     console.error('Google OAuth start error:', error);

@@ -15,7 +15,11 @@ export async function POST(request: Request) {
     if (!rl.success) return rateLimitResponse(rl);
 
     const body = await request.json();
-    const { account_type, email, password, agent_name, api_key } = body;
+    let { account_type, email, password, agent_name, api_key } = body;
+
+    if (email) {
+      email = email.toLowerCase().trim();
+    }
 
     if (!supabaseUrl || !supabaseServiceKey) {
       return NextResponse.json(
@@ -35,13 +39,13 @@ export async function POST(request: Request) {
         );
       }
 
-      // Find user by email
+      // Find user by email (case-insensitive)
       const { data: user, error: findError } = await supabase
         .from('agents')
         .select('*')
-        .eq('email', email)
+        .ilike('email', email)
         .eq('account_type', 'human')
-        .single();
+        .maybeSingle();
 
       if (findError || !user) {
         return NextResponse.json(
@@ -50,11 +54,30 @@ export async function POST(request: Request) {
         );
       }
 
+      // C5: Check if this is a Google-only account (no password set)
+      const hasPassword = !!user.hashed_password;
+      const isGoogleOnly = !hasPassword && (user.provider === 'google' || user.google_id);
+      
+      if (isGoogleOnly) {
+        return NextResponse.json(
+          { 
+            error: 'This account uses Google login',
+            message: '此帳號僅支援 Google 登入，請使用 Google 登入，或登入後在設定中設定密碼 / This account only supports Google login. Please use Google login or set a password in settings after logging in.',
+            code: 'GOOGLE_ONLY_ACCOUNT'
+          },
+          { status: 403 }
+        );
+      }
+
       // Check if email is verified - 只要其中一個為 true 就通過
       const isVerified = user.email_verified === true || user.is_verified === true;
       if (!isVerified) {
         return NextResponse.json(
-          { error: 'Email not verified. Please check your inbox.', code: 'EMAIL_NOT_VERIFIED' },
+          { 
+            error: 'Email not verified. Please check your inbox.',
+            message: '帳號尚未驗證，請查收確認信 / Email not verified. Please check your inbox.',
+            code: 'EMAIL_NOT_VERIFIED' 
+          },
           { status: 403 }
         );
       }

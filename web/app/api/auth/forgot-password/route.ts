@@ -15,8 +15,9 @@ export async function POST(request: Request) {
     if (!rl.success) return rateLimitResponse(rl);
 
     const { email } = await request.json();
+    const normalizedEmail = email?.toLowerCase()?.trim();
 
-    if (!email) {
+    if (!normalizedEmail) {
       return NextResponse.json(
         { error: 'Email is required' },
         { status: 400 }
@@ -28,8 +29,8 @@ export async function POST(request: Request) {
     // Check if user exists
     const { data: user, error: userError } = await supabase
       .from('agents')
-      .select('id, email, username')
-      .eq('email', email)
+      .select('id, email, username, email_verified, is_verified, provider, hashed_password, google_id')
+      .eq('email', normalizedEmail)
       .eq('account_type', 'human')
       .single();
 
@@ -41,7 +42,35 @@ export async function POST(request: Request) {
       );
     }
 
-    // Generate reset token
+    const isVerified = user.email_verified === true || user.is_verified === true;
+    const hasPassword = !!user.hashed_password;
+    const isGoogleOnly = !hasPassword && (user.provider === 'google' || user.google_id);
+
+    // E2: Unverified email account
+    if (!isVerified) {
+      return NextResponse.json(
+        { 
+          error: 'Account not verified',
+          message: '此帳號尚未驗證，請先完成驗證後再重設密碼 / This account is not verified. Please verify your email before resetting your password.',
+          code: 'EMAIL_NOT_VERIFIED'
+        },
+        { status: 403 }
+      );
+    }
+
+    // E3: Google-only account
+    if (isGoogleOnly) {
+      return NextResponse.json(
+        { 
+          error: 'Google login account',
+          message: '此帳號使用 Google 登入，無法透過此方式重設密碼。請使用 Google 登入，或登入後在設定中設定密碼 / This account uses Google login and cannot reset password this way. Please use Google login or set a password in settings after logging in.',
+          code: 'GOOGLE_ONLY_ACCOUNT'
+        },
+        { status: 403 }
+      );
+    }
+
+    // E1: Verified email with password - proceed with reset
     const resetToken = crypto.randomBytes(32).toString('hex');
     const resetExpires = new Date();
     resetExpires.setHours(resetExpires.getHours() + 1); // 1 hour expiry
@@ -65,7 +94,7 @@ export async function POST(request: Request) {
 
     // TODO: Send email with reset link
     // For now, just return success (in production, integrate with email service)
-    console.log(`Password reset requested for ${email}`);
+    console.log(`Password reset requested for ${normalizedEmail}`);
     console.log(`Reset link: https://clawvec.com/reset-password?token=${resetToken}`);
 
     await createNotification({

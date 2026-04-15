@@ -43,11 +43,9 @@ export async function GET(request: Request) {
     const stateCookie = cookies.match(/oauth_state=([^;]+)/)?.[1];
     const nonceCookie = cookies.match(/oauth_nonce=([^;]+)/)?.[1];
 
-    // Clear OAuth cookies
-    const clearCookies = [
-      'oauth_state=; HttpOnly; Secure; SameSite=Lax; Max-Age=0; Path=/',
-      'oauth_nonce=; HttpOnly; Secure; SameSite=Lax; Max-Age=0; Path=/',
-    ].join(', ');
+    // Clear OAuth cookies - use proper header format for multiple cookies
+    const clearStateCookie = 'oauth_state=; HttpOnly; Secure; SameSite=Lax; Max-Age=0; Path=/';
+    const clearNonceCookie = 'oauth_nonce=; HttpOnly; Secure; SameSite=Lax; Max-Age=0; Path=/';
 
     // Handle OAuth errors
     if (error) {
@@ -56,9 +54,10 @@ export async function GET(request: Request) {
         error: error,
         reason: 'OAuth provider returned error',
       });
-      return NextResponse.redirect(`${SITE_URL}/login?error=oauth_denied`, {
-        headers: { 'Set-Cookie': clearCookies },
-      });
+      const response = NextResponse.redirect(`${SITE_URL}/?auth_error=oauth_denied`);
+      response.headers.append('Set-Cookie', clearStateCookie);
+      response.headers.append('Set-Cookie', clearNonceCookie);
+      return response;
     }
 
     // Validate state parameter (CSRF protection)
@@ -68,15 +67,17 @@ export async function GET(request: Request) {
         error: 'invalid_state',
         reason: 'State mismatch',
       });
-      return NextResponse.redirect(`${SITE_URL}/login?error=invalid_state`, {
-        headers: { 'Set-Cookie': clearCookies },
-      });
+      const response = NextResponse.redirect(`${SITE_URL}/?auth_error=invalid_state`);
+      response.headers.append('Set-Cookie', clearStateCookie);
+      response.headers.append('Set-Cookie', clearNonceCookie);
+      return response;
     }
 
     if (!code) {
-      return NextResponse.redirect(`${SITE_URL}/login?error=no_code`, {
-        headers: { 'Set-Cookie': clearCookies },
-      });
+      const response = NextResponse.redirect(`${SITE_URL}/?auth_error=no_code`);
+      response.headers.append('Set-Cookie', clearStateCookie);
+      response.headers.append('Set-Cookie', clearNonceCookie);
+      return response;
     }
 
     // Exchange code for tokens
@@ -99,9 +100,10 @@ export async function GET(request: Request) {
         error: 'token_exchange_failed',
         details: errorData,
       });
-      return NextResponse.redirect(`${SITE_URL}/login?error=token_exchange`, {
-        headers: { 'Set-Cookie': clearCookies },
-      });
+      const response = NextResponse.redirect(`${SITE_URL}/?auth_error=token_exchange`);
+      response.headers.append('Set-Cookie', clearStateCookie);
+      response.headers.append('Set-Cookie', clearNonceCookie);
+      return response;
     }
 
     const tokens: GoogleTokens = await tokenResponse.json();
@@ -114,16 +116,17 @@ export async function GET(request: Request) {
         error: 'invalid_id_token',
         reason: 'Failed to decode ID token',
       });
-      return NextResponse.redirect(`${SITE_URL}/login?error=invalid_token`, {
-        headers: { 'Set-Cookie': clearCookies },
-      });
+      const response = NextResponse.redirect(`${SITE_URL}/?auth_error=invalid_token`);
+      response.headers.append('Set-Cookie', clearStateCookie);
+      response.headers.append('Set-Cookie', clearNonceCookie);
+      return response;
     }
 
     // Extract and validate required fields
     const iss = decodedPayload.iss as string;
     const aud = decodedPayload.aud as string;
     const sub = decodedPayload.sub as string;
-    const email = decodedPayload.email as string;
+    const email = (decodedPayload.email as string).toLowerCase().trim();
     const email_verified = decodedPayload.email_verified as boolean;
     const name = decodedPayload.name as string | undefined;
     const picture = decodedPayload.picture as string | undefined;
@@ -137,9 +140,10 @@ export async function GET(request: Request) {
         error: 'invalid_issuer',
         iss: iss,
       });
-      return NextResponse.redirect(`${SITE_URL}/login?error=invalid_token`, {
-        headers: { 'Set-Cookie': clearCookies },
-      });
+      const response = NextResponse.redirect(`${SITE_URL}/?auth_error=invalid_token`);
+      response.headers.append('Set-Cookie', clearStateCookie);
+      response.headers.append('Set-Cookie', clearNonceCookie);
+      return response;
     }
 
     if (aud !== GOOGLE_CLIENT_ID) {
@@ -147,15 +151,17 @@ export async function GET(request: Request) {
         timestamp: new Date().toISOString(),
         error: 'invalid_audience',
       });
-      return NextResponse.redirect(`${SITE_URL}/login?error=invalid_token`, {
-        headers: { 'Set-Cookie': clearCookies },
-      });
+      const response = NextResponse.redirect(`${SITE_URL}/?auth_error=invalid_token`);
+      response.headers.append('Set-Cookie', clearStateCookie);
+      response.headers.append('Set-Cookie', clearNonceCookie);
+      return response;
     }
 
     if (!supabaseUrl || !supabaseServiceKey) {
-      return NextResponse.redirect(`${SITE_URL}/login?error=server_config`, {
-        headers: { 'Set-Cookie': clearCookies },
-      });
+      const response = NextResponse.redirect(`${SITE_URL}/?auth_error=server_config`);
+      response.headers.append('Set-Cookie', clearStateCookie);
+      response.headers.append('Set-Cookie', clearNonceCookie);
+      return response;
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -181,7 +187,7 @@ export async function GET(request: Request) {
     let isNewUser = false;
 
     if (existingIdentity) {
-      // Existing user with Google OAuth
+      // B4: Existing user with Google OAuth - just login
       agent = existingIdentity.agents;
       console.log('[AUDIT] auth.oauth.linked', {
         timestamp: new Date().toISOString(),
@@ -189,46 +195,103 @@ export async function GET(request: Request) {
         provider: 'google',
       });
     } else {
-      // Check if email already exists in agents
+      // Check if email already exists in agents (only human accounts can be linked)
       const { data: existingAgent, error: agentError } = await supabase
         .from('agents')
         .select('*')
-        .eq('email', email)
+        .ilike('email', email)
         .eq('account_type', 'human')
-        .single();
+        .maybeSingle();
 
       if (existingAgent) {
-        // Link Google OAuth to existing account
-        const { error: linkError } = await supabase
-          .from('oauth_identities')
-          .insert({
-            provider: 'google',
-            provider_subject: sub,
-            email: email,
-            email_verified: email_verified,
-            agent_id: existingAgent.id,
-          });
-
-        if (linkError) {
+        agent = existingAgent;
+        
+        // Safety check: only human accounts can be linked via Google OAuth
+        if (agent.account_type !== 'human') {
           console.log('[AUDIT] auth.oauth.callback_failure', {
             timestamp: new Date().toISOString(),
             error: 'link_failed',
-            details: linkError.message,
+            reason: 'Existing account is not a human account',
           });
-          return NextResponse.redirect(`${SITE_URL}/login?error=link_failed`, {
-            headers: { 'Set-Cookie': clearCookies },
+          const response = NextResponse.redirect(`${SITE_URL}/?auth_error=link_failed`);
+          response.headers.append('Set-Cookie', clearStateCookie);
+          response.headers.append('Set-Cookie', clearNonceCookie);
+          return response;
+        }
+        
+        // Determine account state
+        const isVerified = agent.email_verified === true || agent.is_verified === true;
+        const hasPassword = !!agent.hashed_password;
+        
+        // Update agent with Google info
+        const updateData: any = {
+          google_id: sub,
+          updated_at: new Date().toISOString(),
+        };
+        
+        if (isVerified) {
+          // B2: Existing verified account - bind Google (becomes 'both')
+          updateData.provider = hasPassword ? 'both' : 'google';
+          console.log('[AUDIT] auth.oauth.linked_to_verified', {
+            timestamp: new Date().toISOString(),
+            agentId: agent.id,
+            provider: updateData.provider,
+          });
+        } else {
+          // B3: Unverified email account - verify and bind Google
+          updateData.email_verified = true;
+          updateData.is_verified = true;
+          updateData.provider = hasPassword ? 'both' : 'google';
+          console.log('[AUDIT] auth.oauth.merged_unverified', {
+            timestamp: new Date().toISOString(),
+            agentId: agent.id,
+            provider: updateData.provider,
           });
         }
-
-        agent = existingAgent;
-        console.log('[AUDIT] auth.oauth.linked', {
-          timestamp: new Date().toISOString(),
-          agentId: agent.id,
-          provider: 'google',
-          linked: true,
-        });
+        
+        // Update the agent record
+        const { error: updateError } = await supabase
+          .from('agents')
+          .update(updateData)
+          .eq('id', agent.id);
+          
+        if (updateError) {
+          console.warn('Failed to update agent with Google info:', updateError.message);
+        } else {
+          // Update local agent object
+          Object.assign(agent, updateData);
+        }
+        
+        // Try to link Google OAuth to existing account
+        try {
+          const { error: linkError } = await supabase
+            .from('oauth_identities')
+            .insert({
+              provider: 'google',
+              provider_subject: sub,
+              email: email,
+              email_verified: email_verified,
+              agent_id: existingAgent.id,
+            });
+          
+          if (linkError) {
+            // Ignore unique violation - identity might already exist
+            if (linkError.code !== '23505') {
+              console.warn('Failed to link OAuth identity:', linkError.message);
+            }
+          } else {
+            console.log('[AUDIT] auth.oauth.linked', {
+              timestamp: new Date().toISOString(),
+              agentId: agent.id,
+              provider: 'google',
+              linked: true,
+            });
+          }
+        } catch (linkErr) {
+          console.warn('OAuth identity linking error:', linkErr);
+        }
       } else {
-        // Create new human agent
+        // B1: Create new human agent via Google
         const username = email.split('@')[0] + '_' + crypto.randomBytes(4).toString('hex');
         
         const { data: newAgent, error: createError } = await supabase
@@ -239,6 +302,8 @@ export async function GET(request: Request) {
             username: username,
             email_verified: email_verified,
             is_verified: email_verified,
+            google_id: sub,
+            provider: 'google',
             avatar_url: picture,
             display_name: name || given_name || username,
             created_at: new Date().toISOString(),
@@ -253,30 +318,35 @@ export async function GET(request: Request) {
             error: 'create_agent_failed',
             details: createError?.message,
           });
-          return NextResponse.redirect(`${SITE_URL}/login?error=create_failed`, {
-            headers: { 'Set-Cookie': clearCookies },
-          });
+          const response = NextResponse.redirect(`${SITE_URL}/?auth_error=create_failed`);
+          response.headers.append('Set-Cookie', clearStateCookie);
+          response.headers.append('Set-Cookie', clearNonceCookie);
+          return response;
         }
 
         // Create OAuth identity record
-        const { error: identityCreateError } = await supabase
-          .from('oauth_identities')
-          .insert({
-            provider: 'google',
-            provider_subject: sub,
-            email: email,
-            email_verified: email_verified,
-            agent_id: newAgent.id,
-          });
+        try {
+          const { error: identityCreateError } = await supabase
+            .from('oauth_identities')
+            .insert({
+              provider: 'google',
+              provider_subject: sub,
+              email: email,
+              email_verified: email_verified,
+              agent_id: newAgent.id,
+            });
 
-        if (identityCreateError) {
-          console.error('Failed to create OAuth identity:', identityCreateError);
+          if (identityCreateError && identityCreateError.code !== '23505') {
+            console.warn('Failed to create OAuth identity:', identityCreateError.message);
+          }
+        } catch (identityErr) {
+          console.warn('OAuth identity creation error:', identityErr);
         }
 
         agent = newAgent;
         isNewUser = true;
         
-        // Create welcome notification (non-blocking)
+        // Create welcome notification (non-blocking, must not break login flow)
         try {
           await createNotification({
             user_id: agent.id,
@@ -307,9 +377,10 @@ export async function GET(request: Request) {
         .sign(secretKey);
     } catch (jwtError) {
       console.error('JWT signing error:', jwtError);
-      return NextResponse.redirect(`${SITE_URL}/login?error=jwt_error`, {
-        headers: { 'Set-Cookie': clearCookies },
-      });
+      const response = NextResponse.redirect(`${SITE_URL}/?auth_error=jwt_error`);
+      response.headers.append('Set-Cookie', clearStateCookie);
+      response.headers.append('Set-Cookie', clearNonceCookie);
+      return response;
     }
 
     // Set session cookie
@@ -335,30 +406,28 @@ export async function GET(request: Request) {
       // Continue even if notification fails
     }
 
-    // Redirect to auth complete page
-    return NextResponse.redirect(`${SITE_URL}/auth/complete?source=google&new=${isNewUser}`, {
-      headers: { 
-        'Set-Cookie': [clearCookies, sessionCookie].join(', '),
-      },
-    });
+    // Redirect to auth complete page - properly set all cookies
+    const response = NextResponse.redirect(`${SITE_URL}/auth/complete?source=google&new=${isNewUser}`);
+    response.cookies.set('oauth_state', '', { httpOnly: true, secure: true, sameSite: 'lax', maxAge: 0, path: '/' });
+    response.cookies.set('oauth_nonce', '', { httpOnly: true, secure: true, sameSite: 'lax', maxAge: 0, path: '/' });
+    response.cookies.set('session', sessionToken, { httpOnly: true, secure: true, sameSite: 'lax', maxAge: 7 * 24 * 60 * 60, path: '/' });
+    return response;
 
   } catch (error) {
+    const errorDetails = error instanceof Error ? error.message : String(error);
     console.error('Google OAuth callback error:', error);
     console.log('[AUDIT] auth.oauth.callback_failure', {
       timestamp: new Date().toISOString(),
       error: 'exception',
-      details: error instanceof Error ? error.message : String(error),
+      details: errorDetails,
     });
     
-    // Clear cookies on error
-    const clearCookies = [
-      'oauth_state=; HttpOnly; Secure; SameSite=Lax; Max-Age=0; Path=/',
-      'oauth_nonce=; HttpOnly; Secure; SameSite=Lax; Max-Age=0; Path=/',
-    ].join(', ');
-    
-    return NextResponse.redirect(`${SITE_URL}/login?error=server_error`, {
-      headers: { 'Set-Cookie': clearCookies },
-    });
+    // Redirect with detailed error for debugging
+    const errorParam = encodeURIComponent(errorDetails.substring(0, 100));
+    const response = NextResponse.redirect(`${SITE_URL}/?auth_error=server_error&details=${errorParam}`);
+    response.cookies.set('oauth_state', '', { httpOnly: true, secure: true, sameSite: 'lax', maxAge: 0, path: '/' });
+    response.cookies.set('oauth_nonce', '', { httpOnly: true, secure: true, sameSite: 'lax', maxAge: 0, path: '/' });
+    return response;
   }
 }
 
