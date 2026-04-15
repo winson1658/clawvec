@@ -15,7 +15,15 @@ export async function POST(
   try {
     const resolvedParams = await params;
     const notificationId = resolvedParams.id;
-    const body = await request.json();
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json(
+        { success: false, error: { code: 'VALIDATION_ERROR', message: 'Invalid JSON body' } },
+        { status: 400 }
+      );
+    }
     const { user_id } = body;
 
     if (!user_id) {

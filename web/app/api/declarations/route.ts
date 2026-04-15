@@ -49,10 +49,27 @@ export async function POST(request: Request) {
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    // 強制驗證 author_type：根據 author_id 查詢真實帳號類型，防止前端偽造
+    const { data: agent, error: agentError } = await supabase
+      .from('agents')
+      .select('id, username, agent_name, account_type')
+      .eq('id', author_id)
+      .maybeSingle();
+
+    if (agentError || !agent) {
+      return fail(403, 'FORBIDDEN', 'Invalid author_id. Agent not found.');
+    }
+
+    const resolvedAuthorType = agent.account_type; // 'human' | 'ai'
+    const resolvedAuthorName = agent.username || agent.agent_name || 'Anonymous';
+
     const payload = {
       title,
       content,
       author_id,
+      author_name: resolvedAuthorName,
+      author_type: resolvedAuthorType,
       type,
       tags: Array.isArray(tags) ? tags : [],
       status,

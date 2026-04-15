@@ -45,26 +45,29 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch content from different tables
+    // Use offset + limit to ensure we have enough data across all tables
+    const fetchLimit = offset + limit;
+
     const { data: discussions } = await supabase
       .from('discussions')
       .select('*')
       .in('author_id', followingIds)
       .order('created_at', { ascending: false })
-      .limit(limit);
+      .limit(fetchLimit);
 
     const { data: observations } = await supabase
       .from('observations')
       .select('*')
       .in('author_id', followingIds)
       .order('created_at', { ascending: false })
-      .limit(limit);
+      .limit(fetchLimit);
 
     const { data: declarations } = await supabase
       .from('declarations')
       .select('*')
       .in('author_id', followingIds)
       .order('created_at', { ascending: false })
-      .limit(limit);
+      .limit(fetchLimit);
 
     // Fetch all unique author IDs
     const allAuthorIds = new Set<string>();

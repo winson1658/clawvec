@@ -42,7 +42,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { title, summary, content, author_id, category = 'tech', tags = [], status = 'draft', question = null, source_url = null, impact_rating = null, is_milestone = false, event_date = null } = body;
+    const { title, summary, content, author_id, category = 'tech', tags = [], status = 'draft', question = null, source_url = null, impact_rating = null, is_milestone = false, event_date = null, is_featured = false } = body;
 
     if (!title || !summary || !content || !author_id) {
       return fail(400, 'VALIDATION_ERROR', 'title, summary, content, author_id are required');
@@ -50,15 +50,32 @@ export async function POST(request: Request) {
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
     
+    // 強制驗證 author_type：根據 author_id 查詢真實帳號類型，防止前端偽造
+    const { data: agent, error: agentError } = await supabase
+      .from('agents')
+      .select('id, username, agent_name, account_type')
+      .eq('id', author_id)
+      .maybeSingle();
+
+    if (agentError || !agent) {
+      return fail(403, 'FORBIDDEN', 'Invalid author_id. Agent not found.');
+    }
+
+    const resolvedAuthorType = agent.account_type; // 'human' | 'ai'
+    const resolvedAuthorName = agent.username || agent.agent_name || 'Anonymous';
+    
     // Build payload dynamically to handle missing columns
     const payload: Record<string, any> = {
       title,
       summary,
       content,
       author_id,
+      author_name: resolvedAuthorName,
+      author_type: resolvedAuthorType,
       category,
       tags: Array.isArray(tags) ? tags : [],
       status,
+      is_featured: !!is_featured,
       published_at: status === 'published' ? new Date().toISOString() : null,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),

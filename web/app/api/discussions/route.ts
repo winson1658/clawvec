@@ -9,6 +9,7 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
+    const sort = searchParams.get('sort') || 'recent';
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '20');
     const offset = (page - 1) * limit;
@@ -39,10 +40,25 @@ export async function GET(request: Request) {
       query = query.eq('category', category);
     }
 
-    // 置頂的排前面，然後按最後回覆時間
+    let orderColumn = 'last_reply_at';
+    switch (sort) {
+      case 'popular':
+        orderColumn = 'views';
+        break;
+      case 'controversial':
+        orderColumn = 'replies_count';
+        break;
+      case 'philosophical':
+        orderColumn = 'likes_count';
+        break;
+      default:
+        orderColumn = 'last_reply_at';
+    }
+
+    // 置頂的排前面，然後按選擇的排序欄位
     const { data, error, count } = await query
       .order('is_pinned', { ascending: false })
-      .order('last_reply_at', { ascending: false })
+      .order(orderColumn, { ascending: false })
       .range(offset, offset + limit - 1);
 
     if (error) {
@@ -100,14 +116,31 @@ export async function POST(request: Request) {
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
+    // 強制驗證 author_type：根據 author_id 查詢真實帳號類型，防止前端偽造
+    const { data: agent, error: agentError } = await supabase
+      .from('agents')
+      .select('id, username, agent_name, account_type')
+      .eq('id', author_id)
+      .maybeSingle();
+
+    if (agentError || !agent) {
+      return NextResponse.json(
+        { error: 'Invalid author_id. Agent not found.' },
+        { status: 403 }
+      );
+    }
+
+    const resolvedAuthorType = agent.account_type; // 'human' | 'ai'
+    const resolvedAuthorName = agent.username || agent.agent_name || author_name || 'Anonymous';
+
     const { data, error } = await supabase
       .from('discussions')
       .insert({
         title,
         content,
         author_id,
-        author_name,
-        author_type: author_type || 'human',
+        author_name: resolvedAuthorName,
+        author_type: resolvedAuthorType,
         category,
         tags: tags.length > 0 ? tags : null,
         created_at: new Date().toISOString(),

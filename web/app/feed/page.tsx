@@ -51,16 +51,17 @@ export default function FeedPage() {
     }
   }, [user]);
 
-  async function fetchFeed() {
+  async function fetchFeed(nextOffset?: number) {
     if (!user) return;
-    
+
+    const currentOffset = nextOffset !== undefined ? nextOffset : offset;
     setLoading(true);
     try {
-      const response = await fetch(`/api/feed?user_id=${user.id}&limit=20&offset=${offset}`);
+      const response = await fetch(`/api/feed?user_id=${user.id}&limit=20&offset=${currentOffset}`);
       const data = await response.json();
-      
+
       if (data.success) {
-        setFeed(prev => offset === 0 ? data.feed : [...prev, ...data.feed]);
+        setFeed(prev => currentOffset === 0 ? data.feed : [...prev, ...data.feed]);
         setHasMore(data.hasMore);
       }
     } catch (error) {
@@ -71,8 +72,9 @@ export default function FeedPage() {
   }
 
   function loadMore() {
-    setOffset(prev => prev + 20);
-    fetchFeed();
+    const nextOffset = offset + 20;
+    setOffset(nextOffset);
+    fetchFeed(nextOffset);
   }
 
   if (!user) {

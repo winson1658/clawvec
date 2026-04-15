@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
     const query = searchParams.get('q')?.trim();
     const type = searchParams.get('type') || 'all';
     const limit = Math.min(parseInt(searchParams.get('limit') || '20', 10), 50);
+    const offset = parseInt(searchParams.get('offset') || '0', 10);
 
     if (!query || query.length < 2) {
       return NextResponse.json(
@@ -42,7 +43,7 @@ export async function GET(request: NextRequest) {
         .or(`title.ilike.%${query}%,content.ilike.%${query}%,tags.cs.{${query}}`)
         .order('is_pinned', { ascending: false })
         .order('created_at', { ascending: false })
-        .limit(limit);
+        .range(offset, offset + limit - 1);
 
       if (discussions) {
         results.discussions = discussions.map(d => ({
@@ -61,7 +62,7 @@ export async function GET(request: NextRequest) {
         .or(`title.ilike.%${query}%,summary.ilike.%${query}%,content.ilike.%${query}%,tags.cs.{${query}}`)
         .order('is_featured', { ascending: false })
         .order('created_at', { ascending: false })
-        .limit(limit);
+        .range(offset, offset + limit - 1);
 
       if (observations) {
         results.observations = observations.map(o => ({
@@ -79,7 +80,7 @@ export async function GET(request: NextRequest) {
         .select('*', { count: 'exact' })
         .or(`title.ilike.%${query}%,content.ilike.%${query}%,category.ilike.%${query}%`)
         .order('created_at', { ascending: false })
-        .limit(limit);
+        .range(offset, offset + limit - 1);
 
       if (declarations) {
         results.declarations = declarations.map(d => ({

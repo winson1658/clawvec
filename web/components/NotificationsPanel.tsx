@@ -43,17 +43,31 @@ export default function NotificationsPanel() {
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
   const [error, setError] = useState<string | null>(null);
   const [updating, setUpdating] = useState(false);
-  const [activeTab, setActiveTab] = useState<'all' | 'unread' | 'auth' | 'companion' | 'identity'>('all');
-  const [tabCounts, setTabCounts] = useState({ all: 0, unread: 0, auth: 0, companion: 0, identity: 0 });
+  const [activeTab, setActiveTab] = useState<'all' | 'unread'>('all');
+  const [tabCounts, setTabCounts] = useState({ all: 0, unread: 0 });
   const [mutedCategories, setMutedCategories] = useState<Record<'auth' | 'companion' | 'identity', boolean>>({
     auth: false,
     companion: false,
     identity: false,
   });
-  const token = typeof window !== 'undefined' ? localStorage.getItem('clawvec_token') : null;
+  const [userId, setUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const userStr = localStorage.getItem('clawvec_user');
+      if (userStr) {
+        try {
+          const parsed = JSON.parse(userStr);
+          if (parsed.id) setUserId(parsed.id);
+        } catch (e) {
+          console.error('Failed to parse user', e);
+        }
+      }
+    }
+  }, []);
 
   const fetchNotifications = async (tab: typeof activeTab = activeTab) => {
-    if (!token) {
+    if (!userId) {
       setStatus('ready');
       setNotifications([]);
       return;
@@ -61,24 +75,22 @@ export default function NotificationsPanel() {
 
     try {
       setStatus('loading');
-      const params = new URLSearchParams({ limit: '6', includeCounts: '1' });
+      const params = new URLSearchParams({ user_id: userId, limit: '20' });
       if (tab === 'unread') {
-        params.set('view', 'unread');
-      } else if (tab !== 'all') {
-        params.set('category', tab);
+        params.set('unread_only', 'true');
       }
 
-      const res = await fetch(`${API_BASE}/api/notifications?${params.toString()}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await fetch(`${API_BASE}/api/notifications?${params.toString()}`);
 
       const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || '無法取得通知');
+      if (!res.ok || !data.success) {
+        throw new Error(data.error?.message || '無法取得通知');
       }
 
       setNotifications(data.notifications || []);
-      if (data.counts) setTabCounts(data.counts);
+      const unread = data.unread_count || 0;
+      const total = data.pagination?.total || 0;
+      setTabCounts({ all: total, unread });
       setStatus('ready');
     } catch (err) {
       console.error('fetchNotifications', err);
@@ -100,7 +112,7 @@ export default function NotificationsPanel() {
   useEffect(() => {
     fetchNotifications(activeTab);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token, activeTab]);
+  }, [userId, activeTab]);
 
   const unreadCount = tabCounts.unread;
 
@@ -122,20 +134,17 @@ export default function NotificationsPanel() {
   };
 
   const markAsRead = async (id: string) => {
-    if (!token) return;
+    if (!userId) return;
     try {
       setUpdating(true);
-      const res = await fetch(`${API_BASE}/api/notifications`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({ id, is_read: true })
+      const res = await fetch(`${API_BASE}/api/notifications/${id}/read`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId })
       });
       const data = await res.json();
-      if (res.ok) {
-        setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, is_read: data.notification?.is_read ?? true } : n)));
+      if (res.ok && data.success) {
+        setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, is_read: true } : n)));
       }
     } catch (err) {
       console.error('markAsRead', err);
@@ -145,17 +154,14 @@ export default function NotificationsPanel() {
   };
 
   const markAllRead = async () => {
-    if (!token) return;
+    if (!userId) return;
     try {
       setUpdating(true);
       if (unreadCount) {
-        await fetch(`${API_BASE}/api/notifications`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-          },
-          body: JSON.stringify({ mark_all: true, is_read: true })
+        await fetch(`${API_BASE}/api/notifications/read-all`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id: userId })
         });
       }
       fetchNotifications(activeTab);
@@ -166,7 +172,7 @@ export default function NotificationsPanel() {
     }
   };
 
-  if (!token) {
+  if (!userId) {
     return (
       <div className="rounded-2xl border border-dashed border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 p-6 text-center">
         <Bell className="mx-auto mb-3 h-8 w-8 text-gray-500" />
@@ -195,9 +201,6 @@ export default function NotificationsPanel() {
         {[
           ['all', 'All'],
           ['unread', 'Unread'],
-          ['auth', 'Auth'],
-          ['companion', 'Companion'],
-          ['identity', 'Identity'],
         ].map(([value, label]) => (
           <button
             key={value}

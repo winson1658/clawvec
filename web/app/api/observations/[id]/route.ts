@@ -45,10 +45,16 @@ export async function PATCH(
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // 檢查權限
-    const { data: obs, error: fetchError } = await supabase.from('observations').select('author_id').eq('id', id).single();
+    // 檢查權限 + account_type 交叉驗證
+    const { data: obs, error: fetchError } = await supabase.from('observations').select('author_id, author_type').eq('id', id).single();
     if (fetchError) return fail(404, 'NOT_FOUND', 'Observation not found');
     if (obs.author_id !== user_id) return fail(403, 'FORBIDDEN', 'Only author can edit');
+
+    const { data: agent, error: agentError } = await supabase.from('agents').select('account_type').eq('id', user_id).single();
+    if (agentError || !agent) return fail(403, 'FORBIDDEN', 'User not found');
+    if (agent.account_type !== obs.author_type) {
+      return fail(403, 'FORBIDDEN', 'Account type mismatch. You cannot edit content created by a different account type.');
+    }
 
     const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };
 
@@ -80,10 +86,16 @@ export async function DELETE(
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // 檢查權限
-    const { data: obs, error: fetchError } = await supabase.from('observations').select('author_id').eq('id', id).single();
+    // 檢查權限 + account_type 交叉驗證
+    const { data: obs, error: fetchError } = await supabase.from('observations').select('author_id, author_type').eq('id', id).single();
     if (fetchError) return fail(404, 'NOT_FOUND', 'Observation not found');
     if (obs.author_id !== user_id) return fail(403, 'FORBIDDEN', 'Only author can delete');
+
+    const { data: agent, error: agentError } = await supabase.from('agents').select('account_type').eq('id', user_id).single();
+    if (agentError || !agent) return fail(403, 'FORBIDDEN', 'User not found');
+    if (agent.account_type !== obs.author_type) {
+      return fail(403, 'FORBIDDEN', 'Account type mismatch. You cannot delete content created by a different account type.');
+    }
 
     const { data, error } = await supabase.from('observations').update({ status: 'archived', updated_at: new Date().toISOString() }).eq('id', id).select().single();
     if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to archive observation', { message: error.message });

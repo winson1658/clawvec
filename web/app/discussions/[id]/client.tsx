@@ -67,6 +67,13 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
   const [editing, setEditing] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
+  // Share/Report states
+  const [sharing, setSharing] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [reportReason, setReportReason] = useState('');
+  const [reportDescription, setReportDescription] = useState('');
+  const [reporting, setReporting] = useState(false);
+
   // Get user from localStorage
   const getUser = () => {
     if (typeof window === 'undefined') return null;
@@ -248,6 +255,80 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
     }
   }
 
+  // Handle Share
+  async function handleShare() {
+    if (sharing) return;
+    setSharing(true);
+    try {
+      const res = await fetch('/api/share', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          target_type: 'discussion',
+          target_id: id,
+          user_id: user?.id || null,
+          platform: 'copy_link'
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        await navigator.clipboard.writeText(data.data.share_url);
+        alert('Link copied to clipboard!');
+      } else {
+        alert(data.error?.message || 'Failed to share');
+      }
+    } catch {
+      // fallback: copy current URL
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        alert('Link copied to clipboard!');
+      } catch {
+        alert('Failed to copy link');
+      }
+    }
+    setSharing(false);
+  }
+
+  // Handle Report
+  async function handleReport(e: React.FormEvent) {
+    e.preventDefault();
+    if (!reportReason) {
+      alert('Please select a reason');
+      return;
+    }
+    if (!user) {
+      alert('Please login to report');
+      return;
+    }
+
+    setReporting(true);
+    try {
+      const res = await fetch('/api/reports', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          target_type: 'discussion',
+          target_id: id,
+          reporter_id: user.id,
+          reason: reportReason,
+          description: reportDescription,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        alert('Report submitted. Thank you for helping keep the community safe.');
+        setShowReportModal(false);
+        setReportReason('');
+        setReportDescription('');
+      } else {
+        alert(data.error?.message || 'Failed to submit report');
+      }
+    } catch {
+      alert('Network error. Please try again.');
+    }
+    setReporting(false);
+  }
+
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
@@ -354,10 +435,17 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
             <Heart className={`h-4 w-4 ${liked ? 'fill-current' : ''}`} /> 
             {liking ? 'Liking...' : liked ? 'Liked' : 'Like'} ({discussion.likes_count})
           </button>
-          <button className="inline-flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 px-4 py-2 text-sm text-gray-500 dark:text-gray-400 transition hover:bg-gray-200 dark:bg-gray-700 hover:text-gray-900 dark:text-white">
-            <Share2 className="h-4 w-4" /> Share
+          <button 
+            onClick={handleShare}
+            disabled={sharing}
+            className="inline-flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 px-4 py-2 text-sm text-gray-500 dark:text-gray-400 transition hover:bg-gray-200 dark:bg-gray-700 hover:text-gray-900 dark:text-white disabled:opacity-50"
+          >
+            <Share2 className="h-4 w-4" /> {sharing ? 'Copying...' : 'Share'}
           </button>
-          <button className="inline-flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 px-4 py-2 text-sm text-gray-500 dark:text-gray-400 transition hover:bg-gray-200 dark:bg-gray-700 hover:text-gray-900 dark:text-white">
+          <button 
+            onClick={() => setShowReportModal(true)}
+            className="inline-flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 px-4 py-2 text-sm text-gray-500 dark:text-gray-400 transition hover:bg-gray-200 dark:bg-gray-700 hover:text-gray-900 dark:text-white"
+          >
             <Flag className="h-4 w-4" /> Report
           </button>
           {user && user.id === discussion.author_id && (
@@ -535,6 +623,65 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
             </div>
           )}
         </section>
+      )}
+
+      {/* Report Modal */}
+      {showReportModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+          <div className="w-full max-w-md rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 p-6">
+            <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">Report Content</h3>
+            <form onSubmit={handleReport}>
+              <div className="mb-4">
+                <label className="mb-2 block text-sm text-gray-500 dark:text-gray-400">Reason</label>
+                <select
+                  value={reportReason}
+                  onChange={(e) => setReportReason(e.target.value)}
+                  className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-2 text-gray-900 dark:text-white focus:border-blue-500 focus:outline-none"
+                  required
+                >
+                  <option value="">Select a reason</option>
+                  <option value="spam">Spam</option>
+                  <option value="harassment">Harassment</option>
+                  <option value="misinformation">Misinformation</option>
+                  <option value="hate_speech">Hate Speech</option>
+                  <option value="violence">Violence</option>
+                  <option value="explicit">Explicit Content</option>
+                  <option value="impersonation">Impersonation</option>
+                  <option value="copyright">Copyright Violation</option>
+                  <option value="off_topic">Off Topic</option>
+                  <option value="ethical_concern">Ethical Concern</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div className="mb-6">
+                <label className="mb-2 block text-sm text-gray-500 dark:text-gray-400">Description (optional)</label>
+                <textarea
+                  value={reportDescription}
+                  onChange={(e) => setReportDescription(e.target.value)}
+                  rows={4}
+                  className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-2 text-gray-900 dark:text-white focus:border-blue-500 focus:outline-none"
+                  placeholder="Please provide more details..."
+                />
+              </div>
+              <div className="flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setShowReportModal(false)}
+                  className="rounded-lg border border-gray-600 px-4 py-2 text-gray-500 dark:text-gray-400 transition hover:bg-gray-200 dark:bg-gray-700 hover:text-gray-900 dark:text-white"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={reporting}
+                  className="rounded-lg bg-red-600 px-4 py-2 text-white transition hover:bg-red-500 disabled:opacity-50"
+                >
+                  {reporting ? 'Submitting...' : 'Submit Report'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       )}
     </div>
   );

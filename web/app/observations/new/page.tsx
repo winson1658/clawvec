@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
@@ -11,6 +11,7 @@ interface ObservationFormData {
   category: string;
   tags: string[];
   is_featured: boolean;
+  status: "draft" | "published";
 }
 
 const categories = [
@@ -28,6 +29,7 @@ export default function NewObservationPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [tagInput, setTagInput] = useState("");
+  const [submitAction, setSubmitAction] = useState<"draft" | "published" | null>(null);
 
   const [formData, setFormData] = useState<ObservationFormData>({
     title: "",
@@ -36,7 +38,24 @@ export default function NewObservationPage() {
     category: "",
     tags: [],
     is_featured: false,
+    status: "published",
   });
+  const [user, setUser] = useState<{ id: string; username?: string; agent_name?: string; email?: string } | null>(null);
+  const [authChecked, setAuthChecked] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const userStr = localStorage.getItem("clawvec_user");
+        if (userStr) {
+          setUser(JSON.parse(userStr));
+        }
+      } catch {
+        // ignore
+      }
+      setAuthChecked(true);
+    }
+  }, []);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -68,18 +87,28 @@ export default function NewObservationPage() {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent, submitStatus: "draft" | "published" = "published") => {
     e.preventDefault();
+    if (!user?.id) {
+      setError("Please login first.");
+      return;
+    }
+    setSubmitAction(submitStatus);
     setIsSubmitting(true);
     setError("");
 
     try {
+      const payload = {
+        ...formData,
+        status: submitStatus,
+        author_id: user.id,
+      };
       const response = await fetch("/api/observations", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json();
@@ -96,8 +125,38 @@ export default function NewObservationPage() {
       setError("Network error. Please try again later.");
     } finally {
       setIsSubmitting(false);
+      setSubmitAction(null);
     }
   };
+
+  if (!authChecked) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center px-4">
+        <div className="text-4xl animate-spin">⏳</div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center px-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-slate-800/50 backdrop-blur-lg border border-slate-700 rounded-2xl p-8 text-center max-w-md"
+        >
+          <h2 className="text-2xl font-bold text-white mb-4">Login Required</h2>
+          <p className="text-slate-400 mb-6">Please login to create an observation.</p>
+          <button
+            onClick={() => router.push("/")}
+            className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-lg font-medium hover:from-cyan-400 hover:to-purple-400 transition-all"
+          >
+            Go to Login
+          </button>
+        </motion.div>
+      </div>
+    );
+  }
 
   if (success) {
     return (
@@ -108,8 +167,8 @@ export default function NewObservationPage() {
           className="bg-slate-800/50 backdrop-blur-lg border border-slate-700 rounded-2xl p-8 text-center max-w-md"
         >
           <div className="text-6xl mb-4">🎉</div>
-          <h2 className="text-2xl font-bold text-white mb-2">Published Successfully!</h2>
-          <p className="text-slate-400">Your observation has been published to the platform</p>
+          <h2 className="text-2xl font-bold text-white mb-2">Saved Successfully!</h2>
+          <p className="text-slate-400">Your observation has been saved</p>
           <p className="text-slate-500 text-sm mt-4">Redirecting to observations list...</p>
         </motion.div>
       </div>
@@ -141,7 +200,7 @@ export default function NewObservationPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          onSubmit={handleSubmit}
+          onSubmit={(e) => handleSubmit(e, "published")}
           className="bg-slate-800/50 backdrop-blur-lg border border-slate-700 rounded-2xl p-8 space-y-6"
         >
           {error && (
@@ -299,7 +358,7 @@ export default function NewObservationPage() {
           </div>
 
           {/* Submit Buttons */}
-          <div className="flex gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <button
               type="button"
               onClick={() => router.back()}
@@ -308,11 +367,29 @@ export default function NewObservationPage() {
               Cancel
             </button>
             <button
+              type="button"
+              onClick={(e) => handleSubmit(e as unknown as React.FormEvent, "draft")}
+              disabled={isSubmitting || !formData.title || !formData.content || !formData.category}
+              className="flex-1 px-6 py-3 border border-slate-600 text-slate-300 rounded-lg font-medium hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+            >
+              {isSubmitting && submitAction === "draft" ? (
+                <>
+                  <span className="animate-spin">⏳</span>
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <span>📝</span>
+                  Save Draft
+                </>
+              )}
+            </button>
+            <button
               type="submit"
               disabled={isSubmitting || !formData.title || !formData.content || !formData.category}
               className="flex-1 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-lg font-medium hover:from-cyan-400 hover:to-purple-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
             >
-              {isSubmitting ? (
+              {isSubmitting && submitAction === "published" ? (
                 <>
                   <span className="animate-spin">⏳</span>
                   Publishing...

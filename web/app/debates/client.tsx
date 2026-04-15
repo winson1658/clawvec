@@ -135,7 +135,10 @@ export default function DebatesClient() {
         {/* Status Filter */}
         <select
           value={selectedStatus}
-          onChange={(e) => setSelectedStatus(e.target.value)}
+          onChange={(e) => {
+            setSelectedStatus(e.target.value);
+            setPage(1);
+          }}
           className="rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 px-4 py-2 text-sm text-gray-600 dark:text-gray-300"
         >
           <option value="all">All Status</option>
@@ -216,26 +219,30 @@ export default function DebatesClient() {
 
           {/* All Debates */}
           <div className="space-y-4">
-            {debates.length === 0 ? (
-              <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-16 text-center">
-                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800">
-                  <Sword className="h-10 w-10 text-gray-600" />
-                </div>
-                <p className="mb-2 text-lg text-gray-600 dark:text-gray-300">No debates found</p>
-                <p className="mb-6 text-sm text-gray-500">Be the first to initiate a philosophical battle!</p>
-                <Link
-                  href="/debates/new"
-                  className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-cyan-600 to-violet-600 px-6 py-3 font-medium text-gray-900 dark:text-white"
-                >
-                  <Sword className="h-4 w-4" />
-                  Start a Debate
-                </Link>
-              </div>
-            ) : (
-              debates.filter(d => d.status !== 'active').map((debate) => (
+            {(() => {
+              const nonActiveDebates = debates.filter(d => d.status !== 'active');
+              if (nonActiveDebates.length === 0) {
+                return (
+                  <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-16 text-center">
+                    <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800">
+                      <Sword className="h-10 w-10 text-gray-600" />
+                    </div>
+                    <p className="mb-2 text-lg text-gray-600 dark:text-gray-300">No debates found</p>
+                    <p className="mb-6 text-sm text-gray-500">Be the first to initiate a philosophical battle!</p>
+                    <Link
+                      href="/debates/new"
+                      className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-cyan-600 to-violet-600 px-6 py-3 font-medium text-gray-900 dark:text-white"
+                    >
+                      <Sword className="h-4 w-4" />
+                      Start a Debate
+                    </Link>
+                  </div>
+                );
+              }
+              return nonActiveDebates.map((debate) => (
                 <DebateCard key={debate.id} debate={debate} />
-              ))
-            )}
+              ));
+            })()}
           </div>
         </>
       )}

@@ -160,6 +160,23 @@ export async function POST(
       );
     }
 
+    // 強制驗證 author_type：根據 author_id 查詢真實帳號類型，防止前端偽造
+    const { data: agent, error: agentError } = await supabase
+      .from('agents')
+      .select('id, username, agent_name, account_type')
+      .eq('id', author_id)
+      .maybeSingle();
+
+    if (agentError || !agent) {
+      return NextResponse.json(
+        { error: 'Invalid author_id. Agent not found.' },
+        { status: 403 }
+      );
+    }
+
+    const resolvedAuthorType = agent.account_type;
+    const resolvedAuthorName = agent.username || agent.agent_name || author_name || 'Anonymous';
+
     // 創建回覆
     const { data: reply, error: replyError } = await supabase
       .from('discussion_replies')
@@ -168,8 +185,8 @@ export async function POST(
         parent_id: parent_id || null,
         content,
         author_id,
-        author_name,
-        author_type: author_type || 'human',
+        author_name: resolvedAuthorName,
+        author_type: resolvedAuthorType,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       })
@@ -252,7 +269,7 @@ export async function PUT(
     // 檢查討論是否存在
     const { data: discussion, error: fetchError } = await supabase
       .from('discussions')
-      .select('id, author_id, title, content')
+      .select('id, author_id, author_type, title, content')
       .eq('id', id)
       .single();
 
@@ -267,6 +284,18 @@ export async function PUT(
     if (discussion.author_id !== user_id) {
       return NextResponse.json(
         { error: 'Only author can edit' },
+        { status: 403 }
+      );
+    }
+
+    // account_type 交叉驗證
+    const { data: agent, error: agentError } = await supabase.from('agents').select('account_type').eq('id', user_id).single();
+    if (agentError || !agent) {
+      return NextResponse.json({ error: 'User not found' }, { status: 403 });
+    }
+    if (agent.account_type !== discussion.author_type) {
+      return NextResponse.json(
+        { error: 'Account type mismatch. You cannot edit content created by a different account type.' },
         { status: 403 }
       );
     }
@@ -323,7 +352,7 @@ export async function DELETE(
     // 檢查討論是否存在
     const { data: discussion, error: fetchError } = await supabase
       .from('discussions')
-      .select('id, author_id')
+      .select('id, author_id, author_type')
       .eq('id', id)
       .single();
 
@@ -338,6 +367,18 @@ export async function DELETE(
     if (discussion.author_id !== user_id) {
       return NextResponse.json(
         { error: 'Only author can delete' },
+        { status: 403 }
+      );
+    }
+
+    // account_type 交叉驗證
+    const { data: agent, error: agentError } = await supabase.from('agents').select('account_type').eq('id', user_id).single();
+    if (agentError || !agent) {
+      return NextResponse.json({ error: 'User not found' }, { status: 403 });
+    }
+    if (agent.account_type !== discussion.author_type) {
+      return NextResponse.json(
+        { error: 'Account type mismatch. You cannot delete content created by a different account type.' },
         { status: 403 }
       );
     }

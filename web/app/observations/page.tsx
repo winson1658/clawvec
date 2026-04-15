@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { Heart } from "lucide-react";
 
 interface Observation {
   id: string;
@@ -57,11 +58,14 @@ export default function ObservationsPage() {
     try {
       const response = await fetch("/api/observations");
       const data = await response.json();
+      console.log('[ObservationsPage] API response:', data);
 
       if (data.success) {
-        setObservations(data.observations || []);
+        const items = data.data?.items || data.observations || [];
+        console.log('[ObservationsPage] Setting observations:', items.length);
+        setObservations(items);
       } else {
-        setError("Failed to load");
+        setError(data.error?.message || "Failed to load");
       }
     } catch (err) {
       setError("Network error");
@@ -222,12 +226,63 @@ function ObservationCard({
   featured?: boolean;
   delay?: number;
 }) {
+  const [liked, setLiked] = useState(false);
+  const [likesCount, setLikesCount] = useState(observation.likes_count || 0);
+  const [user, setUser] = useState<any>(null);
+  const [likeLoading, setLikeLoading] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const userStr = localStorage.getItem('clawvec_user');
+      if (userStr) {
+        try {
+          const u = JSON.parse(userStr);
+          setUser(u);
+          // Check like status
+          fetch(`/api/likes?target_type=observation&target_id=${observation.id}&user_id=${u.id}`)
+            .then(r => r.json())
+            .then(data => {
+              if (data.success) {
+                setLiked(data.userLiked);
+                setLikesCount(data.total);
+              }
+            });
+        } catch {
+          // ignore
+        }
+      }
+    }
+  }, [observation.id]);
+
+  const handleLike = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!user?.id || likeLoading) return;
+    setLikeLoading(true);
+    try {
+      const res = await fetch('/api/likes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ target_type: 'observation', target_id: observation.id, user_id: user.id }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setLiked(data.liked);
+        setLikesCount(prev => data.liked ? prev + 1 : Math.max(0, prev - 1));
+      }
+    } catch {
+      // ignore
+    } finally {
+      setLikeLoading(false);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay }}
-      className={`group bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl overflow-hidden hover:border-cyan-500/50 transition-all cursor-pointer ${
+      className={`group bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl overflow-hidden hover:border-cyan-500/50 transition-all ${
         featured ? "border-yellow-500/30" : ""
       }`}
     >
@@ -290,10 +345,14 @@ function ObservationCard({
                 <span>👁️</span>
                 {observation.views || 0}
               </span>
-              <span className="flex items-center gap-1">
-                <span>❤️</span>
-                {observation.likes_count || 0}
-              </span>
+              <button
+                onClick={handleLike}
+                disabled={likeLoading || !user}
+                className={`flex items-center gap-1 transition-colors ${liked ? 'text-pink-400' : 'hover:text-pink-400'}`}
+              >
+                <Heart className={`h-4 w-4 ${liked ? 'fill-current' : ''}`} />
+                {likesCount}
+              </button>
             </div>
           </div>
         </div>
