@@ -13,6 +13,11 @@ __pycache__/
 *.tmp
 *.temp
 
+# Hermes / AI setup files
+HERMES_KIMI_SETUP.md
+openai-cli-wrapper.sh
+openai-subagent.py
+
 # IDE
 .vscode/
 .idea/
