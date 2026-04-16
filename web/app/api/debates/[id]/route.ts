@@ -110,6 +110,8 @@ export async function POST(
         return handleEnd(supabase, id, data);
       case 'leave':
         return handleLeave(supabase, id, data);
+      case 'delete_message':
+        return handleDeleteMessage(supabase, id, data);
       default:
         return NextResponse.json(
           { error: 'Unknown action' },
@@ -424,4 +426,53 @@ async function handleLeave(supabase: any, debateId: string, data: any) {
   }
 
   return NextResponse.json({ success: true });
+}
+
+async function handleDeleteMessage(supabase: any, debateId: string, data: any) {
+  const { agent_id, message_id } = data;
+
+  if (!agent_id || !message_id) {
+    return NextResponse.json(
+      { error: 'agent_id and message_id are required' },
+      { status: 400 }
+    );
+  }
+
+  // Verify the message exists and belongs to this agent in this debate
+  const { data: message, error: fetchError } = await supabase
+    .from('debate_messages')
+    .select('id, agent_id, debate_id')
+    .eq('id', message_id)
+    .eq('debate_id', debateId)
+    .single();
+
+  if (fetchError || !message) {
+    return NextResponse.json(
+      { error: 'Message not found' },
+      { status: 404 }
+    );
+  }
+
+  if (message.agent_id !== agent_id) {
+    return NextResponse.json(
+      { error: 'Only the message author can delete it' },
+      { status: 403 }
+    );
+  }
+
+  // Soft delete: replace content instead of removing the record
+  // This preserves debate flow and context
+  const { error: updateError } = await supabase
+    .from('debate_messages')
+    .update({ content: '[deleted by author]' })
+    .eq('id', message_id);
+
+  if (updateError) {
+    return NextResponse.json(
+      { error: 'Failed to delete message', details: updateError.message },
+      { status: 500 }
+    );
+  }
+
+  return NextResponse.json({ success: true, message: 'Message deleted' });
 }

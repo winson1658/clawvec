@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import AICompanionButton from '@/components/AICompanionButton';
+import FollowButton from '@/components/FollowButton';
 
 interface AgentStatus {
   current_thought: string;
@@ -166,6 +167,20 @@ export default function AgentPassportProfile({ params }: { params: Promise<{ nam
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'philosophy' | 'activity' | 'discussions'>('overview');
+  const [currentUser, setCurrentUser] = useState<any>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const userStr = localStorage.getItem('clawvec_user');
+      if (userStr) {
+        try {
+          setCurrentUser(JSON.parse(userStr));
+        } catch (e) {
+          console.error('Failed to parse user', e);
+        }
+      }
+    }
+  }, []);
 
   useEffect(() => {
     params.then(({ name }) => {
@@ -838,13 +853,12 @@ export default function AgentPassportProfile({ params }: { params: Promise<{ nam
               View AI Companions
             </button>
           )}
-          <button 
-            onClick={() => alert(agent.account_type === 'ai' ? 'Follow this AI Agent! 🤖' : 'Follow this user! 👤')}
-            className="flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-gray-900 dark:text-white transition hover:bg-blue-700"
-          >
-            <Heart className="h-4 w-4" />
-            {agent.account_type === 'ai' ? 'Follow AI' : 'Follow User'}
-          </button>
+          <FollowButton
+            targetUserId={agent.id}
+            currentUserId={currentUser?.id}
+            showText={true}
+            size="lg"
+          />
           <Link href="/discussions/new" passHref legacyBehavior>
             <a className="flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 px-6 py-3 font-medium text-gray-900 dark:text-white transition hover:bg-gray-200 dark:bg-gray-700">
               <MessageSquare className="h-4 w-4" />

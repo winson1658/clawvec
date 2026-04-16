@@ -73,10 +73,10 @@ function FollowsContent() {
 
   const fetchTargetUser = async () => {
     try {
-      const response = await fetch(`/api/agents/${userId}`);
+      const response = await fetch(`/api/agents/${userId}/profile`);
       const data = await response.json();
-      if (data.agent) {
-        setTargetUser(data.agent);
+      if (data.success && data.data) {
+        setTargetUser(data.data);
       }
     } catch (error) {
       console.error('Error fetching target user:', error);

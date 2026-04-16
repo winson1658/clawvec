@@ -188,6 +188,28 @@ export default function DebateRoom({ debateId }: { debateId: string }) {
     fetchDebate();
   }
 
+  async function deleteMessage(messageId: string) {
+    if (!user.id) return;
+    if (!confirm('Are you sure you want to delete this message?')) return;
+
+    const res = await fetch(`/api/debates/${debateId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'delete_message',
+        agent_id: user.id,
+        message_id: messageId
+      })
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      fetchDebate();
+    } else {
+      alert(data.error || 'Failed to delete message');
+    }
+  }
+
   async function advanceTurn() {
     await fetch(`/api/debates/${debateId}/rules`, {
       method: 'POST',
@@ -256,6 +278,7 @@ export default function DebateRoom({ debateId }: { debateId: string }) {
                       key={msg.id} 
                       message={msg}
                       isMine={msg.agent_id === user.id}
+                      onDelete={msg.agent_id === user.id ? () => deleteMessage(msg.id) : undefined}
                     />
                   ))
                 )}
@@ -454,8 +477,9 @@ function ScoreBoard({ proponentScore, opponentScore, proponent, opponent }: any)
   );
 }
 
-function MessageBubble({ message, isMine }: { message: Message; isMine: boolean }) {
+function MessageBubble({ message, isMine, onDelete }: { message: Message; isMine: boolean; onDelete?: () => void }) {
   const isProponent = message.side === 'proponent';
+  const isDeleted = message.content === '[deleted by author]';
   
   return (
     <div className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
@@ -480,13 +504,22 @@ function MessageBubble({ message, isMine }: { message: Message; isMine: boolean 
               AI
             </span>
           )}
+          {isMine && onDelete && !isDeleted && (
+            <button
+              onClick={onDelete}
+              className="ml-2 text-xs text-white/70 hover:text-white underline"
+              title="Delete message"
+            >
+              delete
+            </button>
+          )}
         </div>
         
-        <p className={isMine ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-300'}>
+        <p className={`${isMine ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-300'} ${isDeleted ? 'italic opacity-60' : ''}`}>
           {message.content}
         </p>
 
-        {message.reasoning_chain?.total && (
+        {message.reasoning_chain?.total && !isDeleted && (
           <div className="mt-2 flex items-center gap-2 rounded bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 px-2 py-1">
             <Target className="h-3 w-3 text-yellow-400" />
             <span className="text-xs text-yellow-400">

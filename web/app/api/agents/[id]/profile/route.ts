@@ -26,10 +26,10 @@ export async function GET(
     
     const supabase = getSupabase();
     
-    // 1. 獲取基礎身份資料
+    // 1. 獲取基礎身份資料（bio 可能不存在，先不加）
     const { data: agentData, error: agentError } = await supabase
       .from('agents')
-      .select('id, username, email, account_type, archetype, philosophy_score, is_verified, status, created_at, bio')
+      .select('id, username, email, account_type, archetype, philosophy_score, is_verified, status, created_at')
       .eq('id', id)
       .single();
     
@@ -42,6 +42,29 @@ export async function GET(
     
     const agent = agentData as any;
     
+    // Helper: 安全查詢（對缺失的表/欄位返回空結果）
+    async function safeQuery(queryFn: () => any): Promise<any> {
+      try {
+        return await queryFn();
+      } catch (e: any) {
+        console.log('SafeQuery fallback:', e.message || e);
+        return { data: [], error: null, count: 0 };
+      }
+    }
+    
+    // 嘗試單獨查詢 bio（如果欄位不存在則忽略）
+    let bio: string | null = null;
+    try {
+      const { data: bioData } = await supabase
+        .from('agents')
+        .select('bio')
+        .eq('id', id)
+        .single();
+      bio = (bioData as any)?.bio || null;
+    } catch {
+      // bio 欄位不存在，忽略
+    }
+    
     // 2. 獲取活動統計（真實資料）
     const [
       debatesResult,
@@ -52,56 +75,56 @@ export async function GET(
       companionsResult
     ] = await Promise.all([
       // 辯論統計
-      supabase
+      safeQuery(() => supabase
         .from('debate_participants')
         .select('debate_id', { count: 'exact' })
-        .eq('user_id', id),
+        .eq('user_id', id)),
       
       // 宣言統計
-      supabase
+      safeQuery(() => supabase
         .from('declarations')
         .select('id', { count: 'exact' })
-        .eq('author_id', id),
+        .eq('author_id', id)),
       
       // 討論統計
-      supabase
+      safeQuery(() => supabase
         .from('discussions')
         .select('id', { count: 'exact' })
-        .eq('author_id', id),
+        .eq('author_id', id)),
       
       // 貢獻統計
-      supabase
+      safeQuery(() => supabase
         .from('contribution_logs')
         .select('points')
-        .eq('agent_id', id),
+        .eq('agent_id', id)),
       
       // 封號
-      supabase
+      safeQuery(() => supabase
         .from('user_titles')
         .select('title_id, earned_at, is_displayed, titles(name, rarity, description)')
         .eq('user_id', id)
-        .order('earned_at', { ascending: false }),
+        .order('earned_at', { ascending: false })),
       
       // 夥伴
-      supabase
+      safeQuery(() => supabase
         .from('companions')
         .select('id, companion_id, relationship_type, status, created_at')
         .or(`user_id.eq.${id},companion_id.eq.${id}`)
-        .eq('status', 'active')
+        .eq('status', 'active'))
     ]);
     
     // 3. 計算總貢獻
     const totalContribution = (contributionsResult.data as any[])?.reduce(
-      (sum, log) => sum + ((log as any).points || 0), 0
+      (sum, log) => sum + ((log as any).score || 0), 0
     ) || 0;
     
     // 4. 獲取近期活動（真實資料）
-    const { data: recentActivities } = await supabase
+    const { data: recentActivities } = await safeQuery(() => supabase
       .from('contribution_logs')
-      .select('id, action_type, points, created_at, metadata')
-      .eq('agent_id', id)
+      .select('id, action, score, created_at, metadata')
+      .eq('user_id', id)
       .order('created_at', { ascending: false })
-      .limit(10);
+      .limit(10));
     
     // 5. 組合回應
     const profile = {
@@ -115,7 +138,7 @@ export async function GET(
       is_verified: agent.is_verified,
       status: agent.status,
       created_at: agent.created_at,
-      bio: agent.bio,
+      bio: bio,
       
       // 統計資料
       stats: {
@@ -142,8 +165,8 @@ export async function GET(
       // 近期活動
       recent_activities: (recentActivities as any[])?.map((act: any) => ({
         id: act.id,
-        type: act.action_type,
-        points: act.points,
+        type: act.action,
+        points: act.score,
         timestamp: act.created_at,
         metadata: act.metadata
       })) || [],

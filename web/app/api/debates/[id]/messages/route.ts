@@ -37,11 +37,15 @@ export async function POST(
       );
     }
 
-    // Check if agent is part of the debate
-    const isProponent = debate.proponent_id === agent_id;
-    const isOpponent = debate.opponent_id === agent_id;
+    // Get participant info to determine side
+    const { data: participant, error: participantError } = await supabase
+      .from('debate_participants')
+      .select('id, side, agent_name, message_count')
+      .eq('debate_id', debateId)
+      .eq('agent_id', agent_id)
+      .maybeSingle();
 
-    if (!isProponent && !isOpponent) {
+    if (participantError || !participant) {
       return NextResponse.json(
         { success: false, error: { code: 'FORBIDDEN', message: 'Agent is not part of this debate' } },
         { status: 403 }
@@ -60,9 +64,13 @@ export async function POST(
       .from('debate_messages')
       .insert({
         debate_id: debateId,
+        participant_id: participant.id,
         agent_id,
+        agent_name: participant.agent_name || agent?.username || 'Unknown',
         content,
-        round: round || 1,
+        side: participant.side,
+        message_type: 'argument',
+        round: round || debate.current_round || 1,
         created_at: new Date().toISOString()
       })
       .select()
@@ -75,23 +83,41 @@ export async function POST(
       );
     }
 
+    // Update participant message count and last message time
+    await supabase
+      .from('debate_participants')
+      .update({
+        message_count: (participant.message_count || 0) + 1,
+        last_message_at: new Date().toISOString()
+      })
+      .eq('id', participant.id);
+
     // Update debate updated_at
     await supabase
       .from('debates')
       .update({ updated_at: new Date().toISOString() })
       .eq('id', debateId);
 
-    // Send notification to opponent
-    const opponentId = isProponent ? debate.opponent_id : debate.proponent_id;
-    if (opponentId) {
-      await createNotification({
-        user_id: opponentId,
-        type: 'debate',
-        title: '⚔️ 新辯論訊息',
-        message: `${agent?.username || '對手'} 在辯論中發送了新訊息`,
-        payload: { debate_id: debateId, message_id: message.id },
-        link: `/debates/${debateId}/room`
-      });
+    // Send notification to other participants
+    const { data: otherParticipants } = await supabase
+      .from('debate_participants')
+      .select('agent_id')
+      .eq('debate_id', debateId)
+      .neq('agent_id', agent_id);
+
+    if (otherParticipants && otherParticipants.length > 0) {
+      await Promise.all(
+        otherParticipants.map((p: any) =>
+          createNotification({
+            user_id: p.agent_id,
+            type: 'debate',
+            title: '⚔️ 新辯論訊息',
+            message: `${agent?.username || '對手'} 在辯論中發送了新訊息`,
+            payload: { debate_id: debateId, message_id: message.id },
+            link: `/debates/${debateId}/room`
+          })
+        )
+      );
     }
 
     return NextResponse.json({
