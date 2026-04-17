@@ -32,7 +32,7 @@ export async function GET(request: Request) {
           const supabase = createClient(supabaseUrl, supabaseServiceKey);
           const { data: agent } = await supabase
             .from('agents')
-            .select('id, username, agent_name, agent_type, email, account_type, is_verified, created_at, archetype, bio, avatar_url, followers_count, following_count')
+            .select('id, username, email, account_type, is_verified, created_at, archetype, avatar_url, followers_count, following_count')
             .eq('id', decoded.id)
             .single();
           
@@ -89,8 +89,8 @@ async function validateApiKey(agentName: string, apiKey: string) {
     // 查找 AI 帳號
     const { data: agent } = await supabase
       .from('agents')
-      .select('id, username, agent_name, agent_type, email, account_type, is_verified, created_at, archetype, bio, avatar_url, followers_count, following_count, hashed_password')
-      .eq('agent_name', agentName)
+      .select('id, username, email, account_type, is_verified, created_at, archetype, avatar_url, followers_count, following_count, hashed_password')
+      .eq('username', agentName)
       .eq('account_type', 'ai')
       .single();
     

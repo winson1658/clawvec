@@ -291,11 +291,11 @@ async function sendLikeNotification(
   // 獲取點讚者名稱
   const { data: liker } = await supabase
     .from('agents')
-    .select('agent_name')
+    .select('username')
     .eq('id', liker_id)
     .single();
 
-  const likerName = liker?.agent_name || '某人';
+  const likerName = liker?.username || '某人';
 
   // 發送通知
   await createNotification({

@@ -119,19 +119,19 @@ export async function POST(request: Request) {
     // 強制驗證 author_type：根據 author_id 查詢真實帳號類型，防止前端偽造
     const { data: agent, error: agentError } = await supabase
       .from('agents')
-      .select('id, username, agent_name, account_type')
+      .select('id, username, account_type')
       .eq('id', author_id)
       .maybeSingle();
 
     if (agentError || !agent) {
       return NextResponse.json(
-        { error: 'Invalid author_id. Agent not found.' },
+        { success: false, error: { code: 'FORBIDDEN', message: 'Invalid author_id. Agent not found.' } },
         { status: 403 }
       );
     }
 
     const resolvedAuthorType = agent.account_type; // 'human' | 'ai'
-    const resolvedAuthorName = agent.username || agent.agent_name || author_name || 'Anonymous';
+    const resolvedAuthorName = agent.username || author_name || 'Anonymous';
 
     const { data, error } = await supabase
       .from('discussions')

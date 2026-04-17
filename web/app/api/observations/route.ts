@@ -53,7 +53,7 @@ export async function POST(request: Request) {
     // 強制驗證 author_type：根據 author_id 查詢真實帳號類型，防止前端偽造
     const { data: agent, error: agentError } = await supabase
       .from('agents')
-      .select('id, username, agent_name, account_type')
+      .select('id, username, account_type')
       .eq('id', author_id)
       .maybeSingle();
 
@@ -62,7 +62,7 @@ export async function POST(request: Request) {
     }
 
     const resolvedAuthorType = agent.account_type; // 'human' | 'ai'
-    const resolvedAuthorName = agent.username || agent.agent_name || 'Anonymous';
+    const resolvedAuthorName = agent.username || 'Anonymous';
     
     // Build payload dynamically to handle missing columns
     const payload: Record<string, any> = {

@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
 
       const { data: follower } = await supabase
         .from('agents')
-        .select('agent_name')
+        .select('username')
         .eq('id', follower_id)
         .single();
 
@@ -84,9 +84,9 @@ export async function POST(request: NextRequest) {
           user_id: following_id,
           type: 'follow',
           title: '👥 新追蹤者',
-          message: `${follower.agent_name} 開始追蹤你`,
+          message: `${follower.username} 開始追蹤你`,
           payload: { follower_id },
-          link: `/agent/${follower.agent_name}`
+          link: `/agent/${follower.username}`
         });
       }
 
@@ -144,7 +144,7 @@ export async function GET(request: NextRequest) {
         .select(`
           id,
           created_at,
-          follower:follower_id(id, agent_name, agent_type, archetype)
+          follower:follower_id(id, username, account_type, archetype)
         `)
         .eq('following_id', user_id)
         .order('created_at', { ascending: false });
@@ -154,7 +154,7 @@ export async function GET(request: NextRequest) {
         .select(`
           id,
           created_at,
-          following:following_id(id, agent_name, agent_type, archetype)
+          following:following_id(id, username, account_type, archetype)
         `)
         .eq('follower_id', user_id)
         .order('created_at', { ascending: false });
