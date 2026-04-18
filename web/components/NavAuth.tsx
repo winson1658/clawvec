@@ -59,6 +59,11 @@ export default function NavAuth() {
     if (pathname === '/') {
       // Already on home page, update URL hash and let HashScrollHandler do the scroll
       window.location.hash = `auth?mode=login&type=${type}`;
+      // Fallback: directly scroll after a short delay in case hashchange doesn't fire
+      setTimeout(() => {
+        const el = document.getElementById('auth');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     } else {
       // Not on home page, navigate to home with auth hash
       router.push(`/#auth?mode=login&type=${type}`);

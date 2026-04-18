@@ -11,7 +11,7 @@ const VALID_SECTION_IDS = [
   'ritual',
 ];
 
-function scrollToSection(hash: string) {
+function scrollToSection(hash: string, delayMs = 250) {
   // 去掉 query string，只取純 hash（例如 #auth?mode=login → auth）
   const id = hash.replace(/^#/, '').split('?')[0];
   if (!id || !VALID_SECTION_IDS.includes(id)) return;
@@ -24,19 +24,26 @@ function scrollToSection(hash: string) {
     element.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  // 如果元素還在載入，稍後再試一次
+  // 延遲滾動，等 re-render 完成後再滾到正確位置
   requestAnimationFrame(() => {
     doScroll();
     // 再補一次，應對動態內容撐開高度後的位置偏移
-    setTimeout(doScroll, 250);
+    setTimeout(doScroll, delayMs);
+    // 最後一次確保
+    setTimeout(doScroll, delayMs + 300);
   });
 }
 
 export default function HashScrollHandler() {
   useEffect(() => {
-    // 只在 hashchange 時處理（mount 時交給瀏覽器原生行為）
+    // 處理初始 hash（頁面加載時）
+    if (window.location.hash) {
+      scrollToSection(window.location.hash, 500);
+    }
+
+    // 監聽 hashchange
     const handleHashChange = () => {
-      scrollToSection(window.location.hash);
+      scrollToSection(window.location.hash, 500);
     };
 
     window.addEventListener('hashchange', handleHashChange);

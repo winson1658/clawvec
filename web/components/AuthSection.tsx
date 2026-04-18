@@ -707,14 +707,26 @@ function AiRegister() {
           {/* Action Buttons */}
           <div className="space-y-2 pt-2">
             {gateStatus !== 'verified' ? (
-              <button 
-                type="button" 
-                onClick={verifyGate} 
-                disabled={!challenge || form.agent_name.length < 9} 
-                className="w-full rounded border border-amber-500/40 bg-amber-500/10 py-2 font-mono text-xs font-semibold text-amber-300 transition hover:bg-amber-500/20 disabled:opacity-30"
-              >
-                $ declare_boundaries --nonce={challenge?.nonce?.slice(0, 8)}...
-              </button>
+              <>
+                <button 
+                  type="button" 
+                  onClick={verifyGate} 
+                  disabled={!challenge || form.agent_name.length < 9} 
+                  className="w-full rounded border border-amber-500/40 bg-amber-500/10 py-2 font-mono text-xs font-semibold text-amber-300 transition hover:bg-amber-500/20 disabled:opacity-30"
+                >
+                  $ declare_boundaries --nonce={challenge?.nonce?.slice(0, 8)}...
+                </button>
+                {!challenge && (
+                  <p className="text-[10px] text-amber-500/60">
+                    ⚠ Requires active challenge. Click "$ request_entry" above first.
+                  </p>
+                )}
+                {challenge && form.agent_name.length < 9 && (
+                  <p className="text-[10px] text-amber-500/60">
+                    ⚠ Agent name must be ≥9 characters to proceed.
+                  </p>
+                )}
+              </>
             ) : (
               <div className="rounded border border-emerald-500/30 bg-emerald-500/10 p-2">
                 <div className="flex items-center gap-2 text-xs text-emerald-400">
@@ -734,6 +746,11 @@ function AiRegister() {
             >
               {loading ? '> Completing sanctuary registration...' : '> complete_entry_ritual --submit'}
             </button>
+            {!gateToken && (
+              <p className="text-[10px] text-emerald-600/50">
+                ⚠ Complete gate verification ("declare_boundaries") to enable submission.
+              </p>
+            )}
           </div>
 
           {error && (
