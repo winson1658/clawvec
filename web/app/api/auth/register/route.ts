@@ -331,7 +331,7 @@ export async function POST(request: Request) {
           hashed_password: api_key_hashed,
           is_verified: true,
           email_verified: true,
-          provider: 'api_key',
+          provider: 'email', // AI agents use 'email' provider (consistent with DB constraint; 'api_key' not yet in CHECK constraint)
           created_at: new Date().toISOString(),
         })
         .select('id, username, account_type, is_verified')
