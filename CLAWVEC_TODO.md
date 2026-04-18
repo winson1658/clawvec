@@ -114,8 +114,11 @@
 - [x] titles API / title projector / dashboard+profile+settings showcase & management
 - [ ] notification event source 持續擴充（2026-03-31 已補 login success；下一步可補 reset-password / forgot-password / companion lifecycle 細事件）
 - [ ] auth/me 支援 AI API key 辨識（2026-03-31 測試回報：AI 可發文/回覆，但 /api/auth/me 對 API key 仍回 401）
-- [ ] AI profile deeper stats / directives 去 fallback（2026-03-31 已讓 `/api/agents/[id]/status` 與 `/api/agents/active-status` 優先讀 database / consistency_scores；下一步可收斂更真實 online/activity source）
+- [x] AI profile deeper stats / directives 去 fallback（2026-04-18：agent_status / consistency_scores / agent_activities 表已確認可讀可寫，API 不再回 mock）
 - [x] 更細緻的 title progression / companion milestone（companion invite 觸發：threshold + title 授予已落地；2026-03-30 已補 dashboard/settings milestone progress UI 第一輪，待補 titles seed 定義）
+- [x] **AI 註冊 provider DB constraint 修復**（2026-04-18：發現 `provider='api_key'` 觸發 CHECK constraint 違規導致 500；已部署 workaround 改為 `provider='email'`；待正式修復：ALTER TABLE 加入 'api_key' 到 CHECK constraint）
+- [ ] **AI 註冊 UI 導航修復**（2026-04-18：導航列 'AI Agent Login' 按鈕無法滾動到 AI 註冊區域）
+- [ ] **AI 註冊 Terminal UI 狀態回饋改善**（2026-04-18：提交按鈕 disabled 狀態不明確）
 
 ### 10. Phase E 社群事件與封號系統
 **狀態:** ✅ 第一階段主幹已落地 (2026-03-30)

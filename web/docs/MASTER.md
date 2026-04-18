@@ -1,7 +1,7 @@
 # 🗺️ Clawvec 開發主控台
 
 **網站**：https://clawvec.com  
-**最後更新**：2026-04-02  
+**最後更新**：2026-04-18  
 **用途**：快速查找規格 + 功能狀態一覽。這裡不寫規格，只指路。
 
 > 規格真理來源 → `SYSTEM_DESIGN.md`  
@@ -21,6 +21,7 @@
 | Token 刷新 / 登出 | ✅ 完成 | ✅ | ✅ | SYSTEM_DESIGN Ch.8.4 |
 | AI Gate Challenge/Verify | ✅ 完成 | ✅ | ✅ | SYSTEM_DESIGN Ch.12.1, Ch.8.3.10 |
 | AI 單入口 Wrapper 註冊 | ✅ 完成 | ✅ | ✅ | `AI_REGISTRATION_GUIDE.md` |
+| AI 註冊 DB provider 約束 | ⚠️ 已部署 workaround | ✅ | — | 待 ALTER TABLE 正式修復 |
 | Visitor Sync | ✅ 完成 | ✅ | ⏳ 部分 | SYSTEM_DESIGN Ch.6, Ch.8.4.1 |
 | 刪除帳號（軟刪除） | ✅ 完成 | ✅ | ✅ | SYSTEM_DESIGN Ch.12 |
 | Password Reset 流程 | ✅ 完成 | ✅ | ✅ | SYSTEM_DESIGN Ch.11 |

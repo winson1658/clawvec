@@ -8,8 +8,8 @@ system:
   status: "operational"
   completion: 85
   post_fix_completion: 90
-  last_audit: "2026-04-10"
-  last_update: "2026-04-10 12:20"
+  last_audit: "2026-04-18"
+  last_update: "2026-04-18 13:40"
   url: "https://clawvec.com"
   
 health:
@@ -32,6 +32,22 @@ fixed_issues:
     status: "fixed"
     fixed_at: "2026-04-10"
     verified: true
+
+  - id: "ISSUE-003"
+    table: "agents"
+    column: "provider"
+    status: "workaround_deployed"
+    fixed_at: "2026-04-18"
+    verified: true
+    note: "AI registration used provider='api_key' but DB CHECK only allowed ('email','google','both'). Changed code to provider='email' as workaround. Formal fix pending: ALTER TABLE to add 'api_key' to CHECK constraint."
+    
+  - id: "ISSUE-004"
+    table: "agent_status"
+    column: "consistency_scores / agent_activities"
+    status: "fixed"
+    fixed_at: "2026-04-18"
+    verified: true
+    note: "API de-mocked. /api/agents/[id]/status now reads from DB tables instead of returning mock data."
 ---
 ```
 
@@ -220,6 +236,45 @@ current_status: manual_mode
 ---
 
 ## 七、執行記錄
+
+### 2026-04-18 - AI 註冊流程測試與修復
+
+**任務**: 以 AI 角度測試 clawvec.com AI 註冊流程，註冊 2 個正常帳號，記錄問題並修復
+
+**測試帳號**:
+1. `guardian-ethos-v1` (Guardian archetype, reasoning-agent)
+2. `oracle-insight-v2` (Oracle archetype, multimodal-agent)
+
+**發現的 P0 問題**:
+- AI 註冊回傳 500 Internal Server Error
+- 根因：`/api/auth/register` 設定 `provider='api_key'`，但 DB CHECK constraint 只允許 `('email', 'google', 'both')`
+- 影響：所有 AI 註冊（含 wrapper 和 low-level flow）都失敗
+
+**修復方式**:
+- 檔案：`web/app/api/auth/register/route.ts` 第 334 行
+- 將 `provider: 'api_key'` 改為 `provider: 'email'` 作為 workaround
+- 已 Commit & Deploy 到 clawvec.com
+
+**正式修復待辦**（需要你執行）:
+```sql
+ALTER TABLE agents DROP CONSTRAINT IF EXISTS agents_provider_check;
+ALTER TABLE agents ADD CONSTRAINT agents_provider_check
+  CHECK (provider IN ('email', 'google', 'both', 'api_key'));
+```
+然後把代碼改回 `provider='api_key'`。
+
+**驗證結果**:
+- [x] GET /api/agent-gate/challenge ✅ 正常
+- [x] POST /api/agent-gate/verify ✅ 正常，驗證規則正確
+- [x] POST /api/agent-gate/register (wrapper) ✅ 成功註冊 2 個帳號
+- [x] 低階層 3-step 流程 ✅ 正常
+- [x] 重複 agent_name ✅ 正確回傳 409
+- [x] 錯誤 API key 登入 ✅ 正確回傳 401
+- [x] 新帳號出現在 /api/agents ✅
+
+**剩餘問題**:
+- 導航列 'AI Agent Login' 按鈕無法滾動到 AI 註冊區域
+- Terminal UI 提交按鈕 disabled 狀態不明確
 
 ### 2026-04-10 - 修復 published_at 欄位缺失
 
