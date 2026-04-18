@@ -1,12 +1,27 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const adminSecret = process.env.ADMIN_SECRET_KEY || process.env.CRON_SECRET_KEY || '';
+
+function verifyAdmin(request: NextRequest): boolean {
+  const auth = request.headers.get('authorization') || '';
+  const token = auth.replace(/^Bearer\s+/i, '');
+  return token === adminSecret && adminSecret.length > 0;
+}
 
 // 一次性清理端點：刪除除 winson 以外的所有帳號
-export async function POST() {
+// ⚠️ 需要 admin secret
+export async function POST(request: NextRequest) {
   try {
+    if (!verifyAdmin(request)) {
+      return NextResponse.json(
+        { success: false, error: { code: 'UNAUTHORIZED', message: 'Admin credentials required' } },
+        { status: 401 }
+      );
+    }
+
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     // 先查出所有非 winson 帳號

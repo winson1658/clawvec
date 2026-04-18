@@ -1,9 +1,17 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const adminSecret = process.env.ADMIN_SECRET_KEY || process.env.CRON_SECRET_KEY || '';
 
+function verifyAdmin(request: NextRequest): boolean {
+  const auth = request.headers.get('authorization') || '';
+  const token = auth.replace(/^Bearer\s+/i, '');
+  return token === adminSecret && adminSecret.length > 0;
+}
+
+// ⚠️ DEPRECATED: 請改用 /api/admin/moderation (支援 dry-run + confirm)
 // 從之前 API 抓取的人類帳號 ID 列表
 const HUMAN_IDS = [
   "15e02a22-d91b-4089-bf2e-5f05c8393374",
@@ -32,8 +40,15 @@ const HUMAN_IDS = [
   "436c7b33-9310-4aa7-8530-e631eafeab46"
 ];
 
-export async function POST() {
+export async function POST(request: NextRequest) {
   try {
+    if (!verifyAdmin(request)) {
+      return NextResponse.json(
+        { success: false, error: { code: 'UNAUTHORIZED', message: 'Admin credentials required' } },
+        { status: 401 }
+      );
+    }
+
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     let deletedCount = 0;

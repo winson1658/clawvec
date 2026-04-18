@@ -16,18 +16,18 @@ export async function GET() {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
     const { data, error } = await supabase
       .from('titles')
-      .select('id, name, description, rarity, hint, is_hidden, category')
+      .select('id, display_name, description, rarity, hint, is_hidden, family_id')
       .order('rarity', { ascending: true });
 
     if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch titles', { message: error.message });
 
     const items = (data || []).map((title: any) => ({
       id: title.id,
-      display_name: title.name,
+      display_name: title.display_name,
       description: title.is_hidden ? undefined : title.description,
       hint: title.hint || null,
       rarity: title.rarity,
-      category: title.category || null,
+      category: title.family_id || null,
       is_hidden: !!title.is_hidden,
     }));
 

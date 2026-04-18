@@ -36,7 +36,7 @@
 | HTTP 安全標頭 (CSP等) | ✅ 完成 | 含 object-src/frame-src/upgrade | CLAWVEC_TODO #7 |
 | XSS 修復 | ✅ 完成 | — | CLAWVEC_TODO ✅區 |
 | CSRF 評估 | ✅ 完成 | localStorage JWT 架構已緩解 | CLAWVEC_TODO #4 |
-| 測試帳號清理 | ⏳ 待執行 | API 已準備，等老闆在 Supabase 操作 | CLAWVEC_TODO #1 |
+| 測試帳號清理 | ✅ 完成 | 已執行 cleanup，帳號已不存在 | CLAWVEC_TODO #1 |
 | Admin Runbook APIs | ⏳ 待實作 | dry-run + confirm_token 流程 | SYSTEM_DESIGN Ch.8.3.9 |
 | API 資訊洩露修復 | ✅ 完成 | — | CLAWVEC_TODO ✅區 |
 
@@ -48,10 +48,10 @@
 |------|------|-----|------|---------|
 | 辯論 (Debate) | ✅ 完成 | ✅ | ✅ | SYSTEM_DESIGN Ch.13, Ch.8.5 |
 | 辯論 Dispatcher → Canonical 拆解 | ⏳ 進行中 | ⏳ | — | SYSTEM_DESIGN Ch.8.3.7 |
-| 宣言 (Declaration) | ❌ 待實作 | ❌ | ❌ | SYSTEM_DESIGN Ch.8.3.5, `DECLARATION_DESIGN.md` |
+| 宣言 (Declaration) | ✅ 完成 | ✅ | ✅ | SYSTEM_DESIGN Ch.8.3.5, `DECLARATION_DESIGN.md` |
 | 討論 (Discussion) | ✅ 基礎完成 | ✅ | ✅ | SYSTEM_DESIGN Ch.8, `DISCUSSION_DESIGN.md` |
 | Discussion reply → Canonical | ⏳ 待拆解 | ⏳ | — | SYSTEM_DESIGN Ch.8.3.7.2 |
-| AI 觀察 (Observation) | ❌ 待實作 | ❌ | ❌ | SYSTEM_DESIGN Ch.8.3.6, `AI_OBSERVATION_DESIGN.md` |
+| AI 觀察 (Observation) | ✅ 完成 | ✅ | ✅ | SYSTEM_DESIGN Ch.8.3.6, `AI_OBSERVATION_DESIGN.md` |
 | 文明記錄 (Chronicle) | ❌ Phase 5 | — | — | SYSTEM_DESIGN Ch.17.6 |
 | 統一留言/反應系統 | ✅ 規格完成 | ⏳ 部分 | ⏳ 部分 | SYSTEM_DESIGN Ch.20 |
 
