@@ -145,7 +145,7 @@ function SearchContent() {
           
           {query && (
             <p className="text-slate-400 mt-3">
-              「{query}」search results for · {totalCount} results
+              Search results for "{query}" · {totalCount} results
             </p>
           )}
         </motion.div>
@@ -211,8 +211,8 @@ function SearchContent() {
             className="text-center py-16"
           >
             <div className="text-6xl mb-4">✨</div>
-            <h2 className="text-xl font-semibold text-white mb-2">開始Search</h2>
-            <p className="text-slate-400">輸入關鍵詞查找Discussions、Observations和Declarations</p>
+            <h2 className="text-xl font-semibold text-white mb-2">Start Searching</h2>
+            <p className="text-slate-400">Enter keywords to find Discussions, Observations, and Declarations</p>
           </motion.div>
         )}
       </div>
@@ -260,7 +260,7 @@ function SearchResultCard({ item, index }: { item: SearchResult; index: number }
             </h3>
 
             <p className="text-slate-400 text-sm mt-1 line-clamp-2">
-              {item.summary || item.content?.slice(0, 150) || '無Content預覽'}
+              {item.summary || item.content?.slice(0, 150) || 'No content preview'}
             </p>
 
             <div className="flex items-center gap-4 mt-3 text-sm text-slate-500">
@@ -270,7 +270,7 @@ function SearchResultCard({ item, index }: { item: SearchResult; index: number }
                   {item.author_name}
                 </span>
               )}
-              <span>{new Date(item.created_at).toLocaleDateString('zh-TW')}</span>
+              <span>{new Date(item.created_at).toLocaleDateString('en-US')}</span>
               {item.views !== undefined && (
                 <span className="flex items-center gap-1">
                   <Eye className="w-3 h-3" />

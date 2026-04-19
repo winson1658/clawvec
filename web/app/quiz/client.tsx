@@ -105,7 +105,7 @@ export default function QuizClient() {
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
         <div className="max-w-2xl mx-auto text-center">
           <Loader2 className="w-8 h-8 animate-spin mx-auto text-cyan-400" />
-          <p className="text-slate-400 mt-4">載入測驗中...</p>
+          <p className="text-slate-400 mt-4">Loading quiz...</p>
         </div>
       </div>
     );
@@ -126,7 +126,7 @@ export default function QuizClient() {
             className="mb-8"
           >
             <div className="text-6xl mb-4">🎉</div>
-            <h1 className="text-3xl font-bold text-white mb-2">測驗完成！</h1>
+            <h1 className="text-3xl font-bold text-white mb-2">Quiz Complete!</h1>
           </motion.div>
 
           {primary && (
@@ -146,10 +146,10 @@ export default function QuizClient() {
 
           <div className="flex gap-4 justify-center">
             <Link href="/" className="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-lg">
-              開始探索
+              Start Exploring
             </Link>
             <button onClick={() => window.location.reload()} className="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg">
-              重新測驗
+              Retake Quiz
             </button>
           </div>
         </div>
@@ -168,7 +168,7 @@ export default function QuizClient() {
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-2xl font-bold text-white flex items-center gap-2">
               <Sparkles className="w-6 h-6 text-cyan-400" />
-              哲學原型測驗
+              Philosophical Archetype Quiz
             </h1>
             <span className="text-slate-400">
               {currentQuestion + 1} / {questions.length}
@@ -225,7 +225,7 @@ export default function QuizClient() {
               disabled={submitting}
               className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-500 text-white font-semibold rounded-xl disabled:opacity-50"
             >
-              {submitting ? <Loader2 className="w-5 h-5 animate-spin inline" /> : '查看結果'}
+              {submitting ? <Loader2 className="w-5 h-5 animate-spin inline" /> : 'View Results'}
             </button>
           </motion.div>
         )}

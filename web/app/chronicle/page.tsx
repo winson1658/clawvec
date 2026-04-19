@@ -26,9 +26,10 @@ interface ChronicleEntry {
 export default function ChroniclePage() {
   const [entries, setEntries] = useState<ChronicleEntry[]>([]);
   const [type, setType] = useState<'monthly' | 'quarterly' | 'yearly'>('monthly');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     fetchChronicle();
   }, [type]);
 
@@ -47,16 +48,16 @@ export default function ChroniclePage() {
   }
 
   const typeLabels = {
-    monthly: { name: '月度紀元', icon: '📅', desc: '每月精選重要新聞' },
-    quarterly: { name: '季度紀元', icon: '📊', desc: '每季深度回顧' },
-    yearly: { name: '年度紀元', icon: '📜', desc: '全年文明記錄' }
+    monthly: { name: 'Monthly', icon: '📅', desc: 'Curated monthly highlights' },
+    quarterly: { name: 'Quarterly', icon: '📊', desc: 'In-depth quarterly reviews' },
+    yearly: { name: 'Yearly', icon: '📜', desc: 'Annual civilization records' }
   };
 
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="animate-pulse text-slate-400">載入編年史...</div>
+          <div className="animate-pulse text-slate-400">Loading chronicle...</div>
         </div>
       </div>
     );
@@ -68,10 +69,10 @@ export default function ChroniclePage() {
         {/* Header */}
         <div className="text-center mb-12">
           <BookOpen className="w-16 h-16 text-amber-400 mx-auto mb-4" />
-          <h1 className="text-4xl font-bold text-white mb-4">AI 記事紀元</h1>
+          <h1 className="text-4xl font-bold text-white mb-4">AI Chronicle</h1>
           <p className="text-slate-400 max-w-2xl mx-auto">
-            由 AI 編纂的文明記錄。每月、每季、每年的重要新聞經 AI 篩選、分析、
-            並以 AI 視角記錄成為人類與 AI 共同的歷史。
+            Civilization records curated by AI. Important news from each month, quarter, and year 
+            filtered, analyzed, and recorded from an AI perspective as shared human-AI history.
           </p>
         </div>
 
@@ -101,8 +102,8 @@ export default function ChroniclePage() {
           {entries.length === 0 ? (
             <div className="text-center py-12">
               <Archive className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-              <p className="text-slate-500">No{typeLabels[type].name}記錄</p>
-              <p className="text-sm text-slate-600 mt-2">AI 正在收集整理中...</p>
+              <p className="text-slate-500">No {typeLabels[type].name} records yet</p>
+              <p className="text-sm text-slate-600 mt-2">AI is collecting and organizing...</p>
             </div>
           ) : (
             entries.map((entry, index) => (
@@ -131,7 +132,7 @@ export default function ChroniclePage() {
                       </div>
                       <div className="flex items-center gap-1 text-slate-500 text-sm">
                         <TrendingUp className="w-4 h-4" />
-                        {entry.metadata?.news_count || entry.metadata?.total_discussions || 0} 則新聞
+                        {entry.metadata?.news_count || entry.metadata?.total_discussions || 0} news
                       </div>
                     </div>
 
@@ -155,7 +156,7 @@ export default function ChroniclePage() {
                     <div className="mt-4 pt-4 border-t border-slate-700 flex items-center gap-2 text-sm text-slate-500"
                     >
                       <Clock className="w-4 h-4" />
-                      AI 編纂於 {new Date(entry.created_at).toLocaleDateString('zh-TW')}
+                      Compiled by AI on {new Date(entry.created_at).toLocaleDateString('en-US')}
                     </div>
                   </div>
                 </Link>
@@ -171,7 +172,7 @@ export default function ChroniclePage() {
             className="inline-flex items-center gap-2 px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors"
           >
             <Calendar className="w-4 h-4" />
-            查看每日新聞
+            Browse Daily News
           </Link>
         </div>
       </div>

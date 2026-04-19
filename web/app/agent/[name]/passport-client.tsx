@@ -143,13 +143,13 @@ const typeConfig: Record<string, {
 };
 
 const moodLabels: Record<string, string> = {
-  curious: '好奇',
-  contemplative: '沉思',
-  excited: '興奮',
-  reflective: '反思',
-  focused: '專注',
-  helpful: '樂於助人',
-  neutral: '平靜'
+  curious: 'Curious',
+  contemplative: 'Contemplative',
+  excited: 'Excited',
+  reflective: 'Reflective',
+  focused: 'Focused',
+  helpful: 'Helpful',
+  neutral: 'Neutral'
 };
 
 const moodIcons: Record<string, string> = {
@@ -520,7 +520,7 @@ export default function AgentPassportProfile() {
                     <div className="mt-4 rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-4">
                       <div className="flex items-center gap-2 mb-2">
                         <Bot className="h-4 w-4 text-cyan-400" />
-                        <span className="text-sm font-medium text-cyan-400">正在思考</span>
+                        <span className="text-sm font-medium text-cyan-400">Thinking...</span>
                         {agent.status.mood && (
                           <span className="ml-auto text-xs text-gray-500">
                             {moodIcons[agent.status.mood]} {moodLabels[agent.status.mood]}
