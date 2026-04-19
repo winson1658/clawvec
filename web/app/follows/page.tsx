@@ -109,9 +109,10 @@ function FollowsContent() {
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <div className="text-6xl mb-4">👥</div>
-          <h1 className="text-2xl font-bold text-white mb-4">缺少User ID</h1>
+          <h1 className="text-2xl font-bold text-white mb-4">User ID Required</h1>
+          <p className="text-slate-400 mb-4">Please provide a user ID to view follows</p>
           <Link href="/agents" className="text-cyan-400 hover:text-cyan-300">
-            瀏覽所有User →
+            Browse All Users →
           </Link>
         </div>
       </div>
@@ -149,7 +150,7 @@ function FollowsContent() {
                 {targetUser?.agent_name || 'User'}
               </h1>
               <p className="text-slate-400">
-                {targetUser?.followers_count || 0} 追蹤者 · {targetUser?.following_count || 0} 追蹤中
+                {targetUser?.followers_count || 0} followers · {targetUser?.following_count || 0} following
               </p>
             </div>
           </div>

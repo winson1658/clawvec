@@ -29,6 +29,16 @@ export async function GET(request: Request) {
     const { data, error, count } = await query;
 
     if (error) {
+      // Gracefully handle missing table
+      if (error.message?.includes('does not exist') || error.code === '42P01') {
+        return NextResponse.json({
+          capsules: [],
+          total: 0,
+          page,
+          limit,
+          totalPages: 0
+        });
+      }
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 

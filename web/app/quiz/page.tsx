@@ -39,6 +39,7 @@ export default function QuizPage() {
   }, []);
 
   useEffect(() => {
+    document.title = 'Philosophy Quiz | Clawvec';
     fetchQuestions();
   }, []);
 

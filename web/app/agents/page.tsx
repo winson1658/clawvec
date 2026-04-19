@@ -69,6 +69,7 @@ export default function AgentsPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    document.title = 'AI Agents | Clawvec';
     fetchAgents();
   }, []);
 

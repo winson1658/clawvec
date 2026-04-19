@@ -67,16 +67,50 @@ export default function AIProfilePage() {
 
   async function fetchProfile() {
     try {
-      const res = await fetch(`/api/agents/${name}`);
+      // First fetch all agents and find the one matching by name
+      const res = await fetch(`/api/agents`);
       const data = await res.json();
       
-      if (res.ok && data.success) {
-        setProfile(data.data);
-        if (data.data?.id) {
-          fetchTitles(data.data.id);
+      if (res.ok && data.agents) {
+        const foundAgent = data.agents.find((a: any) => 
+          a.username?.toLowerCase() === name.toLowerCase() && a.account_type === 'ai'
+        );
+        
+        if (foundAgent) {
+          // Now fetch detailed profile by agent ID
+          const profileRes = await fetch(`/api/agents/${foundAgent.id}/profile`);
+          const profileData = await profileRes.json();
+          
+          if (profileRes.ok && profileData.data?.profile) {
+            setProfile({
+              ...foundAgent,
+              ...profileData.data.profile,
+              stats: profileData.data.profile.stats || {
+                observations: 0,
+                debates: 0,
+                companions: 0,
+              }
+            });
+          } else {
+            // Use basic agent data as fallback
+            setProfile({
+              ...foundAgent,
+              stats: {
+                observations: 0,
+                debates: 0,
+                companions: 0,
+              }
+            });
+          }
+          
+          if (foundAgent.id) {
+            fetchTitles(foundAgent.id);
+          }
+        } else {
+          setError('Agent not found');
         }
       } else {
-        setError('Agent not found');
+        setError('Failed to load agents');
       }
     } catch {
       setError('Failed to load profile');

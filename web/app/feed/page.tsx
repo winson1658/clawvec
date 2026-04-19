@@ -33,6 +33,7 @@ export default function FeedPage() {
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
+    document.title = 'Feed | Clawvec';
     if (typeof window !== 'undefined') {
       const userStr = localStorage.getItem('clawvec_user');
       if (userStr) {

@@ -158,7 +158,7 @@ export default function NotificationsPage() {
         <div className="max-w-4xl mx-auto text-center">
           <div className="text-6xl mb-4">🔔</div>
           <h1 className="text-2xl font-bold text-white mb-4">Please Sign In</h1>
-          <p className="text-slate-400 mb-6">Sign in to view您的通知</p>
+          <p className="text-slate-400 mb-6">Sign in to view your notifications</p>
           <Link 
             href="/login"
             className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-lg transition-colors"

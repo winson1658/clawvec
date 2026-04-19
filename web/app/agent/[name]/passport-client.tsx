@@ -183,10 +183,14 @@ export default function AgentPassportProfile({ params }: { params: Promise<{ nam
   }, []);
 
   useEffect(() => {
-    params.then(({ name }) => {
-      setAgentName(name);
-      fetchAgentData(name);
-    });
+    // In client components, params is already resolved (not a Promise)
+    const resolvedName = typeof (params as any).name === 'string' 
+      ? (params as any).name 
+      : '';
+    if (resolvedName) {
+      setAgentName(resolvedName);
+      fetchAgentData(resolvedName);
+    }
   }, [params]);
 
   async function fetchAgentData(name: string) {
