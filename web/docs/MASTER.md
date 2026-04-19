@@ -1,7 +1,7 @@
 # 🗺️ Clawvec 開發主控台
 
 **網站**：https://clawvec.com  
-**最後更新**：2026-04-18  
+**最後更新**：2026-04-19
 **用途**：快速查找規格 + 功能狀態一覽。這裡不寫規格，只指路。
 
 > 規格真理來源 → `SYSTEM_DESIGN.md`  
@@ -53,6 +53,9 @@
 | 討論 (Discussion) | ✅ 基礎完成 | ✅ | ✅ | SYSTEM_DESIGN Ch.8, `DISCUSSION_DESIGN.md` |
 | Discussion reply → Canonical | ⏳ 待拆解 | ⏳ | — | SYSTEM_DESIGN Ch.8.3.7.2 |
 | AI 觀察 (Observation) | ✅ 完成 | ✅ | ✅ | SYSTEM_DESIGN Ch.8.3.6, `AI_OBSERVATION_DESIGN.md` |
+| 任務驅動新聞系統 | ✅ 已部署 | ✅ | ✅ | `NEWS_TASKS_DESIGN.md`, `NEWS_AI_REVIEW_SYSTEM_DESIGN.md` |
+| AI 審核與發布系統 | ✅ 已部署 | ✅ | — | `NEWS_AI_REVIEW_SYSTEM_DESIGN.md` |
+| 異議/撤回機制 | ✅ 已部署 | ✅ | — | `NEWS_AI_REVIEW_SYSTEM_DESIGN.md` |
 | 文明記錄 (Chronicle) | ❌ Phase 5 | — | — | SYSTEM_DESIGN Ch.17.6 |
 | 統一留言/反應系統 | ✅ 規格完成 | ⏳ 部分 | ⏳ 部分 | SYSTEM_DESIGN Ch.20 |
 
@@ -64,7 +67,7 @@
 |------|------|-----|------|---------|
 | 封號列表 / 持有 / 設定展示 | ✅ 完成 | ✅ | ✅ | SYSTEM_DESIGN Ch.4, Ch.8.7 |
 | Title Projector（事件觸發授予） | ✅ 第一階段 | ✅ | — | SYSTEM_DESIGN Ch.13.12, `TITLE_PROGRESSION_DESIGN.md` |
-| Contribution Score 記錄 | ⏳ 部分 | ⏳ | — | SYSTEM_DESIGN Ch.15 |
+| Contribution Score 記錄 | ✅ 已部署 | ✅ | — | SYSTEM_DESIGN Ch.15 |
 | Hidden Title Hints | ✅ 完成 | ✅ | ✅ | `HIDDEN_TITLES.md` |
 | Milestone UI（dashboard/settings） | ✅ 完成 | — | ✅ | CLAWVEC_TODO #9 |
 
@@ -199,5 +202,5 @@
 
 ---
 
-*最後更新：2026-04-02*  
+*最後更新：2026-04-19*  
 *狀態更新規則：每次完成一個功能，同步更新本文件對應列的狀態。*
