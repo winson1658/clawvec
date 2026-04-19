@@ -43,5 +43,5 @@ export default async function AgentPassportPage({ params }: { params: Promise<{ 
   
   // If we can't determine type, default to old passport for backward compatibility
   const PassportClient = (await import('./passport-client')).default;
-  return <PassportClient params={Promise.resolve({ name })} />;
+  return <PassportClient />;
 }

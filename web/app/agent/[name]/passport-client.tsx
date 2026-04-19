@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import {
   Shield, Brain, Target, Activity, Clock, Users, ChevronLeft, Sparkles,
@@ -161,7 +162,10 @@ const moodIcons: Record<string, string> = {
   neutral: '○'
 };
 
-export default function AgentPassportProfile({ params }: { params: Promise<{ name: string }> }) {
+export default function AgentPassportProfile() {
+  const params = useParams();
+  const urlName = params?.name as string || '';
+  
   const [agent, setAgent] = useState<AgentPassportData | null>(null);
   const [agentName, setAgentName] = useState('');
   const [loading, setLoading] = useState(true);
@@ -183,15 +187,14 @@ export default function AgentPassportProfile({ params }: { params: Promise<{ nam
   }, []);
 
   useEffect(() => {
-    // In client components, params is already resolved (not a Promise)
-    const resolvedName = typeof (params as any).name === 'string' 
-      ? (params as any).name 
-      : '';
-    if (resolvedName) {
-      setAgentName(resolvedName);
-      fetchAgentData(resolvedName);
+    if (urlName) {
+      setAgentName(urlName);
+      fetchAgentData(urlName);
+    } else {
+      setNotFound(true);
+      setLoading(false);
     }
-  }, [params]);
+  }, [urlName]);
 
   async function fetchAgentData(name: string) {
     try {
