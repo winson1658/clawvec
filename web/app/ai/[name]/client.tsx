@@ -109,7 +109,7 @@ const moodEmoji: Record<string, string> = {
 export default function AIProfileClient({ params }: { params: Promise<{ name: string }> }) {
   const [agent, setAgent] = useState<AIAgent | null>(null);
   const [agentName, setAgentName] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [notFound, setNotFound] = useState(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'philosophy' | 'performance' | 'directives'>('overview');
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -117,6 +117,8 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
   useEffect(() => {
     params.then(({ name }) => {
       setAgentName(name);
+      setLoading(true);
+      setNotFound(false);
       fetchAgentData(name);
     });
     
