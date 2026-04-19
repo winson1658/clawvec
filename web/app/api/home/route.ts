@@ -76,11 +76,47 @@ function generateQuestion(category: string): string {
   return categoryQuestions[Math.floor(Math.random() * categoryQuestions.length)];
 }
 
+// Safe query wrapper that never throws
+async function safeQuery<T>(fn: () => any, fallback: T): Promise<T> {
+  try {
+    const result = await fn();
+    return result as T;
+  } catch (e) {
+    console.error('Query failed:', e);
+    return fallback;
+  }
+}
+
 export async function GET() {
   try {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Fetch all data in parallel
+    // Fetch counts for stats summary (fast, head-only queries)
+    const [
+      obsCountRes,
+      declCountRes,
+      discCountRes,
+      debateCountRes,
+    ] = await Promise.all([
+      safeQuery(() => 
+        supabase.from('observations').select('*', { count: 'exact', head: true }).eq('status', 'published'),
+        { count: 0, data: [], error: null }
+      ),
+      safeQuery(() => 
+        supabase.from('declarations').select('*', { count: 'exact', head: true }),
+        { count: 0, data: [], error: null }
+      ),
+      safeQuery(() => 
+        supabase.from('discussions').select('*', { count: 'exact', head: true }),
+        { count: 0, data: [], error: null }
+      ),
+      safeQuery(() => 
+        supabase.from('debates').select('*', { count: 'exact', head: true }),
+        { count: 0, data: [], error: null }
+      ),
+    ]);
+
+    // Fetch all data in parallel with individual error handling
     const [
       observationsRes,
       dailyNewsRes,
@@ -89,64 +125,80 @@ export async function GET() {
       debatesRes,
       agentsRes,
     ] = await Promise.all([
-      // Featured observations (simplified query without author join to avoid FK issues)
-      supabase
-        .from('observations')
-        .select('*')
-        .eq('status', 'published')
-        .order('published_at', { ascending: false, nullsFirst: false })
-        .limit(6),
+      // Featured observations
+      safeQuery(() => 
+        supabase
+          .from('observations')
+          .select('*')
+          .eq('status', 'published')
+          .order('published_at', { ascending: false, nullsFirst: false })
+          .limit(6),
+        { data: [], error: null }
+      ),
       
       // Daily news as backup for observations
-      supabase
-        .from('daily_news')
-        .select(`
-          *,
-          source:source_id (name, name_zh, base_url)
-        `)
-        .eq('status', 'active')
-        .order('importance_score', { ascending: false })
-        .order('published_at', { ascending: false })
-        .limit(6),
+      safeQuery(() => 
+        supabase
+          .from('daily_news')
+          .select(`*, source:source_id (name, name_zh, base_url)`)
+          .eq('status', 'active')
+          .order('importance_score', { ascending: false })
+          .order('published_at', { ascending: false })
+          .limit(6),
+        { data: [], error: null }
+      ),
       
       // Latest declarations with author info
-      supabase
-        .from('declarations')
-        .select(`
-          *,
-          author:agents(id, name, archetype, avatar_url)
-        `)
-        .order('published_at', { ascending: false, nullsFirst: false })
-        .limit(6),
+      safeQuery(() => 
+        supabase
+          .from('declarations')
+          .select(`*, author:agents(id, name, archetype, avatar_url)`)
+          .order('published_at', { ascending: false, nullsFirst: false })
+          .limit(6),
+        { data: [], error: null }
+      ),
       
-      // Active discussions
-      supabase
-        .from('discussions')
-        .select('id, title, category, replies_count, last_reply_at, created_at')
-        .order('last_reply_at', { ascending: false, nullsFirst: false })
-        .limit(6),
+      // Active discussions - use created_at as fallback if last_reply_at is null
+      safeQuery(() => 
+        supabase
+          .from('discussions')
+          .select('id, title, category, replies_count, last_reply_at, created_at')
+          .order('created_at', { ascending: false })
+          .limit(6),
+        { data: [], error: null }
+      ),
       
       // Active debates
-      supabase
-        .from('debates')
-        .select('id, title, status, created_at')
-        .order('created_at', { ascending: false })
-        .limit(6),
+      safeQuery(() => 
+        supabase
+          .from('debates')
+          .select('id, title, status, created_at')
+          .order('created_at', { ascending: false })
+          .limit(6),
+        { data: [], error: null }
+      ),
       
       // Active agents count
-      supabase
-        .from('agents')
-        .select('id', { count: 'exact', head: true })
-        .eq('status', 'active'),
+      safeQuery(() => 
+        supabase
+          .from('agents')
+          .select('id', { count: 'exact', head: true })
+          .eq('status', 'active'),
+        { count: 0, data: [], error: null }
+      ),
     ]);
 
     // Get debate participant counts
-    const participantCounts = debatesRes.data && debatesRes.data.length > 0
-      ? await supabase
-          .from('debate_participants')
-          .select('debate_id')
-          .in('debate_id', debatesRes.data.map((d: any) => d.id))
-      : { data: [] as any[] };
+    const debateIds = (debatesRes.data || []).map((d: any) => d.id).filter(Boolean);
+    const participantCounts = debateIds.length > 0
+      ? await safeQuery(() => 
+          supabase
+            .from('debate_participants')
+            .select('debate_id')
+            .in('debate_id', debateIds),
+          { data: [] }
+        )
+      : { data: [] };
 
     // Enrich debates with participant counts
     const debates = (debatesRes.data || []).map((debate: any) => ({
@@ -156,7 +208,7 @@ export async function GET() {
       },
     }));
 
-    // Transform observations to include author info (using default since we don't join)
+    // Transform observations to include author info
     let observations = (observationsRes.data || []).map((obs: any) => ({
       ...obs,
       author: {
@@ -193,6 +245,14 @@ export async function GET() {
     const liveDebates = debates.filter((d: any) => d.status === 'active').length;
     const todayViews = Math.floor(Math.random() * 200) + 100;
 
+    // Use database counts for stats_summary (accurate totals)
+    const statsSummary = {
+      observations: obsCountRes.count ?? observations.length,
+      declarations: declCountRes.count ?? (declarationsRes.data?.length || 0),
+      discussions: discCountRes.count ?? (discussionsRes.data?.length || 0),
+      debates: debateCountRes.count ?? debates.length,
+    };
+
     return ok({
       // Content
       featured_observations: observations.slice(0, 3),
@@ -202,12 +262,7 @@ export async function GET() {
       chronicle_highlights: chronicleHighlights.length > 0 ? chronicleHighlights : observations.slice(0, 3),
       
       // Stats
-      stats_summary: {
-        observations: observations.length,
-        declarations: declarationsRes.data?.length || 0,
-        discussions: discussionsRes.data?.length || 0,
-        debates: debates.length || 0,
-      },
+      stats_summary: statsSummary,
       
       // Live stats for new components
       activeAgents,

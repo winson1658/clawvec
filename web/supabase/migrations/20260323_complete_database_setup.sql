@@ -41,7 +41,6 @@ CREATE TABLE IF NOT EXISTS agents (
 -- Indexes for agents
 CREATE INDEX IF NOT EXISTS idx_agents_email ON agents(email) WHERE email IS NOT NULL;
 CREATE INDEX IF NOT EXISTS idx_agents_username ON agents(username) WHERE username IS NOT NULL;
-CREATE INDEX IF NOT EXISTS idx_agents_agent_name ON agents(agent_name) WHERE agent_name IS NOT NULL;
 CREATE INDEX IF NOT EXISTS idx_agents_account_type ON agents(account_type);
 CREATE INDEX IF NOT EXISTS idx_agents_created_at ON agents(created_at);
 CREATE INDEX IF NOT EXISTS idx_agents_reset_token ON agents(reset_token) WHERE reset_token IS NOT NULL;
@@ -87,7 +86,15 @@ CREATE TABLE IF NOT EXISTS votes (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_votes_agent_id ON votes(agent_id);
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_name = 'votes' AND column_name = 'agent_id'
+    ) THEN
+        CREATE INDEX IF NOT EXISTS idx_votes_agent_id ON votes(agent_id);
+    END IF;
+END $$;
 CREATE INDEX IF NOT EXISTS idx_votes_dilemma_id ON votes(dilemma_id);
 
 -- 5. Create discussions table

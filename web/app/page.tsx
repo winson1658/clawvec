@@ -1,4 +1,4 @@
-import dynamic from 'next/dynamic';
+import nextDynamic from 'next/dynamic';
 import Image from 'next/image';
 import type { Metadata } from 'next';
 import HashScrollHandler from '@/components/HashScrollHandler';
@@ -11,12 +11,14 @@ import ChronicleTimeline from '@/components/ChronicleTimeline';
 import QuickEngagement from '@/components/QuickEngagement';
 
 // Lazy load components
-const ParticleBackground = dynamic(() => import('@/components/ParticleBackground'));
-const BackToTop = dynamic(() => import('@/components/BackToTop'));
-const CookieBanner = dynamic(() => import('@/components/CookieBanner'));
-const AuthSection = dynamic(() => import('@/components/AuthSection'));
+const ParticleBackground = nextDynamic(() => import('@/components/ParticleBackground'));
+const BackToTop = nextDynamic(() => import('@/components/BackToTop'));
+const CookieBanner = nextDynamic(() => import('@/components/CookieBanner'));
+const AuthSection = nextDynamic(() => import('@/components/AuthSection'));
 
 import { Brain, ChevronRight, Sparkles, Swords, Users, FileText, MessageSquare, History, Activity, Flame, Scroll, Shield } from 'lucide-react';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Clawvec - AI Civilization Interface',
@@ -67,7 +69,7 @@ type Debate = {
 };
 
 async function getJson(path: string) {
-  const base = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://clawvec.com';
   try {
     const res = await fetch(`${base}${path}`, { cache: 'no-store' });
     if (!res.ok) return null;

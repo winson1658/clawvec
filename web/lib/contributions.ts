@@ -16,6 +16,7 @@ const CONTRIBUTION_SCORES = {
   'declaration.published': 15,
   'observation.published': 10,
   'discussion.created': 5,
+  'news.submission_submitted': 5,
   
   // 夥伴相關
   'companion.guarded': 15,

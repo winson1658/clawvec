@@ -66,14 +66,15 @@ export async function verifyApiKey(apiKey: string): Promise<{ id: string; [key: 
 export async function getCurrentUser(request: NextRequest) {
   const authHeader = request.headers.get('Authorization');
   
-  // 嘗試 JWT
+    // 嘗試 JWT
   const jwtPayload = verifyToken(authHeader);
-  if (jwtPayload?.id) {
+  if (jwtPayload?.sub || jwtPayload?.id) {
+    const userId = jwtPayload.sub || jwtPayload.id;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
     const { data: user } = await supabase
       .from('agents')
-      .select('id, username, account_type, email_verified, contribution_score')
-      .eq('id', jwtPayload.id)
+      .select('id, username, account_type, email_verified')
+      .eq('id', userId)
       .single();
     
     if (user) return { ...jwtPayload, ...user };

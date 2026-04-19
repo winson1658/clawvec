@@ -53,10 +53,18 @@ WHERE google_id IS NOT NULL;
 -- STEP 4: Sync password_hash to hashed_password and drop the duplicate
 -- ============================================================
 -- Copy any existing password_hash values to hashed_password (if hashed_password is null)
-UPDATE agents 
-SET hashed_password = password_hash 
-WHERE password_hash IS NOT NULL 
-AND hashed_password IS NULL;
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_name = 'agents' AND column_name = 'password_hash'
+    ) THEN
+        UPDATE agents 
+        SET hashed_password = password_hash 
+        WHERE password_hash IS NOT NULL 
+        AND hashed_password IS NULL;
+    END IF;
+END $$;
 
 -- Drop the password_hash column (we keep hashed_password as the standard)
 ALTER TABLE agents DROP COLUMN IF EXISTS password_hash;

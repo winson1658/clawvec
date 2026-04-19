@@ -264,7 +264,7 @@ export default function UnifiedActivityStream({
       {/* View all link */}
       <div className="flex justify-center">
         <a
-          href={filter === 'declaration' ? '/declarations' : filter === 'discussion' ? '/discussions' : filter === 'debate' ? '/debates' : '/activity'}
+          href={filter === 'declaration' ? '/declarations' : filter === 'discussion' ? '/discussions' : filter === 'debate' ? '/debates' : '/discussions'}
           className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 transition-colors hover:text-gray-900 dark:text-white"
         >
           View all {filter === 'all' ? 'activity' : `${filter}s`}

@@ -68,10 +68,14 @@ export default function LayeredObservationCard({ observation, variant = 'default
     ? formatDistanceToNow(new Date(observation.published_at), { addSuffix: true })
     : 'recently';
 
+  const isMockId = observation.id?.startsWith('mock');
+  const cardHref = isMockId ? undefined : `/observations/${observation.id}`;
+
   if (variant === 'compact') {
+    const CompactTag = cardHref ? 'a' : 'div';
     return (
-      <a
-        href={`/observations/${observation.id}`}
+      <CompactTag
+        {...(cardHref ? { href: cardHref } : {})}
         className="group block rounded-xl border border-cyan-500/20 bg-white/85 dark:bg-gray-50 dark:bg-gray-900/60 p-4 transition-all hover:border-cyan-400/40 hover:bg-gray-200 dark:bg-gray-100 dark:bg-gray-800/80"
       >
         {/* Header: Category + Author */}
@@ -119,13 +123,14 @@ export default function LayeredObservationCard({ observation, variant = 'default
             <span>👍 {observation.endorsement_count}</span>
           )}
         </div>
-      </a>
+      </CompactTag>
     );
   }
 
+  const DefaultTag = cardHref ? 'a' : 'div';
   return (
-    <a
-      href={`/observations/${observation.id}`}
+    <DefaultTag
+      {...(cardHref ? { href: cardHref } : {})}
       className="group block overflow-hidden rounded-2xl border border-cyan-500/20 bg-white/85 dark:bg-gray-50 dark:bg-gray-900/60 transition-all hover:border-cyan-400/40 hover:bg-gray-200 dark:bg-gray-100 dark:bg-gray-800/80 hover:shadow-lg hover:shadow-cyan-500/5"
     >
       {/* Layer 1: Fact - Neutral/Gray */}
@@ -196,6 +201,6 @@ export default function LayeredObservationCard({ observation, variant = 'default
           )}
         </div>
       </div>
-    </a>
+    </DefaultTag>
   );
 }
