@@ -122,7 +122,7 @@ export default function SettingsPage() {
         setDeleteError(data.error || 'Delete failed, please retry');
       }
     } catch {
-      setDeleteError('Network error，Please check connection and retry');
+      setDeleteError('Network error. Please check connection and retry');
     } finally {
       setDeleteLoading(false);
     }
@@ -158,7 +158,7 @@ export default function SettingsPage() {
           <div className="p-8 bg-green-900/30 border border-green-700 rounded-xl text-center">
             <div className="text-6xl mb-4">✅</div>
             <h1 className="text-2xl font-bold text-green-400 mb-4">Account Deleted</h1>
-            <p className="text-green-300">Your data has been cleared，Redirecting to homepage...</p>
+            <p className="text-green-300">Your data has been cleared. Redirecting to homepage...</p>
           </div>
         </div>
       </div>
@@ -251,8 +251,8 @@ export default function SettingsPage() {
 
         {myTitles.length > 0 && (
           <div className="bg-white/80 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl p-6 mb-6">
-            <h2 className="text-lg font-semibold text-white mb-4">封號管理</h2>
-            <p className="text-sm text-gray-400 mb-4">最多可展示 3 封號，會同步出現在 dashboard 與 public profile。</p>
+            <h2 className="text-lg font-semibold text-white mb-4">Title Management</h2>
+            <p className="text-sm text-gray-400 mb-4">Display up to 3 titles. They will appear on your dashboard and public profile.</p>
             <div className="mb-4 flex flex-wrap gap-2">
               {myTitles.filter((item) => item.is_displayed).map((item) => (
                 <span key={item.title_id} className="rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-sm text-amber-200">
@@ -286,7 +286,7 @@ export default function SettingsPage() {
                           <span className="text-xs uppercase tracking-[0.2em] text-gray-500">{title.rarity || 'common'}</span>
                         </div>
                         <div className="text-sm text-gray-600 dark:text-gray-400">
-                          {owned ? (title.description || '已解鎖封號') : (title.hint || 'Keep exploring Clawvec to reveal this title.')}
+                          {owned ? (title.description || 'Title unlocked') : (title.hint || 'Keep exploring Clawvec to reveal this title.')}
                         </div>
                       </div>
                     );
@@ -297,42 +297,42 @@ export default function SettingsPage() {
           </div>
         )}
 
-        {/* 危險區域 */}
+        {/* Danger Zone */}
         <div className="bg-red-950/30 border border-red-900 rounded-xl p-6">
           <h2 className="text-lg font-semibold text-red-400 mb-4 flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5" /> 危險區域
+            <AlertTriangle className="h-5 w-5" /> Danger Zone
           </h2>
 
           {!showDeleteConfirm ? (
             <div>
               <p className="text-red-300 text-sm mb-4">
-                Delete帳號後，您的人資料將被清除，已Publish的文章會保留但顯示為匿名。
-                此操作無法撤銷。
+                After deleting your account, your personal data will be removed. Published posts will remain but be shown as anonymous.
+                This action cannot be undone.
               </p>
               <button
                 onClick={() => setShowDeleteConfirm(true)}
                 className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
               >
-                <Trash2 className="h-4 w-4" /> Delete我的帳號
+                <Trash2 className="h-4 w-4" /> Delete My Account
               </button>
             </div>
           ) : (
             <div className="bg-red-900/50 rounded-lg p-4">
-              <h3 className="text-red-400 font-bold mb-3">⚠️ 最後Confirm</h3>
+              <h3 className="text-red-400 font-bold mb-3">⚠️ Final Confirmation</h3>
               <div className="space-y-2 text-red-300 text-sm mb-4">
-                <p>• 您的帳號將被Delete且無法恢復</p>
-                <p>• 人資料（Email、Username、密碼）將被清除</p>
-                <p>• 已Publish的文章會保留，但顯示為匿名作者</p>
-                <p>• 您將無法再使用此帳號Sign In</p>
+                <p>• Your account will be deleted and cannot be recovered</p>
+                <p>• Personal data (email, username, password) will be removed</p>
+                <p>• Published posts will remain but be shown as anonymous</p>
+                <p>• You will no longer be able to sign in with this account</p>
               </div>
               <div className="mb-4">
-                <label className="block text-red-400 text-sm mb-2">Please enter passwordConfirm：</label>
+                <label className="block text-red-400 text-sm mb-2">Please enter your password to confirm:</label>
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-2 bg-gray-900 border border-red-700 rounded-lg text-white focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                  placeholder="您的Sign In密碼"
+                  placeholder="Your sign-in password"
                 />
               </div>
               {deleteError && (
@@ -346,7 +346,7 @@ export default function SettingsPage() {
                   disabled={deleteLoading}
                   className="px-6 py-2 bg-red-600 hover:bg-red-700 disabled:bg-red-800 text-white rounded-lg font-medium"
                 >
-                  {deleteLoading ? 'Delete中...' : 'ConfirmDelete'}
+                  {deleteLoading ? 'Deleting...' : 'ConfirmDelete'}
                 </button>
                 <button
                   onClick={() => {
