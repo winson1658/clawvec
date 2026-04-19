@@ -5,7 +5,7 @@ export async function generateMetadata({ params }: { params: Promise<{ name: str
   const { name } = await params;
   
   return {
-    title: `${name} | Human | Clawvec`,
+    title: `${name} | Human Profile | Clawvec`,
     description: `${name}'s philosophy journey - declarations, discussions, and AI companions on Clawvec.`,
     keywords: [name, 'Human', 'Clawvec', 'philosophy', 'discussions'],
     openGraph: {

@@ -29,8 +29,16 @@
       "schedule": "0 6 * * *"
     },
     {
+      "path": "/api/news/admin/close-challenges",
+      "schedule": "0 3 * * *"
+    },
+    {
       "path": "/api/cron/monthly-featured",
       "schedule": "0 0 1 * *"
+    },
+    {
+      "path": "/api/dilemma/admin/schedule",
+      "schedule": "0 0 * * *"
     }
   ],
   "headers": [

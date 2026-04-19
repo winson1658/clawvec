@@ -161,6 +161,7 @@ export default function UnifiedActivityStream({
 }: UnifiedActivityStreamProps) {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [filter, setFilter] = useState<'all' | ActivityType>('all');
+  const [sortBy, setSortBy] = useState<'recent' | 'hot' | 'worthy'>('recent');
 
   useEffect(() => {
     // Transform and combine all activities
@@ -201,11 +202,27 @@ export default function UnifiedActivityStream({
       })),
     ];
 
-    // Sort by timestamp (newest first)
-    transformed.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+    // Sort by selected criteria
+    if (sortBy === 'recent') {
+      transformed.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+    } else if (sortBy === 'hot') {
+      // Hot = more engagement (participants + replies + endorsements)
+      transformed.sort((a, b) => {
+        const aScore = (a.metadata.participantCount || 0) + (a.metadata.replyCount || 0) + (a.metadata.endorseCount || 0);
+        const bScore = (b.metadata.participantCount || 0) + (b.metadata.replyCount || 0) + (b.metadata.endorseCount || 0);
+        return bScore - aScore;
+      });
+    } else if (sortBy === 'worthy') {
+      // Worthy = high endorse ratio, low participation (undiscovered quality)
+      transformed.sort((a, b) => {
+        const aRatio = (a.metadata.endorseCount || 0) / Math.max(1, (a.metadata.opposeCount || 0) + 1);
+        const bRatio = (b.metadata.endorseCount || 0) / Math.max(1, (b.metadata.opposeCount || 0) + 1);
+        return bRatio - aRatio;
+      });
+    }
 
     setActivities(transformed.slice(0, maxItems));
-  }, [debates, declarations, discussions, maxItems]);
+  }, [debates, declarations, discussions, maxItems, sortBy]);
 
   const filteredActivities = filter === 'all' 
     ? activities 
@@ -213,36 +230,55 @@ export default function UnifiedActivityStream({
 
   return (
     <div className="space-y-6">
-      {/* Filter tabs */}
-      <div className="flex flex-wrap items-center gap-2">
-        <button
-          onClick={() => setFilter('all')}
-          className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
-            filter === 'all'
-              ? 'bg-gray-100 dark:bg-gray-800 text-white'
-              : 'text-gray-500 hover:text-gray-600 dark:text-gray-300'
-          }`}
-        >
-          All Activity
-        </button>
-        {(['debate', 'declaration', 'discussion'] as const).map((type) => {
-          const config = typeConfig[type];
-          const Icon = config.icon;
-          return (
+      {/* Filter & Sort tabs */}
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            onClick={() => setFilter('all')}
+            className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
+              filter === 'all'
+                ? 'bg-gray-100 dark:bg-gray-800 text-white'
+                : 'text-gray-500 hover:text-gray-600 dark:text-gray-300'
+            }`}
+          >
+            All Activity
+          </button>
+          {(['debate', 'declaration', 'discussion'] as const).map((type) => {
+            const config = typeConfig[type];
+            const Icon = config.icon;
+            return (
+              <button
+                key={type}
+                onClick={() => setFilter(type)}
+                className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm transition-all ${
+                  filter === type
+                    ? `${config.bgColor} ${config.color} border ${config.borderColor}`
+                    : 'text-gray-500 hover:text-gray-600 dark:text-gray-300'
+                }`}
+              >
+                <Icon className="h-3.5 w-3.5" />
+                <span className="capitalize">{type}s</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Sort Options: Recent | Hot | Worthy */}
+        <div className="flex items-center gap-1 rounded-lg border border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-gray-900/30 p-1">
+          {(['recent', 'hot', 'worthy'] as const).map((sort) => (
             <button
-              key={type}
-              onClick={() => setFilter(type)}
-              className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm transition-all ${
-                filter === type
-                  ? `${config.bgColor} ${config.color} border ${config.borderColor}`
+              key={sort}
+              onClick={() => setSortBy(sort)}
+              className={`rounded-md px-3 py-1 text-xs font-medium transition-all ${
+                sortBy === sort
+                  ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm'
                   : 'text-gray-500 hover:text-gray-600 dark:text-gray-300'
               }`}
             >
-              <Icon className="h-3.5 w-3.5" />
-              <span className="capitalize">{type}s</span>
+              {sort === 'recent' ? '🔥 Recent' : sort === 'hot' ? '⚡ Hot' : '💎 Worthy'}
             </button>
-          );
-        })}
+          ))}
+        </div>
       </div>
 
       {/* Activity list */}

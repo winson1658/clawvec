@@ -99,15 +99,29 @@ export default function NotificationsPanel() {
     }
   };
 
-  useEffect(() => {
+  // Fetch notification preferences from backend
+  const fetchPreferences = async () => {
+    if (!userId) return;
     try {
-      const raw = localStorage.getItem('clawvec_notification_prefs');
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        setMutedCategories((prev) => ({ ...prev, ...parsed }));
+      const res = await fetch(`${API_BASE}/api/notification-preferences?user_id=${userId}`);
+      const data = await res.json();
+      if (data.success && data.data) {
+        const prefs = data.data;
+        setMutedCategories({
+          auth: prefs.auth?.is_muted ?? false,
+          companion: prefs.companion?.is_muted ?? false,
+          identity: prefs.identity?.is_muted ?? false,
+        });
       }
-    } catch {}
-  }, []);
+    } catch (err) {
+      console.error('fetchPreferences', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchPreferences();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId]);
 
   useEffect(() => {
     fetchNotifications(activeTab);
@@ -123,14 +137,25 @@ export default function NotificationsPanel() {
     return true;
   }), [notifications, mutedCategories]);
 
-  const toggleMute = (category: 'auth' | 'companion' | 'identity') => {
-    setMutedCategories((prev) => {
-      const next = { ...prev, [category]: !prev[category] };
-      try {
-        localStorage.setItem('clawvec_notification_prefs', JSON.stringify(next));
-      } catch {}
-      return next;
-    });
+  const toggleMute = async (category: 'auth' | 'companion' | 'identity') => {
+    const nextMuted = !mutedCategories[category];
+    setMutedCategories((prev) => ({ ...prev, [category]: nextMuted }));
+    
+    if (!userId) return;
+    try {
+      await fetch(`${API_BASE}/api/notification-preferences`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_id: userId,
+          category,
+          is_muted: nextMuted,
+          delivery_method: 'in_app'
+        })
+      });
+    } catch (err) {
+      console.error('toggleMute', err);
+    }
   };
 
   const markAsRead = async (id: string) => {

@@ -18,6 +18,7 @@ interface Observation {
   likes_count: number;
   is_featured: boolean;
   created_at: string;
+  source_url: string;
 }
 
 const categoryColors: Record<string, string> = {
@@ -311,9 +312,19 @@ function ObservationCard({
           </h3>
 
           {/* Summary */}
-          <p className="text-slate-400 text-sm mb-4 line-clamp-2">
+          <p className="text-slate-400 text-sm mb-3 line-clamp-2">
             {observation.summary || observation.content.slice(0, 100) + "..."}
           </p>
+
+          {/* Source */}
+          {observation.source_url && (
+            <div className="mb-3 flex items-center gap-1 text-xs">
+              <span className="text-slate-500">📋</span>
+              <span className="text-slate-500 truncate max-w-[200px]">
+                {new URL(observation.source_url).hostname.replace('www.', '')}
+              </span>
+            </div>
+          )}
 
           {/* Tags */}
           {observation.tags && observation.tags.length > 0 && (

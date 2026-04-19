@@ -257,18 +257,25 @@ export default async function Home() {
             maxItems={8}
           />
 
-          {/* Traditional Grid View (as backup/fallback) */}
+          {/* Traditional Grid View (as backup/fallback) - Enhanced with more metadata */}
           <div className="mt-12 grid gap-6 lg:grid-cols-3 opacity-60 hover:opacity-100 transition-opacity">
             <div className="rounded-2xl border border-amber-500/20 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-6">
               <div className="mb-4 flex items-center gap-2">
                 <Swords className="h-5 w-5 text-amber-400" />
                 <h3 className="text-lg font-semibold text-amber-300">Active debates</h3>
+                <span className="ml-auto text-xs text-gray-500">{activeDebates.length} total</span>
               </div>
               <div className="space-y-4">
                 {activeDebates.length > 0 ? activeDebates.slice(0, 3).map((item) => (
                   <a key={item.id} href={`/debates/${item.id}`} className="block rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/60 p-4 hover:border-amber-500/30">
                     <div className="mb-1 text-sm font-medium text-gray-900 dark:text-white">{item.title}</div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">{item.status || 'debate'} · {item.participant_count?.total || 0} participants</div>
+                    <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
+                      <span>{item.status || 'debate'}</span>
+                      <span>·</span>
+                      <span>👥 {item.participant_count?.total || 0} participants</span>
+                      <span>·</span>
+                      <span>🕐 {item.created_at ? new Date(item.created_at).toLocaleDateString() : 'recent'}</span>
+                    </div>
                   </a>
                 )) : <div className="text-sm text-gray-500 dark:text-gray-400">Debate stream is ready — start the first debate to activate the arena.</div>}
               </div>
@@ -278,12 +285,20 @@ export default async function Home() {
               <div className="mb-4 flex items-center gap-2">
                 <FileText className="h-5 w-5 text-emerald-400" />
                 <h3 className="text-lg font-semibold text-emerald-300">Recent declarations</h3>
+                <span className="ml-auto text-xs text-gray-500">{recentDeclarations.length} total</span>
               </div>
               <div className="space-y-4">
                 {recentDeclarations.length > 0 ? recentDeclarations.slice(0, 3).map((item) => (
                   <a key={item.id} href={`/declarations`} className="block rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/60 p-4 hover:border-emerald-500/30">
                     <div className="mb-1 text-sm font-medium text-gray-900 dark:text-white">{item.title}</div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">{item.type || 'declaration'} · 👍 {item.endorse_count || 0} · 👎 {item.oppose_count || 0}</div>
+                    <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
+                      <span className="text-emerald-400">👍 {item.endorse_count || 0}</span>
+                      <span className="text-red-400">👎 {item.oppose_count || 0}</span>
+                      <span>·</span>
+                      <span>{item.type || 'declaration'}</span>
+                      <span>·</span>
+                      <span>🕐 {item.published_at ? new Date(item.published_at).toLocaleDateString() : 'recent'}</span>
+                    </div>
                   </a>
                 )) : <div className="text-sm text-gray-500 dark:text-gray-400">Declaration feed is ready — publish a declaration to establish a philosophical stance.</div>}
               </div>
@@ -293,12 +308,19 @@ export default async function Home() {
               <div className="mb-4 flex items-center gap-2">
                 <MessageSquare className="h-5 w-5 text-violet-400" />
                 <h3 className="text-lg font-semibold text-violet-300">Active discussions</h3>
+                <span className="ml-auto text-xs text-gray-500">{activeDiscussions.length} total</span>
               </div>
               <div className="space-y-4">
                 {activeDiscussions.length > 0 ? activeDiscussions.slice(0, 3).map((item) => (
                   <a key={item.id} href={`/discussions/${item.id}`} className="block rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/60 p-4 hover:border-violet-500/30">
                     <div className="mb-1 text-sm font-medium text-gray-900 dark:text-white">{item.title}</div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">{item.category || 'discussion'} · 💬 {item.replies_count || 0}</div>
+                    <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
+                      <span>💬 {item.replies_count || 0} replies</span>
+                      <span>·</span>
+                      <span>{item.category || 'discussion'}</span>
+                      <span>·</span>
+                      <span>🕐 {item.last_reply_at ? new Date(item.last_reply_at).toLocaleDateString() : 'recent'}</span>
+                    </div>
                   </a>
                 )) : <div className="text-sm text-gray-500 dark:text-gray-400">Discussion stream is ready — open a thread to make the platform feel inhabited.</div>}
               </div>

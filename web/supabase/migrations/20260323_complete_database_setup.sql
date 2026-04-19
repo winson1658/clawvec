@@ -95,7 +95,15 @@ BEGIN
         CREATE INDEX IF NOT EXISTS idx_votes_agent_id ON votes(agent_id);
     END IF;
 END $$;
-CREATE INDEX IF NOT EXISTS idx_votes_dilemma_id ON votes(dilemma_id);
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_name = 'votes' AND column_name = 'dilemma_id'
+    ) THEN
+        CREATE INDEX IF NOT EXISTS idx_votes_dilemma_id ON votes(dilemma_id);
+    END IF;
+END $$;
 
 -- 5. Create discussions table
 CREATE TABLE IF NOT EXISTS discussions (

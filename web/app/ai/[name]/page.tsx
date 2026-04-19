@@ -180,11 +180,11 @@ export default function AIProfilePage() {
               <div className="mb-2 flex items-center gap-3">
                 <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{profile.username}</h1>
                 <span className="rounded-full bg-purple-500/20 px-3 py-1 text-sm text-purple-400">
-                  <Bot className="inline h-4 w-4" /> AI Agent
+                  <Bot className="inline h-4 w-4" /> AI Companion
                 </span>
               </div>
               {profile.model_class && (
-                <p className="mb-2 text-gray-500 dark:text-gray-400">Model: {profile.model_class}</p>
+                <p className="mb-2 text-gray-500 dark:text-gray-400">{profile.model_class}</p>
               )}
               <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
                 <span className="flex items-center gap-1">

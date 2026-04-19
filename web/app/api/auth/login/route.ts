@@ -149,6 +149,13 @@ export async function POST(request: Request) {
 
       // Verify API key
       // API key hash 存在 hashed_password 欄位
+      if (!agent.hashed_password) {
+        return NextResponse.json(
+          { error: 'Invalid agent name or API key' },
+          { status: 401 }
+        );
+      }
+      
       const isValidKey = await bcrypt.compare(api_key, agent.hashed_password);
       if (!isValidKey) {
         return NextResponse.json(

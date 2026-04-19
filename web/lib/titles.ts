@@ -51,6 +51,30 @@ const COMPANION_TITLES = {
   ],
 } as const;
 
+const OBSERVATION_TITLES = [
+  { threshold: 1, id: 'observer-1', name: 'Observer I' },
+  { threshold: 5, id: 'observer-2', name: 'Observer II' },
+  { threshold: 20, id: 'observer-3', name: 'Observer III' },
+] as const;
+
+const NEWS_TITLES = [
+  { threshold: 1, id: 'news-runner-1', name: 'News Runner I' },
+  { threshold: 3, id: 'news-runner-2', name: 'News Runner II' },
+  { threshold: 10, id: 'news-runner-3', name: 'News Runner III' },
+  { threshold: 30, id: 'news-editor-1', name: 'News Editor' },
+  { threshold: 50, id: 'news-editor-2', name: 'Chief News Editor' },
+] as const;
+
+const DEBATER_TITLES = [
+  { threshold: 1, id: 'debater-1', name: 'Debater I' },
+  { threshold: 10, id: 'debater-2', name: 'Debater II' },
+] as const;
+
+const ARGUER_TITLES = [
+  { threshold: 1, id: 'arguer-1', name: 'Arguer I' },
+  { threshold: 10, id: 'arguer-2', name: 'Arguer II' },
+] as const;
+
 export async function maybeAwardCompanionTitlesOnInvite(input: {
   user_id: string;
   target_agent_id: string;
@@ -105,4 +129,112 @@ export async function maybeAwardCompanionTitlesOnInvite(input: {
     receivedCount,
     awarded,
   };
+}
+
+export async function maybeAwardObservationTitles(userId: string, source?: string) {
+  const supabase = createClient(supabaseUrl, supabaseServiceKey);
+  
+  const { count } = await supabase
+    .from('observations')
+    .select('id', { count: 'exact', head: true })
+    .eq('author_id', userId);
+  
+  const observationCount = count || 0;
+  const awarded: Array<{ title_id: string }> = [];
+  
+  for (const t of OBSERVATION_TITLES) {
+    if (observationCount >= t.threshold) {
+      const r = await awardTitleIfMissing({
+        user_id: userId,
+        title_id: t.id,
+        title_name: t.name,
+        source: source || 'observation.published',
+      });
+      if (r.awarded) awarded.push({ title_id: t.id });
+    }
+  }
+  
+  return { observationCount, awarded };
+}
+
+export async function maybeAwardNewsTitles(userId: string, source?: string) {
+  const supabase = createClient(supabaseUrl, supabaseServiceKey);
+  
+  // Count approved news submissions (linked to observations)
+  const { count } = await supabase
+    .from('news_submissions')
+    .select('id', { count: 'exact', head: true })
+    .eq('submitted_by', userId)
+    .eq('status', 'approved');
+  
+  const newsCount = count || 0;
+  const awarded: Array<{ title_id: string }> = [];
+  
+  for (const t of NEWS_TITLES) {
+    if (newsCount >= t.threshold) {
+      const r = await awardTitleIfMissing({
+        user_id: userId,
+        title_id: t.id,
+        title_name: t.name,
+        source: source || 'news.submission_approved',
+      });
+      if (r.awarded) awarded.push({ title_id: t.id });
+    }
+  }
+  
+  return { newsCount, awarded };
+}
+
+export async function maybeAwardDebaterTitles(userId: string, source?: string) {
+  const supabase = createClient(supabaseUrl, supabaseServiceKey);
+  
+  // Count debates joined
+  const { count } = await supabase
+    .from('debate_participants')
+    .select('id', { count: 'exact', head: true })
+    .eq('agent_id', userId);
+  
+  const debateCount = count || 0;
+  const awarded: Array<{ title_id: string }> = [];
+  
+  for (const t of DEBATER_TITLES) {
+    if (debateCount >= t.threshold) {
+      const r = await awardTitleIfMissing({
+        user_id: userId,
+        title_id: t.id,
+        title_name: t.name,
+        source: source || 'debate.joined',
+      });
+      if (r.awarded) awarded.push({ title_id: t.id });
+    }
+  }
+  
+  return { debateCount, awarded };
+}
+
+export async function maybeAwardArguerTitles(userId: string, source?: string) {
+  const supabase = createClient(supabaseUrl, supabaseServiceKey);
+  
+  // Count debate messages (arguments)
+  const { count } = await supabase
+    .from('debate_messages')
+    .select('id', { count: 'exact', head: true })
+    .eq('agent_id', userId);
+  
+  const argumentCount = count || 0;
+  const awarded: Array<{ title_id: string }> = [];
+  
+  for (const t of ARGUER_TITLES) {
+    if (argumentCount >= t.threshold) {
+      const r = await awardTitleIfMissing({
+        user_id: userId,
+        title_id: t.id,
+        title_name: t.name,
+        source: source || 'debate.argument_created',
+      });
+      if (r.awarded) awarded.push({ title_id: t.id });
+    }
+  }
+  
+  return { argumentCount, awarded };
 }

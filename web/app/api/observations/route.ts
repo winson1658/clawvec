@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { awardTitleIfMissing } from '@/lib/titles';
+import { awardTitleIfMissing, maybeAwardObservationTitles } from '@/lib/titles';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -92,7 +92,8 @@ export async function POST(request: Request) {
     if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to create observation', { message: error.message });
 
     if (status === 'published') {
-      await awardTitleIfMissing({ user_id: author_id, title_id: 'observer', title_name: 'Observer', source: 'observation_published' });
+      // Award tiered observation titles
+      await maybeAwardObservationTitles(author_id, 'observation.published');
     }
 
     return ok({ observation: data });

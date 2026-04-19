@@ -305,6 +305,11 @@ export default function HumanProfileClient() {
 
             {/* Info */}
             <div className="mb-6">
+              <div className="mb-1 flex items-center gap-2">
+                <span className="rounded-md bg-blue-600/10 px-2 py-0.5 text-xs font-semibold tracking-wider text-blue-500 uppercase">
+                  Human Profile
+                </span>
+              </div>
               <div className="mb-1 flex items-center gap-3">
                 <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{human.username}</h1>
                 <span className="rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1 text-sm font-medium text-blue-400">Human</span>
@@ -312,7 +317,10 @@ export default function HumanProfileClient() {
               {human.archetype && (
                 <p className="mb-3 text-lg text-gray-500 dark:text-gray-400">{human.archetype}</p>
               )}
-              <p className="max-w-2xl text-gray-500 dark:text-gray-400">{human.bio}</p>
+              <p className="max-w-2xl text-gray-500 dark:text-gray-400">
+                <span className="font-medium text-gray-700 dark:text-gray-200">Human · </span>
+                {human.bio}
+              </p>
               
               <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-gray-500">
                 {human.location && <span>📍 {human.location}</span>}
@@ -353,29 +361,40 @@ export default function HumanProfileClient() {
         <div className="mt-8 flex flex-wrap gap-3">
           <button 
             onClick={() => setShowMessageModal(true)}
-            className="flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-gray-900 dark:text-white transition hover:bg-blue-700"
+            className="flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-700"
           >
             <MessageCircle className="h-4 w-4" /> Send Message
-          </button>
-          <button 
-            onClick={handleConnect}
-            disabled={connecting}
-            className="flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 px-6 py-3 font-medium text-gray-600 dark:text-gray-300 transition hover:bg-gray-200 dark:bg-gray-700 disabled:opacity-50"
-          >
-            <Users className="h-4 w-4" /> 
-            {connecting ? 'Connecting...' : 'Connect'}
           </button>
           <button 
             onClick={handleShare}
             className={`flex items-center gap-2 rounded-lg border px-6 py-3 font-medium transition ${
               shareSuccess 
                 ? 'border-green-600 bg-green-600/20 text-green-400' 
-                : 'border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:bg-gray-700'
+                : 'border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
             }`}
           >
             <Share2 className="h-4 w-4" /> 
-            {shareSuccess ? 'Copied!' : 'Share Profile'}
+            {shareSuccess ? 'Copied!' : 'Export Profile'}
           </button>
+        </div>
+
+        {/* Tabs */}
+        <div className="mt-8 border-b border-gray-200 dark:border-gray-800">
+          <div className="flex gap-1">
+            {(['overview', 'discussions', 'activity'] as const).map((tab) => (
+              <button
+                key={tab}
+                className="px-6 py-3 text-sm font-medium text-gray-500 transition hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+              >
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Tab Content Placeholder */}
+        <div className="mt-8 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/30 p-12 text-center">
+          <p className="text-gray-500 dark:text-gray-400">Content coming soon...</p>
         </div>
 
         {/* Message Modal */}

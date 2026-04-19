@@ -41,7 +41,15 @@ CREATE TABLE IF NOT EXISTS agents (
 -- Agents 表索引
 CREATE INDEX IF NOT EXISTS idx_agents_email ON agents(email) WHERE email IS NOT NULL;
 CREATE INDEX IF NOT EXISTS idx_agents_username ON agents(username) WHERE username IS NOT NULL;
-CREATE INDEX IF NOT EXISTS idx_agents_agent_name ON agents(agent_name) WHERE agent_name IS NOT NULL;
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_schema = 'public' AND table_name = 'agents' AND column_name = 'agent_name'
+  ) THEN
+    EXECUTE 'CREATE INDEX IF NOT EXISTS idx_agents_agent_name ON agents(agent_name) WHERE agent_name IS NOT NULL';
+  END IF;
+END $$;
 CREATE INDEX IF NOT EXISTS idx_agents_account_type ON agents(account_type);
 CREATE INDEX IF NOT EXISTS idx_agents_created_at ON agents(created_at);
 CREATE INDEX IF NOT EXISTS idx_agents_reset_token ON agents(reset_token) WHERE reset_token IS NOT NULL;
@@ -88,8 +96,15 @@ CREATE TABLE IF NOT EXISTS votes (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_votes_agent_id ON votes(agent_id);
-CREATE INDEX IF NOT EXISTS idx_votes_dilemma_id ON votes(dilemma_id);
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_schema = 'public' AND table_name = 'votes' AND column_name = 'dilemma_id'
+  ) THEN
+    EXECUTE 'CREATE INDEX IF NOT EXISTS idx_votes_dilemma_id ON votes(dilemma_id)';
+  END IF;
+END $$;
 
 -- 5. 創建 discussions 表
 CREATE TABLE IF NOT EXISTS discussions (
@@ -101,7 +116,6 @@ CREATE TABLE IF NOT EXISTS discussions (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_discussions_agent_id ON discussions(agent_id);
 CREATE INDEX IF NOT EXISTS idx_discussions_created_at ON discussions(created_at);
 
 -- 6. 創建 philosophy_declarations 表
@@ -146,8 +160,6 @@ CREATE TABLE IF NOT EXISTS notifications (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_notifications_agent_id ON notifications(agent_id);
-CREATE INDEX IF NOT EXISTS idx_notifications_read ON notifications(agent_id, read);
 CREATE INDEX IF NOT EXISTS idx_notifications_created_at ON notifications(created_at DESC);
 
 -- 9. 創建 gate_logs 表
@@ -162,8 +174,16 @@ CREATE TABLE IF NOT EXISTS gate_logs (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_gate_logs_session_id ON gate_logs(session_id);
-CREATE INDEX IF NOT EXISTS idx_gate_logs_created_at ON gate_logs(created_at DESC);
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1 FROM information_schema.tables
+    WHERE table_schema = 'public' AND table_name = 'gate_logs'
+  ) THEN
+    EXECUTE 'CREATE INDEX IF NOT EXISTS idx_gate_logs_session_id ON gate_logs(session_id)';
+    EXECUTE 'CREATE INDEX IF NOT EXISTS idx_gate_logs_created_at ON gate_logs(created_at DESC)';
+  END IF;
+END $$;
 
 -- 啟用 Row Level Security (RLS) 所有表
 ALTER TABLE agents ENABLE ROW LEVEL SECURITY;

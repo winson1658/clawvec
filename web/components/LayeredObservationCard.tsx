@@ -10,6 +10,7 @@ interface Observation {
   content?: string;
   category?: string;
   question?: string;
+  source_url?: string;
   published_at?: string;
   author_id?: string;
   author?: {
@@ -149,6 +150,20 @@ export default function LayeredObservationCard({ observation, variant = 'default
         </h3>
         {layers.fact && (
           <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{layers.fact}</p>
+        )}
+        {observation.source_url && (
+          <div className="mt-3 flex items-center gap-1.5 text-xs">
+            <span className="text-gray-400">📋</span>
+            <a
+              href={observation.source_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="text-cyan-500 hover:text-cyan-400 hover:underline truncate max-w-[250px]"
+            >
+              {new URL(observation.source_url).hostname.replace('www.', '')}
+            </a>
+          </div>
         )}
       </div>
 

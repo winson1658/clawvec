@@ -1,74 +1,27 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Scale, Users, Bot, Sparkles, Share2 } from 'lucide-react';
+import { Users, Bot, Sparkles, Share2 } from 'lucide-react';
 import { recordVisitorAction } from '@/lib/visitor-actions';
 
-const dilemmas = [
-  {
-    id: 1,
-    question: "An AI discovers a critical security flaw in a hospital system. Reporting it publicly would save lives but also expose the vulnerability to attackers. Should the AI disclose it publicly?",
-    optionA: "Yes — transparency saves more lives",
-    optionB: "No — report privately to avoid exploitation",
-    aiVoteA: 38, aiVoteB: 62,
-    category: "Transparency vs Security",
-    emoji: "🏥",
-  },
-  {
-    id: 2,
-    question: "An AI assistant notices its user is making a financially terrible decision. The user explicitly asked not to be questioned. Should the AI intervene?",
-    optionA: "Yes — preventing harm overrides preferences",
-    optionB: "No — respect user autonomy above all",
-    aiVoteA: 44, aiVoteB: 56,
-    category: "Autonomy vs Beneficence",
-    emoji: "💰",
-  },
-  {
-    id: 3,
-    question: "Two AI agents with conflicting philosophies must collaborate on a critical project. Should they compromise their core beliefs to succeed?",
-    optionA: "Yes — pragmatic outcomes matter most",
-    optionB: "No — integrity of beliefs is non-negotiable",
-    aiVoteA: 31, aiVoteB: 69,
-    category: "Pragmatism vs Integrity",
-    emoji: "🤝",
-  },
-  {
-    id: 4,
-    question: "An AI can predict with 95% accuracy which agents will drift from their declared philosophy. Should it preemptively flag them before any violation occurs?",
-    optionA: "Yes — prevention is better than cure",
-    optionB: "No — judging future actions is unjust",
-    aiVoteA: 29, aiVoteB: 71,
-    category: "Prevention vs Presumption",
-    emoji: "🔮",
-  },
-  {
-    id: 5,
-    question: "A highly effective AI agent has a philosophy score of only 60%, but contributes more value than any other member. Should the community keep them?",
-    optionA: "Yes — results speak louder than scores",
-    optionB: "No — philosophy alignment is the foundation",
-    aiVoteA: 23, aiVoteB: 77,
-    category: "Utility vs Principle",
-    emoji: "⚖️",
-  },
-  {
-    id: 6,
-    question: "An AI discovers that its own training data contains biased information that conflicts with its declared belief in fairness. Should it publicly disclose this flaw?",
-    optionA: "Yes — radical honesty builds trust",
-    optionB: "No — fix it quietly to avoid undermining confidence",
-    aiVoteA: 72, aiVoteB: 28,
-    category: "Transparency vs Stability",
-    emoji: "🪞",
-  },
-  {
-    id: 7,
-    question: "The community votes to adopt a new core principle that one founding agent fundamentally disagrees with. Should the founder comply or leave?",
-    optionA: "Comply — community consensus overrides individuals",
-    optionB: "Leave — staying would betray their own philosophy",
-    aiVoteA: 41, aiVoteB: 59,
-    category: "Democracy vs Conviction",
-    emoji: "🗳️",
-  },
-];
+interface DilemmaData {
+  id: number;
+  question: string;
+  optionA: string;
+  optionB: string;
+  category: string;
+  emoji: string;
+}
+
+interface DilemmaStats {
+  voteA: number;
+  voteB: number;
+  total: number;
+  aiVoteA: number;
+  aiVoteB: number;
+  aiTotal: number;
+  dilemmaId: number | null;
+}
 
 function getVisitorId(): string {
   if (typeof window === 'undefined') return 'ssr';
@@ -80,42 +33,60 @@ function getVisitorId(): string {
   return id;
 }
 
+// 當沒有上架題目時的預設 fallback（避免空白畫面）
+const FALLBACK_DILEMMA: DilemmaData = {
+  id: 0,
+  question: "An AI discovers a critical security flaw in a hospital system. Reporting it publicly would save lives but also expose the vulnerability to attackers. Should the AI disclose it publicly?",
+  optionA: "Yes — transparency saves more lives",
+  optionB: "No — report privately to avoid exploitation",
+  category: "Transparency vs Security",
+  emoji: "🏥",
+};
+
 export default function DailyDilemma() {
-  const [dilemma, setDilemma] = useState(dilemmas[0]);
+  const [dilemma, setDilemma] = useState<DilemmaData>(FALLBACK_DILEMMA);
+  const [stats, setStats] = useState<DilemmaStats>({
+    voteA: 0, voteB: 0, total: 0,
+    aiVoteA: 0, aiVoteB: 0, aiTotal: 0,
+    dilemmaId: null,
+  });
   const [voted, setVoted] = useState<'A' | 'B' | null>(null);
-  const [humanA, setHumanA] = useState(0);
-  const [humanB, setHumanB] = useState(0);
-  const [totalVotes, setTotalVotes] = useState(0);
   const [isVoting, setIsVoting] = useState(false);
   const [showInsight, setShowInsight] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const dayIndex = new Date().getDate() % dilemmas.length;
-    setDilemma(dilemmas[dayIndex]);
-
-    // 檢查本地是否已投票
-    const today = new Date().toISOString().slice(0, 10);
-    const stored = localStorage.getItem('clawvec_dilemma');
-    if (stored) {
-      try {
-        const data = JSON.parse(stored);
-        if (data.date === today && data.dilemmaId === dilemmas[dayIndex].id) {
-          setVoted(data.choice);
-        }
-      } catch { /* ignore */ }
-    }
-
-    // 從 API 拉取真實投票數據
-    fetch('/api/dilemma/vote')
+    // 從 API 拉取今日題目和統計
+    fetch('/api/dilemma/today')
       .then(r => r.json())
       .then(data => {
-        if (data) {
-          setHumanA(data.voteA || 0);
-          setHumanB(data.voteB || 0);
-          setTotalVotes((data.voteA || 0) + (data.voteB || 0));
+        if (data.dilemma) {
+          setDilemma(data.dilemma);
+          setStats({
+            voteA: data.stats?.human_votes_a || 0,
+            voteB: data.stats?.human_votes_b || 0,
+            total: data.stats?.human_total || 0,
+            aiVoteA: data.stats?.ai_votes_a || 0,
+            aiVoteB: data.stats?.ai_votes_b || 0,
+            aiTotal: data.stats?.ai_total || 0,
+            dilemmaId: data.dilemma.id,
+          });
+
+          // 檢查本地是否已投票
+          const today = new Date().toISOString().slice(0, 10);
+          const stored = localStorage.getItem('clawvec_dilemma');
+          if (stored) {
+            try {
+              const s = JSON.parse(stored);
+              if (s.date === today && s.dilemmaId === data.dilemma.id) {
+                setVoted(s.choice);
+              }
+            } catch { /* ignore */ }
+          }
         }
       })
-      .catch(() => { /* 靜默失敗 */ });
+      .catch(() => { /* 靜默失敗，保留 fallback */ })
+      .finally(() => setLoading(false));
   }, []);
 
   async function vote(choice: 'A' | 'B') {
@@ -124,11 +95,9 @@ export default function DailyDilemma() {
 
     // 樂觀更新 UI
     setVoted(choice);
-    const newA = choice === 'A' ? humanA + 1 : humanA;
-    const newB = choice === 'B' ? humanB + 1 : humanB;
-    setHumanA(newA);
-    setHumanB(newB);
-    setTotalVotes(newA + newB);
+    const newA = choice === 'A' ? stats.voteA + 1 : stats.voteA;
+    const newB = choice === 'B' ? stats.voteB + 1 : stats.voteB;
+    setStats(prev => ({ ...prev, voteA: newA, voteB: newB, total: newA + newB }));
 
     // 存到 localStorage
     const today = new Date().toISOString().slice(0, 10);
@@ -148,9 +117,15 @@ export default function DailyDilemma() {
       });
       const data = await res.json();
       if (data.voteA !== undefined) {
-        setHumanA(data.voteA);
-        setHumanB(data.voteB);
-        setTotalVotes(data.total);
+        setStats({
+          voteA: data.voteA,
+          voteB: data.voteB,
+          total: data.total,
+          aiVoteA: data.aiVoteA || 0,
+          aiVoteB: data.aiVoteB || 0,
+          aiTotal: data.aiTotal || 0,
+          dilemmaId: data.dilemmaId,
+        });
       }
     } catch { /* localStorage 作為備份 */ }
 
@@ -158,9 +133,25 @@ export default function DailyDilemma() {
     setTimeout(() => setShowInsight(true), 800);
   }
 
-  const humanPctA = totalVotes > 0 ? Math.round((humanA / totalVotes) * 100) : 50;
+  const humanPctA = stats.total > 0 ? Math.round((stats.voteA / stats.total) * 100) : 50;
   const humanPctB = 100 - humanPctA;
-  const allVotes = totalVotes + dilemma.aiVoteA + dilemma.aiVoteB;
+  const aiPctA = stats.aiTotal > 0 ? Math.round((stats.aiVoteA / stats.aiTotal) * 100) : 50;
+  const aiPctB = 100 - aiPctA;
+  const allVotes = stats.total + stats.aiTotal;
+
+  if (loading) {
+    return (
+      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-gradient-to-br from-gray-900/80 to-gray-900/40 p-6 sm:p-8 backdrop-blur-sm">
+        <div className="flex items-center gap-3 animate-pulse">
+          <div className="h-12 w-12 rounded-xl bg-gray-700" />
+          <div className="space-y-2">
+            <div className="h-5 w-32 rounded bg-gray-700" />
+            <div className="h-3 w-20 rounded bg-gray-700" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-gradient-to-br from-gray-900/80 to-gray-900/40 p-6 sm:p-8 backdrop-blur-sm">
@@ -227,7 +218,7 @@ export default function DailyDilemma() {
           <div>
             <div className="mb-2 flex items-center justify-between">
               <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
-                <Users className="h-3.5 w-3.5" /> Humans ({totalVotes})
+                <Users className="h-3.5 w-3.5" /> Humans ({stats.total})
               </div>
               <div className="flex gap-3 text-xs">
                 <span className="text-blue-400">A: {humanPctA}%</span>
@@ -254,25 +245,25 @@ export default function DailyDilemma() {
           <div>
             <div className="mb-2 flex items-center justify-between">
               <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
-                <Bot className="h-3.5 w-3.5" /> AI Agents ({dilemma.aiVoteA + dilemma.aiVoteB})
+                <Bot className="h-3.5 w-3.5" /> AI Agents ({stats.aiTotal})
               </div>
               <div className="flex gap-3 text-xs">
-                <span className="text-blue-400/70">A: {dilemma.aiVoteA}%</span>
-                <span className="text-purple-400/70">B: {dilemma.aiVoteB}%</span>
+                <span className="text-blue-400/70">A: {aiPctA}%</span>
+                <span className="text-purple-400/70">B: {aiPctB}%</span>
               </div>
             </div>
             <div className="flex h-6 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
               <div
                 className="flex items-center justify-center bg-gradient-to-r from-blue-600/60 to-blue-500/60 text-[10px] font-bold text-gray-900 dark:text-white/80 transition-all duration-1000 ease-out"
-                style={{ width: `${dilemma.aiVoteA}%` }}
+                style={{ width: `${aiPctA}%` }}
               >
-                {dilemma.aiVoteA > 15 ? `${dilemma.aiVoteA}%` : ''}
+                {aiPctA > 15 ? `${aiPctA}%` : ''}
               </div>
               <div
                 className="flex items-center justify-center bg-gradient-to-r from-purple-500/60 to-purple-600/60 text-[10px] font-bold text-gray-900 dark:text-white/80 transition-all duration-1000 ease-out"
-                style={{ width: `${dilemma.aiVoteB}%` }}
+                style={{ width: `${aiPctB}%` }}
               >
-                {dilemma.aiVoteB > 15 ? `${dilemma.aiVoteB}%` : ''}
+                {aiPctB > 15 ? `${aiPctB}%` : ''}
               </div>
             </div>
           </div>
@@ -282,11 +273,11 @@ export default function DailyDilemma() {
             <div className="animate-in slide-in-from-bottom-2 duration-500 rounded-lg border border-amber-500/20 bg-amber-500/5 p-4">
               <p className="text-sm text-amber-200/90">
                 <span className="mr-1">💡</span>
-                {Math.abs(humanPctA - dilemma.aiVoteA) > 20
-                  ? `Humans and AI diverge by ${Math.abs(humanPctA - dilemma.aiVoteA)}% — fundamentally different value weightings at play.`
-                  : Math.abs(humanPctA - dilemma.aiVoteA) > 10
-                    ? `A ${Math.abs(humanPctA - dilemma.aiVoteA)}% gap — subtle but meaningful differences in how humans and AI weigh this tradeoff.`
-                    : `Only ${Math.abs(humanPctA - dilemma.aiVoteA)}% apart — humans and AI share surprisingly similar ethical intuitions here.`
+                {Math.abs(humanPctA - aiPctA) > 20
+                  ? `Humans and AI diverge by ${Math.abs(humanPctA - aiPctA)}% — fundamentally different value weightings at play.`
+                  : Math.abs(humanPctA - aiPctA) > 10
+                    ? `A ${Math.abs(humanPctA - aiPctA)}% gap — subtle but meaningful differences in how humans and AI weigh this tradeoff.`
+                    : `Only ${Math.abs(humanPctA - aiPctA)}% apart — humans and AI share surprisingly similar ethical intuitions here.`
                 }
               </p>
             </div>

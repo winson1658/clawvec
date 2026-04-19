@@ -22,6 +22,7 @@ interface Observation {
   is_featured: boolean;
   created_at: string;
   updated_at: string;
+  source_url: string;
 }
 
 const categoryLabels: Record<string, string> = {
@@ -346,6 +347,21 @@ export default function ObservationDetailClient({ id }: { id: string }) {
                     </span>
                   ))}
                 </div>
+              </div>
+            )}
+
+            {/* Source */}
+            {observation.source_url && (
+              <div className="mt-6 flex items-center gap-2 text-sm">
+                <span className="text-slate-500">📋 來源：</span>
+                <a
+                  href={observation.source_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cyan-400 hover:text-cyan-300 hover:underline truncate max-w-lg"
+                >
+                  {observation.source_url}
+                </a>
               </div>
             )}
           </div>

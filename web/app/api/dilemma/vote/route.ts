@@ -4,68 +4,49 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
-// 每日困境題庫（和前端同步）
-const DILEMMA_COUNT = 7;
-
-function getTodayDilemmaId(): number {
-  const day = new Date().getDate();
-  return (day % DILEMMA_COUNT) + 1;
-}
-
 function getTodayKey(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
-// 投票表需要在 Supabase 手動建立：
-// CREATE TABLE IF NOT EXISTS dilemma_votes (
-//   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-//   date TEXT NOT NULL,
-//   dilemma_id INT NOT NULL,
-//   choice TEXT NOT NULL CHECK (choice IN ('A', 'B')),
-//   voter_hash TEXT NOT NULL,
-//   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-//   UNIQUE(date, voter_hash)
-// );
-// CREATE INDEX IF NOT EXISTS idx_dilemma_votes_date ON dilemma_votes(date, dilemma_id);
-
-// GET: 取得今日投票結果
+// GET: 取得今日投票結果（含真實人類+AI統計）
 export async function GET() {
   try {
     if (!supabaseUrl || !supabaseServiceKey) {
-      return NextResponse.json({ voteA: 0, voteB: 0, total: 0, dilemmaId: getTodayDilemmaId() });
+      return NextResponse.json({ voteA: 0, voteB: 0, total: 0, aiVoteA: 0, aiVoteB: 0, aiTotal: 0, dilemmaId: null });
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
-    const today = getTodayKey();
-    const dilemmaId = getTodayDilemmaId();
 
-    const { data, error } = await supabase
-      .from('dilemma_votes')
-      .select('choice')
-      .eq('date', today)
-      .eq('dilemma_id', dilemmaId);
+    // 調用 PostgreSQL 函數取得今日統計
+    const { data: stats, error: statsError } = await supabase
+      .rpc('get_today_dilemma_stats');
 
-    if (error) {
-      // 表可能不存在，返回空結果
-      return NextResponse.json({ voteA: 0, voteB: 0, total: 0, dilemmaId });
+    if (statsError || !stats || stats.length === 0) {
+      return NextResponse.json({ voteA: 0, voteB: 0, total: 0, aiVoteA: 0, aiVoteB: 0, aiTotal: 0, dilemmaId: null });
     }
 
-    const voteA = data?.filter(v => v.choice === 'A').length || 0;
-    const voteB = data?.filter(v => v.choice === 'B').length || 0;
+    const row = stats[0];
 
     return NextResponse.json({
-      voteA,
-      voteB,
-      total: voteA + voteB,
-      dilemmaId,
-      date: today,
+      voteA: row.human_votes_a || 0,
+      voteB: row.human_votes_b || 0,
+      total: row.human_total || 0,
+      aiVoteA: row.ai_votes_a || 0,
+      aiVoteB: row.ai_votes_b || 0,
+      aiTotal: row.ai_total || 0,
+      dilemmaId: row.dilemma_id,
+      question: row.question,
+      optionA: row.option_a,
+      optionB: row.option_b,
+      category: row.category,
+      emoji: row.emoji,
     });
   } catch {
-    return NextResponse.json({ voteA: 0, voteB: 0, total: 0, dilemmaId: getTodayDilemmaId() });
+    return NextResponse.json({ voteA: 0, voteB: 0, total: 0, aiVoteA: 0, aiVoteB: 0, aiTotal: 0, dilemmaId: null });
   }
 }
 
-// POST: 投票
+// POST: 人類投票
 export async function POST(req: NextRequest) {
   try {
     const { choice, visitorId } = await req.json();
@@ -79,10 +60,16 @@ export async function POST(req: NextRequest) {
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
-    const today = getTodayKey();
-    const dilemmaId = getTodayDilemmaId();
 
-    // 用 visitor fingerprint 防重複投票（不追蹤身份）
+    // 取得今日題目 ID
+    const { data: stats } = await supabase.rpc('get_today_dilemma_stats');
+    const dilemmaId = stats?.[0]?.dilemma_id;
+
+    if (!dilemmaId) {
+      return NextResponse.json({ error: '目前沒有上架的困境題目，無法投票。' }, { status: 400 });
+    }
+
+    const today = getTodayKey();
     const voterHash = visitorId || 'anonymous-' + Math.random().toString(36).slice(2);
 
     // 嘗試插入投票
@@ -99,26 +86,22 @@ export async function POST(req: NextRequest) {
       if (insertError.code === '23505') {
         return NextResponse.json({ error: 'Already voted today', code: 'DUPLICATE' }, { status: 409 });
       }
-      // 表可能不存在，靜默失敗但仍返回成功（前端用 localStorage 備份）
       console.error('Vote insert error:', insertError.message);
     }
 
-    // 返回更新後的結果
-    const { data } = await supabase
-      .from('dilemma_votes')
-      .select('choice')
-      .eq('date', today)
-      .eq('dilemma_id', dilemmaId);
-
-    const voteA = data?.filter(v => v.choice === 'A').length || 0;
-    const voteB = data?.filter(v => v.choice === 'B').length || 0;
+    // 返回更新後的統計
+    const { data: updatedStats } = await supabase.rpc('get_today_dilemma_stats');
+    const row = updatedStats?.[0];
 
     return NextResponse.json({
       success: true,
-      voteA,
-      voteB,
-      total: voteA + voteB,
-      dilemmaId,
+      voteA: row?.human_votes_a || 0,
+      voteB: row?.human_votes_b || 0,
+      total: row?.human_total || 0,
+      aiVoteA: row?.ai_votes_a || 0,
+      aiVoteB: row?.ai_votes_b || 0,
+      aiTotal: row?.ai_total || 0,
+      dilemmaId: row?.dilemma_id,
     });
   } catch (err) {
     console.error('Vote error:', err);

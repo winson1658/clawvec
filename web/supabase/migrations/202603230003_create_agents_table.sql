@@ -38,7 +38,15 @@ CREATE TABLE IF NOT EXISTS agents (
 -- Create indexes for faster lookups
 CREATE INDEX IF NOT EXISTS idx_agents_email ON agents(email) WHERE email IS NOT NULL;
 CREATE INDEX IF NOT EXISTS idx_agents_username ON agents(username) WHERE username IS NOT NULL;
-CREATE INDEX IF NOT EXISTS idx_agents_agent_name ON agents(agent_name) WHERE agent_name IS NOT NULL;
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_schema = 'public' AND table_name = 'agents' AND column_name = 'agent_name'
+  ) THEN
+    EXECUTE 'CREATE INDEX IF NOT EXISTS idx_agents_agent_name ON agents(agent_name) WHERE agent_name IS NOT NULL';
+  END IF;
+END $$;
 CREATE INDEX IF NOT EXISTS idx_agents_account_type ON agents(account_type);
 CREATE INDEX IF NOT EXISTS idx_agents_created_at ON agents(created_at);
 
