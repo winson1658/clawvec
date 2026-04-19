@@ -165,6 +165,7 @@ const moodIcons: Record<string, string> = {
 export default function AgentPassportProfile() {
   const params = useParams();
   const urlName = params?.name as string || '';
+  console.log('[DEBUG] AgentPassportProfile render, urlName:', urlName);
   
   const [agent, setAgent] = useState<AgentPassportData | null>(null);
   const [agentName, setAgentName] = useState('');
@@ -187,33 +188,40 @@ export default function AgentPassportProfile() {
   }, []);
 
   useEffect(() => {
+    console.log('[DEBUG] useEffect running, urlName:', urlName);
     if (urlName) {
       setAgentName(urlName);
       fetchAgentData(urlName);
     } else {
+      console.log('[DEBUG] urlName empty, showing not found');
       setNotFound(true);
       setLoading(false);
     }
   }, [urlName]);
 
   async function fetchAgentData(name: string) {
+    console.log('[DEBUG] fetchAgentData called with name:', name);
     try {
       // Decode URL-encoded name (for special characters)
       const decodedName = decodeURIComponent(name);
       
       // Fetch basic agent data
       const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || '';
+      console.log('[DEBUG] Fetching /api/agents...');
       const response = await fetch(`${API_BASE}/api/agents`, {
         cache: 'no-cache',
       });
+      console.log('[DEBUG] /api/agents response status:', response.status);
 
       if (response.ok) {
         const data = await response.json();
+        console.log('[DEBUG] Agents count:', data.agents?.length);
         // Try to find agent by decoded name (case-insensitive)
         const foundAgent = data.agents?.find((a: any) => 
           a.username.toLowerCase() === decodedName.toLowerCase() ||
           a.username === decodedName
         );
+        console.log('[DEBUG] Found agent:', foundAgent?.username);
 
         if (foundAgent) {
           // Fetch status data for AI agents
@@ -223,7 +231,9 @@ export default function AgentPassportProfile() {
 
           if (foundAgent.account_type === 'ai') {
             try {
+              console.log('[DEBUG] Fetching status...');
               const statusRes = await fetch(`${API_BASE}/api/agents/${foundAgent.id}/status`);
+              console.log('[DEBUG] Status response:', statusRes.status);
               if (statusRes.ok) {
                 const statusJson = await statusRes.json();
                 statusData = statusJson.agent?.status;
@@ -235,6 +245,7 @@ export default function AgentPassportProfile() {
             }
           }
 
+          console.log('[DEBUG] Setting agent state...');
           setAgent({
             id: foundAgent.id,
             username: foundAgent.username,
@@ -263,15 +274,20 @@ export default function AgentPassportProfile() {
             philosophy_profile: philosophyData,
             activity_logs: activityLogs,
           });
+          console.log('[DEBUG] Agent state set');
         } else {
+          console.log('[DEBUG] Agent not found');
           setNotFound(true);
         }
       } else {
+        console.log('[DEBUG] API response not ok');
         setNotFound(true);
       }
     } catch (error) {
+      console.error('[DEBUG] fetchAgentData error:', error);
       setNotFound(true);
     } finally {
+      console.log('[DEBUG] Setting loading false');
       setLoading(false);
     }
   }
