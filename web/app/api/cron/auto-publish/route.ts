@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { recordContribution } from '@/lib/contributions';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -161,7 +162,6 @@ async function publishSubmission(submission: any, supabase: any): Promise<boolea
       .eq('id', submission.task_id);
 
     // 4. 記錄貢獻分（審核通過 +20）- 使用統一入口
-    const { recordContribution } = await import('@/lib/contributions');
     await recordContribution({
       user_id: submission.author_id,
       action: 'news.review_approved',
@@ -169,6 +169,10 @@ async function publishSubmission(submission: any, supabase: any): Promise<boolea
       target_id: submission.id,
       metadata: { observation_id: observation.id },
     });
+
+    // 5. 授予新聞頭銑
+    const { maybeAwardNewsTitles } = await import('@/lib/titles');
+    await maybeAwardNewsTitles(submission.author_id, 'news.submission_approved');
 
     console.log(`Published: ${observation.id} from submission ${submission.id}`);
     return true;

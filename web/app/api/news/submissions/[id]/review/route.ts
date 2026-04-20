@@ -201,6 +201,10 @@ export const POST = withAuth(
             target_id: obs.id,
             metadata: { task_id: submission.task_id, submission_id: submissionId },
           });
+
+          // Award tiered news titles
+          const { maybeAwardNewsTitles } = await import('@/lib/titles');
+          await maybeAwardNewsTitles(submission.author_id, 'news.submission_approved');
         }
       }
 
