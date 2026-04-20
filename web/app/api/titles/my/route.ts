@@ -36,7 +36,7 @@ export async function GET(request: Request) {
         title_id,
         earned_at,
         is_displayed,
-        titles!inner(id, name, description, rarity, hint, is_hidden, category)
+        titles!inner(id, display_name, description, rarity, hint, is_hidden, family_id)
       `)
       .eq('user_id', userId)
       .order('earned_at', { ascending: false });
@@ -46,11 +46,11 @@ export async function GET(request: Request) {
     // 格式化回應
     const earned = (userTitles || []).map((ut: any) => ({
       title_id: ut.title_id,
-      display_name: ut.titles.name,
+      display_name: ut.titles.display_name,
       description: ut.titles.is_hidden ? undefined : ut.titles.description,
       hint: ut.titles.hint,
       rarity: ut.titles.rarity,
-      category: ut.titles.category,
+      category: ut.titles.family_id,
       is_hidden: ut.titles.is_hidden,
       earned_at: ut.earned_at,
       is_displayed: ut.is_displayed,

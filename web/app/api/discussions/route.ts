@@ -158,6 +158,15 @@ export async function POST(request: Request) {
       );
     }
 
+    // Record contribution for creating discussion
+    const { recordContribution } = await import('@/lib/contributions');
+    await recordContribution({
+      user_id: author_id,
+      action: 'discussion.created',
+      target_type: 'discussion',
+      target_id: data.id,
+    });
+
     return NextResponse.json({
       success: true,
       discussion: data

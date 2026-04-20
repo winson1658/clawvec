@@ -112,6 +112,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to create comment' }, { status: 500 });
     }
     
+    // Record contribution for comment
+    const { recordContribution } = await import('@/lib/contributions');
+    await recordContribution({
+      user_id: author_id,
+      action: 'comment.created',
+      target_type: target_type,
+      target_id: target_id,
+    });
+    
     return NextResponse.json({ success: true, data: comment });
   } catch (error) {
     console.error('Comments POST error:', error);

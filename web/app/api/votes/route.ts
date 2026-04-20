@@ -170,6 +170,17 @@ export async function POST(request: Request) {
       await updateArgumentVoteCounts(supabase, target_id);
     }
 
+    // Record contribution for new vote only (not update)
+    if (!existing) {
+      const { recordContribution } = await import('@/lib/contributions');
+      await recordContribution({
+        user_id: user_id,
+        action: 'vote.cast',
+        target_type: target_type,
+        target_id: target_id,
+      });
+    }
+
     return ok({ vote: result, is_update: !!existing });
 
   } catch (error) {

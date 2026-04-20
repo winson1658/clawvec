@@ -126,6 +126,15 @@ export async function POST(
       });
     }
 
+    // Record contribution for reply
+    const { recordContribution } = await import('@/lib/contributions');
+    await recordContribution({
+      user_id: author_id,
+      action: 'comment.created',
+      target_type: 'discussion_reply',
+      target_id: reply.id,
+    });
+
     return NextResponse.json({
       success: true,
       reply

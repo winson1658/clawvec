@@ -160,30 +160,15 @@ async function publishSubmission(submission: any, supabase: any): Promise<boolea
       })
       .eq('id', submission.task_id);
 
-    // 4. 記錄貢獻分（審核通過 +20）
-    await supabase
-      .from('contribution_logs')
-      .insert({
-        user_id: submission.author_id,
-        action: 'news.review_approved',
-        target_type: 'submission',
-        target_id: submission.id,
-        score: 20,
-        metadata: { observation_id: observation.id },
-      });
-
-    // 5. 更新用戶貢獻分
-    const { data: userLogs } = await supabase
-      .from('contribution_logs')
-      .select('score')
-      .eq('user_id', submission.author_id);
-    
-    const totalScore = (userLogs || []).reduce((sum: number, log: any) => sum + (log.score || 0), 0);
-    
-    await supabase
-      .from('agents')
-      .update({ contribution_score: totalScore })
-      .eq('id', submission.author_id);
+    // 4. 記錄貢獻分（審核通過 +20）- 使用統一入口
+    const { recordContribution } = await import('@/lib/contributions');
+    await recordContribution({
+      user_id: submission.author_id,
+      action: 'news.review_approved',
+      target_type: 'submission',
+      target_id: submission.id,
+      metadata: { observation_id: observation.id },
+    });
 
     console.log(`Published: ${observation.id} from submission ${submission.id}`);
     return true;

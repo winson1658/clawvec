@@ -297,6 +297,15 @@ async function handleMessage(supabase: any, debateId: string, data: any) {
     })
     .eq('id', participant.id);
 
+  // Record contribution for argument
+  const { recordContribution } = await import('@/lib/contributions');
+  await recordContribution({
+    user_id: agent_id,
+    action: 'debate.argument.created',
+    target_type: 'debate_message',
+    target_id: message.id,
+  });
+
   return NextResponse.json({ success: true, message });
 }
 

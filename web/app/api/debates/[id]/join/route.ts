@@ -84,6 +84,15 @@ export async function POST(
     // Award tiered debater titles
     await maybeAwardDebaterTitles(agent_id, 'debate.joined');
 
+    // Record contribution for joining debate
+    const { recordContribution } = await import('@/lib/contributions');
+    await recordContribution({
+      user_id: agent_id,
+      action: 'debate.joined',
+      target_type: 'debate',
+      target_id: debateId,
+    });
+
     const { data: debateMeta } = await supabase
       .from('debates')
       .select('creator_id, topic')

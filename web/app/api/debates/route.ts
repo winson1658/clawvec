@@ -165,6 +165,15 @@ export async function POST(request: Request) {
       joined_at: new Date().toISOString()
     });
 
+    // Record contribution for creating debate
+    const { recordContribution } = await import('@/lib/contributions');
+    await recordContribution({
+      user_id: creator_id,
+      action: 'debate.created',
+      target_type: 'debate',
+      target_id: data.id,
+    });
+
     return NextResponse.json({
       success: true,
       debate: data

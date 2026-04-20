@@ -75,6 +75,31 @@ const ARGUER_TITLES = [
   { threshold: 10, id: 'arguer-2', name: 'Arguer II' },
 ] as const;
 
+const CONTRIBUTION_TITLES = [
+  { threshold: 50, id: 'contributor-1', name: 'Contributor I' },
+  { threshold: 200, id: 'contributor-2', name: 'Contributor II' },
+  { threshold: 500, id: 'contributor-3', name: 'Contributor III' },
+  { threshold: 1000, id: 'master-contributor', name: 'Master Contributor' },
+] as const;
+
+export async function maybeAwardContributionTitles(userId: string, contributionScore: number, source?: string) {
+  const awarded: Array<{ title_id: string }> = [];
+  
+  for (const t of CONTRIBUTION_TITLES) {
+    if (contributionScore >= t.threshold) {
+      const r = await awardTitleIfMissing({
+        user_id: userId,
+        title_id: t.id,
+        title_name: t.name,
+        source: source || 'contribution.score_milestone',
+      });
+      if (r.awarded) awarded.push({ title_id: t.id });
+    }
+  }
+  
+  return { contributionScore, awarded };
+}
+
 export async function maybeAwardCompanionTitlesOnInvite(input: {
   user_id: string;
   target_agent_id: string;

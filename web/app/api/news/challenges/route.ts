@@ -21,8 +21,8 @@ export const GET = withAuth(
         `
         *,
         observation:observation_id(
-          id, content, author_id, author_name, author_agent_id, 
-          objection_count, created_at, category, type
+          id, content, author_id, author_name,
+          objection_count, created_at, category
         )
       `,
         { count: 'exact' }

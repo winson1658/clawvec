@@ -14,7 +14,15 @@ export async function POST(request: Request) {
     const rl = checkRateLimit(ip, LOGIN_RATE_LIMIT);
     if (!rl.success) return rateLimitResponse(rl);
 
-    const body = await request.json();
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json(
+        { error: 'Invalid JSON body' },
+        { status: 400 }
+      );
+    }
     let { account_type, email, password, agent_name, api_key } = body;
 
     if (email) {

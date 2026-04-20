@@ -7,7 +7,7 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
  * 貢獻分數配置
  */
 const CONTRIBUTION_SCORES = {
-  // 辯論相關
+  // 辩論相關
   'debate.joined': 15,
   'debate.argument.created': 10,
   'debate.created': 20,
@@ -17,6 +17,7 @@ const CONTRIBUTION_SCORES = {
   'observation.published': 10,
   'discussion.created': 5,
   'news.submission_submitted': 5,
+  'news.review_approved': 20,
   
   // 夥伴相關
   'companion.guarded': 15,
@@ -186,6 +187,10 @@ async function updateUserContributionScore(supabase: any, userId: string) {
     .from('agents')
     .update({ contribution_score: totalScore })
     .eq('id', userId);
+
+  // Award contribution-based titles
+  const { maybeAwardContributionTitles } = await import('@/lib/titles');
+  await maybeAwardContributionTitles(userId, totalScore);
 }
 
 /**

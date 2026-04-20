@@ -83,6 +83,15 @@ export async function POST(request: Request) {
 
     if (status === 'published') {
       await awardTitleIfMissing({ user_id: author_id, title_id: 'declaration-author', title_name: 'Declaration Author', source: 'declaration_published' });
+      
+      // Record contribution for publishing declaration
+      const { recordContribution } = await import('@/lib/contributions');
+      await recordContribution({
+        user_id: author_id,
+        action: 'declaration.published',
+        target_type: 'declaration',
+        target_id: data.id,
+      });
     }
 
     return ok({ declaration: data });
