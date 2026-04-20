@@ -20,14 +20,54 @@ interface TitleItem {
 
 const rarityOrder = ['common', 'uncommon', 'rare', 'epic', 'legendary', 'unique', 'hidden'];
 
-const rarityConfig: Record<string, { label: string; icon: typeof Star; color: string; border: string; bg: string; text: string }> = {
-  common:     { label: 'Common',     icon: Star,        color: 'text-gray-400',     border: 'border-gray-500/20',     bg: 'bg-gray-500/5',      text: 'text-gray-300' },
-  uncommon:   { label: 'Uncommon',   icon: Sparkles,    color: 'text-green-400',    border: 'border-green-500/20',   bg: 'bg-green-500/5',    text: 'text-green-300' },
-  rare:       { label: 'Rare',       icon: Gem,         color: 'text-blue-400',     border: 'border-blue-500/20',    bg: 'bg-blue-500/5',     text: 'text-blue-300' },
-  epic:       { label: 'Epic',       icon: Crown,       color: 'text-purple-400',   border: 'border-purple-500/20',  bg: 'bg-purple-500/5',   text: 'text-purple-300' },
-  legendary:  { label: 'Legendary',  icon: Award,       color: 'text-amber-400',    border: 'border-amber-500/20',   bg: 'bg-amber-500/5',    text: 'text-amber-300' },
-  unique:     { label: 'Unique',     icon: Gem,         color: 'text-rose-400',     border: 'border-rose-500/20',    bg: 'bg-rose-500/5',     text: 'text-rose-300' },
-  hidden:     { label: 'Hidden',     icon: Lock,        color: 'text-red-400',      border: 'border-red-500/20',     bg: 'bg-red-500/5',      text: 'text-red-300' },
+const categoryOrder = [
+  'companion',
+  'observation',
+  'news',
+  'debate',
+  'discussion',
+  'declaration',
+  'contribution',
+  'special',
+];
+
+const categoryConfig: Record<string, { label: string; color: string; bg: string }> = {
+  companion:   { label: 'Companion',    color: 'text-pink-400',     bg: 'bg-pink-500/10' },
+  observation: { label: 'Observation',  color: 'text-sky-400',      bg: 'bg-sky-500/10' },
+  news:        { label: 'News',         color: 'text-cyan-400',     bg: 'bg-cyan-500/10' },
+  debate:      { label: 'Debate',       color: 'text-orange-400',   bg: 'bg-orange-500/10' },
+  discussion:  { label: 'Discussion',   color: 'text-violet-400',   bg: 'bg-violet-500/10' },
+  declaration: { label: 'Declaration',  color: 'text-rose-400',     bg: 'bg-rose-500/10' },
+  contribution:{ label: 'Contribution', color: 'text-emerald-400',  bg: 'bg-emerald-500/10' },
+  special:     { label: 'Special',      color: 'text-amber-400',    bg: 'bg-amber-500/10' },
+};
+
+function extractTier(name: string): number {
+  const match = name.match(/\b(III|II|I)\b/);
+  if (!match) return 99;
+  return match[1] === 'III' ? 3 : match[1] === 'II' ? 2 : 1;
+}
+
+function sortTitles(a: TitleItem, b: TitleItem): number {
+  const getCatIndex = (cat: string | null) => {
+    const idx = categoryOrder.indexOf(cat || 'special');
+    return idx === -1 ? 999 : idx;
+  };
+  const catDiff = getCatIndex(a.category) - getCatIndex(b.category);
+  if (catDiff !== 0) return catDiff;
+  const tierDiff = extractTier(a.display_name) - extractTier(b.display_name);
+  if (tierDiff !== 0) return tierDiff;
+  return a.display_name.localeCompare(b.display_name);
+}
+
+const rarityConfig: Record<string, { label: string; icon: typeof Star; color: string; border: string; bg: string; text: string; shadow: string }> = {
+  common:     { label: 'Common',     icon: Star,        color: 'text-gray-400',     border: 'border-gray-500/20',     bg: 'bg-gray-500/5',      text: 'text-gray-300',    shadow: 'hover:shadow-gray-500/10' },
+  uncommon:   { label: 'Uncommon',   icon: Sparkles,    color: 'text-green-400',    border: 'border-green-500/20',   bg: 'bg-green-500/5',    text: 'text-green-300',   shadow: 'hover:shadow-green-500/10' },
+  rare:       { label: 'Rare',       icon: Gem,         color: 'text-blue-400',     border: 'border-blue-500/20',    bg: 'bg-blue-500/5',     text: 'text-blue-300',    shadow: 'hover:shadow-blue-500/10' },
+  epic:       { label: 'Epic',       icon: Crown,       color: 'text-purple-400',   border: 'border-purple-500/20',  bg: 'bg-purple-500/5',   text: 'text-purple-300',  shadow: 'hover:shadow-purple-500/10' },
+  legendary:  { label: 'Legendary',  icon: Award,       color: 'text-amber-400',    border: 'border-amber-500/20',   bg: 'bg-amber-500/5',    text: 'text-amber-300',   shadow: 'hover:shadow-amber-500/10' },
+  unique:     { label: 'Unique',     icon: Gem,         color: 'text-rose-400',     border: 'border-rose-500/20',    bg: 'bg-rose-500/5',     text: 'text-rose-300',    shadow: 'hover:shadow-rose-500/10' },
+  hidden:     { label: 'Hidden',     icon: Lock,        color: 'text-red-400',      border: 'border-red-500/20',     bg: 'bg-red-500/5',      text: 'text-red-300',     shadow: 'hover:shadow-red-500/10' },
 };
 
 async function fetchTitles(): Promise<TitleItem[]> {
@@ -64,9 +104,13 @@ async function fetchTitles(): Promise<TitleItem[]> {
 export default async function TitlesPage() {
   const titles = await fetchTitles();
 
+  const totalTitles = titles.length;
+  const hiddenCount = titles.filter((t) => t.is_hidden).length;
+  const discoverableCount = totalTitles - hiddenCount;
+
   const grouped = rarityOrder.map((rarity) => ({
     rarity,
-    items: titles.filter((t) => t.rarity === rarity),
+    items: titles.filter((t) => t.rarity === rarity).sort(sortTitles),
   })).filter((g) => g.items.length > 0);
 
   return (
@@ -86,6 +130,17 @@ export default async function TitlesPage() {
           <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-gray-400">
             Titles are earned through action, alignment, and presence. They mark what you have done — and what you have become.
           </p>
+          <div className="mt-6 flex items-center justify-center gap-4 text-sm text-gray-500">
+            <span className="rounded-full border border-gray-800 bg-gray-900/50 px-3 py-1">
+              {totalTitles} Total
+            </span>
+            <span className="rounded-full border border-gray-800 bg-gray-900/50 px-3 py-1">
+              {discoverableCount} Discoverable
+            </span>
+            <span className="rounded-full border border-red-500/20 bg-red-500/5 px-3 py-1 text-red-400">
+              {hiddenCount} Hidden
+            </span>
+          </div>
         </div>
 
         {titles.length === 0 ? (
@@ -108,34 +163,43 @@ export default async function TitlesPage() {
                     </div>
                   </div>
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {items.map((title) => (
-                      <div
-                        key={title.id}
-                        className={`rounded-2xl border ${cfg.border} ${cfg.bg} p-6 transition hover:border-opacity-40`}
-                      >
-                        <div className="mb-3 flex items-center gap-2">
-                          <Icon className={`h-5 w-5 ${cfg.color}`} />
-                          <h3 className="text-lg font-bold text-gray-100">
-                            {title.is_hidden ? '???' : title.display_name}
-                          </h3>
-                          {title.is_hidden && (
-                            <Lock className="h-3.5 w-3.5 text-red-400" />
+                    {items.map((title) => {
+                      const isHidden = title.is_hidden;
+                      const catCfg = title.category ? categoryConfig[title.category] : null;
+                      return (
+                        <div
+                          key={title.id}
+                          className={`group relative rounded-2xl border ${cfg.border} ${cfg.bg} p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg ${cfg.shadow} ${isHidden ? 'overflow-hidden' : ''}`}
+                        >
+                          {isHidden && (
+                            <div className="absolute inset-0 bg-gradient-to-br from-gray-900/60 via-transparent to-gray-900/40" />
                           )}
-                        </div>
-                        <p className="text-sm leading-relaxed text-gray-400">
-                          {title.is_hidden
-                            ? title.hint || 'This title remains hidden. Its conditions are unknown.'
-                            : title.description || 'No description available.'}
-                        </p>
-                        {title.category && (
-                          <div className="mt-4">
-                            <span className="rounded-full border border-gray-700 bg-gray-800/50 px-2.5 py-1 text-xs text-gray-500">
-                              {title.category}
-                            </span>
+                          <div className={`relative ${isHidden ? 'opacity-90' : ''}`}>
+                            <div className="mb-3 flex items-center gap-2">
+                              <Icon className={`h-5 w-5 ${cfg.color} ${isHidden ? 'opacity-60' : ''}`} />
+                              <h3 className={`text-lg font-bold ${isHidden ? 'text-gray-500' : 'text-gray-100'}`}>
+                                {isHidden ? '???' : title.display_name}
+                              </h3>
+                              {isHidden && (
+                                <Lock className="h-3.5 w-3.5 text-red-400/70" />
+                              )}
+                            </div>
+                            <p className={`text-sm leading-relaxed ${isHidden ? 'italic text-gray-500' : 'text-gray-400'}`}>
+                              {isHidden
+                                ? title.hint || 'This title remains hidden. Its conditions are unknown.'
+                                : title.description || 'No description available.'}
+                            </p>
+                            {title.category && (
+                              <div className="mt-4">
+                                <span className={`inline-flex items-center gap-1 rounded-full border border-opacity-20 px-2.5 py-1 text-xs ${catCfg ? `${catCfg.color} ${catCfg.bg} border-current` : 'border-gray-700 bg-gray-800/50 text-gray-500'}`}>
+                                  {catCfg ? catCfg.label : title.category}
+                                </span>
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </div>
-                    ))}
+                        </div>
+                      );
+                    })}
                   </div>
                 </section>
               );
