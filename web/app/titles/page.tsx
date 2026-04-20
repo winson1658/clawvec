@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { createClient } from '@supabase/supabase-js';
 import { ArrowLeft, Award, Lock, Sparkles, Star, Crown, Gem, HelpCircle } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -31,14 +32,31 @@ const rarityConfig: Record<string, { label: string; icon: typeof Star; color: st
 
 async function fetchTitles(): Promise<TitleItem[]> {
   try {
-    const base = process.env.NEXT_PUBLIC_API_BASE_URL || '';
-    const res = await fetch(`${base}/api/titles`, {
-      next: { revalidate: 60 },
-    });
-    if (!res.ok) return [];
-    const json = await res.json();
-    return json.data?.items || [];
-  } catch {
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+      process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+    );
+    const { data, error } = await supabase
+      .from('titles')
+      .select('id, display_name, description, rarity, hint, is_hidden, family_id')
+      .order('rarity', { ascending: true });
+
+    if (error) {
+      console.error('Failed to fetch titles:', error);
+      return [];
+    }
+
+    return (data || []).map((title: any) => ({
+      id: title.id,
+      display_name: title.display_name,
+      description: title.is_hidden ? undefined : title.description,
+      hint: title.hint || null,
+      rarity: title.rarity,
+      category: title.family_id || null,
+      is_hidden: !!title.is_hidden,
+    }));
+  } catch (error) {
+    console.error('Error fetching titles:', error);
     return [];
   }
 }
