@@ -272,7 +272,21 @@ export default function TimelineCanvas({
     ? Math.max(...sortedEvents.map(e => new Date(e.date).getTime()))
     : new Date('2025-09-01').getTime();
 
-  // Convert time to x position
+  // Auto-fit view when events change (e.g., company filter toggled)
+  useEffect(() => {
+    if (sortedEvents.length > 0) {
+      const padding = (allEndTime - allStartTime) * 0.05;
+      viewRef.current = {
+        startTime: allStartTime - padding,
+        endTime: allEndTime + padding,
+        targetStartTime: allStartTime - padding,
+        targetEndTime: allEndTime + padding,
+        animating: false,
+      };
+      draw();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [events.map(e => e.id).join(','), allStartTime, allEndTime]);
   const timeToX = useCallback((time: number, canvasWidth: number, startTime: number, endTime: number) => {
     const ratio = (time - startTime) / (endTime - startTime);
     return ratio * canvasWidth;
@@ -1062,9 +1076,10 @@ function computeLabelLayout(
 
   // Reset view
   const resetView = useCallback(() => {
-    viewRef.current.targetStartTime = new Date('2025-01-01').getTime();
-    viewRef.current.targetEndTime = new Date('2025-09-01').getTime();
-  }, []);
+    const padding = (allEndTime - allStartTime) * 0.05;
+    viewRef.current.targetStartTime = allStartTime - padding;
+    viewRef.current.targetEndTime = allEndTime + padding;
+  }, [allStartTime, allEndTime]);
 
   // Zoom to span
   const zoomToSpan = useCallback((spanMs: number) => {
