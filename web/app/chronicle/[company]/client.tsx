@@ -83,7 +83,7 @@ const COMPANY_CONFIG: Record<string, CompanyInfo> = {
   },
   kimi: {
     name: 'KIMI',
-    fullName: 'Moonshot AI (月之暗面)',
+    fullName: 'Moonshot AI',
     founded: '2023-03-01',
     founder: 'Yang Zhilin (ex-Google Brain, Tsinghua)',
     description: 'Chinese AI startup focused on long-context processing. Creator of Kimi Chat with 2M token context window. Rapid growth with backing from Alibaba, Tencent, and HongShan.',
