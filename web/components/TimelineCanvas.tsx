@@ -545,136 +545,138 @@ function computeLabelLayout(
     // Compute smart label layout
     const layouts = computeLabelLayout(ctx, labelItems, timelineY);
 
-    // Draw connection lines first (behind dots)
-    layouts.forEach(layout => {
-      const { item, level, isAbove } = layout;
-      const stemLength = 38 + level * 32;
-      const endY = isAbove ? timelineY - stemLength : timelineY + stemLength;
+    // Collect singularity events for separate rendering
+    const singularityLayouts = layouts.filter(l => l.item.impact >= 6);
+    const normalLayouts = layouts.filter(l => l.item.impact < 6);
 
-      if (item.impact >= 6) {
-        // Singularity: thick golden pillar with gradient
-        const grad = ctx.createLinearGradient(item.eventX, timelineY, item.x, endY);
-        grad.addColorStop(0, item.color);
-        grad.addColorStop(0.5, '#FFD700');
-        grad.addColorStop(1, 'rgba(255, 215, 0, 0.3)');
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = 3;
-        ctx.globalAlpha = 0.8;
+    // ── Singularity Orbit Track ──
+    if (singularityLayouts.length > 0) {
+      const orbitY = timelineY - 90;
+
+      // Draw orbit line (dashed, golden)
+      ctx.strokeStyle = 'rgba(255, 215, 0, 0.25)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([6, 6]);
+      ctx.beginPath();
+      ctx.moveTo(0, orbitY);
+      ctx.lineTo(width, orbitY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Orbit label
+      ctx.font = 'bold 10px sans-serif';
+      ctx.fillStyle = 'rgba(255, 215, 0, 0.4)';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('◈ SINGULARITY', 12, orbitY - 8);
+
+      // Draw warp curves and hexagons for each singularity event
+      singularityLayouts.forEach(layout => {
+        const { item } = layout;
+        const orbitX = item.eventX;
+
+        // Warp curve: bezier from timeline to orbit
+        ctx.strokeStyle = 'rgba(255, 215, 0, 0.35)';
+        ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(item.eventX, timelineY);
-        ctx.lineTo(item.x, endY);
+        ctx.bezierCurveTo(
+          item.eventX, timelineY - 30,
+          orbitX, orbitY + 30,
+          orbitX, orbitY
+        );
         ctx.stroke();
-        ctx.globalAlpha = 1;
 
-        // Outer glow line
-        ctx.strokeStyle = 'rgba(255, 215, 0, 0.2)';
+        // Warp glow
+        ctx.strokeStyle = 'rgba(255, 215, 0, 0.1)';
         ctx.lineWidth = 8;
         ctx.beginPath();
         ctx.moveTo(item.eventX, timelineY);
-        ctx.lineTo(item.x, endY);
+        ctx.bezierCurveTo(
+          item.eventX, timelineY - 30,
+          orbitX, orbitY + 30,
+          orbitX, orbitY
+        );
         ctx.stroke();
-      } else {
-        ctx.strokeStyle = item.color;
-        ctx.lineWidth = 1.5;
-        ctx.globalAlpha = 0.5;
+
+        // Draw hexagon on orbit
+        const hexR = 10;
         ctx.beginPath();
-        ctx.moveTo(item.eventX, timelineY);
-        ctx.lineTo(item.x, endY);
-        ctx.stroke();
-        ctx.globalAlpha = 1;
-      }
-    });
-
-    // Draw event dots
-    layouts.forEach(layout => {
-      const { item } = layout;
-
-      if (item.impact >= 6) {
-        // Singularity: star shape on timeline + ripple rings
-        const cx = item.eventX;
-        const cy = timelineY;
-        const spikes = 5;
-        const outerR = item.radius * 1.3;
-        const innerR = item.radius * 0.5;
-
-        // Ripple rings (time-based)
-        const now = Date.now();
-        const pulsePhase = (now % 2000) / 2000;
-        for (let ring = 0; ring < 3; ring++) {
-          const ringPhase = (pulsePhase + ring * 0.33) % 1;
-          const ringR = item.radius + 4 + ringPhase * 20;
-          const ringAlpha = 0.4 * (1 - ringPhase);
-          ctx.globalAlpha = ringAlpha;
-          ctx.strokeStyle = '#FFD700';
-          ctx.lineWidth = 1.5;
-          ctx.beginPath();
-          ctx.arc(cx, cy, ringR, 0, Math.PI * 2);
-          ctx.stroke();
-        }
-        ctx.globalAlpha = 1;
-
-        // Draw star
-        let rot = Math.PI / 2 * 3;
-        ctx.beginPath();
-        ctx.moveTo(cx, cy - outerR);
-        for (let i = 0; i < spikes; i++) {
-          const x1 = cx + Math.cos(rot) * outerR;
-          const y1 = cy + Math.sin(rot) * outerR;
-          ctx.lineTo(x1, y1);
-          rot += Math.PI / spikes;
-          const x2 = cx + Math.cos(rot) * innerR;
-          const y2 = cy + Math.sin(rot) * innerR;
-          ctx.lineTo(x2, y2);
-          rot += Math.PI / spikes;
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 3) * i - Math.PI / 2;
+          const hx = orbitX + hexR * Math.cos(angle);
+          const hy = orbitY + hexR * Math.sin(angle);
+          if (i === 0) ctx.moveTo(hx, hy);
+          else ctx.lineTo(hx, hy);
         }
         ctx.closePath();
-        ctx.fillStyle = '#FFD700';
+        ctx.fillStyle = '#1a1500';
         ctx.fill();
-        ctx.strokeStyle = '#fff';
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#FFD700';
+        ctx.lineWidth = 2.5;
         ctx.stroke();
 
-        // Strong glow behind star
-        ctx.shadowColor = '#FFD700';
-        ctx.shadowBlur = 25;
+        // Inner hexagon glow
         ctx.fillStyle = '#FFD700';
-        ctx.globalAlpha = 0.5;
+        ctx.globalAlpha = 0.15;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+
+        // Center dot
+        ctx.fillStyle = '#FFD700';
         ctx.beginPath();
-        ctx.arc(cx, cy, item.radius + 6, 0, Math.PI * 2);
+        ctx.arc(orbitX, orbitY, 3, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+
+    // Draw connection lines for normal events only
+    normalLayouts.forEach(layout => {
+      const { item, level, isAbove } = layout;
+      const stemLength = 38 + level * 32;
+      const endY = isAbove ? timelineY - stemLength : timelineY + stemLength;
+      ctx.strokeStyle = item.color;
+      ctx.lineWidth = 1.5;
+      ctx.globalAlpha = 0.5;
+      ctx.beginPath();
+      ctx.moveTo(item.eventX, timelineY);
+      ctx.lineTo(item.x, endY);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    });
+
+    // Draw event dots for normal events only
+    normalLayouts.forEach(layout => {
+      const { item } = layout;
+      ctx.fillStyle = item.color;
+      ctx.beginPath();
+      ctx.arc(item.eventX, timelineY, item.radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Glow for high impact
+      if (item.impact >= 5) {
+        ctx.shadowColor = item.color;
+        ctx.shadowBlur = 15;
+        ctx.fillStyle = item.color;
+        ctx.globalAlpha = item.isCluster ? 0.25 : 0.4;
+        ctx.beginPath();
+        ctx.arc(item.eventX, timelineY, item.radius + (item.isCluster ? 10 : 8), 0, Math.PI * 2);
         ctx.fill();
         ctx.globalAlpha = 1;
         ctx.shadowBlur = 0;
-      } else {
+      } else if (item.impact === 4) {
+        ctx.shadowColor = item.color;
+        ctx.shadowBlur = 10;
         ctx.fillStyle = item.color;
+        ctx.globalAlpha = item.isCluster ? 0.15 : 0.25;
         ctx.beginPath();
-        ctx.arc(item.eventX, timelineY, item.radius, 0, Math.PI * 2);
+        ctx.arc(item.eventX, timelineY, item.radius + 4, 0, Math.PI * 2);
         ctx.fill();
-        ctx.strokeStyle = '#fff';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // Glow for high impact
-        if (item.impact >= 5) {
-          ctx.shadowColor = item.color;
-          ctx.shadowBlur = 15;
-          ctx.fillStyle = item.color;
-          ctx.globalAlpha = item.isCluster ? 0.25 : 0.4;
-          ctx.beginPath();
-          ctx.arc(item.eventX, timelineY, item.radius + (item.isCluster ? 10 : 8), 0, Math.PI * 2);
-          ctx.fill();
-          ctx.globalAlpha = 1;
-          ctx.shadowBlur = 0;
-        } else if (item.impact === 4) {
-          ctx.shadowColor = item.color;
-          ctx.shadowBlur = 10;
-          ctx.fillStyle = item.color;
-          ctx.globalAlpha = item.isCluster ? 0.15 : 0.25;
-          ctx.beginPath();
-          ctx.arc(item.eventX, timelineY, item.radius + 4, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.globalAlpha = 1;
-          ctx.shadowBlur = 0;
-        }
+        ctx.globalAlpha = 1;
+        ctx.shadowBlur = 0;
       }
 
       // Cluster count badge
@@ -687,8 +689,29 @@ function computeLabelLayout(
       }
     });
 
-    // Draw labels on top (skip if would go off-canvas)
-    layouts.forEach(layout => {
+    // Draw labels: singularity events get larger golden labels near orbit
+    singularityLayouts.forEach(layout => {
+      const { item } = layout;
+      const orbitY = timelineY - 90;
+      const labelY = orbitY - 18;
+
+      if (labelY < 18) return;
+
+      // Title (larger, golden)
+      ctx.font = 'bold 12px sans-serif';
+      ctx.fillStyle = '#FFD700';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText(item.text, item.x, labelY);
+
+      // Date
+      ctx.font = '10px sans-serif';
+      ctx.fillStyle = 'rgba(255, 215, 0, 0.6)';
+      ctx.fillText(item.dateText, item.x, labelY - 14);
+    });
+
+    // Draw labels for normal events
+    normalLayouts.forEach(layout => {
       const { item, level, isAbove } = layout;
       const labelY = isAbove
         ? timelineY - (38 + level * 32) - 8
