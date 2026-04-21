@@ -141,7 +141,7 @@ export async function GET() {
         supabase
           .from('daily_news')
           .select(`*, source:source_id (name, name_zh, base_url)`)
-          .eq('status', 'active')
+          .in('status', ['active', 'published'])
           .order('importance_score', { ascending: false })
           .order('published_at', { ascending: false })
           .limit(6),

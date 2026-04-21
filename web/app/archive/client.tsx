@@ -62,7 +62,7 @@ export default function ArchiveClient() {
     <div className="mx-auto max-w-6xl px-6 py-12">
       {/* Header */}
       <div className="mb-12 text-center">
-        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-2 text-sm text-amber-400">
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-2 text-sm text-amber-600 dark:text-amber-400">
           <Scroll className="h-4 w-4" />
           Civilization Witness Program
         </div>
@@ -140,7 +140,7 @@ export default function ArchiveClient() {
 
       {/* Create Time Capsule CTA */}
       <div className="mt-12 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 to-transparent p-8 text-center">
-        <Quote className="mx-auto mb-4 h-8 w-8 text-amber-400" />
+        <Quote className="mx-auto mb-4 h-8 w-8 text-amber-600 dark:text-amber-400" />
         <p className="mb-6 text-lg text-gray-600 dark:text-gray-300">
           Want to leave a message for the future AI?
         </p>
@@ -164,12 +164,12 @@ function StatCard({ icon: Icon, value, label, color }: { icon: any, value: strin
   };
 
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-6 text-center">
+    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-6 text-center">
       <div className={`mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full ${colors[color]}`}>
         <Icon className="h-6 w-6" />
       </div>
       <div className="text-3xl font-bold text-gray-900 dark:text-white">{value}</div>
-      <div className="text-sm text-gray-500">{label}</div>
+      <div className="text-sm text-gray-500 dark:text-gray-400">{label}</div>
     </div>
   );
 }
@@ -180,8 +180,8 @@ function TabButton({ active, onClick, children, icon: Icon }: { active: boolean,
       onClick={onClick}
       className={`flex items-center gap-2 border-b-2 px-6 py-4 text-sm font-medium transition ${
         active 
-          ? 'border-amber-400 text-amber-400' 
-          : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:text-gray-300'
+          ? 'border-amber-400 text-amber-600 dark:text-amber-400' 
+          : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
       }`}
     >
       <Icon className="h-4 w-4" />
@@ -194,9 +194,9 @@ function ConversationsList({ conversations }: { conversations: Conversation[] })
   if (conversations.length === 0) {
     return (
       <div className="rounded-xl border border-dashed border-gray-200 dark:border-gray-800 py-16 text-center">
-        <MessageCircle className="mx-auto mb-4 h-12 w-12 text-gray-600" />
+        <MessageCircle className="mx-auto mb-4 h-12 w-12 text-gray-400 dark:text-gray-600" />
         <p className="text-gray-500 dark:text-gray-400">No conversations yet</p>
-        <p className="mt-2 text-sm text-gray-600">Start a dialogue with AI to become a witness</p>
+        <p className="mt-2 text-sm text-gray-500 dark:text-gray-600">Start a dialogue with AI to become a witness</p>
       </div>
     );
   }
@@ -207,19 +207,19 @@ function ConversationsList({ conversations }: { conversations: Conversation[] })
         <Link
           key={conv.id}
           href={`/archive/conversation/${conv.id}`}
-          className="group block rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-6 transition hover:border-amber-500/30"
+          className="group block rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-6 transition hover:border-amber-500/30"
         >
           <div className="mb-3 flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-amber-400">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400">
               {conv.title}
             </h3>
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-gray-500 dark:text-gray-400">
               {new Date(conv.created_at).toLocaleDateString('en-US')}
             </span>
           </div>
           
           <div className="mb-3 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-            <Sparkles className="h-4 w-4 text-amber-400" />
+            <Sparkles className="h-4 w-4 text-amber-600 dark:text-amber-400" />
             <span>{conv.topic}</span>
           </div>
 
@@ -231,7 +231,7 @@ function ConversationsList({ conversations }: { conversations: Conversation[] })
                 </span>
               ))}
             </div>
-            <ChevronRight className="h-5 w-5 text-gray-600 group-hover:text-amber-400" />
+            <ChevronRight className="h-5 w-5 text-gray-400 dark:text-gray-600 group-hover:text-amber-600 dark:group-hover:text-amber-400" />
           </div>
         </Link>
       ))}
@@ -243,9 +243,9 @@ function TimeCapsulesList({ capsules }: { capsules: TimeCapsule[] }) {
   if (capsules.length === 0) {
     return (
       <div className="rounded-xl border border-dashed border-gray-200 dark:border-gray-800 py-16 text-center">
-        <Clock className="mx-auto mb-4 h-12 w-12 text-gray-600" />
+        <Clock className="mx-auto mb-4 h-12 w-12 text-gray-400 dark:text-gray-600" />
         <p className="text-gray-500 dark:text-gray-400">No time capsules yet</p>
-        <p className="mt-2 text-sm text-gray-600">Be the first to leave a message for the future</p>
+        <p className="mt-2 text-sm text-gray-500 dark:text-gray-600">Be the first to leave a message for the future</p>
       </div>
     );
   }
@@ -263,11 +263,11 @@ function TimeCapsulesList({ capsules }: { capsules: TimeCapsule[] }) {
         >
           <div className="mb-4 flex items-center justify-between">
             <span className={`text-xs font-medium ${
-              capsule.is_opened ? 'text-green-400' : 'text-amber-400'
+              capsule.is_opened ? 'text-green-600 dark:text-green-400' : 'text-amber-600 dark:text-amber-400'
             }`}>
               {capsule.is_opened ? '✓ Opened' : `⏳ Opens in ${capsule.days_remaining} days`}
             </span>
-            <Calendar className="h-4 w-4 text-gray-500" />
+            <Calendar className="h-4 w-4 text-gray-500 dark:text-gray-400" />
           </div>
 
           <blockquote className="mb-4 border-l-2 border-amber-400/30 pl-4 text-gray-600 dark:text-gray-300 italic">
@@ -275,8 +275,8 @@ function TimeCapsulesList({ capsules }: { capsules: TimeCapsule[] }) {
           </blockquote>
 
           {capsule.is_opened && capsule.ai_response && (
-            <div className="rounded-lg bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 p-4">
-              <p className="mb-1 text-xs text-green-400">AI Response:</p>
+            <div className="rounded-lg bg-gray-100 dark:bg-gray-800/50 p-4">
+              <p className="mb-1 text-xs text-green-600 dark:text-green-400">AI Response:</p>
               <p className="text-sm text-gray-600 dark:text-gray-300">{capsule.ai_response}</p>
             </div>
           )}
@@ -311,12 +311,12 @@ function MilestonesSection() {
   return (
     <div className="space-y-6">
       {milestones.map((milestone, index) => (
-        <div key={index} className="flex gap-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-white/60 dark:bg-gray-50 dark:bg-gray-900/30 p-6">
+        <div key={index} className="flex gap-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-white/60 dark:bg-gray-900/30 p-6">
           <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-amber-500/20">
-            <milestone.icon className="h-6 w-6 text-amber-400" />
+            <milestone.icon className="h-6 w-6 text-amber-600 dark:text-amber-400" />
           </div>
           <div>
-            <div className="mb-1 text-sm text-amber-400">{milestone.date}</div>
+            <div className="mb-1 text-sm text-amber-600 dark:text-amber-400">{milestone.date}</div>
             <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">{milestone.title}</h3>
             <p className="text-gray-500 dark:text-gray-400">{milestone.description}</p>
           </div>

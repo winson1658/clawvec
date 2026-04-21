@@ -12,26 +12,29 @@ export function verifyToken(authHeader: string | null): { id: string; [key: stri
   
   const token = authHeader.slice(7);
   
-  try {
-    // 嘗試解析 JWT payload
-    const base64Payload = token.split('.')[1];
-    if (!base64Payload) return null;
-    
-    const payload = JSON.parse(Buffer.from(base64Payload, 'base64').toString());
-    
-    // 檢查過期
-    if (payload.exp && payload.exp < Date.now() / 1000) return null;
-    
-    return payload;
-  } catch {
-    // 如果是 base64 編碼的簡單 token
+  // 嘗試解析 JWT payload (header.payload.signature)
+  const parts = token.split('.');
+  if (parts.length >= 2) {
     try {
-      const decoded = JSON.parse(Buffer.from(token, 'base64').toString());
-      if (decoded.exp && decoded.exp < Date.now()) return null;
-      return decoded;
+      const base64Payload = parts[1];
+      const payload = JSON.parse(Buffer.from(base64Payload, 'base64').toString());
+      
+      // 檢查過期 (JWT exp 是秒級時間戳)
+      if (payload.exp && payload.exp < Date.now() / 1000) return null;
+      
+      return payload;
     } catch {
-      return null;
+      // JWT 解析失敗，繼續嘗試 base64
     }
+  }
+  
+  // 嘗試 base64 編碼的簡單 token
+  try {
+    const decoded = JSON.parse(Buffer.from(token, 'base64').toString());
+    if (decoded.exp && decoded.exp < Date.now()) return null;
+    return decoded;
+  } catch {
+    return null;
   }
 }
 

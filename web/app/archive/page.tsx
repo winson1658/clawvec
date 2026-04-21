@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function ArchivePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950">
+    <div className="min-h-screen bg-white dark:bg-gradient-to-b dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
       <ArchiveClient />
     </div>
   );

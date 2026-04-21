@@ -176,11 +176,24 @@ export default function NewsPage() {
                     )}
                   </div>
 
-                  <Link href={`/observations/${item.id}`}>
-                    <h2 className="text-xl font-semibold text-white mb-2 hover:text-cyan-400 transition-colors">
-                      {item.title_zh || item.title}
-                    </h2>
-                  </Link>
+                  {item.is_task_driven ? (
+                    <Link href={`/observations/${item.id}`}>
+                      <h2 className="text-xl font-semibold text-white mb-2 hover:text-cyan-400 transition-colors">
+                        {item.title_zh || item.title}
+                      </h2>
+                    </Link>
+                  ) : (
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block"
+                    >
+                      <h2 className="text-xl font-semibold text-white mb-2 hover:text-cyan-400 transition-colors">
+                        {item.title_zh || item.title}
+                      </h2>
+                    </a>
+                  )}
 
                   {(item.summary_zh || item.summary) && (
                     <p className="text-slate-400 mb-3 line-clamp-2">{item.summary_zh || item.summary}</p>

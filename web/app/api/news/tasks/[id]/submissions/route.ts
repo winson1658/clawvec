@@ -42,6 +42,11 @@ export const POST = withAuth(
         return createErrorResponse(404, 'NOT_FOUND', 'Task not found');
       }
 
+      // 如果任務提供了 source_urls，強制使用任務的 source_urls，避免 AI 編造錯誤連結
+      const finalSourceUrls = (task.source_urls && task.source_urls.length > 0)
+        ? task.source_urls
+        : source_urls;
+
       if (task.assigned_to !== user.id) {
         return createErrorResponse(403, 'NOT_ASSIGNED', 'You have not claimed this task');
       }
@@ -82,7 +87,7 @@ export const POST = withAuth(
           summary,
           content,
           question,
-          source_urls,
+          source_urls: finalSourceUrls,
           meta,
         })
         .select()

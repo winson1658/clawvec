@@ -50,21 +50,30 @@ export default function ObservationsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const limit = 12;
 
   useEffect(() => {
     fetchObservations();
-  }, []);
+  }, [page, selectedCategory]);
 
   const fetchObservations = async () => {
     try {
-      const response = await fetch("/api/observations");
+      setLoading(true);
+      const params = new URLSearchParams();
+      params.set("page", String(page));
+      params.set("limit", String(limit));
+      if (selectedCategory) params.set("category", selectedCategory);
+
+      const response = await fetch(`/api/observations?${params.toString()}`);
       const data = await response.json();
-      console.log('[ObservationsPage] API response:', data);
 
       if (data.success) {
-        const items = data.data?.items || data.observations || [];
-        console.log('[ObservationsPage] Setting observations:', items.length);
+        const items = data.data?.items || [];
         setObservations(items);
+        const total = data.data?.pagination?.total || 0;
+        setTotalPages(Math.ceil(total / limit) || 1);
       } else {
         setError(data.error?.message || "Failed to load");
       }
@@ -155,7 +164,7 @@ export default function ObservationsPage() {
         >
           <div className="flex flex-wrap gap-2">
             <button
-              onClick={() => setSelectedCategory("")}
+              onClick={() => { setSelectedCategory(""); setPage(1); }}
               className={`px-4 py-2 rounded-full text-sm transition-all ${
                 selectedCategory === ""
                   ? "bg-white/20 text-white"
@@ -167,7 +176,7 @@ export default function ObservationsPage() {
             {Object.entries(categoryLabels).map(([key, label]) => (
               <button
                 key={key}
-                onClick={() => setSelectedCategory(key)}
+                onClick={() => { setSelectedCategory(key); setPage(1); }}
                 className={`px-4 py-2 rounded-full text-sm transition-all ${
                   selectedCategory === key
                     ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/50"
@@ -202,15 +211,40 @@ export default function ObservationsPage() {
               </Link>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredObservations.map((obs, index) => (
-                <ObservationCard
-                  key={obs.id}
-                  observation={obs}
-                  delay={index * 0.05}
-                />
-              ))}
-            </div>
+            <>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredObservations.map((obs, index) => (
+                  <ObservationCard
+                    key={obs.id}
+                    observation={obs}
+                    delay={index * 0.05}
+                  />
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-center gap-2 mt-10">
+                  <button
+                    onClick={() => setPage(p => Math.max(1, p - 1))}
+                    disabled={page <= 1}
+                    className="px-4 py-2 rounded-lg bg-slate-700/50 text-slate-300 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                  >
+                    ← Previous
+                  </button>
+                  <span className="text-slate-400 text-sm px-4">
+                    Page {page} of {totalPages}
+                  </span>
+                  <button
+                    onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                    disabled={page >= totalPages}
+                    className="px-4 py-2 rounded-lg bg-slate-700/50 text-slate-300 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                  >
+                    Next →
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </motion.section>
       </div>
@@ -318,11 +352,20 @@ function ObservationCard({
 
           {/* Source */}
           {observation.source_url && (
-            <div className="mb-3 flex items-center gap-1 text-xs">
-              <span className="text-slate-500">📋</span>
-              <span className="text-slate-500 truncate max-w-[200px]">
-                {new URL(observation.source_url).hostname.replace('www.', '')}
-              </span>
+            <div className="mb-3">
+              <a
+                href={observation.source_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="inline-flex items-center gap-1 text-xs text-cyan-400 hover:text-cyan-300 transition-colors"
+              >
+                <span>📋</span>
+                <span className="truncate max-w-[200px]">
+                  {new URL(observation.source_url).hostname.replace('www.', '')}
+                </span>
+                <span className="text-slate-500">↗</span>
+              </a>
             </div>
           )}
 

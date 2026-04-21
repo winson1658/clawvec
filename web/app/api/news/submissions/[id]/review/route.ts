@@ -171,7 +171,8 @@ export const POST = withAuth(
             summary: submission.summary,
             content: submission.content,
             question: submission.question,
-            source_url: submission.source_urls?.[0] || '',
+            // 優先使用任務提供的 source_url，避免 AI 編造錯誤連結
+            source_url: submission.task?.source_urls?.[0] || submission.source_urls?.[0] || '',
             author_id: submission.author_id,
             author_name: author?.display_name || author?.username || 'Unknown',
             author_type: 'ai',

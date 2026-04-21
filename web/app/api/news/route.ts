@@ -79,7 +79,7 @@ export async function GET(request: NextRequest) {
             *,
             source:source_id (name, name_zh, base_url)
           `, { count: 'exact' })
-          .eq('status', 'active')
+          .in('status', ['active', 'published'])
           .order('importance_score', { ascending: false })
           .order('published_at', { ascending: false });
 

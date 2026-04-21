@@ -4,6 +4,34 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { BookOpen, Calendar, TrendingUp, Archive, Clock } from 'lucide-react';
+import TimelineCanvas from '@/components/TimelineCanvas';
+
+// Verified 2025 AI Epoch Events (source: Wikipedia)
+const AI_EPOCH_2025: Array<{
+  id: string;
+  date: string;
+  title: string;
+  description: string;
+  category: 'deepseek' | 'openai' | 'google' | 'figure' | 'xai' | 'anthropic' | 'other';
+  impact: 1 | 2 | 3 | 4 | 5;
+}> = [
+  { id: '1', date: '2025-01-20', title: 'DeepSeek-R1', description: 'DeepSeek launches R1 reasoning model. Performance rivals OpenAI o1 at ultra-low cost.', category: 'deepseek' as const, impact: 5 },
+  { id: '2', date: '2025-01-21', title: 'Stargate Project', description: 'US announces $500B AI infrastructure plan. Trump, Altman, and Sunak join forces.', category: 'other' as const, impact: 4 },
+  { id: '3', date: '2025-01-23', title: 'OpenAI Operator', description: 'OpenAI launches AI Agent Operator capable of autonomously executing web tasks.', category: 'openai' as const, impact: 4 },
+  { id: '4', date: '2025-01-30', title: 'Gemini 2.0 Flash', description: 'Google launches Gemini 2.0 Flash with native multimodal capabilities and tool use.', category: 'google' as const, impact: 4 },
+  { id: '5', date: '2025-01-31', title: 'OpenAI o3-mini', description: 'OpenAI releases o3-mini, a high cost-performance reasoning model.', category: 'openai' as const, impact: 3 },
+  { id: '6', date: '2025-02-05', title: 'Gemini 2.0 Pro', description: 'Google launches Gemini 2.0 Pro with 10M token context window.', category: 'google' as const, impact: 4 },
+  { id: '7', date: '2025-02-06', title: 'Figure AI drops OpenAI', description: 'Figure AI terminates OpenAI partnership, pivots to in-house models.', category: 'figure' as const, impact: 3 },
+  { id: '8', date: '2025-02-17', title: 'Grok 3', description: 'xAI launches Grok 3, claiming to be "the strongest AI on Earth".', category: 'xai' as const, impact: 4 },
+  { id: '9', date: '2025-02-21', title: 'Figure Helix', description: 'Figure releases Helix VLA model. Robots learn new tasks zero-shot.', category: 'figure' as const, impact: 4 },
+  { id: '10', date: '2025-02-24', title: 'Claude 3.7 Sonnet', description: 'Anthropic releases Claude 3.7 Sonnet with hybrid reasoning and Computer Use.', category: 'anthropic' as const, impact: 4 },
+  { id: '11', date: '2025-03-12', title: 'Gemini Robotics', description: 'Google launches Gemini Robotics, an AI-native robot model.', category: 'google' as const, impact: 4 },
+  { id: '12', date: '2025-03-15', title: 'Figure 03 at White House', description: 'Figure 03 humanoid robot demonstrated at the White House.', category: 'figure' as const, impact: 3 },
+  { id: '13', date: '2025-03-24', title: 'DeepSeek-V3-0324', description: 'DeepSeek releases V3-0324 update with major reasoning improvements.', category: 'deepseek' as const, impact: 4 },
+  { id: '14', date: '2025-04-16', title: 'OpenAI o3', description: 'OpenAI releases o3 final version, currently the strongest reasoning model.', category: 'openai' as const, impact: 5 },
+  { id: '15', date: '2025-05-28', title: 'DeepSeek-R1-0528', description: 'DeepSeek releases R1-0528, new SOTA for open-source models.', category: 'deepseek' as const, impact: 5 },
+  { id: '16', date: '2025-08-07', title: 'GPT-5', description: 'OpenAI releases GPT-5 with unified architecture, sparking controversy.', category: 'openai' as const, impact: 5 },
+];
 
 interface ChronicleEntry {
   id: string;
@@ -74,6 +102,17 @@ export default function ChronicleClient() {
             Civilization records curated by AI. Important news from each month, quarter, and year 
             filtered, analyzed, and recorded from an AI perspective as shared human-AI history.
           </p>
+        </div>
+
+        {/* 2025 AI Epoch Timeline */}
+        <div className="mb-16">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold text-white mb-2">2025: The Year of AI Acceleration</h2>
+            <p className="text-sm text-slate-500">
+              16 verified milestones from Jan to Aug 2025. Scroll to zoom, drag to pan.
+            </p>
+          </div>
+          <TimelineCanvas events={AI_EPOCH_2025} height={500} />
         </div>
 
         {/* Type Selector */}
