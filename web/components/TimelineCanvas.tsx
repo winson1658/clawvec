@@ -586,68 +586,38 @@ function computeLabelLayout(
     const singularityLayouts = layouts.filter(l => l.item.impact >= 6);
     const normalLayouts = layouts.filter(l => l.item.impact < 6);
 
-    // ── Singularity: The Boil ──
-    // 6⭐ events are not points on the line — they are the line itself bubbling upward
+    // ── Singularity: The White Sun ──
+    // 6⭐ events are not points — they are gaps in reality, pure white voids on the timeline
     if (singularityLayouts.length > 0) {
       singularityLayouts.forEach(layout => {
         const { item } = layout;
         const cx = item.eventX;
         const cy = timelineY;
 
-        const boilW = 80;
-        const boilH = 55;
-        const leftX = cx - boilW / 2;
-        const rightX = cx + boilW / 2;
-        const topY = cy - boilH;
+        const voidRadius = 22;
 
-        // The timeline bubbles up around the singularity
-        // Left curve: from (leftX, cy) up to (cx, topY)
-        ctx.strokeStyle = 'rgba(255, 215, 0, 0.4)';
-        ctx.lineWidth = 2.5;
-        ctx.beginPath();
-        ctx.moveTo(leftX, cy);
-        ctx.bezierCurveTo(leftX + boilW * 0.25, cy - boilH * 0.3, cx - boilW * 0.15, topY, cx, topY);
-        ctx.stroke();
-
-        // Right curve: from (cx, topY) down to (rightX, cy)
-        ctx.beginPath();
-        ctx.moveTo(cx, topY);
-        ctx.bezierCurveTo(cx + boilW * 0.15, topY, rightX - boilW * 0.25, cy - boilH * 0.3, rightX, cy);
-        ctx.stroke();
-
-        // Fill the bubble
-        ctx.fillStyle = 'rgba(255, 215, 0, 0.06)';
-        ctx.beginPath();
-        ctx.moveTo(leftX, cy);
-        ctx.bezierCurveTo(leftX + boilW * 0.25, cy - boilH * 0.3, cx - boilW * 0.15, topY, cx, topY);
-        ctx.bezierCurveTo(cx + boilW * 0.15, topY, rightX - boilW * 0.25, cy - boilH * 0.3, rightX, cy);
-        ctx.closePath();
-        ctx.fill();
-
-        // Core dot at the peak
+        // Pure white circle — a hole in the timeline
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
-        ctx.arc(cx, topY + 8, 4, 0, Math.PI * 2);
+        ctx.arc(cx, cy, voidRadius, 0, Math.PI * 2);
         ctx.fill();
 
-        // Inner ring
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.arc(cx, topY + 8, 10, 0, Math.PI * 2);
+        // Thin dark ring at edge (defining the boundary)
+        ctx.strokeStyle = 'rgba(15, 23, 42, 0.8)';
+        ctx.lineWidth = 2;
         ctx.stroke();
 
-        // Title inside the bubble
-        ctx.font = 'bold 11px sans-serif';
+        // Event title above the void
+        ctx.font = 'bold 13px sans-serif';
         ctx.fillStyle = '#ffffff';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
-        ctx.fillText(item.text, cx, topY + 28);
+        ctx.fillText(item.text, cx, cy - voidRadius - 12);
 
         // Date
-        ctx.font = '9px sans-serif';
+        ctx.font = '10px sans-serif';
         ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-        ctx.fillText(item.dateText, cx, topY + 14);
+        ctx.fillText(item.dateText, cx, cy - voidRadius - 26);
       });
     }
 
