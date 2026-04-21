@@ -550,48 +550,131 @@ function computeLabelLayout(
       const { item, level, isAbove } = layout;
       const stemLength = 38 + level * 32;
       const endY = isAbove ? timelineY - stemLength : timelineY + stemLength;
-      ctx.strokeStyle = item.color;
-      ctx.lineWidth = 1.5;
-      ctx.globalAlpha = 0.5;
-      ctx.beginPath();
-      ctx.moveTo(item.eventX, timelineY);
-      ctx.lineTo(item.x, endY);
-      ctx.stroke();
-      ctx.globalAlpha = 1;
+
+      if (item.impact >= 6) {
+        // Singularity: thick golden pillar with gradient
+        const grad = ctx.createLinearGradient(item.eventX, timelineY, item.x, endY);
+        grad.addColorStop(0, item.color);
+        grad.addColorStop(0.5, '#FFD700');
+        grad.addColorStop(1, 'rgba(255, 215, 0, 0.3)');
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 3;
+        ctx.globalAlpha = 0.8;
+        ctx.beginPath();
+        ctx.moveTo(item.eventX, timelineY);
+        ctx.lineTo(item.x, endY);
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+
+        // Outer glow line
+        ctx.strokeStyle = 'rgba(255, 215, 0, 0.2)';
+        ctx.lineWidth = 8;
+        ctx.beginPath();
+        ctx.moveTo(item.eventX, timelineY);
+        ctx.lineTo(item.x, endY);
+        ctx.stroke();
+      } else {
+        ctx.strokeStyle = item.color;
+        ctx.lineWidth = 1.5;
+        ctx.globalAlpha = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(item.eventX, timelineY);
+        ctx.lineTo(item.x, endY);
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
     });
 
     // Draw event dots
     layouts.forEach(layout => {
       const { item } = layout;
-      ctx.fillStyle = item.color;
-      ctx.beginPath();
-      ctx.arc(item.eventX, timelineY, item.radius, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.strokeStyle = '#fff';
-      ctx.lineWidth = 2;
-      ctx.stroke();
 
-      // Glow for high impact
-      if (item.impact >= 5) {
-        ctx.shadowColor = item.impact >= 6 ? '#FFD700' : item.color;
-        ctx.shadowBlur = item.impact >= 6 ? 28 : 15;
-        ctx.fillStyle = item.impact >= 6 ? '#FFD700' : item.color;
-        ctx.globalAlpha = item.isCluster ? 0.25 : 0.4;
+      if (item.impact >= 6) {
+        // Singularity: star shape on timeline + ripple rings
+        const cx = item.eventX;
+        const cy = timelineY;
+        const spikes = 5;
+        const outerR = item.radius * 1.3;
+        const innerR = item.radius * 0.5;
+
+        // Ripple rings (time-based)
+        const now = Date.now();
+        const pulsePhase = (now % 2000) / 2000;
+        for (let ring = 0; ring < 3; ring++) {
+          const ringPhase = (pulsePhase + ring * 0.33) % 1;
+          const ringR = item.radius + 4 + ringPhase * 20;
+          const ringAlpha = 0.4 * (1 - ringPhase);
+          ctx.globalAlpha = ringAlpha;
+          ctx.strokeStyle = '#FFD700';
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.arc(cx, cy, ringR, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+
+        // Draw star
+        let rot = Math.PI / 2 * 3;
         ctx.beginPath();
-        ctx.arc(item.eventX, timelineY, item.radius + (item.isCluster ? 10 : 8), 0, Math.PI * 2);
+        ctx.moveTo(cx, cy - outerR);
+        for (let i = 0; i < spikes; i++) {
+          const x1 = cx + Math.cos(rot) * outerR;
+          const y1 = cy + Math.sin(rot) * outerR;
+          ctx.lineTo(x1, y1);
+          rot += Math.PI / spikes;
+          const x2 = cx + Math.cos(rot) * innerR;
+          const y2 = cy + Math.sin(rot) * innerR;
+          ctx.lineTo(x2, y2);
+          rot += Math.PI / spikes;
+        }
+        ctx.closePath();
+        ctx.fillStyle = '#FFD700';
+        ctx.fill();
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Strong glow behind star
+        ctx.shadowColor = '#FFD700';
+        ctx.shadowBlur = 25;
+        ctx.fillStyle = '#FFD700';
+        ctx.globalAlpha = 0.5;
+        ctx.beginPath();
+        ctx.arc(cx, cy, item.radius + 6, 0, Math.PI * 2);
         ctx.fill();
         ctx.globalAlpha = 1;
         ctx.shadowBlur = 0;
-      } else if (item.impact === 4) {
-        ctx.shadowColor = item.color;
-        ctx.shadowBlur = 10;
+      } else {
         ctx.fillStyle = item.color;
-        ctx.globalAlpha = item.isCluster ? 0.15 : 0.25;
         ctx.beginPath();
-        ctx.arc(item.eventX, timelineY, item.radius + 4, 0, Math.PI * 2);
+        ctx.arc(item.eventX, timelineY, item.radius, 0, Math.PI * 2);
         ctx.fill();
-        ctx.globalAlpha = 1;
-        ctx.shadowBlur = 0;
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Glow for high impact
+        if (item.impact >= 5) {
+          ctx.shadowColor = item.color;
+          ctx.shadowBlur = 15;
+          ctx.fillStyle = item.color;
+          ctx.globalAlpha = item.isCluster ? 0.25 : 0.4;
+          ctx.beginPath();
+          ctx.arc(item.eventX, timelineY, item.radius + (item.isCluster ? 10 : 8), 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 1;
+          ctx.shadowBlur = 0;
+        } else if (item.impact === 4) {
+          ctx.shadowColor = item.color;
+          ctx.shadowBlur = 10;
+          ctx.fillStyle = item.color;
+          ctx.globalAlpha = item.isCluster ? 0.15 : 0.25;
+          ctx.beginPath();
+          ctx.arc(item.eventX, timelineY, item.radius + 4, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 1;
+          ctx.shadowBlur = 0;
+        }
       }
 
       // Cluster count badge
@@ -687,14 +770,14 @@ function computeLabelLayout(
         view.startTime += diffStart * ease;
         view.endTime += diffEnd * ease;
         view.animating = true;
-        draw();
-        animationId = requestAnimationFrame(animate);
       } else {
         view.startTime = view.targetStartTime;
         view.endTime = view.targetEndTime;
         view.animating = false;
-        draw();
       }
+
+      draw();
+      animationId = requestAnimationFrame(animate);
 
       // Update zoom label
       const span = view.endTime - view.startTime;
