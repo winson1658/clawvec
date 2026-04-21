@@ -52,7 +52,8 @@ export default function AllChroniclePage() {
           const res = await fetch(`/data/chronicles/${company.key}.json`);
           if (res.ok) {
             const data = await res.json();
-            for (const ev of data.events || []) {
+            const eventList = Array.isArray(data) ? data : (data.events || []);
+            for (const ev of eventList) {
               all.push({ ...ev, company: company.key });
             }
           }
