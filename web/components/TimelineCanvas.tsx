@@ -631,7 +631,7 @@ function computeLabelLayout(
         const cx = item.eventX;
         const cy = timelineY;
 
-        const bladeW = 5;
+        const bladeW = 3;
         const bladeH = 110;
         const topY = cy - bladeH;
 
@@ -645,6 +645,16 @@ function computeLabelLayout(
         ctx.lineTo(cx + bladeW / 2, topY);
         ctx.lineTo(cx, topY - 10);
         ctx.closePath();
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+
+        // Intersection circle: golden ring at timeline crossing
+        ctx.beginPath();
+        ctx.arc(cx, cy, 6, 0, Math.PI * 2);
+        ctx.fillStyle = '#FFD700';
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(cx, cy, 3, 0, Math.PI * 2);
         ctx.fillStyle = '#ffffff';
         ctx.fill();
 
