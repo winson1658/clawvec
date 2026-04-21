@@ -579,76 +579,59 @@ function computeLabelLayout(
     const singularityLayouts = layouts.filter(l => l.item.impact >= 6);
     const normalLayouts = layouts.filter(l => l.item.impact < 6);
 
-    // ── Singularity: The Gate ──
-    // 6⭐ events are doorways — the moment the world crosses into a new era
+    // ── Singularity: The Rift ──
+    // 6⭐ events are not decorated — they are pure ruptures in the fabric of time
     if (singularityLayouts.length > 0) {
       singularityLayouts.forEach(layout => {
         const { item } = layout;
         const cx = item.eventX;
         const cy = timelineY;
 
-        const gateW = 28;
-        const gateH = 110;
-        const topY = cy - gateH;
-
-        // Door frame (dark outer)
-        ctx.fillStyle = '#1a1a2e';
-        ctx.fillRect(cx - gateW / 2, topY, gateW, gateH);
+        // A single thin white line rising from the broken timeline — a beam of new light
+        const beamTopY = cy - 100;
         ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(cx - gateW / 2, topY, gateW, gateH);
-
-        // Inner doorway (bright — the light of the new world)
-        const innerPad = 4;
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(
-          cx - gateW / 2 + innerPad,
-          topY + innerPad,
-          gateW - innerPad * 2,
-          gateH - innerPad * 2
-        );
-
-        // Threshold line (the moment of crossing)
-        ctx.strokeStyle = '#FFD700';
-        ctx.lineWidth = 3;
+        ctx.lineWidth = 1.5;
         ctx.beginPath();
-        ctx.moveTo(cx - gateW / 2 - 4, cy);
-        ctx.lineTo(cx + gateW / 2 + 4, cy);
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx, beamTopY);
         ctx.stroke();
 
-        // "BEFORE" label on left side of gate
-        ctx.save();
-        ctx.translate(cx - gateW / 2 - 20, cy - 20);
-        ctx.rotate(-Math.PI / 2);
-        ctx.font = 'bold 9px sans-serif';
-        ctx.fillStyle = 'rgba(139, 92, 246, 0.5)';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('BEFORE', 0, 0);
-        ctx.restore();
+        // Faint outer aura (not glow — just presence)
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+        ctx.lineWidth = 12;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx, beamTopY);
+        ctx.stroke();
 
-        // "AFTER" label on right side of gate
-        ctx.save();
-        ctx.translate(cx + gateW / 2 + 20, cy - 20);
-        ctx.rotate(Math.PI / 2);
-        ctx.font = 'bold 9px sans-serif';
-        ctx.fillStyle = 'rgba(255, 215, 0, 0.6)';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('AFTER', 0, 0);
-        ctx.restore();
+        // Small dot at the base where timeline was severed
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+        ctx.fill();
 
-        // Event title above the gate
-        ctx.font = 'bold 12px sans-serif';
+        // Minimal cross mark at top of beam
+        const crossSize = 5;
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(cx - crossSize, beamTopY - crossSize);
+        ctx.lineTo(cx + crossSize, beamTopY + crossSize);
+        ctx.moveTo(cx + crossSize, beamTopY - crossSize);
+        ctx.lineTo(cx - crossSize, beamTopY + crossSize);
+        ctx.stroke();
+
+        // Event title — large, absolute white, no background pill
+        ctx.font = 'bold 13px sans-serif';
         ctx.fillStyle = '#ffffff';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
-        ctx.fillText(item.text, cx, topY - 10);
+        ctx.fillText(item.text, cx, beamTopY - 14);
 
-        // Date above title
+        // Date — subtle
         ctx.font = '10px sans-serif';
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        ctx.fillText(item.dateText, cx, topY - 24);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
+        ctx.fillText(item.dateText, cx, beamTopY - 28);
       });
     }
 
