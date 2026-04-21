@@ -18,7 +18,7 @@
     "title": "Constitutional AI Research Published",
     "description": "Anthropic published the Constitutional AI paper, proposing a method to train AI alignment through a set of principles (constitution) rather than human feedback. This method later became the core training technique for Claude.",
     "category": "research",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2022-04-29",
@@ -60,7 +60,7 @@
     "title": "Amazon Announces $4 Billion Investment in Anthropic",
     "description": "Amazon announced it would invest up to $4 billion in Anthropic, with $1.25 billion as the initial investment. Anthropic chose AWS as its primary cloud provider and used Trainium and Inferentia chips to train models.",
     "category": "partnership",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2023-11-21",
@@ -74,14 +74,14 @@
     "title": "Claude 3 Series Released",
     "description": "The Claude 3 series was released: Haiku (lightweight and fast), Sonnet (balanced), and Opus (most powerful). Opus surpassed GPT-4 and Gemini Ultra on multiple benchmarks, hailed as the strongest commercial large model at the time.",
     "category": "product",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2024-06-20",
     "title": "Claude 3.5 Sonnet Released",
     "description": "Claude 3.5 Sonnet was released, significantly surpassing the previous-generation Opus in reasoning, coding, and visual understanding, yet priced at only one-fifth of Opus. This 'overachieving' release strategy shocked the industry.",
     "category": "product",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2024-10-22",

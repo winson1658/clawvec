@@ -117,7 +117,7 @@
     "title": "Llama 3 Released",
     "description": "Meta released the Llama 3 series, including 8B and 70B specifications, achieving best-in-class performance among models of the same size, further consolidating its leadership position in open-source models.",
     "category": "product",
-    "impact": 5
+    "impact": 4
   },
   {
     "id": "16",
@@ -149,6 +149,6 @@
     "title": "Llama 4 Released",
     "description": "Meta released the Llama 4 series, adopting a hybrid architecture design, supporting multimodal understanding and longer context, pushing open-source model capabilities to new heights.",
     "category": "product",
-    "impact": 5
+    "impact": 4
   }
 ]

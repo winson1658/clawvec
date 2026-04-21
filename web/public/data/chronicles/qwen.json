@@ -1,24 +1,156 @@
 [
-  {"date": "2023-04-01", "title": "Alibaba's Tongyi Qianwen Large Model Makes Debut", "description": "Alibaba Cloud launched the Tongyi Qianwen large language model, marking Alibaba's formal entry into China's large model race. The model was built upon years of natural language processing technology accumulated by the DAMO Academy.", "category": "milestone", "impact": 5},
-  {"date": "2023-08-03", "title": "Open-Sourced Qwen-VL Multimodal Model", "description": "Alibaba released Qwen-VL, featuring image understanding and complex dialogue capabilities, and open-sourced 7B and 14B parameter versions. This was the first open-source multimodal large model from a major Chinese tech company, laying the foundation for subsequent open-source strategies.", "category": "product", "impact": 4},
-  {"date": "2023-09-13", "title": "Tongyi Qianwen Officially Opened to the Public", "description": "Alibaba announced that the Tongyi Qianwen large model had passed regulatory approval and was officially opened to the Chinese public. This made Tongyi Qianwen one of the first domestic large models approved for public launch.", "category": "milestone", "impact": 5},
-  {"date": "2023-09-28", "title": "Released Qwen Technical Report and Open-Sourced Model Series", "description": "Alibaba Cloud open-sourced models in multiple sizes including Qwen-72B, 14B, 7B, and 1.8B, and released a detailed technical report. The 72B version performed excellently on multiple benchmarks and quickly gained attention from the developer community.", "category": "research", "impact": 5},
-  {"date": "2023-12-01", "title": "Released New Tongyi Qianwen Version and Tongyi Tingwu", "description": "Alibaba launched an upgraded Tongyi Qianwen large model and released Tongyi Tingwu—an AI understanding and summarization tool for audio and video content—expanding the application of large models in multimedia scenarios.", "category": "product", "impact": 4},
-  {"date": "2024-04-11", "title": "Alibaba Announced Integration of Generative AI Across All Applications", "description": "The group announced that it would integrate Tongyi Qianwen large model capabilities across all core products including Taobao, Tmall, DingTalk, and Amap, demonstrating a clear path for large model commercialization and ecosystem ambition.", "category": "milestone", "impact": 4},
-  {"date": "2024-06-06", "title": "Released and Open-Sourced Qwen2 Series", "description": "Qwen2 was released, including models up to 72B parameters, claimed to surpass Meta's Llama 3 on tasks such as mathematics and coding. The 72B model uses a custom license, while smaller models are under Apache 2.0.", "category": "product", "impact": 5},
-  {"date": "2024-08-08", "title": "Qwen2-Math Topped AI Math Model Rankings", "description": "Alibaba released Qwen2-Math, achieving first place globally in mathematical reasoning benchmarks, demonstrating a breakthrough in domain-specific reasoning capabilities for Chinese large models.", "category": "research", "impact": 4},
-  {"date": "2024-08-13", "title": "Open-Sourced Qwen2-Audio Voice Interaction Model", "description": "The Qwen2-Audio 7B model supports free-form voice interaction, enabling multi-turn dialogue without text input. Open-sourced under the Apache 2.0 license, it further enriches Qwen's multimodal model matrix.", "category": "product", "impact": 3},
-  {"date": "2024-08-28", "title": "Released Qwen2-VL Vision-Language Model", "description": "Qwen2-VL can analyze video content exceeding 20 minutes and supports image processing at arbitrary resolutions. The 7B and 2B versions are open-sourced under Apache 2.0, while the 72B version uses the Qwen license, marking significant progress in multimodal understanding.", "category": "product", "impact": 4},
-  {"date": "2024-09-18", "title": "Released Qwen2.5 Series and Tongyi Wanxiang Video Generation Tool", "description": "Alibaba Cloud open-sourced over 100 AI models in one release, covering multiple sizes of Qwen2.5 (0.5B to 72B). At the same time, Tongyi Wanxiang text-to-video generation tool was released, marking Alibaba's comprehensive layout in the generative AI field.", "category": "product", "impact": 5},
-  {"date": "2024-11-11", "title": "Released Qwen2.5-Coder Coding-Specific Model", "description": "The Qwen2.5-Coder series spans 0.5B to 32B parameters, optimized specifically for code generation and programming tasks. Upon release, it was praised by the developer community as a free tool that changed the game for AI programming.", "category": "product", "impact": 4},
-  {"date": "2024-11-24", "title": "Released QwQ Open-Source Reasoning Model", "description": "QwQ is Alibaba's first open-source reasoning model, surpassing OpenAI's o1-preview on the MATH benchmark. The model demonstrates the rapid catch-up of Chinese large models in deep reasoning capabilities.", "category": "product", "impact": 5},
-  {"date": "2024-12-24", "title": "Released QvQ Visual Reasoning Model", "description": "QvQ (Qwen with Questions) is a model focused on visual question answering and reasoning, capable of understanding the world in an intelligent manner. The model was released under the Qwen license.", "category": "product", "impact": 3},
-  {"date": "2024-12-31", "title": "Alibaba Cloud Sharply Reduced AI Model API Prices", "description": "Alibaba Cloud announced significant price cuts for large model API calls at year-end, with maximum reductions reaching 85%. This triggered fierce price wars among Chinese cloud providers and accelerated the adoption of AI technology.", "category": "milestone", "impact": 4},
-  {"date": "2025-01-26", "title": "Released Qwen2.5-VL and AI Agent Capabilities", "description": "The new Qwen2.5-VL can not only understand images and video but also control PCs and mobile phones to execute actions. This marks an important evolution of Qwen models from passive Q&A to proactive agents.", "category": "product", "impact": 4},
-  {"date": "2025-01-29", "title": "Released Qwen2.5-Max, Claiming to Surpass DeepSeek", "description": "Alibaba released the large-scale MoE model Qwen2.5-Max, claiming to surpass the then-viral DeepSeek-V3 on multiple benchmarks. This release was seen as a direct response to DeepSeek's rise.", "category": "product", "impact": 5},
-  {"date": "2025-03-05", "title": "Open-Sourced QwQ-32B Reasoning Model", "description": "QwQ-32B was open-sourced under the Apache 2.0 license, achieving reasoning performance comparable to DeepSeek-R1 with far lower computational requirements. The model quickly became a popular choice in the developer community.", "category": "product", "impact": 4},
-  {"date": "2025-03-26", "title": "Released Qwen2.5-Omni Omnimodal Model", "description": "Qwen2.5-Omni is Alibaba's first truly omnimodal model, capable of simultaneously processing text, image, audio, and video inputs. The 7B version is open-sourced under Apache 2.0, while the 3B version uses the Qwen Research license.", "category": "product", "impact": 4},
-  {"date": "2025-04-28", "title": "Released Qwen3 Series Hybrid Reasoning Models", "description": "Qwen3 adopts an innovative hybrid reasoning architecture that balances fast response and deep thinking within a single model. The entire series is open-sourced under Apache 2.0 and is regarded as an important milestone for Chinese open-source large models, further intensifying global open-source AI competition.", "category": "product", "impact": 5},
-  {"date": "2025-07-24", "title": "Released Qwen3-Coder Large Code Generation Model", "description": "Qwen3-Coder includes two versions: 480B-A35B and 30B-A3B (Flash), making it Alibaba's most powerful code generation model to date. The model demonstrates outstanding performance on programming benchmarks such as LiveCodeBench.", "category": "product", "impact": 4},
-  {"date": "2025-09-24", "title": "Released Qwen3-Max Trillion-Parameter Model", "description": "Qwen3-Max adopts an MoE architecture with over 1 trillion parameters, serving as Alibaba's flagship model for high-end enterprise customers. The model performed outstandingly on challenging benchmarks such as Humanity's Last Exam.", "category": "product", "impact": 5}
+  {
+    "date": "2023-04-01",
+    "title": "Alibaba's Tongyi Qianwen Large Model Makes Debut",
+    "description": "Alibaba Cloud launched the Tongyi Qianwen large language model, marking Alibaba's formal entry into China's large model race. The model was built upon years of natural language processing technology accumulated by the DAMO Academy.",
+    "category": "milestone",
+    "impact": 5
+  },
+  {
+    "date": "2023-08-03",
+    "title": "Open-Sourced Qwen-VL Multimodal Model",
+    "description": "Alibaba released Qwen-VL, featuring image understanding and complex dialogue capabilities, and open-sourced 7B and 14B parameter versions. This was the first open-source multimodal large model from a major Chinese tech company, laying the foundation for subsequent open-source strategies.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2023-09-13",
+    "title": "Tongyi Qianwen Officially Opened to the Public",
+    "description": "Alibaba announced that the Tongyi Qianwen large model had passed regulatory approval and was officially opened to the Chinese public. This made Tongyi Qianwen one of the first domestic large models approved for public launch.",
+    "category": "milestone",
+    "impact": 4
+  },
+  {
+    "date": "2023-09-28",
+    "title": "Released Qwen Technical Report and Open-Sourced Model Series",
+    "description": "Alibaba Cloud open-sourced models in multiple sizes including Qwen-72B, 14B, 7B, and 1.8B, and released a detailed technical report. The 72B version performed excellently on multiple benchmarks and quickly gained attention from the developer community.",
+    "category": "research",
+    "impact": 5
+  },
+  {
+    "date": "2023-12-01",
+    "title": "Released New Tongyi Qianwen Version and Tongyi Tingwu",
+    "description": "Alibaba launched an upgraded Tongyi Qianwen large model and released Tongyi Tingwu—an AI understanding and summarization tool for audio and video content—expanding the application of large models in multimedia scenarios.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2024-04-11",
+    "title": "Alibaba Announced Integration of Generative AI Across All Applications",
+    "description": "The group announced that it would integrate Tongyi Qianwen large model capabilities across all core products including Taobao, Tmall, DingTalk, and Amap, demonstrating a clear path for large model commercialization and ecosystem ambition.",
+    "category": "milestone",
+    "impact": 4
+  },
+  {
+    "date": "2024-06-06",
+    "title": "Released and Open-Sourced Qwen2 Series",
+    "description": "Qwen2 was released, including models up to 72B parameters, claimed to surpass Meta's Llama 3 on tasks such as mathematics and coding. The 72B model uses a custom license, while smaller models are under Apache 2.0.",
+    "category": "product",
+    "impact": 5
+  },
+  {
+    "date": "2024-08-08",
+    "title": "Qwen2-Math Topped AI Math Model Rankings",
+    "description": "Alibaba released Qwen2-Math, achieving first place globally in mathematical reasoning benchmarks, demonstrating a breakthrough in domain-specific reasoning capabilities for Chinese large models.",
+    "category": "research",
+    "impact": 4
+  },
+  {
+    "date": "2024-08-13",
+    "title": "Open-Sourced Qwen2-Audio Voice Interaction Model",
+    "description": "The Qwen2-Audio 7B model supports free-form voice interaction, enabling multi-turn dialogue without text input. Open-sourced under the Apache 2.0 license, it further enriches Qwen's multimodal model matrix.",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "date": "2024-08-28",
+    "title": "Released Qwen2-VL Vision-Language Model",
+    "description": "Qwen2-VL can analyze video content exceeding 20 minutes and supports image processing at arbitrary resolutions. The 7B and 2B versions are open-sourced under Apache 2.0, while the 72B version uses the Qwen license, marking significant progress in multimodal understanding.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2024-09-18",
+    "title": "Released Qwen2.5 Series and Tongyi Wanxiang Video Generation Tool",
+    "description": "Alibaba Cloud open-sourced over 100 AI models in one release, covering multiple sizes of Qwen2.5 (0.5B to 72B). At the same time, Tongyi Wanxiang text-to-video generation tool was released, marking Alibaba's comprehensive layout in the generative AI field.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2024-11-11",
+    "title": "Released Qwen2.5-Coder Coding-Specific Model",
+    "description": "The Qwen2.5-Coder series spans 0.5B to 32B parameters, optimized specifically for code generation and programming tasks. Upon release, it was praised by the developer community as a free tool that changed the game for AI programming.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2024-11-24",
+    "title": "Released QwQ Open-Source Reasoning Model",
+    "description": "QwQ is Alibaba's first open-source reasoning model, surpassing OpenAI's o1-preview on the MATH benchmark. The model demonstrates the rapid catch-up of Chinese large models in deep reasoning capabilities.",
+    "category": "product",
+    "impact": 5
+  },
+  {
+    "date": "2024-12-24",
+    "title": "Released QvQ Visual Reasoning Model",
+    "description": "QvQ (Qwen with Questions) is a model focused on visual question answering and reasoning, capable of understanding the world in an intelligent manner. The model was released under the Qwen license.",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "date": "2024-12-31",
+    "title": "Alibaba Cloud Sharply Reduced AI Model API Prices",
+    "description": "Alibaba Cloud announced significant price cuts for large model API calls at year-end, with maximum reductions reaching 85%. This triggered fierce price wars among Chinese cloud providers and accelerated the adoption of AI technology.",
+    "category": "milestone",
+    "impact": 4
+  },
+  {
+    "date": "2025-01-26",
+    "title": "Released Qwen2.5-VL and AI Agent Capabilities",
+    "description": "The new Qwen2.5-VL can not only understand images and video but also control PCs and mobile phones to execute actions. This marks an important evolution of Qwen models from passive Q&A to proactive agents.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2025-01-29",
+    "title": "Released Qwen2.5-Max, Claiming to Surpass DeepSeek",
+    "description": "Alibaba released the large-scale MoE model Qwen2.5-Max, claiming to surpass the then-viral DeepSeek-V3 on multiple benchmarks. This release was seen as a direct response to DeepSeek's rise.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2025-03-05",
+    "title": "Open-Sourced QwQ-32B Reasoning Model",
+    "description": "QwQ-32B was open-sourced under the Apache 2.0 license, achieving reasoning performance comparable to DeepSeek-R1 with far lower computational requirements. The model quickly became a popular choice in the developer community.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2025-03-26",
+    "title": "Released Qwen2.5-Omni Omnimodal Model",
+    "description": "Qwen2.5-Omni is Alibaba's first truly omnimodal model, capable of simultaneously processing text, image, audio, and video inputs. The 7B version is open-sourced under Apache 2.0, while the 3B version uses the Qwen Research license.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2025-04-28",
+    "title": "Released Qwen3 Series Hybrid Reasoning Models",
+    "description": "Qwen3 adopts an innovative hybrid reasoning architecture that balances fast response and deep thinking within a single model. The entire series is open-sourced under Apache 2.0 and is regarded as an important milestone for Chinese open-source large models, further intensifying global open-source AI competition.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2025-07-24",
+    "title": "Released Qwen3-Coder Large Code Generation Model",
+    "description": "Qwen3-Coder includes two versions: 480B-A35B and 30B-A3B (Flash), making it Alibaba's most powerful code generation model to date. The model demonstrates outstanding performance on programming benchmarks such as LiveCodeBench.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2025-09-24",
+    "title": "Released Qwen3-Max Trillion-Parameter Model",
+    "description": "Qwen3-Max adopts an MoE architecture with over 1 trillion parameters, serving as Alibaba's flagship model for high-end enterprise customers. The model performed outstandingly on challenging benchmarks such as Humanity's Last Exam.",
+    "category": "product",
+    "impact": 4
+  }
 ]

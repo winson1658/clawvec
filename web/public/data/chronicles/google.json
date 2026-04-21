@@ -60,7 +60,7 @@
     "title": "BERT Model Released",
     "description": "Google released BERT (Bidirectional Encoder Representations from Transformers), which understands context through bidirectional training, setting new records on 11 NLP tasks.",
     "category": "research",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2020-11-30",
@@ -74,7 +74,7 @@
     "title": "AlphaFold Protein Database Made Public",
     "description": "DeepMind collaborated with EMBL-EBI to make public over 350,000 protein structure predictions, covering nearly all proteins in the human genome. This resource is freely available to global researchers.",
     "category": "milestone",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2021-10-01",
@@ -116,7 +116,7 @@
     "title": "Google Brain and DeepMind Merge",
     "description": "Google announced the merger of Google Brain and DeepMind into Google DeepMind, with Demis Hassabis as CEO. This integration aimed to concentrate resources to compete with OpenAI.",
     "category": "milestone",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2023-05-10",
@@ -130,7 +130,7 @@
     "title": "Gemini 1.0 Officially Released",
     "description": "Google released the native multimodal large model Gemini 1.0, including three versions: Ultra, Pro, and Nano. Google claimed Ultra surpassed GPT-4 on 30 of 32 benchmarks.",
     "category": "product",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2024-02-08",
@@ -144,7 +144,7 @@
     "title": "Google I/O Releases Gemini 1.5 Pro",
     "description": "Released Gemini 1.5 Pro, introducing a breakthrough 1 million token context window (later expanded to 2 million), and demonstrating astonishing 'needle in a haystack' long-context retrieval capabilities.",
     "category": "product",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2024-08-01",
@@ -193,7 +193,7 @@
     "title": "Google Brain Cat Image Recognition Breakthrough",
     "description": "Google Brain's neural network trained on 10 million YouTube video screenshots spontaneously learned to recognize cat faces. After publication, this result triggered a deep learning boom and is regarded as one of the starting points of the modern AI wave.",
     "category": "research",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2019-10-23",

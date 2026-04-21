@@ -32,7 +32,7 @@
     "title": "DeepSeek-V2 Released",
     "description": "Released DeepSeek-V2 with 236B total parameters but only 21B activated per inference. Its innovative MLA (Multi-head Latent Attention) architecture reduced inference costs to 1/70 of GPT-4 Turbo, triggering a global AI 'price war'.",
     "category": "product",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2024-05-01",

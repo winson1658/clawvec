@@ -293,7 +293,7 @@
     "title": "OpenAI Closes $6.6B Funding",
     "description": "OpenAI raises $6.6 billion at $157 billion valuation. Thrive Capital leads, Microsoft, NVIDIA, SoftBank participate. Becomes one of most valuable private companies.",
     "category": "milestone",
-    "impact": 5
+    "impact": 4
   },
   {
     "id": "38",
@@ -365,7 +365,7 @@
     "title": "o3 Full Released",
     "description": "o3 full version launched. Currently the strongest reasoning model with major improvements in coding, math, and scientific reasoning. Available via API.",
     "category": "product",
-    "impact": 5
+    "impact": 4
   },
   {
     "id": "47",

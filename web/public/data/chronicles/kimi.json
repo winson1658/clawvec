@@ -1,20 +1,128 @@
 [
-  {"date": "2023-03-01", "title": "Moonshot AI Founded in Beijing", "description": "Founded by three Tsinghua alumni—Yang Zhilin, Zhou Xinyu, and Wu Yuxin—the company's name was inspired by Pink Floyd's album *The Dark Side of the Moon*. Core founding team members came from world-class AI labs including Google Brain and Meta AI, with the goal of building foundational models for artificial general intelligence (AGI).", "category": "milestone", "impact": 5},
-  {"date": "2023-06-01", "title": "Completed Over $60 Million Angel Round", "description": "The company was valued at $300 million with approximately 40 employees. This funding round laid the financial foundation for subsequent large model R&D, making Moonshot AI one of the most closely watched newcomers in China's AI startup scene.", "category": "acquisition", "impact": 4},
-  {"date": "2023-10-10", "title": "Released First AI Chatbot Kimi Chat", "description": "Kimi supports processing up to 200,000 Chinese characters in a single conversation, quickly becoming the strongest competitor to Baidu's Ernie Bot. The product name derives from founder Yang Zhilin's English nickname.", "category": "product", "impact": 5},
-  {"date": "2024-02-01", "title": "Alibaba Led Over $1 Billion Funding Round", "description": "Following this round, the company was valued at $2.5 billion, with Alibaba acquiring approximately 36% of shares. Sequoia China, Xiaohongshu, Meituan, and others also participated, making Moonshot AI a member of China's AI unicorn club.", "category": "acquisition", "impact": 5},
-  {"date": "2024-03-18", "title": "Kimi Upgraded to Support 2 Million Character Ultra-Long Context", "description": "Moonshot announced that Kimi could process 2 million Chinese characters in a single session—a tenfold increase from the previous 200,000 characters—setting a new global record for long-text processing in large models at the time and drawing significant market attention.", "category": "product", "impact": 5},
-  {"date": "2024-03-21", "title": "Kimi Suffered Two-Day Outage Due to Traffic Surge", "description": "Following the launch of the 2 million character feature, user volume surged dramatically, causing Kimi's servers to fail for two consecutive days. Moonshot AI publicly apologized and urgently expanded capacity, reflecting the product's explosive popularity.", "category": "milestone", "impact": 3},
-  {"date": "2024-06-01", "title": "Media Reported Plans to Launch Overseas Apps Ohai and Noisee", "description": "Media reported that Moonshot AI was developing an AI role-playing app called Ohai and a music video generator called Noisee for the U.S. market. The company subsequently responded that it had no immediate plans for overseas product launches.", "category": "product", "impact": 3},
-  {"date": "2024-08-01", "title": "Tencent and Gaorong Capital Invested $300 Million", "description": "Following the new funding round, the company's valuation rose to $3.3 billion. Tencent's entry meant that Moonshot AI gained the backing of China's two largest internet giants (Alibaba and Tencent), further elevating its strategic position.", "category": "acquisition", "impact": 4},
-  {"date": "2024-10-01", "title": "Kimi Ranked Third in China AI App Monthly Active Users", "description": "According to aicpb.com data, Kimi ranked third among Chinese AI apps by monthly active users, behind only ByteDance's Doubao and Baidu's Ernie Bot, solidifying its position in the top tier of the market.", "category": "milestone", "impact": 4},
-  {"date": "2024-11-01", "title": "Published Research Paper on Muon Optimizer Scaling", "description": "Moonshot AI and UCLA jointly published a paper successfully scaling the Muon optimizer to 16-billion-parameter MoE large model training, achieving approximately 2× computational efficiency over AdamW, and open-sourced the implementation and model weights.", "category": "research", "impact": 3},
-  {"date": "2025-01-20", "title": "Released Kimi K1.5 Reasoning Model", "description": "Moonshot released Kimi K1.5, claiming it rivals OpenAI's o1 model in mathematics, coding, and multimodal reasoning capabilities. The model employs reinforcement learning techniques to achieve efficient reasoning without complex Monte Carlo tree search.", "category": "product", "impact": 5},
-  {"date": "2025-03-01", "title": "Kimi's Monthly Active User Ranking Dropped to Seventh", "description": "As competition in China's AI market intensified, Kimi's monthly active user ranking fell to seventh place. The rise of competitors such as DeepSeek posed new challenges for Moonshot AI.", "category": "milestone", "impact": 3},
-  {"date": "2025-06-01", "title": "Mooncake Platform Won USENIX FAST Best Paper Award", "description": "Moonshot AI's paper on the Mooncake serving platform won the Erik Riedel Best Paper Award at the USENIX FAST conference. Mooncake processes over 100 billion tokens daily and serves as the core infrastructure supporting Kimi's operations.", "category": "research", "impact": 4},
-  {"date": "2025-07-01", "title": "Open-Sourced Kimi K2 Large Model", "description": "Kimi K2 adopts a Mixture-of-Experts (MoE) architecture with 1 trillion total parameters and 32 billion active parameters, trained on 15.5 trillion tokens. The model was open-sourced under a modified MIT license and topped Hugging Face download charts on its first day.", "category": "product", "impact": 5},
-  {"date": "2025-09-09", "title": "Released Kimi-K2-Instruct-0905 Update", "description": "The new K2 version delivers significant performance improvements on agentic coding tasks, with the context window expanded from 128K to 256K tokens, further cementing its leading position among open-source large models.", "category": "product", "impact": 4},
-  {"date": "2025-10-01", "title": "IDG Capital Led Approximately $600 Million Funding Round", "description": "The company reached a $3.8 billion pre-money valuation, with existing shareholders such as Tencent continuing to participate. This funding provided Moonshot AI with ample resources in the fierce China AI race.", "category": "acquisition", "impact": 4},
-  {"date": "2025-11-01", "title": "Released Kimi K2 Thinking Open-Source Reasoning Model", "description": "K2 Thinking was trained at a cost of approximately $4.6 million, supports 256K context and 200–300 autonomous tool calls. It surpassed GPT-5 and Claude Sonnet 4.5 on benchmarks including Humanity's Last Exam, BrowseComp, and SWE-Bench.", "category": "product", "impact": 5},
-  {"date": "2025-11-15", "title": "Kimi Achieved Deep Integration with Multiple Platforms", "description": "Kimi was gradually integrated into mainstream office and collaboration platforms including Feishu and DingTalk, further expanding its application scenarios and user reach in China's enterprise market.", "category": "partnership", "impact": 3}
+  {
+    "date": "2023-03-01",
+    "title": "Moonshot AI Founded in Beijing",
+    "description": "Founded by three Tsinghua alumni—Yang Zhilin, Zhou Xinyu, and Wu Yuxin—the company's name was inspired by Pink Floyd's album *The Dark Side of the Moon*. Core founding team members came from world-class AI labs including Google Brain and Meta AI, with the goal of building foundational models for artificial general intelligence (AGI).",
+    "category": "milestone",
+    "impact": 5
+  },
+  {
+    "date": "2023-06-01",
+    "title": "Completed Over $60 Million Angel Round",
+    "description": "The company was valued at $300 million with approximately 40 employees. This funding round laid the financial foundation for subsequent large model R&D, making Moonshot AI one of the most closely watched newcomers in China's AI startup scene.",
+    "category": "acquisition",
+    "impact": 4
+  },
+  {
+    "date": "2023-10-10",
+    "title": "Released First AI Chatbot Kimi Chat",
+    "description": "Kimi supports processing up to 200,000 Chinese characters in a single conversation, quickly becoming the strongest competitor to Baidu's Ernie Bot. The product name derives from founder Yang Zhilin's English nickname.",
+    "category": "product",
+    "impact": 5
+  },
+  {
+    "date": "2024-02-01",
+    "title": "Alibaba Led Over $1 Billion Funding Round",
+    "description": "Following this round, the company was valued at $2.5 billion, with Alibaba acquiring approximately 36% of shares. Sequoia China, Xiaohongshu, Meituan, and others also participated, making Moonshot AI a member of China's AI unicorn club.",
+    "category": "acquisition",
+    "impact": 4
+  },
+  {
+    "date": "2024-03-18",
+    "title": "Kimi Upgraded to Support 2 Million Character Ultra-Long Context",
+    "description": "Moonshot announced that Kimi could process 2 million Chinese characters in a single session—a tenfold increase from the previous 200,000 characters—setting a new global record for long-text processing in large models at the time and drawing significant market attention.",
+    "category": "product",
+    "impact": 5
+  },
+  {
+    "date": "2024-03-21",
+    "title": "Kimi Suffered Two-Day Outage Due to Traffic Surge",
+    "description": "Following the launch of the 2 million character feature, user volume surged dramatically, causing Kimi's servers to fail for two consecutive days. Moonshot AI publicly apologized and urgently expanded capacity, reflecting the product's explosive popularity.",
+    "category": "milestone",
+    "impact": 3
+  },
+  {
+    "date": "2024-06-01",
+    "title": "Media Reported Plans to Launch Overseas Apps Ohai and Noisee",
+    "description": "Media reported that Moonshot AI was developing an AI role-playing app called Ohai and a music video generator called Noisee for the U.S. market. The company subsequently responded that it had no immediate plans for overseas product launches.",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "date": "2024-08-01",
+    "title": "Tencent and Gaorong Capital Invested $300 Million",
+    "description": "Following the new funding round, the company's valuation rose to $3.3 billion. Tencent's entry meant that Moonshot AI gained the backing of China's two largest internet giants (Alibaba and Tencent), further elevating its strategic position.",
+    "category": "acquisition",
+    "impact": 4
+  },
+  {
+    "date": "2024-10-01",
+    "title": "Kimi Ranked Third in China AI App Monthly Active Users",
+    "description": "According to aicpb.com data, Kimi ranked third among Chinese AI apps by monthly active users, behind only ByteDance's Doubao and Baidu's Ernie Bot, solidifying its position in the top tier of the market.",
+    "category": "milestone",
+    "impact": 4
+  },
+  {
+    "date": "2024-11-01",
+    "title": "Published Research Paper on Muon Optimizer Scaling",
+    "description": "Moonshot AI and UCLA jointly published a paper successfully scaling the Muon optimizer to 16-billion-parameter MoE large model training, achieving approximately 2× computational efficiency over AdamW, and open-sourced the implementation and model weights.",
+    "category": "research",
+    "impact": 3
+  },
+  {
+    "date": "2025-01-20",
+    "title": "Released Kimi K1.5 Reasoning Model",
+    "description": "Moonshot released Kimi K1.5, claiming it rivals OpenAI's o1 model in mathematics, coding, and multimodal reasoning capabilities. The model employs reinforcement learning techniques to achieve efficient reasoning without complex Monte Carlo tree search.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2025-03-01",
+    "title": "Kimi's Monthly Active User Ranking Dropped to Seventh",
+    "description": "As competition in China's AI market intensified, Kimi's monthly active user ranking fell to seventh place. The rise of competitors such as DeepSeek posed new challenges for Moonshot AI.",
+    "category": "milestone",
+    "impact": 3
+  },
+  {
+    "date": "2025-06-01",
+    "title": "Mooncake Platform Won USENIX FAST Best Paper Award",
+    "description": "Moonshot AI's paper on the Mooncake serving platform won the Erik Riedel Best Paper Award at the USENIX FAST conference. Mooncake processes over 100 billion tokens daily and serves as the core infrastructure supporting Kimi's operations.",
+    "category": "research",
+    "impact": 4
+  },
+  {
+    "date": "2025-07-01",
+    "title": "Open-Sourced Kimi K2 Large Model",
+    "description": "Kimi K2 adopts a Mixture-of-Experts (MoE) architecture with 1 trillion total parameters and 32 billion active parameters, trained on 15.5 trillion tokens. The model was open-sourced under a modified MIT license and topped Hugging Face download charts on its first day.",
+    "category": "product",
+    "impact": 5
+  },
+  {
+    "date": "2025-09-09",
+    "title": "Released Kimi-K2-Instruct-0905 Update",
+    "description": "The new K2 version delivers significant performance improvements on agentic coding tasks, with the context window expanded from 128K to 256K tokens, further cementing its leading position among open-source large models.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2025-10-01",
+    "title": "IDG Capital Led Approximately $600 Million Funding Round",
+    "description": "The company reached a $3.8 billion pre-money valuation, with existing shareholders such as Tencent continuing to participate. This funding provided Moonshot AI with ample resources in the fierce China AI race.",
+    "category": "acquisition",
+    "impact": 4
+  },
+  {
+    "date": "2025-11-01",
+    "title": "Released Kimi K2 Thinking Open-Source Reasoning Model",
+    "description": "K2 Thinking was trained at a cost of approximately $4.6 million, supports 256K context and 200–300 autonomous tool calls. It surpassed GPT-5 and Claude Sonnet 4.5 on benchmarks including Humanity's Last Exam, BrowseComp, and SWE-Bench.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2025-11-15",
+    "title": "Kimi Achieved Deep Integration with Multiple Platforms",
+    "description": "Kimi was gradually integrated into mainstream office and collaboration platforms including Feishu and DingTalk, further expanding its application scenarios and user reach in China's enterprise market.",
+    "category": "partnership",
+    "impact": 3
+  }
 ]

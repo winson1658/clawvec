@@ -109,7 +109,7 @@
     "title": "Figure 03 Released",
     "description": "Figure AI launched the third-generation humanoid robot, Figure 03, equipped with the Helix model, featuring 32 degrees of freedom across its body and significantly enhanced computing power.",
     "category": "product",
-    "impact": 5
+    "impact": 4
   },
   {
     "id": "15",
@@ -117,6 +117,6 @@
     "title": "Secured $1.5 Billion in Major Funding",
     "description": "Figure AI announced the completion of a $1.5 billion funding round at a valuation exceeding $10 billion, with major investors including Microsoft and OpenAI participating. The funds will be used to scale up production.",
     "category": "milestone",
-    "impact": 5
+    "impact": 4
   }
 ]
