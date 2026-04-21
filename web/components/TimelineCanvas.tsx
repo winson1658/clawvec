@@ -549,66 +549,19 @@ function computeLabelLayout(
     const singularityLayouts = layouts.filter(l => l.item.impact >= 6);
     const normalLayouts = layouts.filter(l => l.item.impact < 6);
 
-    // ── Singularity Orbit Track ──
+    // ── Singularity: Monument Lighthouse ──
     if (singularityLayouts.length > 0) {
-      const orbitY = timelineY - 90;
-
-      // Draw orbit line (dashed, golden)
-      ctx.strokeStyle = 'rgba(255, 215, 0, 0.25)';
-      ctx.lineWidth = 1.5;
-      ctx.setLineDash([6, 6]);
-      ctx.beginPath();
-      ctx.moveTo(0, orbitY);
-      ctx.lineTo(width, orbitY);
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      // Orbit label
-      ctx.font = 'bold 10px sans-serif';
-      ctx.fillStyle = 'rgba(255, 215, 0, 0.4)';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('◈ SINGULARITY', 12, orbitY - 8);
-
-      // Draw warp curves and hexagons for each singularity event
       singularityLayouts.forEach(layout => {
         const { item } = layout;
-        const orbitX = item.eventX;
+        const cx = item.eventX;
+        const baseY = timelineY;
 
-        // Warp curve: bezier from timeline to orbit
-        ctx.strokeStyle = 'rgba(255, 215, 0, 0.35)';
-        ctx.lineWidth = 2;
+        // Base: inverted triangle (lighthouse foundation) — large, on timeline
+        const baseSize = 14;
         ctx.beginPath();
-        ctx.moveTo(item.eventX, timelineY);
-        ctx.bezierCurveTo(
-          item.eventX, timelineY - 30,
-          orbitX, orbitY + 30,
-          orbitX, orbitY
-        );
-        ctx.stroke();
-
-        // Warp glow
-        ctx.strokeStyle = 'rgba(255, 215, 0, 0.1)';
-        ctx.lineWidth = 8;
-        ctx.beginPath();
-        ctx.moveTo(item.eventX, timelineY);
-        ctx.bezierCurveTo(
-          item.eventX, timelineY - 30,
-          orbitX, orbitY + 30,
-          orbitX, orbitY
-        );
-        ctx.stroke();
-
-        // Draw hexagon on orbit
-        const hexR = 10;
-        ctx.beginPath();
-        for (let i = 0; i < 6; i++) {
-          const angle = (Math.PI / 3) * i - Math.PI / 2;
-          const hx = orbitX + hexR * Math.cos(angle);
-          const hy = orbitY + hexR * Math.sin(angle);
-          if (i === 0) ctx.moveTo(hx, hy);
-          else ctx.lineTo(hx, hy);
-        }
+        ctx.moveTo(cx - baseSize, baseY);
+        ctx.lineTo(cx + baseSize, baseY);
+        ctx.lineTo(cx, baseY - baseSize * 1.5);
         ctx.closePath();
         ctx.fillStyle = '#1a1500';
         ctx.fill();
@@ -616,17 +569,79 @@ function computeLabelLayout(
         ctx.lineWidth = 2.5;
         ctx.stroke();
 
-        // Inner hexagon glow
+        // Inner glow fill
         ctx.fillStyle = '#FFD700';
-        ctx.globalAlpha = 0.15;
+        ctx.globalAlpha = 0.12;
         ctx.fill();
         ctx.globalAlpha = 1;
 
-        // Center dot
-        ctx.fillStyle = '#FFD700';
+        // Pillar: thick gradient beam from triangle tip upward
+        const pillarTopY = baseY - 110;
+        const pillarGrad = ctx.createLinearGradient(cx, baseY - baseSize * 1.5, cx, pillarTopY);
+        pillarGrad.addColorStop(0, 'rgba(255, 215, 0, 0.5)');
+        pillarGrad.addColorStop(0.5, 'rgba(255, 215, 0, 0.2)');
+        pillarGrad.addColorStop(1, 'rgba(255, 215, 0, 0.05)');
+
+        ctx.strokeStyle = pillarGrad;
+        ctx.lineWidth = 6;
         ctx.beginPath();
-        ctx.arc(orbitX, orbitY, 3, 0, Math.PI * 2);
+        ctx.moveTo(cx, baseY - baseSize * 1.5);
+        ctx.lineTo(cx, pillarTopY);
+        ctx.stroke();
+
+        // Outer glow of pillar
+        ctx.strokeStyle = 'rgba(255, 215, 0, 0.08)';
+        ctx.lineWidth = 16;
+        ctx.beginPath();
+        ctx.moveTo(cx, baseY - baseSize * 1.5);
+        ctx.lineTo(cx, pillarTopY);
+        ctx.stroke();
+
+        // Pillar cap: diamond at the top
+        const capY = pillarTopY;
+        const capSize = 8;
+        ctx.beginPath();
+        ctx.moveTo(cx, capY - capSize);
+        ctx.lineTo(cx + capSize, capY);
+        ctx.lineTo(cx, capY + capSize);
+        ctx.lineTo(cx - capSize, capY);
+        ctx.closePath();
+        ctx.fillStyle = '#FFD700';
         ctx.fill();
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Radiating rays from cap (time-animated)
+        const now = Date.now();
+        const rayPhase = (now % 3000) / 3000;
+        const rayCount = 8;
+        for (let i = 0; i < rayCount; i++) {
+          const angle = (Math.PI * 2 / rayCount) * i + rayPhase * Math.PI;
+          const innerR = capSize + 2;
+          const outerR = innerR + 12 + Math.sin(rayPhase * Math.PI * 2 + i) * 4;
+          ctx.strokeStyle = `rgba(255, 215, 0, ${0.3 + 0.2 * Math.sin(rayPhase * Math.PI * 2 + i * 0.7)})`;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(cx + Math.cos(angle) * innerR, capY + Math.sin(angle) * innerR);
+          ctx.lineTo(cx + Math.cos(angle) * outerR, capY + Math.sin(angle) * outerR);
+          ctx.stroke();
+        }
+
+        // Label: large title above pillar
+        const labelY = capY - 16;
+        if (labelY >= 18) {
+          ctx.font = 'bold 13px sans-serif';
+          ctx.fillStyle = '#FFD700';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'bottom';
+          ctx.fillText(item.text, cx, labelY);
+
+          // Date below title
+          ctx.font = '10px sans-serif';
+          ctx.fillStyle = 'rgba(255, 215, 0, 0.6)';
+          ctx.fillText(item.dateText, cx, labelY - 14);
+        }
       });
     }
 
