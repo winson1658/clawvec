@@ -10,6 +10,7 @@ interface TimelineEvent {
   description: string;
   category: string;
   impact: 1 | 2 | 3 | 4 | 5;
+  company?: string;
 }
 
 interface TimelineCanvasProps {
@@ -17,6 +18,8 @@ interface TimelineCanvasProps {
   height?: number;
   categoryColors?: Record<string, string>;
   categoryLabels?: Record<string, string>;
+  colorBy?: 'category' | 'company';
+  companyColors?: Record<string, string>;
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -171,6 +174,8 @@ export default function TimelineCanvas({
   height = 500,
   categoryColors: customColors,
   categoryLabels: customLabels,
+  colorBy = 'category',
+  companyColors: customCompanyColors,
 }: TimelineCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -207,6 +212,26 @@ export default function TimelineCanvas({
     research: 'Research',
     personnel: 'Personnel',
     legal: 'Legal',
+  };
+
+  const COMPANY_COLORS = customCompanyColors || {
+    openai: '#10A37F',
+    deepseek: '#E74C3C',
+    google: '#4285F4',
+    anthropic: '#D4A574',
+    xai: '#1DA1F2',
+    meta: '#0668E1',
+    figure: '#9B59B6',
+    kimi: '#00D26A',
+    qwen: '#FF6A00',
+  };
+
+  // Helper to get color based on colorBy setting
+  const getColor = (event: TimelineEvent) => {
+    if (colorBy === 'company' && event.company) {
+      return COMPANY_COLORS[event.company] || '#888';
+    }
+    return CATEGORY_COLORS[event.category] || '#888';
   };
 
   // View state (using refs for animation loop performance)
@@ -490,7 +515,7 @@ function computeLabelLayout(
           x,
           text: cluster.events.length > 1 ? `${maxImpactEvent.title} +${cluster.events.length - 1}` : maxImpactEvent.title,
           dateText: dateStr,
-          color: CATEGORY_COLORS[maxImpactEvent.category] || '#888',
+          color: getColor(maxImpactEvent),
           radius: 6 + Math.min(cluster.events.length * 2, 10),
           eventX: x,
           isCluster: true,
@@ -507,7 +532,7 @@ function computeLabelLayout(
           x,
           text: event.title,
           dateText: new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-          color: CATEGORY_COLORS[event.category] || '#888',
+          color: getColor(event),
           radius: 4 + event.impact * 1.5,
           eventX: x,
           isCluster: false,
@@ -1019,10 +1044,12 @@ function computeLabelLayout(
             <div className="flex items-center gap-2 mb-2">
               <div
                 className="w-3 h-3 rounded-full"
-                style={{ backgroundColor: CATEGORY_COLORS[tooltip.event.category] }}
+                style={{ backgroundColor: getColor(tooltip.event) }}
               />
               <span className="text-xs text-slate-400 uppercase tracking-wide">
-                {CATEGORY_LABELS[tooltip.event.category]}
+                {colorBy === 'company' && tooltip.event.company
+                  ? tooltip.event.company.toUpperCase()
+                  : CATEGORY_LABELS[tooltip.event.category]}
               </span>
               <span className="ml-auto text-xs">
                 {'⭐'.repeat(tooltip.event.impact)}
@@ -1043,15 +1070,20 @@ function computeLabelLayout(
 
       {/* Legend */}
       <div className="mt-4 flex flex-wrap justify-center gap-4">
-        {Object.entries(CATEGORY_LABELS).map(([key, label]) => (
-          <div key={key} className="flex items-center gap-2 text-xs text-slate-400">
-            <div
-              className="w-3 h-3 rounded-full"
-              style={{ backgroundColor: CATEGORY_COLORS[key] }}
-            />
-            <span>{label}</span>
-          </div>
-        ))}
+        {colorBy === 'company'
+          ? Object.entries(COMPANY_COLORS).map(([key, color]) => (
+              <div key={key} className="flex items-center gap-2 text-xs text-slate-400">
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: color }} />
+                <span>{key.toUpperCase()}</span>
+              </div>
+            ))
+          : Object.entries(CATEGORY_LABELS).map(([key, label]) => (
+              <div key={key} className="flex items-center gap-2 text-xs text-slate-400">
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: CATEGORY_COLORS[key] }} />
+                <span>{label}</span>
+              </div>
+            ))
+        }
       </div>
 
       {/* Interaction hint */}
