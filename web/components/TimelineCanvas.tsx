@@ -331,147 +331,265 @@ export default function TimelineCanvas({
       ctx.stroke();
     });
 
-    // ── Events (with clustering) ──
+    /* ── Smart Label Layout: collision detection with dynamic Y levels ── */
+interface LabelItem {
+  x: number;
+  text: string;
+  dateText: string;
+  color: string;
+  radius: number;
+  eventX: number;
+  isCluster: boolean;
+  clusterSize: number;
+  impact: number;
+}
+
+interface LabelLayout {
+  item: LabelItem;
+  level: number;
+  isAbove: boolean;
+}
+
+function measureTextWidth(ctx: CanvasRenderingContext2D, text: string, font: string): number {
+  ctx.font = font;
+  return ctx.measureText(text).width;
+}
+
+function computeLabelLayout(
+  ctx: CanvasRenderingContext2D,
+  items: LabelItem[],
+  timelineY: number,
+  labelFont: string = 'bold 11px sans-serif',
+  dateFont: string = '10px sans-serif',
+  minGap: number = 12
+): LabelLayout[] {
+  if (items.length === 0) return [];
+
+  // Measure all text widths
+  const measured = items.map(item => ({
+    item,
+    textWidth: Math.max(
+      measureTextWidth(ctx, item.text, labelFont),
+      measureTextWidth(ctx, item.dateText, dateFont)
+    ),
+  }));
+
+  // Sort by x position
+  measured.sort((a, b) => a.item.x - b.item.x);
+
+  // Separate into above/below groups (alternating)
+  const above: typeof measured = [];
+  const below: typeof measured = [];
+  measured.forEach((m, i) => {
+    if (i % 2 === 0) above.push(m);
+    else below.push(m);
+  });
+
+  // Assign levels within a group
+  function assignLevels(group: typeof measured): LabelLayout[] {
+    const layouts: LabelLayout[] = [];
+    // levels[0] = closest to timeline, levels[1] = further out, etc.
+    const levelRanges: Array<{ min: number; max: number }> = [];
+
+    for (const { item, textWidth } of group) {
+      const halfW = textWidth / 2 + minGap;
+      let assignedLevel = 0;
+
+      // Try each level from 0 upward
+      while (true) {
+        if (assignedLevel >= levelRanges.length) {
+          levelRanges.push({ min: item.x - halfW, max: item.x + halfW });
+          break;
+        }
+
+        const range = levelRanges[assignedLevel];
+        // Check if this item fits in this level
+        if (item.x + halfW < range.min || item.x - halfW > range.max) {
+          // No overlap with existing range in this level
+          // But we need to check all items in this level, not just the range union
+          // Let's track occupied segments per level
+          break;
+        }
+        assignedLevel++;
+      }
+
+      layouts.push({ item, level: assignedLevel, isAbove: group === above });
+    }
+
+    // Redo with proper per-level collision detection
+    // Actually, let's use a cleaner approach: track occupied intervals per level
+    return [];
+  }
+
+  // Better approach: greedy level assignment with interval tracking
+  function assignLevelsProper(items: typeof measured, isAboveGroup: boolean): LabelLayout[] {
+    const layouts: LabelLayout[] = [];
+    // levelOccupied[level] = array of [minX, maxX] intervals
+    const levelOccupied: Array<Array<[number, number]>> = [];
+
+    for (const { item, textWidth } of items) {
+      const halfW = textWidth / 2 + minGap;
+      const itemMin = item.x - halfW;
+      const itemMax = item.x + halfW;
+
+      let level = 0;
+      while (true) {
+        if (!levelOccupied[level]) {
+          levelOccupied[level] = [[itemMin, itemMax]];
+          layouts.push({ item, level, isAbove: isAboveGroup });
+          break;
+        }
+
+        // Check collision with all intervals in this level
+        let collides = false;
+        for (const [occMin, occMax] of levelOccupied[level]) {
+          if (itemMin < occMax && itemMax > occMin) {
+            collides = true;
+            break;
+          }
+        }
+
+        if (!collides) {
+          levelOccupied[level].push([itemMin, itemMax]);
+          layouts.push({ item, level, isAbove: isAboveGroup });
+          break;
+        }
+
+        level++;
+      }
+    }
+
+    return layouts;
+  }
+
+  return [
+    ...assignLevelsProper(above, true),
+    ...assignLevelsProper(below, false),
+  ];
+}
     const span = view.endTime - view.startTime;
-    const minPxPerEvent = 30; // minimum pixels between events before clustering
+    const minPxPerEvent = 30;
     const shouldCluster = (span / width) > (2 * 24 * 60 * 60 * 1000) / minPxPerEvent;
+
+    // Prepare label items for smart layout
+    const labelItems: LabelItem[] = [];
 
     if (shouldCluster) {
       const clusters = clusterEvents(sortedEvents, view.startTime, view.endTime, width, minPxPerEvent);
-
-      clusters.forEach((cluster, index) => {
+      clusters.forEach(cluster => {
         const x = timeToX(cluster.centerTime, width, view.startTime, view.endTime);
-        if (x < -50 || x > width + 50) return;
-
-        const isAbove = index % 2 === 0;
-        const clusterSize = cluster.events.length;
-
-        // Use the highest impact event's color
+        if (x < -100 || x > width + 100) return;
         const maxImpactEvent = cluster.events.reduce((max, e) => e.impact > max.impact ? e : max, cluster.events[0]);
-        const color = CATEGORY_COLORS[maxImpactEvent.category] || '#888';
-        const radius = 6 + Math.min(clusterSize * 2, 10);
-
-        // Connection line
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 1.5;
-        ctx.globalAlpha = 0.6;
-        ctx.beginPath();
-        ctx.moveTo(x, timelineY);
-        ctx.lineTo(x, isAbove ? timelineY - 50 : timelineY + 50);
-        ctx.stroke();
-        ctx.globalAlpha = 1;
-
-        // Cluster dot
-        ctx.fillStyle = color;
-        ctx.beginPath();
-        ctx.arc(x, timelineY, radius, 0, Math.PI * 2);
-        ctx.fill();
-
-        // White border
-        ctx.strokeStyle = '#fff';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // Count badge
-        if (clusterSize > 1) {
-          ctx.fillStyle = '#fff';
-          ctx.font = `bold ${Math.min(11 + clusterSize, 14)}px sans-serif`;
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText(String(clusterSize), x, timelineY);
-        }
-
-        // Glow for high impact
-        if (maxImpactEvent.impact >= 4) {
-          ctx.shadowColor = color;
-          ctx.shadowBlur = 15;
-          ctx.fillStyle = color;
-          ctx.globalAlpha = 0.2;
-          ctx.beginPath();
-          ctx.arc(x, timelineY, radius + 8, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.globalAlpha = 1;
-          ctx.shadowBlur = 0;
-        }
-
-        // Label (first event title + count if >1)
-        const labelY = isAbove ? timelineY - 75 : timelineY + 90;
-        ctx.font = 'bold 11px sans-serif';
-        ctx.fillStyle = '#f9fafb';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'alphabetic';
-        const labelText = clusterSize > 1 ? `${maxImpactEvent.title} +${clusterSize - 1}` : maxImpactEvent.title;
-        ctx.fillText(labelText, x, labelY);
-
-        // Date range label
-        ctx.font = '10px sans-serif';
-        ctx.fillStyle = '#9ca3af';
         const dates = cluster.events.map(e => new Date(e.date));
         const minDate = new Date(Math.min(...dates.map(d => d.getTime())));
         const maxDate = new Date(Math.max(...dates.map(d => d.getTime())));
-        const dateStr = clusterSize > 1
+        const dateStr = cluster.events.length > 1
           ? `${minDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${maxDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
           : minDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        ctx.fillText(dateStr, x, isAbove ? labelY - 14 : labelY + 14);
+        labelItems.push({
+          x,
+          text: cluster.events.length > 1 ? `${maxImpactEvent.title} +${cluster.events.length - 1}` : maxImpactEvent.title,
+          dateText: dateStr,
+          color: CATEGORY_COLORS[maxImpactEvent.category] || '#888',
+          radius: 6 + Math.min(cluster.events.length * 2, 10),
+          eventX: x,
+          isCluster: true,
+          clusterSize: cluster.events.length,
+          impact: maxImpactEvent.impact,
+        });
       });
     } else {
-      // No clustering — show individual events
-      sortedEvents.forEach((event, index) => {
+      sortedEvents.forEach(event => {
         const eventTime = new Date(event.date).getTime();
         const x = timeToX(eventTime, width, view.startTime, view.endTime);
-
-        if (x < -50 || x > width + 50) return;
-
-        const isAbove = index % 2 === 0;
-        const color = CATEGORY_COLORS[event.category] || '#888';
-        const radius = 4 + event.impact * 1.5;
-
-        // Connection line
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 1.5;
-        ctx.globalAlpha = 0.6;
-        ctx.beginPath();
-        ctx.moveTo(x, timelineY);
-        ctx.lineTo(x, isAbove ? timelineY - 60 : timelineY + 60);
-        ctx.stroke();
-        ctx.globalAlpha = 1;
-
-        // Event dot
-        ctx.fillStyle = color;
-        ctx.beginPath();
-        ctx.arc(x, timelineY, radius, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.strokeStyle = '#fff';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // Glow effect for high impact
-        if (event.impact >= 4) {
-          ctx.shadowColor = color;
-          ctx.shadowBlur = 15;
-          ctx.fillStyle = color;
-          ctx.globalAlpha = 0.3;
-          ctx.beginPath();
-          ctx.arc(x, timelineY, radius + 6, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.globalAlpha = 1;
-          ctx.shadowBlur = 0;
-        }
-
-        // Event label
-        const labelY = isAbove ? timelineY - 80 : timelineY + 95;
-        ctx.font = 'bold 11px sans-serif';
-        ctx.fillStyle = '#f9fafb';
-        ctx.textAlign = 'center';
-        ctx.fillText(event.title, x, labelY);
-
-        // Date label
-        ctx.font = '10px sans-serif';
-        ctx.fillStyle = '#9ca3af';
-        const dateStr = new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        ctx.fillText(dateStr, x, isAbove ? labelY - 14 : labelY + 14);
+        if (x < -100 || x > width + 100) return;
+        labelItems.push({
+          x,
+          text: event.title,
+          dateText: new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+          color: CATEGORY_COLORS[event.category] || '#888',
+          radius: 4 + event.impact * 1.5,
+          eventX: x,
+          isCluster: false,
+          clusterSize: 1,
+          impact: event.impact,
+        });
       });
     }
+
+    // Compute smart label layout
+    const layouts = computeLabelLayout(ctx, labelItems, timelineY);
+
+    // Draw connection lines first (behind dots)
+    layouts.forEach(layout => {
+      const { item, level, isAbove } = layout;
+      const stemLength = 35 + level * 22;
+      const endY = isAbove ? timelineY - stemLength : timelineY + stemLength;
+      ctx.strokeStyle = item.color;
+      ctx.lineWidth = 1.5;
+      ctx.globalAlpha = 0.5;
+      ctx.beginPath();
+      ctx.moveTo(item.eventX, timelineY);
+      ctx.lineTo(item.x, endY);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    });
+
+    // Draw event dots
+    layouts.forEach(layout => {
+      const { item } = layout;
+      ctx.fillStyle = item.color;
+      ctx.beginPath();
+      ctx.arc(item.eventX, timelineY, item.radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Glow for high impact
+      if (item.impact >= 4) {
+        ctx.shadowColor = item.color;
+        ctx.shadowBlur = 15;
+        ctx.fillStyle = item.color;
+        ctx.globalAlpha = item.isCluster ? 0.2 : 0.3;
+        ctx.beginPath();
+        ctx.arc(item.eventX, timelineY, item.radius + (item.isCluster ? 8 : 6), 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        ctx.shadowBlur = 0;
+      }
+
+      // Cluster count badge
+      if (item.isCluster && item.clusterSize > 1) {
+        ctx.fillStyle = '#fff';
+        ctx.font = `bold ${Math.min(11 + item.clusterSize, 14)}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(String(item.clusterSize), item.eventX, timelineY);
+      }
+    });
+
+    // Draw labels on top
+    layouts.forEach(layout => {
+      const { item, level, isAbove } = layout;
+      const lineHeight = 22;
+      const labelY = isAbove
+        ? timelineY - (35 + level * 22) - 8
+        : timelineY + (35 + level * 22) + 14;
+
+      // Title
+      ctx.font = 'bold 11px sans-serif';
+      ctx.fillStyle = '#f9fafb';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = isAbove ? 'bottom' : 'top';
+      ctx.fillText(item.text, item.x, labelY);
+
+      // Date
+      ctx.font = '10px sans-serif';
+      ctx.fillStyle = '#9ca3af';
+      const dateY = isAbove ? labelY - 14 : labelY + 14;
+      ctx.fillText(item.dateText, item.x, dateY);
+    });
 
     // ── Crosshair ──
     if (crosshair) {
