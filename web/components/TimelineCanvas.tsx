@@ -361,7 +361,7 @@ function computeLabelLayout(
   timelineY: number,
   labelFont: string = 'bold 11px sans-serif',
   dateFont: string = '10px sans-serif',
-  minGap: number = 12
+  minGap: number = 20
 ): LabelLayout[] {
   if (items.length === 0) return [];
 
@@ -523,7 +523,7 @@ function computeLabelLayout(
     // Draw connection lines first (behind dots)
     layouts.forEach(layout => {
       const { item, level, isAbove } = layout;
-      const stemLength = 35 + level * 22;
+      const stemLength = 38 + level * 32;
       const endY = isAbove ? timelineY - stemLength : timelineY + stemLength;
       ctx.strokeStyle = item.color;
       ctx.lineWidth = 1.5;
@@ -569,13 +569,15 @@ function computeLabelLayout(
       }
     });
 
-    // Draw labels on top
+    // Draw labels on top (skip if would go off-canvas)
     layouts.forEach(layout => {
       const { item, level, isAbove } = layout;
-      const lineHeight = 22;
       const labelY = isAbove
-        ? timelineY - (35 + level * 22) - 8
-        : timelineY + (35 + level * 22) + 14;
+        ? timelineY - (38 + level * 32) - 8
+        : timelineY + (38 + level * 32) + 14;
+
+      // Skip if label would be clipped
+      if (labelY < 18 || labelY > height - 18) return;
 
       // Title
       ctx.font = 'bold 11px sans-serif';
@@ -585,10 +587,12 @@ function computeLabelLayout(
       ctx.fillText(item.text, item.x, labelY);
 
       // Date
-      ctx.font = '10px sans-serif';
-      ctx.fillStyle = '#9ca3af';
       const dateY = isAbove ? labelY - 14 : labelY + 14;
-      ctx.fillText(item.dateText, item.x, dateY);
+      if (dateY >= 12 && dateY <= height - 12) {
+        ctx.font = '10px sans-serif';
+        ctx.fillStyle = '#9ca3af';
+        ctx.fillText(item.dateText, item.x, dateY);
+      }
     });
 
     // ── Crosshair ──
