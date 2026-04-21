@@ -25,7 +25,7 @@
     "title": "Released Qwen Technical Report and Open-Sourced Model Series",
     "description": "Alibaba Cloud open-sourced models in multiple sizes including Qwen-72B, 14B, 7B, and 1.8B, and released a detailed technical report. The 72B version performed excellently on multiple benchmarks and quickly gained attention from the developer community.",
     "category": "research",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2023-12-01",
@@ -46,7 +46,7 @@
     "title": "Released and Open-Sourced Qwen2 Series",
     "description": "Qwen2 was released, including models up to 72B parameters, claimed to surpass Meta's Llama 3 on tasks such as mathematics and coding. The 72B model uses a custom license, while smaller models are under Apache 2.0.",
     "category": "product",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2024-08-08",
@@ -88,7 +88,7 @@
     "title": "Released QwQ Open-Source Reasoning Model",
     "description": "QwQ is Alibaba's first open-source reasoning model, surpassing OpenAI's o1-preview on the MATH benchmark. The model demonstrates the rapid catch-up of Chinese large models in deep reasoning capabilities.",
     "category": "product",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2024-12-24",

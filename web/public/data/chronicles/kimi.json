@@ -4,7 +4,7 @@
     "title": "Moonshot AI Founded in Beijing",
     "description": "Founded by three Tsinghua alumni—Yang Zhilin, Zhou Xinyu, and Wu Yuxin—the company's name was inspired by Pink Floyd's album *The Dark Side of the Moon*. Core founding team members came from world-class AI labs including Google Brain and Meta AI, with the goal of building foundational models for artificial general intelligence (AGI).",
     "category": "milestone",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2023-06-01",
@@ -18,7 +18,7 @@
     "title": "Released First AI Chatbot Kimi Chat",
     "description": "Kimi supports processing up to 200,000 Chinese characters in a single conversation, quickly becoming the strongest competitor to Baidu's Ernie Bot. The product name derives from founder Yang Zhilin's English nickname.",
     "category": "product",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2024-02-01",
@@ -95,7 +95,7 @@
     "title": "Open-Sourced Kimi K2 Large Model",
     "description": "Kimi K2 adopts a Mixture-of-Experts (MoE) architecture with 1 trillion total parameters and 32 billion active parameters, trained on 15.5 trillion tokens. The model was open-sourced under a modified MIT license and topped Hugging Face download charts on its first day.",
     "category": "product",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2025-09-09",

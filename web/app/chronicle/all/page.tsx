@@ -33,12 +33,13 @@ const IMPACT_LABELS: Record<number, string> = {
   3: "Significant",
   4: "Major",
   5: "Historic",
+  6: "Singularity",
 };
 
 export default function AllChroniclePage() {
   const [events, setEvents] = useState<TimelineEvent[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedImpacts, setSelectedImpacts] = useState<number[]>([3, 4, 5]);
+  const [selectedImpacts, setSelectedImpacts] = useState<number[]>([4, 5, 6]);
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>(
     COMPANIES.map((c) => c.key)
   );
@@ -80,7 +81,7 @@ export default function AllChroniclePage() {
   // Compute stats
   const stats = useMemo(() => {
     const byCompany: Record<string, number> = {};
-    const byImpact: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    const byImpact: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
     filteredEvents.forEach((ev) => {
       byCompany[ev.company] = (byCompany[ev.company] || 0) + 1;
       byImpact[ev.impact]++;
@@ -152,7 +153,7 @@ export default function AllChroniclePage() {
               Impact Levels
             </label>
             <div className="flex flex-wrap gap-2">
-              {[5, 4, 3, 2, 1].map((impact) => {
+              {[6, 5, 4, 3, 2, 1].map((impact) => {
                 const isSelected = selectedImpacts.includes(impact);
                 const count = stats.byImpact[impact] || 0;
                 return (
@@ -168,7 +169,9 @@ export default function AllChroniclePage() {
                       isSelected
                         ? {
                             backgroundColor:
-                              impact === 5
+                              impact === 6
+                                ? "rgba(255,215,0,0.15)"
+                                : impact === 5
                                 ? "rgba(245,158,11,0.15)"
                                 : impact === 4
                                 ? "rgba(239,68,68,0.15)"
@@ -178,7 +181,9 @@ export default function AllChroniclePage() {
                                 ? "rgba(6,182,212,0.15)"
                                 : "rgba(148,163,184,0.15)",
                             borderColor:
-                              impact === 5
+                              impact === 6
+                                ? "rgba(255,215,0,0.4)"
+                                : impact === 5
                                 ? "rgba(245,158,11,0.4)"
                                 : impact === 4
                                 ? "rgba(239,68,68,0.4)"
@@ -188,7 +193,9 @@ export default function AllChroniclePage() {
                                 ? "rgba(6,182,212,0.4)"
                                 : "rgba(148,163,184,0.4)",
                             color:
-                              impact === 5
+                              impact === 6
+                                ? "#FFD700"
+                                : impact === 5
                                 ? "#F59E0B"
                                 : impact === 4
                                 ? "#EF4444"
@@ -274,8 +281,8 @@ export default function AllChroniclePage() {
         <h2 className="text-lg font-semibold text-slate-300 mb-3">
           Impact Distribution
         </h2>
-        <div className="grid grid-cols-5 gap-3">
-          {[5, 4, 3, 2, 1].map((impact) => (
+        <div className="grid grid-cols-6 gap-3">
+          {[6, 5, 4, 3, 2, 1].map((impact) => (
             <div
               key={impact}
               className="bg-slate-900/50 border border-slate-800 rounded-xl p-3 text-center"

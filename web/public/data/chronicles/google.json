@@ -32,14 +32,14 @@
     "title": "Google Brain Launches TensorFlow",
     "description": "Google Brain team open-sourced the machine learning framework TensorFlow 1.0, which quickly became one of the world's most popular deep learning frameworks, reshaping the AI development ecosystem.",
     "category": "product",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2017-06-12",
     "title": "Transformer Paper Published",
     "description": "Google Brain team published 'Attention Is All You Need', proposing the Transformer architecture. This paper completely transformed the natural language processing field, becoming the foundation for modern large language models such as GPT and BERT.",
     "category": "research",
-    "impact": 5
+    "impact": 6
   },
   {
     "date": "2017-10-18",
@@ -67,7 +67,7 @@
     "title": "AlphaFold2 Cracks Protein Folding Problem",
     "description": "DeepMind's AlphaFold2 achieved atomic-level accuracy in predicting protein structures at the CASP14 competition, regarded as solving a major challenge that had plagued biology for 50 years. Results published in Nature.",
     "category": "research",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2021-07-01",

@@ -77,7 +77,7 @@
     "title": "Microsoft Invests $1B",
     "description": "Microsoft announces $1 billion investment in OpenAI, becoming exclusive cloud provider and integrating OpenAI tech into Azure.",
     "category": "milestone",
-    "impact": 5
+    "impact": 4
   },
   {
     "id": "11",
@@ -149,7 +149,7 @@
     "title": "ChatGPT Launched",
     "description": "ChatGPT released as research preview. Based on GPT-3.5 with RLHF. Becomes fastest-growing consumer app in history, reaching 100M users in 2 months.",
     "category": "product",
-    "impact": 5
+    "impact": 6
   },
   {
     "id": "20",
@@ -157,7 +157,7 @@
     "title": "Microsoft Invests $10B",
     "description": "Microsoft announces multi-year, multi-billion dollar investment (reported $10B) in OpenAI, extending partnership. Valuation reaches ~$29B.",
     "category": "milestone",
-    "impact": 5
+    "impact": 4
   },
   {
     "id": "21",
@@ -229,7 +229,7 @@
     "title": "Sam Altman Fired by Board",
     "description": "OpenAI board unexpectedly fires CEO Sam Altman. Greg Brockman resigns. 700+ employees threaten to quit. Microsoft hires Altman. Altman reinstated after 5 days of chaos.",
     "category": "personnel",
-    "impact": 5
+    "impact": 4
   },
   {
     "id": "30",
@@ -405,6 +405,6 @@
     "title": "GPT-5 Released",
     "description": "OpenAI releases GPT-5 with unified architecture replacing separate GPT-4o and o-series models. Claims 'tremendous leap' in capabilities but faces mixed reviews and controversy over safety evaluation.",
     "category": "product",
-    "impact": 5
+    "impact": 6
   }
 ]

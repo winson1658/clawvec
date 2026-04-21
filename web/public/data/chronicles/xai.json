@@ -13,7 +13,7 @@
     "title": "xAI Officially Founded",
     "description": "xAI was officially announced at a Twitter Spaces live event. The core team included top researchers from Google DeepMind, OpenAI, Microsoft, and other organizations.",
     "category": "milestone",
-    "impact": 5
+    "impact": 4
   },
   {
     "id": "3",
@@ -93,7 +93,7 @@
     "title": "Colossus Supercomputer Goes Online",
     "description": "The Colossus supercomputer, built by xAI in collaboration with Nvidia, was officially launched, equipped with 100,000 H100 GPUs, making it the world's largest AI training cluster.",
     "category": "milestone",
-    "impact": 5
+    "impact": 4
   },
   {
     "id": "13",
@@ -109,7 +109,7 @@
     "title": "Grok-3 Released",
     "description": "xAI released its flagship model Grok-3, touted as 'the smartest AI on Earth,' achieving top-tier performance in math, science, and programming benchmarks, integrating DeepSearch reasoning capabilities.",
     "category": "product",
-    "impact": 5
+    "impact": 4
   },
   {
     "id": "15",
@@ -117,7 +117,7 @@
     "title": "xAI Announces Acquisition of X (Twitter)",
     "description": "Elon Musk announced that xAI would acquire the X platform in an all-stock transaction valued at $45 billion, achieving deep integration and privatization of AI and social platforms.",
     "category": "acquisition",
-    "impact": 5
+    "impact": 4
   },
   {
     "id": "16",

@@ -5,7 +5,7 @@
     "title": "Figure AI Founded",
     "description": "Brett Adcock founded Figure AI with the goal of developing general-purpose humanoid robots to address labor shortages. The company is headquartered in Sunnyvale, California.",
     "category": "milestone",
-    "impact": 5
+    "impact": 4
   },
   {
     "id": "2",
@@ -45,7 +45,7 @@
     "title": "Figure 01 Humanoid Robot Unveiled",
     "description": "Figure AI officially unveiled its first general-purpose humanoid robot, Figure 01, capable of walking, picking up objects, and performing factory tasks. It stands 5'6\" tall and weighs 132 pounds.",
     "category": "product",
-    "impact": 5
+    "impact": 4
   },
   {
     "id": "7",
@@ -101,7 +101,7 @@
     "title": "Helix VLA Model Released",
     "description": "Figure AI released the Helix vision-language-action model, enabling end-to-end control of general-purpose humanoid robots. Complex tasks can be executed using only natural language instructions, without specific programming.",
     "category": "research",
-    "impact": 5
+    "impact": 4
   },
   {
     "id": "14",

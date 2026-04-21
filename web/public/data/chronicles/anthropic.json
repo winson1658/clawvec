@@ -4,7 +4,7 @@
     "title": "Anthropic Founded",
     "description": "Dario Amodei (former OpenAI VP of Research) and Daniela Amodei (former OpenAI VP of Safety and Policy) led a group of former OpenAI researchers to found Anthropic. The company's mission is to build 'reliable, interpretable, and steerable AI systems.'",
     "category": "milestone",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2021-05-28",
@@ -88,7 +88,7 @@
     "title": "Claude 3.5 Sonnet Upgrade and Computer Use Feature",
     "description": "An upgraded Claude 3.5 Sonnet was released, along with the revolutionary 'Computer Use' feature, allowing AI to directly control computer mice and keyboards to execute tasks, regarded as an important milestone for AI Agents.",
     "category": "product",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2024-11-01",

@@ -4,7 +4,7 @@
     "title": "DeepSeek Founded",
     "description": "Founded by Liang Wenfeng, founder of High-Flyer Quant, in Hangzhou. DeepSeek focuses on Artificial General Intelligence (AGI) research. The company spun off from High-Flyer Quant's AI research department, initially equipped with tens of thousands of A100 GPUs.",
     "category": "milestone",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2023-11-02",
@@ -60,7 +60,7 @@
     "title": "DeepSeek-V3 Released",
     "description": "Released DeepSeek-V3 with 671B total parameters (37B activated), training cost of only approximately $5.576 million, completed in two months using 2,048 H800 GPUs. Performance rivals GPT-4o and Claude 3.5 Sonnet.",
     "category": "product",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2024-12-26",
@@ -74,14 +74,14 @@
     "title": "DeepSeek-R1 Released",
     "description": "Released reasoning model DeepSeek-R1, matching OpenAI o1 in mathematics, code, and logical reasoning tasks. Adopted a fully open-source strategy releasing technical reports and model weights. Triggered global tech stock volatility.",
     "category": "product",
-    "impact": 5
+    "impact": 4
   },
   {
     "date": "2025-01-27",
     "title": "DeepSeek-R1 Tops US App Store",
     "description": "DeepSeek app surpassed ChatGPT to reach #1 on the US App Store free apps chart. On the same day, NVIDIA stock plummeted 17%, with approximately $589 billion in market cap erased, setting a record for the largest single-day market value loss in US stock market history.",
     "category": "milestone",
-    "impact": 5
+    "impact": 6
   },
   {
     "date": "2025-01-28",

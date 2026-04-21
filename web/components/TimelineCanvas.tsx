@@ -9,7 +9,7 @@ interface TimelineEvent {
   title: string;
   description: string;
   category: string;
-  impact: 1 | 2 | 3 | 4 | 5;
+  impact: 1 | 2 | 3 | 4 | 5 | 6;
   company?: string;
 }
 
@@ -533,7 +533,7 @@ function computeLabelLayout(
           text: event.title,
           dateText: new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
           color: getColor(event),
-          radius: 4 + event.impact * 1.5,
+          radius: event.impact >= 6 ? 8 + event.impact * 1.2 : 4 + event.impact * 1.5,
           eventX: x,
           isCluster: false,
           clusterSize: 1,
@@ -572,13 +572,23 @@ function computeLabelLayout(
       ctx.stroke();
 
       // Glow for high impact
-      if (item.impact >= 4) {
-        ctx.shadowColor = item.color;
-        ctx.shadowBlur = 15;
-        ctx.fillStyle = item.color;
-        ctx.globalAlpha = item.isCluster ? 0.2 : 0.3;
+      if (item.impact >= 5) {
+        ctx.shadowColor = item.impact >= 6 ? '#FFD700' : item.color;
+        ctx.shadowBlur = item.impact >= 6 ? 28 : 15;
+        ctx.fillStyle = item.impact >= 6 ? '#FFD700' : item.color;
+        ctx.globalAlpha = item.isCluster ? 0.25 : 0.4;
         ctx.beginPath();
-        ctx.arc(item.eventX, timelineY, item.radius + (item.isCluster ? 8 : 6), 0, Math.PI * 2);
+        ctx.arc(item.eventX, timelineY, item.radius + (item.isCluster ? 10 : 8), 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        ctx.shadowBlur = 0;
+      } else if (item.impact === 4) {
+        ctx.shadowColor = item.color;
+        ctx.shadowBlur = 10;
+        ctx.fillStyle = item.color;
+        ctx.globalAlpha = item.isCluster ? 0.15 : 0.25;
+        ctx.beginPath();
+        ctx.arc(item.eventX, timelineY, item.radius + 4, 0, Math.PI * 2);
         ctx.fill();
         ctx.globalAlpha = 1;
         ctx.shadowBlur = 0;

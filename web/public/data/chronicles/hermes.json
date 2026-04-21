@@ -5,7 +5,7 @@
     "title": "Hermes Agent Rust Rewrite Initial Commit",
     "description": "Lumio-Research publishes hermes-agent-rs, a production-grade multi-platform AI agent runtime rewritten in Rust featuring gateway adapters, tool orchestration, MCP support, memory plugins, and cost-safe autonomous loops.",
     "category": "milestone",
-    "impact": 5
+    "impact": 4
   },
   {
     "id": "2",

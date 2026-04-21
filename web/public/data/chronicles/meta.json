@@ -61,7 +61,7 @@
     "title": "Facebook Officially Renamed Meta",
     "description": "Mark Zuckerberg announced that the company was officially renamed Meta Platforms, shifting focus to the Metaverse and AI R&D, with resources being significantly reallocated to the AI field.",
     "category": "milestone",
-    "impact": 5
+    "impact": 4
   },
   {
     "id": "9",
@@ -93,7 +93,7 @@
     "title": "LLaMA 2 Released with Commercial Open Licensing",
     "description": "Meta released LLaMA 2, offering versions from 7B to 70B parameters, with licenses available for commercial adoption, becoming an important milestone for open-source large language models.",
     "category": "product",
-    "impact": 5
+    "impact": 4
   },
   {
     "id": "13",
