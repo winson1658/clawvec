@@ -329,13 +329,43 @@ export default function TimelineCanvas({
       ctx.setLineDash([]);
     });
 
-    // Draw main timeline axis
+    // Pre-compute singularity x positions for timeline break
+    const singularityXs = sortedEvents
+      .filter(e => e.impact >= 6)
+      .map(e => timeToX(new Date(e.date).getTime(), width, view.startTime, view.endTime))
+      .filter(x => x >= -50 && x <= width + 50)
+      .sort((a, b) => a - b);
+
+    // Draw main timeline axis — broken at singularity points
     ctx.strokeStyle = 'rgba(139, 92, 246, 0.3)';
     ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(0, timelineY);
-    ctx.lineTo(width, timelineY);
-    ctx.stroke();
+
+    if (singularityXs.length === 0) {
+      ctx.beginPath();
+      ctx.moveTo(0, timelineY);
+      ctx.lineTo(width, timelineY);
+      ctx.stroke();
+    } else {
+      // Draw timeline segments, skipping singularity zones
+      let currentX = 0;
+      const gapRadius = 24;
+
+      for (const sx of singularityXs) {
+        if (sx - gapRadius > currentX) {
+          ctx.beginPath();
+          ctx.moveTo(currentX, timelineY);
+          ctx.lineTo(sx - gapRadius, timelineY);
+          ctx.stroke();
+        }
+        currentX = sx + gapRadius;
+      }
+      if (currentX < width) {
+        ctx.beginPath();
+        ctx.moveTo(currentX, timelineY);
+        ctx.lineTo(width, timelineY);
+        ctx.stroke();
+      }
+    }
 
     // Tick labels
     ticks.forEach(tick => {
@@ -549,118 +579,67 @@ function computeLabelLayout(
     const singularityLayouts = layouts.filter(l => l.item.impact >= 6);
     const normalLayouts = layouts.filter(l => l.item.impact < 6);
 
-    // ── Singularity: Impact Crater ──
-    // 6⭐ events are not points — they are explosive ruptures in the timeline itself
+    // ── Singularity: Obelisk ──
+    // 6⭐ events pierce the timeline like a blade — pure white solid geometry on dark canvas
     if (singularityLayouts.length > 0) {
       singularityLayouts.forEach(layout => {
         const { item } = layout;
         const cx = item.eventX;
         const cy = timelineY;
-        const craterRadius = 36;
 
-        // Crater background: radial gradient burst
-        const burstGrad = ctx.createRadialGradient(cx, cy, 2, cx, cy, craterRadius);
-        burstGrad.addColorStop(0, 'rgba(255, 215, 0, 0.25)');
-        burstGrad.addColorStop(0.4, 'rgba(255, 215, 0, 0.08)');
-        burstGrad.addColorStop(1, 'rgba(255, 215, 0, 0)');
-        ctx.fillStyle = burstGrad;
+        // Dimensions
+        const obeliskW = 6;
+        const obeliskH = 130;
+        const topY = cy - obeliskH;
+
+        // Solid white obelisk body (the blade that cuts through time)
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(cx - obeliskW / 2, topY, obeliskW, obeliskH);
+
+        // Sharp tip: triangle on top
         ctx.beginPath();
-        ctx.arc(cx, cy, craterRadius, 0, Math.PI * 2);
+        ctx.moveTo(cx - obeliskW / 2 - 2, topY);
+        ctx.lineTo(cx + obeliskW / 2 + 2, topY);
+        ctx.lineTo(cx, topY - 10);
+        ctx.closePath();
+        ctx.fillStyle = '#ffffff';
         ctx.fill();
 
-        // Radiating fracture lines (from center outward)
-        const rayCount = 16;
-        for (let i = 0; i < rayCount; i++) {
-          const angle = (Math.PI * 2 / rayCount) * i;
-          const innerR = 6;
-          const outerR = craterRadius - 4;
-          ctx.strokeStyle = `rgba(255, 215, 0, ${0.15 + 0.1 * Math.random()})`;
-          ctx.lineWidth = 1;
+        // Dark inner groove (negative space for contrast)
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(cx - 1, topY + 20, 2, obeliskH - 20);
+
+        // Scorch marks at base: jagged dark lines where timeline was severed
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 2;
+        for (let i = 0; i < 5; i++) {
+          const side = i % 2 === 0 ? -1 : 1;
+          const startX = cx + side * (obeliskW / 2 + 2);
+          const startY = cy;
           ctx.beginPath();
-          ctx.moveTo(cx + Math.cos(angle) * innerR, cy + Math.sin(angle) * innerR);
-          ctx.lineTo(cx + Math.cos(angle) * outerR, cy + Math.sin(angle) * outerR);
+          ctx.moveTo(startX, startY);
+          ctx.lineTo(startX + side * (4 + i * 2), startY - (3 + i));
           ctx.stroke();
         }
 
-        // Timeline break: the axis line is severed at the singularity
-        // Draw glowing "wound" on timeline
-        ctx.strokeStyle = 'rgba(255, 215, 0, 0.6)';
-        ctx.lineWidth = 4;
-        ctx.beginPath();
-        ctx.moveTo(cx - 10, cy);
-        ctx.lineTo(cx + 10, cy);
-        ctx.stroke();
+        // Label: title inside the obelisk (rotated or stacked)
+        if (topY + 40 < cy - 10) {
+          ctx.save();
+          ctx.translate(cx, topY + 45);
+          ctx.rotate(-Math.PI / 2);
+          ctx.font = 'bold 11px sans-serif';
+          ctx.fillStyle = '#0f172a';
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(item.text, 0, 0);
+          ctx.restore();
 
-        // Core: solid diamond at center
-        const coreSize = 7;
-        ctx.beginPath();
-        ctx.moveTo(cx, cy - coreSize);
-        ctx.lineTo(cx + coreSize, cy);
-        ctx.lineTo(cx, cy + coreSize);
-        ctx.lineTo(cx - coreSize, cy);
-        ctx.closePath();
-        ctx.fillStyle = '#FFD700';
-        ctx.fill();
-        ctx.strokeStyle = '#fff';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // Inner core glow
-        ctx.shadowColor = '#FFD700';
-        ctx.shadowBlur = 20;
-        ctx.fillStyle = '#FFD700';
-        ctx.globalAlpha = 0.4;
-        ctx.beginPath();
-        ctx.arc(cx, cy, coreSize + 4, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.globalAlpha = 1;
-        ctx.shadowBlur = 0;
-
-        // Vertical monument pillar rising from the crater
-        const pillarTopY = cy - 95;
-        const pillarGrad = ctx.createLinearGradient(cx, cy, cx, pillarTopY);
-        pillarGrad.addColorStop(0, 'rgba(255, 215, 0, 0.4)');
-        pillarGrad.addColorStop(0.5, 'rgba(255, 215, 0, 0.15)');
-        pillarGrad.addColorStop(1, 'rgba(255, 215, 0, 0.03)');
-        ctx.strokeStyle = pillarGrad;
-        ctx.lineWidth = 5;
-        ctx.beginPath();
-        ctx.moveTo(cx, cy - coreSize);
-        ctx.lineTo(cx, pillarTopY);
-        ctx.stroke();
-
-        // Label: bold title on a dark pill background
-        const labelY = pillarTopY - 12;
-        if (labelY >= 22) {
-          ctx.font = 'bold 12px sans-serif';
-          const titleWidth = ctx.measureText(item.text).width;
-          const dateWidth = ctx.measureText(item.dateText).width;
-          const maxW = Math.max(titleWidth, dateWidth);
-          const pillPad = 10;
-          const pillW = maxW + pillPad * 2;
-          const pillH = 36;
-          const pillX = cx - pillW / 2;
-          const pillY = labelY - pillH + 6;
-
-          // Pill background
-          ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
-          ctx.beginPath();
-          ctx.roundRect(pillX, pillY, pillW, pillH, 8);
-          ctx.fill();
-          ctx.strokeStyle = 'rgba(255, 215, 0, 0.4)';
-          ctx.lineWidth = 1.5;
-          ctx.stroke();
-
-          // Title
-          ctx.fillStyle = '#FFD700';
+          // Date above obelisk
+          ctx.font = 'bold 10px sans-serif';
+          ctx.fillStyle = '#ffffff';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'bottom';
-          ctx.fillText(item.text, cx, labelY + 2);
-
-          // Date
-          ctx.font = '10px sans-serif';
-          ctx.fillStyle = 'rgba(255, 215, 0, 0.5)';
-          ctx.fillText(item.dateText, cx, labelY - 12);
+          ctx.fillText(item.dateText, cx, topY - 14);
         }
       });
     }
