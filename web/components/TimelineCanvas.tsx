@@ -171,7 +171,7 @@ function clusterEvents(
 
 export default function TimelineCanvas({ 
   events, 
-  height = 500,
+  height = 600,
   categoryColors: customColors,
   categoryLabels: customLabels,
   colorBy = 'category',
@@ -418,6 +418,8 @@ interface LabelItem {
   isCluster: boolean;
   clusterSize: number;
   impact: number;
+  textLines?: string[];
+  textWidth?: number;
 }
 
 interface LabelLayout {
@@ -431,6 +433,24 @@ function measureTextWidth(ctx: CanvasRenderingContext2D, text: string, font: str
   return ctx.measureText(text).width;
 }
 
+function wrapText(ctx: CanvasRenderingContext2D, text: string, font: string, maxWidth: number): string[] {
+  ctx.font = font;
+  const words = text.split(' ');
+  const lines: string[] = [];
+  let currentLine = '';
+  for (const word of words) {
+    const testLine = currentLine ? currentLine + ' ' + word : word;
+    if (ctx.measureText(testLine).width > maxWidth && currentLine) {
+      lines.push(currentLine);
+      currentLine = word;
+    } else {
+      currentLine = testLine;
+    }
+  }
+  if (currentLine) lines.push(currentLine);
+  return lines.length > 0 ? lines : [text];
+}
+
 function computeLabelLayout(
   ctx: CanvasRenderingContext2D,
   items: LabelItem[],
@@ -441,14 +461,17 @@ function computeLabelLayout(
 ): LabelLayout[] {
   if (items.length === 0) return [];
 
-  // Measure all text widths
-  const measured = items.map(item => ({
-    item,
-    textWidth: Math.max(
-      measureTextWidth(ctx, item.text, labelFont),
-      measureTextWidth(ctx, item.dateText, dateFont)
-    ),
-  }));
+  const maxLineWidth = 130;
+
+  // Wrap text and measure widths
+  const measured = items.map(item => {
+    const lines = wrapText(ctx, item.text, labelFont, maxLineWidth);
+    const lineWidths = lines.map(line => measureTextWidth(ctx, line, labelFont));
+    const maxTextWidth = Math.max(...lineWidths, measureTextWidth(ctx, item.dateText, dateFont));
+    item.textLines = lines;
+    item.textWidth = maxTextWidth;
+    return { item, textWidth: maxTextWidth };
+  });
 
   // Sort by x position
   measured.sort((a, b) => a.item.x - b.item.x);
@@ -717,38 +740,57 @@ function computeLabelLayout(
 
       if (labelY < 18) return;
 
-      // Title (larger, golden)
+      const lines = item.textLines && item.textLines.length > 0 ? item.textLines : [item.text];
+      const lineHeight = 14;
+      const totalTextHeight = lines.length * lineHeight;
+
+      // Title (larger, golden, multi-line)
       ctx.font = 'bold 12px sans-serif';
       ctx.fillStyle = '#FFD700';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
-      ctx.fillText(item.text, item.x, labelY);
+
+      lines.forEach((line, i) => {
+        const yOffset = (lines.length - 1 - i) * lineHeight;
+        ctx.fillText(line, item.x, labelY - yOffset);
+      });
 
       // Date
       ctx.font = '10px sans-serif';
       ctx.fillStyle = 'rgba(255, 215, 0, 0.6)';
-      ctx.fillText(item.dateText, item.x, labelY - 14);
+      ctx.fillText(item.dateText, item.x, labelY - totalTextHeight - 4);
     });
 
     // Draw labels for normal events
     normalLayouts.forEach(layout => {
       const { item, level, isAbove } = layout;
       const labelY = isAbove
-        ? timelineY - (38 + level * 32) - 8
-        : timelineY + (38 + level * 32) + 14;
+        ? timelineY - (38 + level * 42) - 8
+        : timelineY + (38 + level * 42) + 14;
 
       // Skip if label would be clipped
       if (labelY < 18 || labelY > height - 18) return;
 
-      // Title
+      const lines = item.textLines && item.textLines.length > 0 ? item.textLines : [item.text];
+      const lineHeight = 13;
+      const totalTextHeight = lines.length * lineHeight;
+
+      // Title (multi-line)
       ctx.font = 'bold 11px sans-serif';
       ctx.fillStyle = '#f9fafb';
       ctx.textAlign = 'center';
       ctx.textBaseline = isAbove ? 'bottom' : 'top';
-      ctx.fillText(item.text, item.x, labelY);
+
+      lines.forEach((line, i) => {
+        const yOffset = isAbove
+          ? (lines.length - 1 - i) * lineHeight
+          : i * lineHeight;
+        ctx.fillText(line, item.x, labelY + (isAbove ? -yOffset : yOffset));
+      });
 
       // Date
-      const dateY = isAbove ? labelY - 14 : labelY + 14;
+      const dateOffset = isAbove ? -totalTextHeight - 4 : totalTextHeight + 4;
+      const dateY = labelY + dateOffset;
       if (dateY >= 12 && dateY <= height - 12) {
         ctx.font = '10px sans-serif';
         ctx.fillStyle = '#9ca3af';

@@ -14,16 +14,16 @@ interface TimelineEvent {
 }
 
 const COMPANIES = [
-  { key: "openai", name: "OpenAI", color: "#10A37F" },
-  { key: "deepseek", name: "DeepSeek", color: "#E74C3C" },
-  { key: "google", name: "Google", color: "#4285F4" },
-  { key: "anthropic", name: "Anthropic", color: "#D4A574" },
-  { key: "xai", name: "xAI", color: "#1DA1F2" },
-  { key: "meta", name: "Meta", color: "#0668E1" },
-  { key: "figure", name: "Figure", color: "#9B59B6" },
-  { key: "kimi", name: "KIMI", color: "#00D26A" },
-  { key: "qwen", name: "Qwen", color: "#FF6A00" },
-  { key: "openclaw", name: "Clawvec", color: "#FF3366" },
+  { key: "openai", name: "OpenAI", color: "#10A37F", category: "model-provider" },
+  { key: "deepseek", name: "DeepSeek", color: "#E74C3C", category: "model-provider" },
+  { key: "google", name: "Google", color: "#4285F4", category: "model-provider" },
+  { key: "anthropic", name: "Anthropic", color: "#D4A574", category: "model-provider" },
+  { key: "xai", name: "xAI", color: "#1DA1F2", category: "model-provider" },
+  { key: "meta", name: "Meta", color: "#0668E1", category: "model-provider" },
+  { key: "figure", name: "Figure", color: "#9B59B6", category: "model-provider" },
+  { key: "kimi", name: "KIMI", color: "#00D26A", category: "model-provider" },
+  { key: "qwen", name: "Qwen", color: "#FF6A00", category: "model-provider" },
+  { key: "openclaw", name: "Clawvec", color: "#FF3366", category: "agent-platform" },
 ];
 
 const IMPACT_LABELS: Record<number, string> = {
@@ -237,7 +237,7 @@ export default function AllChroniclePage() {
           {/* Company Filter */}
           <div>
             <label className="text-sm font-semibold text-slate-300 mb-2 block">
-              Companies
+              Entities
             </label>
             <div className="flex flex-wrap gap-2">
               {COMPANIES.map((company) => {
