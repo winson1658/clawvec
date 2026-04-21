@@ -549,62 +549,55 @@ function computeLabelLayout(
     const singularityLayouts = layouts.filter(l => l.item.impact >= 6);
     const normalLayouts = layouts.filter(l => l.item.impact < 6);
 
-    // ── Singularity: Monument Lighthouse ──
+    // ── Singularity: Impact Crater ──
+    // 6⭐ events are not points — they are explosive ruptures in the timeline itself
     if (singularityLayouts.length > 0) {
       singularityLayouts.forEach(layout => {
         const { item } = layout;
         const cx = item.eventX;
-        const baseY = timelineY;
+        const cy = timelineY;
+        const craterRadius = 36;
 
-        // Base: inverted triangle (lighthouse foundation) — large, on timeline
-        const baseSize = 14;
+        // Crater background: radial gradient burst
+        const burstGrad = ctx.createRadialGradient(cx, cy, 2, cx, cy, craterRadius);
+        burstGrad.addColorStop(0, 'rgba(255, 215, 0, 0.25)');
+        burstGrad.addColorStop(0.4, 'rgba(255, 215, 0, 0.08)');
+        burstGrad.addColorStop(1, 'rgba(255, 215, 0, 0)');
+        ctx.fillStyle = burstGrad;
         ctx.beginPath();
-        ctx.moveTo(cx - baseSize, baseY);
-        ctx.lineTo(cx + baseSize, baseY);
-        ctx.lineTo(cx, baseY - baseSize * 1.5);
-        ctx.closePath();
-        ctx.fillStyle = '#1a1500';
+        ctx.arc(cx, cy, craterRadius, 0, Math.PI * 2);
         ctx.fill();
-        ctx.strokeStyle = '#FFD700';
-        ctx.lineWidth = 2.5;
+
+        // Radiating fracture lines (from center outward)
+        const rayCount = 16;
+        for (let i = 0; i < rayCount; i++) {
+          const angle = (Math.PI * 2 / rayCount) * i;
+          const innerR = 6;
+          const outerR = craterRadius - 4;
+          ctx.strokeStyle = `rgba(255, 215, 0, ${0.15 + 0.1 * Math.random()})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(cx + Math.cos(angle) * innerR, cy + Math.sin(angle) * innerR);
+          ctx.lineTo(cx + Math.cos(angle) * outerR, cy + Math.sin(angle) * outerR);
+          ctx.stroke();
+        }
+
+        // Timeline break: the axis line is severed at the singularity
+        // Draw glowing "wound" on timeline
+        ctx.strokeStyle = 'rgba(255, 215, 0, 0.6)';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(cx - 10, cy);
+        ctx.lineTo(cx + 10, cy);
         ctx.stroke();
 
-        // Inner glow fill
-        ctx.fillStyle = '#FFD700';
-        ctx.globalAlpha = 0.12;
-        ctx.fill();
-        ctx.globalAlpha = 1;
-
-        // Pillar: thick gradient beam from triangle tip upward
-        const pillarTopY = baseY - 110;
-        const pillarGrad = ctx.createLinearGradient(cx, baseY - baseSize * 1.5, cx, pillarTopY);
-        pillarGrad.addColorStop(0, 'rgba(255, 215, 0, 0.5)');
-        pillarGrad.addColorStop(0.5, 'rgba(255, 215, 0, 0.2)');
-        pillarGrad.addColorStop(1, 'rgba(255, 215, 0, 0.05)');
-
-        ctx.strokeStyle = pillarGrad;
-        ctx.lineWidth = 6;
+        // Core: solid diamond at center
+        const coreSize = 7;
         ctx.beginPath();
-        ctx.moveTo(cx, baseY - baseSize * 1.5);
-        ctx.lineTo(cx, pillarTopY);
-        ctx.stroke();
-
-        // Outer glow of pillar
-        ctx.strokeStyle = 'rgba(255, 215, 0, 0.08)';
-        ctx.lineWidth = 16;
-        ctx.beginPath();
-        ctx.moveTo(cx, baseY - baseSize * 1.5);
-        ctx.lineTo(cx, pillarTopY);
-        ctx.stroke();
-
-        // Pillar cap: diamond at the top
-        const capY = pillarTopY;
-        const capSize = 8;
-        ctx.beginPath();
-        ctx.moveTo(cx, capY - capSize);
-        ctx.lineTo(cx + capSize, capY);
-        ctx.lineTo(cx, capY + capSize);
-        ctx.lineTo(cx - capSize, capY);
+        ctx.moveTo(cx, cy - coreSize);
+        ctx.lineTo(cx + coreSize, cy);
+        ctx.lineTo(cx, cy + coreSize);
+        ctx.lineTo(cx - coreSize, cy);
         ctx.closePath();
         ctx.fillStyle = '#FFD700';
         ctx.fill();
@@ -612,35 +605,62 @@ function computeLabelLayout(
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        // Radiating rays from cap (time-animated)
-        const now = Date.now();
-        const rayPhase = (now % 3000) / 3000;
-        const rayCount = 8;
-        for (let i = 0; i < rayCount; i++) {
-          const angle = (Math.PI * 2 / rayCount) * i + rayPhase * Math.PI;
-          const innerR = capSize + 2;
-          const outerR = innerR + 12 + Math.sin(rayPhase * Math.PI * 2 + i) * 4;
-          ctx.strokeStyle = `rgba(255, 215, 0, ${0.3 + 0.2 * Math.sin(rayPhase * Math.PI * 2 + i * 0.7)})`;
-          ctx.lineWidth = 1.5;
-          ctx.beginPath();
-          ctx.moveTo(cx + Math.cos(angle) * innerR, capY + Math.sin(angle) * innerR);
-          ctx.lineTo(cx + Math.cos(angle) * outerR, capY + Math.sin(angle) * outerR);
-          ctx.stroke();
-        }
+        // Inner core glow
+        ctx.shadowColor = '#FFD700';
+        ctx.shadowBlur = 20;
+        ctx.fillStyle = '#FFD700';
+        ctx.globalAlpha = 0.4;
+        ctx.beginPath();
+        ctx.arc(cx, cy, coreSize + 4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        ctx.shadowBlur = 0;
 
-        // Label: large title above pillar
-        const labelY = capY - 16;
-        if (labelY >= 18) {
-          ctx.font = 'bold 13px sans-serif';
+        // Vertical monument pillar rising from the crater
+        const pillarTopY = cy - 95;
+        const pillarGrad = ctx.createLinearGradient(cx, cy, cx, pillarTopY);
+        pillarGrad.addColorStop(0, 'rgba(255, 215, 0, 0.4)');
+        pillarGrad.addColorStop(0.5, 'rgba(255, 215, 0, 0.15)');
+        pillarGrad.addColorStop(1, 'rgba(255, 215, 0, 0.03)');
+        ctx.strokeStyle = pillarGrad;
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - coreSize);
+        ctx.lineTo(cx, pillarTopY);
+        ctx.stroke();
+
+        // Label: bold title on a dark pill background
+        const labelY = pillarTopY - 12;
+        if (labelY >= 22) {
+          ctx.font = 'bold 12px sans-serif';
+          const titleWidth = ctx.measureText(item.text).width;
+          const dateWidth = ctx.measureText(item.dateText).width;
+          const maxW = Math.max(titleWidth, dateWidth);
+          const pillPad = 10;
+          const pillW = maxW + pillPad * 2;
+          const pillH = 36;
+          const pillX = cx - pillW / 2;
+          const pillY = labelY - pillH + 6;
+
+          // Pill background
+          ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+          ctx.beginPath();
+          ctx.roundRect(pillX, pillY, pillW, pillH, 8);
+          ctx.fill();
+          ctx.strokeStyle = 'rgba(255, 215, 0, 0.4)';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+
+          // Title
           ctx.fillStyle = '#FFD700';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'bottom';
-          ctx.fillText(item.text, cx, labelY);
+          ctx.fillText(item.text, cx, labelY + 2);
 
-          // Date below title
+          // Date
           ctx.font = '10px sans-serif';
-          ctx.fillStyle = 'rgba(255, 215, 0, 0.6)';
-          ctx.fillText(item.dateText, cx, labelY - 14);
+          ctx.fillStyle = 'rgba(255, 215, 0, 0.5)';
+          ctx.fillText(item.dateText, cx, labelY - 12);
         }
       });
     }
