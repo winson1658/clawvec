@@ -336,30 +336,37 @@ export default function TimelineCanvas({
       .filter(x => x >= -50 && x <= width + 50)
       .sort((a, b) => a - b);
 
-    // Draw main timeline axis — broken at singularity points
-    ctx.strokeStyle = 'rgba(139, 92, 246, 0.3)';
-    ctx.lineWidth = 2;
-
+    // Draw main timeline axis — broken at singularity points, color shifts after each singularity
     if (singularityXs.length === 0) {
+      ctx.strokeStyle = 'rgba(139, 92, 246, 0.3)';
+      ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(0, timelineY);
       ctx.lineTo(width, timelineY);
       ctx.stroke();
     } else {
-      // Draw timeline segments, skipping singularity zones
+      // Draw timeline segments with color shifts
       let currentX = 0;
       const gapRadius = 24;
+      let isAfterSingularity = false;
 
       for (const sx of singularityXs) {
+        // Segment before this singularity
         if (sx - gapRadius > currentX) {
+          ctx.strokeStyle = isAfterSingularity ? 'rgba(255, 215, 0, 0.35)' : 'rgba(139, 92, 246, 0.3)';
+          ctx.lineWidth = isAfterSingularity ? 2.5 : 2;
           ctx.beginPath();
           ctx.moveTo(currentX, timelineY);
           ctx.lineTo(sx - gapRadius, timelineY);
           ctx.stroke();
         }
         currentX = sx + gapRadius;
+        isAfterSingularity = true;
       }
+      // Final segment after last singularity
       if (currentX < width) {
+        ctx.strokeStyle = 'rgba(255, 215, 0, 0.35)';
+        ctx.lineWidth = 2.5;
         ctx.beginPath();
         ctx.moveTo(currentX, timelineY);
         ctx.lineTo(width, timelineY);
