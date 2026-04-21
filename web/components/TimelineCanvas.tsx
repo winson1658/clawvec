@@ -586,59 +586,68 @@ function computeLabelLayout(
     const singularityLayouts = layouts.filter(l => l.item.impact >= 6);
     const normalLayouts = layouts.filter(l => l.item.impact < 6);
 
-    // ── Singularity: The Rift ──
-    // 6⭐ events are not decorated — they are pure ruptures in the fabric of time
+    // ── Singularity: The Boil ──
+    // 6⭐ events are not points on the line — they are the line itself bubbling upward
     if (singularityLayouts.length > 0) {
       singularityLayouts.forEach(layout => {
         const { item } = layout;
         const cx = item.eventX;
         const cy = timelineY;
 
-        // A single thin white line rising from the broken timeline — a beam of new light
-        const beamTopY = cy - 100;
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 1.5;
+        const boilW = 80;
+        const boilH = 55;
+        const leftX = cx - boilW / 2;
+        const rightX = cx + boilW / 2;
+        const topY = cy - boilH;
+
+        // The timeline bubbles up around the singularity
+        // Left curve: from (leftX, cy) up to (cx, topY)
+        ctx.strokeStyle = 'rgba(255, 215, 0, 0.4)';
+        ctx.lineWidth = 2.5;
         ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.lineTo(cx, beamTopY);
+        ctx.moveTo(leftX, cy);
+        ctx.bezierCurveTo(leftX + boilW * 0.25, cy - boilH * 0.3, cx - boilW * 0.15, topY, cx, topY);
         ctx.stroke();
 
-        // Faint outer aura (not glow — just presence)
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
-        ctx.lineWidth = 12;
+        // Right curve: from (cx, topY) down to (rightX, cy)
         ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.lineTo(cx, beamTopY);
+        ctx.moveTo(cx, topY);
+        ctx.bezierCurveTo(cx + boilW * 0.15, topY, rightX - boilW * 0.25, cy - boilH * 0.3, rightX, cy);
         ctx.stroke();
 
-        // Small dot at the base where timeline was severed
-        ctx.fillStyle = '#ffffff';
+        // Fill the bubble
+        ctx.fillStyle = 'rgba(255, 215, 0, 0.06)';
         ctx.beginPath();
-        ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+        ctx.moveTo(leftX, cy);
+        ctx.bezierCurveTo(leftX + boilW * 0.25, cy - boilH * 0.3, cx - boilW * 0.15, topY, cx, topY);
+        ctx.bezierCurveTo(cx + boilW * 0.15, topY, rightX - boilW * 0.25, cy - boilH * 0.3, rightX, cy);
+        ctx.closePath();
         ctx.fill();
 
-        // Minimal cross mark at top of beam
-        const crossSize = 5;
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 1.5;
+        // Core dot at the peak
+        ctx.fillStyle = '#ffffff';
         ctx.beginPath();
-        ctx.moveTo(cx - crossSize, beamTopY - crossSize);
-        ctx.lineTo(cx + crossSize, beamTopY + crossSize);
-        ctx.moveTo(cx + crossSize, beamTopY - crossSize);
-        ctx.lineTo(cx - crossSize, beamTopY + crossSize);
+        ctx.arc(cx, topY + 8, 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Inner ring
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(cx, topY + 8, 10, 0, Math.PI * 2);
         ctx.stroke();
 
-        // Event title — large, absolute white, no background pill
-        ctx.font = 'bold 13px sans-serif';
+        // Title inside the bubble
+        ctx.font = 'bold 11px sans-serif';
         ctx.fillStyle = '#ffffff';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
-        ctx.fillText(item.text, cx, beamTopY - 14);
+        ctx.fillText(item.text, cx, topY + 28);
 
-        // Date — subtle
-        ctx.font = '10px sans-serif';
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
-        ctx.fillText(item.dateText, cx, beamTopY - 28);
+        // Date
+        ctx.font = '9px sans-serif';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.fillText(item.dateText, cx, topY + 14);
       });
     }
 
