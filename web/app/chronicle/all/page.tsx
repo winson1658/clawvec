@@ -2,7 +2,6 @@
 
 import { useState, useMemo, useEffect, useCallback } from "react";
 import TimelineCanvas from "@/components/TimelineCanvas";
-import { motion, AnimatePresence } from "framer-motion";
 
 interface TimelineEvent {
   id: string;
@@ -24,6 +23,8 @@ const COMPANIES = [
   { key: "figure", name: "Figure", color: "#9B59B6" },
   { key: "kimi", name: "KIMI", color: "#00D26A" },
   { key: "qwen", name: "Qwen", color: "#FF6A00" },
+  { key: "openclaw", name: "OpenClaw", color: "#FF3366" },
+  { key: "hermes", name: "Hermes", color: "#00BFFF" },
 ];
 
 const IMPACT_LABELS: Record<number, string> = {
@@ -37,11 +38,10 @@ const IMPACT_LABELS: Record<number, string> = {
 export default function AllChroniclePage() {
   const [events, setEvents] = useState<TimelineEvent[]>([]);
   const [loading, setLoading] = useState(true);
-  const [impactFilter, setImpactFilter] = useState<number>(2);
+  const [selectedImpacts, setSelectedImpacts] = useState<number[]>([3, 4, 5]);
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>(
     COMPANIES.map((c) => c.key)
   );
-  const [showWeightInfo, setShowWeightInfo] = useState(false);
 
   // Load all company events
   useEffect(() => {
@@ -73,9 +73,9 @@ export default function AllChroniclePage() {
   const filteredEvents = useMemo(() => {
     return events.filter(
       (ev) =>
-        ev.impact >= impactFilter && selectedCompanies.includes(ev.company)
+        selectedImpacts.includes(ev.impact) && selectedCompanies.includes(ev.company)
     );
-  }, [events, impactFilter, selectedCompanies]);
+  }, [events, selectedImpacts, selectedCompanies]);
 
   // Compute stats
   const stats = useMemo(() => {
@@ -98,6 +98,12 @@ export default function AllChroniclePage() {
   const toggleCompany = useCallback((key: string) => {
     setSelectedCompanies((prev) =>
       prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
+    );
+  }, []);
+
+  const toggleImpact = useCallback((impact: number) => {
+    setSelectedImpacts((prev) =>
+      prev.includes(impact) ? prev.filter((i) => i !== impact) : [...prev, impact].sort()
     );
   }, []);
 
@@ -130,7 +136,7 @@ export default function AllChroniclePage() {
         </div>
         <p className="text-slate-400 text-sm">
           {stats.total} events across {Object.keys(stats.byCompany).length}{" "}
-          companies
+          entities
           {stats.dateRange
             ? ` · ${stats.dateRange.start} – ${stats.dateRange.end}`
             : ""}
@@ -142,54 +148,71 @@ export default function AllChroniclePage() {
         <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-4 space-y-4">
           {/* Impact Filter */}
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <label className="text-sm font-semibold text-slate-300 flex items-center gap-2">
-                Weight Threshold
-                <button
-                  onClick={() => setShowWeightInfo(!showWeightInfo)}
-                  className="w-5 h-5 rounded-full bg-slate-800 text-slate-500 text-xs hover:text-slate-300 transition-colors"
-                >
-                  ?
-                </button>
-              </label>
-              <span className="text-sm text-violet-400 font-mono">
-                ≥ {impactFilter} {IMPACT_LABELS[impactFilter]}
-              </span>
+            <label className="text-sm font-semibold text-slate-300 mb-2 block">
+              Impact Levels
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {[5, 4, 3, 2, 1].map((impact) => {
+                const isSelected = selectedImpacts.includes(impact);
+                const count = stats.byImpact[impact] || 0;
+                return (
+                  <button
+                    key={impact}
+                    onClick={() => toggleImpact(impact)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all border ${
+                      isSelected
+                        ? "border-transparent"
+                        : "text-slate-500 border-slate-700 bg-slate-900/50 hover:text-slate-300"
+                    }`}
+                    style={
+                      isSelected
+                        ? {
+                            backgroundColor:
+                              impact === 5
+                                ? "rgba(245,158,11,0.15)"
+                                : impact === 4
+                                ? "rgba(239,68,68,0.15)"
+                                : impact === 3
+                                ? "rgba(139,92,246,0.15)"
+                                : impact === 2
+                                ? "rgba(6,182,212,0.15)"
+                                : "rgba(148,163,184,0.15)",
+                            borderColor:
+                              impact === 5
+                                ? "rgba(245,158,11,0.4)"
+                                : impact === 4
+                                ? "rgba(239,68,68,0.4)"
+                                : impact === 3
+                                ? "rgba(139,92,246,0.4)"
+                                : impact === 2
+                                ? "rgba(6,182,212,0.4)"
+                                : "rgba(148,163,184,0.4)",
+                            color:
+                              impact === 5
+                                ? "#F59E0B"
+                                : impact === 4
+                                ? "#EF4444"
+                                : impact === 3
+                                ? "#A78BFA"
+                                : impact === 2
+                                ? "#22D3EE"
+                                : "#94A3B8",
+                          }
+                        : {}
+                    }
+                  >
+                    {"⭐".repeat(impact)}
+                    <span
+                      className={`ml-1.5 text-[10px] ${
+                        isSelected ? "opacity-70" : "opacity-40"
+                      }`}
+                    >
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
-            <input
-              type="range"
-              min={1}
-              max={5}
-              value={impactFilter}
-              onChange={(e) => setImpactFilter(Number(e.target.value))}
-              className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-violet-500"
-            />
-            <div className="flex justify-between text-xs text-slate-600 mt-1">
-              <span>Minor (1⭐)</span>
-              <span>Historic (5⭐)</span>
-            </div>
-            <AnimatePresence>
-              {showWeightInfo && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  className="overflow-hidden"
-                >
-                  <div className="mt-2 p-3 bg-slate-800/50 rounded-lg text-xs text-slate-400 space-y-1">
-                    <p>
-                      Each event has an <strong>impact score</strong> (1-5 stars)
-                      representing its significance in AI history.
-                    </p>
-                    <p>
-                      Drag the slider to filter out lower-weight events when
-                      zoomed out. Higher threshold = fewer, more important events
-                      shown.
-                    </p>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </div>
 
           {/* Company Filter */}

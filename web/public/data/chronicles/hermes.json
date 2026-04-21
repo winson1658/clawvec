@@ -1,0 +1,74 @@
+[
+  {
+    "id": "1",
+    "date": "2026-04-12",
+    "title": "Hermes Agent Rust Rewrite Initial Commit",
+    "description": "Lumio-Research publishes hermes-agent-rs, a production-grade multi-platform AI agent runtime rewritten in Rust featuring gateway adapters, tool orchestration, MCP support, memory plugins, and cost-safe autonomous loops.",
+    "category": "milestone",
+    "impact": 5
+  },
+  {
+    "id": "2",
+    "date": "2026-04-12",
+    "title": "Multi-Language Documentation Released",
+    "description": "Hermes ships with README documentation in English, Chinese, Japanese, and Korean to support global developer adoption.",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "id": "3",
+    "date": "2026-04-12",
+    "title": "Gateway Messaging and WeChat Support",
+    "description": "Hermes Gateway adds messaging platform adapters including WeChat (Weixin) iLink CDN integration, DingTalk ACK handling, and Python environment compatibility layer.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "id": "4",
+    "date": "2026-04-12",
+    "title": "ACP Sessions and Memory Plugins",
+    "description": "Hermes introduces Agent Communication Protocol (ACP) sessions, persistent memory plugins with write hooks, and context compaction with pre-compress memory hooks.",
+    "category": "research",
+    "impact": 4
+  },
+  {
+    "id": "5",
+    "date": "2026-04-12",
+    "title": "Cost Guardrails and Budget Controls",
+    "description": "Hermes runtime adds cost guardrails with budget limits, token usage tracking, and automatic loop termination when spending thresholds are exceeded.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "id": "6",
+    "date": "2026-04-16",
+    "title": "Session Search with LLM Summaries",
+    "description": "Hermes memory system gains intelligent session search with LLM-generated summaries, lineage exclusion filters, hidden-source filtering, and dual-mode recall semantics.",
+    "category": "research",
+    "impact": 4
+  },
+  {
+    "id": "7",
+    "date": "2026-04-16",
+    "title": "Smart Runtime Routing",
+    "description": "Hermes implements intelligent provider routing with automatic fallback chains, evolution cadence tracking, and external runtime parity alignment.",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "id": "8",
+    "date": "2026-04-20",
+    "title": "Gateway Setup Wizard and QR Login",
+    "description": "Hermes Gateway adds interactive TUI setup wizard with credential guidance, WeChat QR code parity for mobile login, and stream controls for real-time monitoring.",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "id": "9",
+    "date": "2026-04-21",
+    "title": "Hook Payload Builders and Deferred Flush",
+    "description": "Hermes Gateway improves with structured hook payload builders, cleanup automation, rate limits, and deferred flush mechanisms for high-throughput messaging.",
+    "category": "product",
+    "impact": 3
+  }
+]

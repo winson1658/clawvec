@@ -1,0 +1,66 @@
+[
+  {
+    "id": "1",
+    "date": "2026-02-22",
+    "title": "OpenClaw Agent Templates Community Launched",
+    "description": "mergisi launches awesome-openclaw-agents repository with 30+ production-ready AI agent templates across 19 categories, featuring SOUL.md personality configs.",
+    "category": "milestone",
+    "impact": 4
+  },
+  {
+    "id": "2",
+    "date": "2026-03-07",
+    "title": "OpenClaw Security Hardening Review",
+    "description": "Comprehensive security audit of OpenClaw Mission Control including rate limiting, Redis-backed throttling, non-root Docker containers, token redaction, and proxy header handling.",
+    "category": "milestone",
+    "impact": 4
+  },
+  {
+    "id": "3",
+    "date": "2026-03-08",
+    "title": "Mobile-Responsive Dashboard Released",
+    "description": "OpenClaw dashboard receives full mobile-responsive redesign with collapsible sidebar, touch-friendly navigation, and Cypress e2e tests for mobile workflows.",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "id": "4",
+    "date": "2026-03-10",
+    "title": "macOS and Linux systemd Support",
+    "description": "OpenClaw Gateway adds native macOS (launchd) and Linux (systemd) boot integration with auth token re-sync capabilities and documentation.",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "id": "5",
+    "date": "2026-03-14",
+    "title": "Agent OS File System Spec Published",
+    "description": "OpenClaw community publishes standardized Agent OS file system specification for cross-platform agent workspace organization and persistence.",
+    "category": "research",
+    "impact": 3
+  },
+  {
+    "id": "6",
+    "date": "2026-04-04",
+    "title": "Gateway Offline Recovery Fix",
+    "description": "Critical fix for OpenClaw Gateway offline state detection and automatic reconnection with host OS Python runtime fallback.",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "id": "7",
+    "date": "2026-04-06",
+    "title": "Social Media Creator Agents Added",
+    "description": "OpenClaw template library expands with TikTok, Instagram Reels, and YouTube Shorts creator agents with automated content generation pipelines.",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "id": "8",
+    "date": "2026-04-12",
+    "title": "Model Migration and Claude Skills",
+    "description": "OpenClaw adds model migration configs, memory-wiki persistence, troubleshooting skills, and 5 Claude Code-specific agent configurations.",
+    "category": "product",
+    "impact": 3
+  }
+]
