@@ -2,152 +2,152 @@
   {
     "id": "1",
     "date": "2013-12-09",
-    "title": "FAIR 成立",
-    "description": "Facebook 正式成立 Facebook AI Research (FAIR)研究實驗室，由 Yann LeCun 擔任首席科學家，目標推動 AI 研究的開放協作。",
+    "title": "FAIR Founded",
+    "description": "Facebook officially established the Facebook AI Research (FAIR) laboratory, with Yann LeCun serving as Chief Scientist, aiming to promote open collaboration in AI research.",
     "category": "milestone",
     "impact": 5
   },
   {
     "id": "2",
     "date": "2015-01-05",
-    "title": "收購 Wit.ai",
-    "description": "Facebook 收購語音處理新創 Wit.ai，加強 Messenger 平台的對話式 AI 能力，為後續 AI 助手發展奠基。",
+    "title": "Acquisition of Wit.ai",
+    "description": "Facebook acquired the voice processing startup Wit.ai to strengthen the conversational AI capabilities of the Messenger platform, laying the foundation for subsequent AI assistant development.",
     "category": "acquisition",
     "impact": 3
   },
   {
     "id": "3",
     "date": "2016-01-15",
-    "title": "FAIR Paris 實驗室成立",
-    "description": "Facebook 在巴黎成立 FAIR Europe 實驗室，由法國著名計算機視覺專家 Yann LeCun 主持，擴大歐洲 AI 研究能量。",
+    "title": "FAIR Paris Lab Established",
+    "description": "Facebook established the FAIR Europe laboratory in Paris, led by renowned French computer vision expert Yann LeCun, expanding Europe's AI research capacity.",
     "category": "milestone",
     "impact": 3
   },
   {
     "id": "4",
     "date": "2016-09-01",
-    "title": "PyTorch 正式發布",
-    "description": "Facebook AI Research 釋出開源深度學習框架 PyTorch，針對 Python 優化，提供動態計算圖支援，後成為最受歡迎的 AI 研發框架之一。",
+    "title": "PyTorch Officially Released",
+    "description": "Facebook AI Research released the open-source deep learning framework PyTorch, optimized for Python with dynamic computation graph support, later becoming one of the most popular AI R&D frameworks.",
     "category": "product",
     "impact": 5
   },
   {
     "id": "5",
     "date": "2017-06-15",
-    "title": "ParlAI 對話 AI 平台發布",
-    "description": "Facebook 釋出 ParlAI 開源平台，用於訓練和測試對話式 AI 模型，整合多個標準對話數據集。",
+    "title": "ParlAI Conversational AI Platform Released",
+    "description": "Facebook released the ParlAI open-source platform for training and testing conversational AI models, integrating multiple standard dialogue datasets.",
     "category": "product",
     "impact": 2
   },
   {
     "id": "6",
     "date": "2018-05-02",
-    "title": "PyTorch 1.0 發布",
-    "description": "Facebook 發布 PyTorch 1.0，整合 Caffe2 和 ONNX 功能，提供生產環境部署能力，加速工業採用。",
+    "title": "PyTorch 1.0 Released",
+    "description": "Facebook released PyTorch 1.0, integrating Caffe2 and ONNX capabilities, providing production deployment capabilities and accelerating industrial adoption.",
     "category": "product",
     "impact": 4
   },
   {
     "id": "7",
     "date": "2019-09-24",
-    "title": "收購 CTRL-labs 腦機接口新創",
-    "description": "Facebook 以 5-10 億美元收購 CTRL-labs，一家開發腦波控制电腦介面的新創公司，為 AR/VR 交互奠定基礎。",
+    "title": "Acquisition of CTRL-labs Brain-Computer Interface Startup",
+    "description": "Facebook acquired CTRL-labs, a startup developing brainwave-controlled computer interfaces, for $0.5–1 billion, laying the foundation for AR/VR interaction.",
     "category": "acquisition",
     "impact": 3
   },
   {
     "id": "8",
     "date": "2021-10-28",
-    "title": "Facebook 正式改名 Meta",
-    "description": "Mark Zuckerberg 宣布公司正式改名為 Meta Platforms，將焦點轉向元宇宙（Metaverse）和 AI 研發，資源大幅向 AI 領域傾斜。",
+    "title": "Facebook Officially Renamed Meta",
+    "description": "Mark Zuckerberg announced that the company was officially renamed Meta Platforms, shifting focus to the Metaverse and AI R&D, with resources being significantly reallocated to the AI field.",
     "category": "milestone",
     "impact": 5
   },
   {
     "id": "9",
     "date": "2022-02-24",
-    "title": "LLaMA 大語言模型發布",
-    "description": "Meta 發布 LLaMA (Large Language Model Meta AI)，提供 7B 至 65B 多種規格，限於研究用途，但因性能卓越而廣受關注。",
+    "title": "LLaMA Large Language Model Released",
+    "description": "Meta released LLaMA (Large Language Model Meta AI), offering multiple sizes from 7B to 65B, limited to research use, but gaining widespread attention due to its outstanding performance.",
     "category": "product",
     "impact": 4
   },
   {
     "id": "10",
     "date": "2022-09-29",
-    "title": "Make-A-Video 視頻生成模型發布",
-    "description": "Meta 推出 Make-A-Video，能夠從文字描述自動生成短片段，為當時先進的文生視頻生成技術之一。",
+    "title": "Make-A-Video Video Generation Model Released",
+    "description": "Meta launched Make-A-Video, capable of automatically generating short video clips from text descriptions, one of the most advanced text-to-video generation technologies at the time.",
     "category": "research",
     "impact": 3
   },
   {
     "id": "11",
     "date": "2023-02-24",
-    "title": "LLaMA 模型權重外洩",
-    "description": "LLaMA 模型權重通過 4chan 等網站外流，雖為非授權行為，但廣泛的開源採用推動了開源大語言模型生態系的發展。",
+    "title": "LLaMA Model Weights Leaked",
+    "description": "LLaMA model weights leaked through sites like 4chan. Although unauthorized, the widespread open-source adoption drove the development of the open-source large language model ecosystem.",
     "category": "legal",
     "impact": 4
   },
   {
     "id": "12",
     "date": "2023-07-18",
-    "title": "LLaMA 2 發布並開放商用",
-    "description": "Meta 發布 LLaMA 2，提供 7B 至 70B 參數版本，針對商用採用提供授權，成為開源大語言模型的重要裡程碑。",
+    "title": "LLaMA 2 Released with Commercial Open Licensing",
+    "description": "Meta released LLaMA 2, offering versions from 7B to 70B parameters, with licenses available for commercial adoption, becoming an important milestone for open-source large language models.",
     "category": "product",
     "impact": 5
   },
   {
     "id": "13",
     "date": "2023-09-27",
-    "title": "Ray-Ban Meta 智慧眼鏡發布",
-    "description": "Meta 與 EssilorLuxottica 合作推出 Ray-Ban Meta 智慧眼鏡，內建 Meta AI 助手、攝影和音樂功能，為消費級 AI 穿戴設備的重要嘗試。",
+    "title": "Ray-Ban Meta Smart Glasses Released",
+    "description": "Meta collaborated with EssilorLuxottica to launch the Ray-Ban Meta smart glasses, featuring the Meta AI assistant, camera, and music functions, an important attempt at consumer-grade AI wearable devices.",
     "category": "product",
     "impact": 4
   },
   {
     "id": "14",
     "date": "2023-10-19",
-    "title": "Code Llama 程式碼模型發布",
-    "description": "Meta 發布基於 LLaMA 2 的程式碼生成模型 Code Llama，支援多種編程語言，提供免費商用授權。",
+    "title": "Code Llama Code Model Released",
+    "description": "Meta released Code Llama, a code generation model based on LLaMA 2, supporting multiple programming languages and offering free commercial licensing.",
     "category": "product",
     "impact": 3
   },
   {
     "id": "15",
     "date": "2024-04-18",
-    "title": "Llama 3 發布",
-    "description": "Meta 發布 Llama 3 系列，包含 8B 和 70B 兩種規格，在同級別模型中達到最佳表現，進一步輩固開源模型領導地位。",
+    "title": "Llama 3 Released",
+    "description": "Meta released the Llama 3 series, including 8B and 70B specifications, achieving best-in-class performance among models of the same size, further consolidating its leadership position in open-source models.",
     "category": "product",
     "impact": 5
   },
   {
     "id": "16",
     "date": "2024-07-23",
-    "title": "Llama 3.1 發布，405B 參數登場",
-    "description": "Meta 推出 Llama 3.1，包含當時最大開源模型 405B 參數版本，性能可與閉源商用模型競爭，持續推動開源 AI 景觀。",
+    "title": "Llama 3.1 Released, 405B Parameters Debut",
+    "description": "Meta launched Llama 3.1, including the 405B parameter version, the largest open-source model at the time, with performance competitive against closed-source commercial models, continuing to drive the open-source AI landscape.",
     "category": "product",
     "impact": 4
   },
   {
     "id": "17",
     "date": "2024-09-25",
-    "title": "Llama 3.2 多模態版本發布",
-    "description": "Meta 發布 Llama 3.2，支援視覺理解，包含輕量級 1B 和 3B 行動端模型，擴展到智慧眼鏡等邊緣設備。",
+    "title": "Llama 3.2 Multimodal Version Released",
+    "description": "Meta released Llama 3.2, supporting visual understanding, including lightweight 1B and 3B mobile models, expanding to edge devices such as smart glasses.",
     "category": "product",
     "impact": 4
   },
   {
     "id": "18",
     "date": "2024-12-06",
-    "title": "Llama 3.3 發布",
-    "description": "Meta 發布 Llama 3.3 70B，在保持同樣參數規模下大幅提升性能，顯示持續優化模型效率的能力。",
+    "title": "Llama 3.3 Released",
+    "description": "Meta released Llama 3.3 70B, significantly improving performance while maintaining the same parameter scale, demonstrating the ability to continuously optimize model efficiency.",
     "category": "product",
     "impact": 3
   },
   {
     "id": "19",
     "date": "2025-04-05",
-    "title": "Llama 4 發布",
-    "description": "Meta 發布 Llama 4 系列，採用混合架構設計，支援多模態理解和更長上下文，將開源模型的能力推到新高度。",
+    "title": "Llama 4 Released",
+    "description": "Meta released the Llama 4 series, adopting a hybrid architecture design, supporting multimodal understanding and longer context, pushing open-source model capabilities to new heights.",
     "category": "product",
     "impact": 5
   }

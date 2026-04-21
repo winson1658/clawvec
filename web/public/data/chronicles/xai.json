@@ -2,136 +2,136 @@
   {
     "id": "1",
     "date": "2023-03-09",
-    "title": "Elon Musk 首次公開 xAI 計畫",
-    "description": "Elon Musk 在 Twitter 上透露正在籌備 xAI，目標是「理解宇宙的本質」。此前已於內華達州註冊公司。",
+    "title": "Elon Musk Publicly Reveals xAI Plans for the First Time",
+    "description": "Elon Musk revealed on Twitter that he was preparing xAI, with the goal of 'understanding the true nature of the universe.' The company had already been registered in Nevada prior to this.",
     "category": "milestone",
     "impact": 4
   },
   {
     "id": "2",
     "date": "2023-07-12",
-    "title": "xAI 正式成立",
-    "description": "xAI 在 Twitter Spaces 直播活動中正式宣布成立，核心團隊包含來自 Google DeepMind、OpenAI、Microsoft 等頂尖研究員。",
+    "title": "xAI Officially Founded",
+    "description": "xAI was officially announced at a Twitter Spaces live event. The core team included top researchers from Google DeepMind, OpenAI, Microsoft, and other organizations.",
     "category": "milestone",
     "impact": 5
   },
   {
     "id": "3",
     "date": "2023-07-14",
-    "title": "xAI 團隊公開亮相",
-    "description": "xAI 公布核心團隊名單，包括 Igor Babuschkin、Manuel Kroiss、Yuhuai Wu 等，強調「最大化追求真理」的研發理念。",
+    "title": "xAI Team Publicly Unveiled",
+    "description": "xAI announced its core team list, including Igor Babuschkin, Manuel Kroiss, Yuhuai Wu, and others, emphasizing a R&D philosophy of 'maximally pursuing truth.'",
     "category": "personnel",
     "impact": 3
   },
   {
     "id": "4",
     "date": "2023-11-04",
-    "title": "Grok-1 首次發布",
-    "description": "xAI 推出首款 AI 模型 Grok，具備「叛逆性格」和即時 X 平台資訊整合能力，優先開放給 X Premium+ 訂閱用戶。",
+    "title": "Grok-1 First Released",
+    "description": "xAI launched its first AI model, Grok, featuring a 'rebellious personality' and real-time X platform information integration, initially available to X Premium+ subscribers.",
     "category": "product",
     "impact": 4
   },
   {
     "id": "5",
     "date": "2023-12-23",
-    "title": "xAI 與 X 平台深度整合",
-    "description": "Grok 全面整合至 X 平台（Twitter），用戶可在推文回覆中直接調用 Grok 進行摘要和問答。",
+    "title": "xAI Deep Integration with X Platform",
+    "description": "Grok was fully integrated into the X platform (Twitter), allowing users to directly invoke Grok in tweet replies for summarization and Q&A.",
     "category": "product",
     "impact": 3
   },
   {
     "id": "6",
     "date": "2024-03-17",
-    "title": "Grok-1 開源",
-    "description": "xAI 釋出 Grok-1 模型權重，採用 Apache 2.0 開源授權，參數量達 3140 億，為當時最大規模的開源模型之一。",
+    "title": "Grok-1 Open-Sourced",
+    "description": "xAI released the Grok-1 model weights under an Apache 2.0 open-source license, with 314 billion parameters, making it one of the largest open-source models at the time.",
     "category": "research",
     "impact": 4
   },
   {
     "id": "7",
     "date": "2024-03-29",
-    "title": "Grok-1.5 發布",
-    "description": "xAI 發布 Grok-1.5，推理和程式能力顯著提升，支援 128K token 長上下文處理。",
+    "title": "Grok-1.5 Released",
+    "description": "xAI released Grok-1.5, with significantly improved reasoning and programming capabilities, supporting 128K token long-context processing.",
     "category": "product",
     "impact": 3
   },
   {
     "id": "8",
     "date": "2024-04-12",
-    "title": "Grok-1.5V 多模態版本發布",
-    "description": "xAI 推出首個多模態模型 Grok-1.5V，支援圖像理解和視覺問答，能處理文件、圖表和照片。",
+    "title": "Grok-1.5V Multimodal Version Released",
+    "description": "xAI launched its first multimodal model, Grok-1.5V, supporting image understanding and visual Q&A, capable of processing documents, charts, and photos.",
     "category": "product",
     "impact": 3
   },
   {
     "id": "9",
     "date": "2024-05-26",
-    "title": "xAI 完成 60 億美元 B 輪融資",
-    "description": "xAI 獲得紅杉資本、Andreessen Horowitz 等投資 60 億美元，估值約 240 億美元，資金用於加速基礎設施建設。",
+    "title": "xAI Completes $6 Billion Series B",
+    "description": "xAI raised $6 billion from Sequoia Capital, Andreessen Horowitz, and others, at a valuation of approximately $24 billion. The funds are used to accelerate infrastructure construction.",
     "category": "milestone",
     "impact": 4
   },
   {
     "id": "10",
     "date": "2024-08-13",
-    "title": "Grok-2 發布",
-    "description": "xAI 發布 Grok-2 系列模型，包含 Grok-2 和 Grok-2 mini，推理和工具使用能力大幅提升，效能接近 GPT-4 等級。",
+    "title": "Grok-2 Released",
+    "description": "xAI released the Grok-2 series models, including Grok-2 and Grok-2 mini, with significantly improved reasoning and tool-use capabilities, achieving performance close to GPT-4 level.",
     "category": "product",
     "impact": 4
   },
   {
     "id": "11",
     "date": "2024-08-14",
-    "title": "Aurora 圖像生成器上線",
-    "description": "xAI 在 X 平台推出 Aurora 圖像生成工具，由 Grok-2 驅動，用戶可直接在社交平台生成和分享圖像。",
+    "title": "Aurora Image Generator Launched",
+    "description": "xAI launched the Aurora image generation tool on the X platform, powered by Grok-2, allowing users to generate and share images directly on the social platform.",
     "category": "product",
     "impact": 2
   },
   {
     "id": "12",
     "date": "2024-10-21",
-    "title": "Colossus 超級電腦啟用",
-    "description": "xAI 與 Nvidia 合作建成的 Colossus 超級電腦正式啟用，搭載 10 萬張 H100 GPU，為全球最大規模的 AI 訓練集群。",
+    "title": "Colossus Supercomputer Goes Online",
+    "description": "The Colossus supercomputer, built by xAI in collaboration with Nvidia, was officially launched, equipped with 100,000 H100 GPUs, making it the world's largest AI training cluster.",
     "category": "milestone",
     "impact": 5
   },
   {
     "id": "13",
     "date": "2024-12-23",
-    "title": "xAI 獲得 60 億美元 C 輪融資",
-    "description": "xAI 再獲 60 億美元融資，投資者包括 A16z、Blackrock 等，估值達 500 億美元，進一步擴大訓練基礎設施。",
+    "title": "xAI Secures $6 Billion Series C",
+    "description": "xAI raised another $6 billion in funding, with investors including A16z, BlackRock, and others, reaching a valuation of $50 billion, further expanding training infrastructure.",
     "category": "milestone",
     "impact": 4
   },
   {
     "id": "14",
     "date": "2025-02-17",
-    "title": "Grok-3 發布",
-    "description": "xAI 發布旗艦模型 Grok-3，號稱「地表最聰明的 AI」，在數學、科學和程式基準測試中表現頂尖，整合 DeepSearch 推理功能。",
+    "title": "Grok-3 Released",
+    "description": "xAI released its flagship model Grok-3, touted as 'the smartest AI on Earth,' achieving top-tier performance in math, science, and programming benchmarks, integrating DeepSearch reasoning capabilities.",
     "category": "product",
     "impact": 5
   },
   {
     "id": "15",
     "date": "2025-02-17",
-    "title": "xAI 宣布收購 X（Twitter）",
-    "description": "Elon Musk 宣布 xAI 將以全股票交易方式收購 X 平台，估值 450 億美元，實現 AI 與社交平台的深度整合與私有化。",
+    "title": "xAI Announces Acquisition of X (Twitter)",
+    "description": "Elon Musk announced that xAI would acquire the X platform in an all-stock transaction valued at $45 billion, achieving deep integration and privatization of AI and social platforms.",
     "category": "acquisition",
     "impact": 5
   },
   {
     "id": "16",
     "date": "2025-03-28",
-    "title": "Grok-3 開源權重釋出",
-    "description": "xAI 釋出 Grok-3 基礎模型權重，採用開源授權，讓研究者和開發者能自由使用這個頂尖模型進行研究和應用開發。",
+    "title": "Grok-3 Open-Source Weights Released",
+    "description": "xAI released the Grok-3 base model weights under an open-source license, allowing researchers and developers to freely use this top-tier model for research and application development.",
     "category": "research",
     "impact": 4
   },
   {
     "id": "17",
     "date": "2025-05-06",
-    "title": "xAI 獲得 50 億美元額外融資",
-    "description": "xAI 獲得新一輪 50 億美元融資，估值突破 500 億美元，計畫進一步擴建 Memphis 資料中心，增加 GPU 集群規模。",
+    "title": "xAI Secures Additional $5 Billion Funding",
+    "description": "xAI obtained a new round of $5 billion in funding, with its valuation surpassing $50 billion. The company plans to further expand its Memphis data center and increase GPU cluster scale.",
     "category": "milestone",
     "impact": 4
   }
