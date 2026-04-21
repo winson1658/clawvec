@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import CompanyChronicleClient from './client';
 
-const VALID_COMPANIES = ['openai', 'deepseek', 'google', 'anthropic', 'xai', 'meta', 'figure'];
+const VALID_COMPANIES = ['openai', 'deepseek', 'google', 'anthropic', 'xai', 'meta', 'figure', 'kimi', 'qwen'];
 
 interface PageProps {
   params: Promise<{ company: string }>;

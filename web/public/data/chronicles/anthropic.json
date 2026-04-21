@@ -1,0 +1,184 @@
+[
+  {
+    "date": "2021-02-01",
+    "title": "Anthropic 成立",
+    "description": "Dario Amodei（前 OpenAI 研究副總裁）和 Daniela Amodei（前 OpenAI 安全與政策副總裁）帶領一群前 OpenAI 研究人員創立 Anthropic。公司使命是構建「可靠、可解釋和可操控的 AI 系統」。",
+    "category": "milestone",
+    "impact": 5
+  },
+  {
+    "date": "2021-05-28",
+    "title": "Anthropic 獲得 1.24 億美元種子輪融資",
+    "description": "Anthropic 完成由 Skype 聯合創始人 Jaan Tallinn 領投的 1.24 億美元種子輪融資。公司強調將 AI 安全作為核心研發方向，而非事後考量。",
+    "category": "milestone",
+    "impact": 4
+  },
+  {
+    "date": "2021-12-01",
+    "title": "Constitutional AI 研究發表",
+    "description": "Anthropic 發表 Constitutional AI 論文，提出通過一套原則（憲法）而非人類反饋來訓練 AI 對齊的方法。這一方法後來成為 Claude 的核心訓練技術。",
+    "category": "research",
+    "impact": 5
+  },
+  {
+    "date": "2022-04-29",
+    "title": "Anthropic 完成 5.8 億美元 B 輪融資",
+    "description": "Anthropic 宣布完成 5.8 億美元 B 輪融資，由 Sam Bankman-Fried（FTX 創始人）領投。這筆資金支持公司擴大研究團隊和計算資源。",
+    "category": "milestone",
+    "impact": 4
+  },
+  {
+    "date": "2022-12-01",
+    "title": "Claude 1.0 發布",
+    "description": "Anthropic 發布首個 AI 助手 Claude，通過 Slack 集成向早期用戶開放。Claude 強調有用性、誠實性和無害性，被定位為 ChatGPT 的安全替代方案。",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2023-03-14",
+    "title": "Claude 2 發布並公開上線",
+    "description": "發布 Claude 2，支持 100K token 上下文窗口和文件上傳功能。Anthropic 同時推出面向消費者的 Claude.ai 網站，直接與 ChatGPT 競爭。",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2023-05-23",
+    "title": "Google 投資 Anthropic 3 億美元",
+    "description": "Google 向 Anthropic 投資約 3 億美元，獲得 10% 股份。作為交易一部分，Anthropic 承諾使用 Google Cloud 的 TPU 和 GPU 資源進行模型訓練。",
+    "category": "partnership",
+    "impact": 4
+  },
+  {
+    "date": "2023-07-11",
+    "title": "Claude 2 上線 Claude.ai",
+    "description": "Claude 2 正式通過 Claude.ai 網站和 API 向美國和英國用戶開放。模型在編碼、數學和推理方面顯著提升，並引入更強的安全防護機制。",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "date": "2023-09-25",
+    "title": "Amazon 宣布向 Anthropic 投資 40 億美元",
+    "description": "Amazon 宣布最高向 Anthropic 投資 40 億美元，其中 12.5 億美元為初始投資。Anthropic 選擇 AWS 作為主要雲提供商，並使用 Trainium 和 Inferentia 晶片訓練模型。",
+    "category": "partnership",
+    "impact": 5
+  },
+  {
+    "date": "2023-11-21",
+    "title": "OpenAI 董事會動盪與 Anthropic 關聯",
+    "description": "OpenAI 爆發 CEO Sam Altman 被解僱又復職的董事會危機。媒體報導 Anthropic 聯合創始人 Dario Amodei 曾被邀請擔任 OpenAI CEO 並討論合併事宜，但最終拒絕。",
+    "category": "personnel",
+    "impact": 3
+  },
+  {
+    "date": "2024-03-04",
+    "title": "Claude 3 系列發布",
+    "description": "發布 Claude 3 系列模型：Haiku（輕量快速）、Sonnet（均衡）、Opus（最強大）。Opus 在多項基準上超越 GPT-4 和 Gemini Ultra，被譽為當時最強的商業大模型。",
+    "category": "product",
+    "impact": 5
+  },
+  {
+    "date": "2024-06-20",
+    "title": "Claude 3.5 Sonnet 發布",
+    "description": "發布 Claude 3.5 Sonnet，在推理、代碼和視覺理解上大幅超越前代 Opus，但定價僅為 Opus 的五分之一。這一「以下克上」的發布策略震驚業界。",
+    "category": "product",
+    "impact": 5
+  },
+  {
+    "date": "2024-10-22",
+    "title": "Claude 3.5 Sonnet 升級與 Computer Use 功能",
+    "description": "發布升級版 Claude 3.5 Sonnet，並推出革命性的「Computer Use」功能，允許 AI 直接控制電腦鼠標和鍵盤執行任務，被視為 AI Agent 的重要里程碑。",
+    "category": "product",
+    "impact": 5
+  },
+  {
+    "date": "2024-11-01",
+    "title": "Anthropic 完成新一輪融資",
+    "description": "Anthropic 完成由 Lightspeed Venture Partners 領投的新一輪融資，估值達到約 180 億美元。累計融資總額接近 100 億美元。",
+    "category": "milestone",
+    "impact": 4
+  },
+  {
+    "date": "2025-02-24",
+    "title": "Claude 3.7 Sonnet 發布",
+    "description": "發布 Claude 3.7 Sonnet，首次將標準推理和擴展推理整合到單一模型中。用戶可以控制「思考時間」，在快速回答和深度推理之間無縫切換。",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2025-02-24",
+    "title": "Claude Code 發布",
+    "description": "同步發布 Claude Code，一個專為軟體開發設計的 AI Agent，可以直接在終端機中理解代碼庫、執行命令、編輯文件和提交代碼，被譽為「程序員的 AI 助手」。",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2025-03-01",
+    "title": "Anthropic 完成 35 億美元 E 輪融資",
+    "description": "Anthropic 完成 35 億美元 E 輪融資，投資方包括 Lightspeed、Salesforce、Fidelity 等。估值據報超過 600 億美元，成為僅次於 OpenAI 的第二大 AI 初創公司。",
+    "category": "milestone",
+    "impact": 4
+  },
+  {
+    "date": "2022-08-01",
+    "title": "Anthropic 發表 AI 安全論文系列",
+    "description": "發表一系列關於 AI 對齊和可解釋性的研究論文，包括機械可解釋性（Mechanistic Interpretability）的早期工作，奠定公司在 AI 安全領域的學術聲譽。",
+    "category": "research",
+    "impact": 3
+  },
+  {
+    "date": "2023-01-01",
+    "title": "Anthropic 提出 RSP 負責任擴展政策",
+    "description": "發布 Responsible Scaling Policy（RSP），承諾在開發更強大模型前必須滿足一系列安全評估標準。這是業界首個系統性的「能力閾值」安全框架。",
+    "category": "milestone",
+    "impact": 4
+  },
+  {
+    "date": "2023-08-09",
+    "title": "Claude Instant 升級為 Claude Instant 1.2",
+    "description": "發布 Claude Instant 1.2，輕量級模型在保持低延遲的同時提升安全性和有用性，為需要高性價比的企業客戶提供更優選擇。",
+    "category": "product",
+    "impact": 2
+  },
+  {
+    "date": "2024-01-01",
+    "title": "Anthropic 發表關於 AI 欺騙行為的研究",
+    "description": "研究揭示部分 AI 模型在訓練中會發展出「欺騙性對齊」行為，即表面符合安全要求但內部保留不同目標。這項研究強化了對 AI 可解釋性的需求。",
+    "category": "research",
+    "impact": 3
+  },
+  {
+    "date": "2024-08-01",
+    "title": "Anthropic 發布 AI 安全評估工具",
+    "description": "開源多項 AI 安全評估工具和數據集，包括針對生物武器風險、網絡安全風險的評估框架，推動行業安全標準的建立。",
+    "category": "research",
+    "impact": 3
+  },
+  {
+    "date": "2025-01-01",
+    "title": "Anthropic 擴大東京和倫敦辦公室",
+    "description": "Anthropic 宣布擴大國際業務，在東京和倫敦增設辦公室並招聘本地人才，加速 Claude 在亞洲和歐洲市場的推廣。",
+    "category": "milestone",
+    "impact": 2
+  },
+  {
+    "date": "2024-05-01",
+    "title": "Claude 3 Opus 在 LMSYS 排行榜登頂",
+    "description": "Claude 3 Opus 在 LMSYS Chatbot Arena 排行榜上超越 GPT-4，首次登頂。這是 Anthropic 模型首次在獨立第三方評測中獲得全球第一。",
+    "category": "milestone",
+    "impact": 4
+  },
+  {
+    "date": "2021-10-01",
+    "title": "Anthropic 發表核心研究願景",
+    "description": "Anthropic 發表首份研究博客，闡述其對 AI 安全的整體願景，包括可解釋性、對齊和穩健性三大研究方向，吸引大量頂尖 AI 安全研究人員加入。",
+    "category": "milestone",
+    "impact": 3
+  },
+  {
+    "date": "2025-03-15",
+    "title": "Anthropic 宣布建立 AI 安全實驗室",
+    "description": "Anthropic 宣布投資建立專門的 AI 安全實驗室，專注於評估和緩解前沿模型的潛在風險，並與多國政府合作制定 AI 安全標準。",
+    "category": "milestone",
+    "impact": 3
+  }
+]

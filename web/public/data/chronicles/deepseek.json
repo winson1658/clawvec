@@ -1,0 +1,177 @@
+[
+  {
+    "date": "2023-05-01",
+    "title": "DeepSeek 成立",
+    "description": "由幻方量化創始人梁文鋒在杭州成立深度求索（DeepSeek），專注於通用人工智慧（AGI）研究。公司從幻方量化的 AI 研究部門獨立出來，初期便擁有上萬張 A100 GPU。",
+    "category": "milestone",
+    "impact": 5
+  },
+  {
+    "date": "2023-11-02",
+    "title": "DeepSeek Coder 首次發布",
+    "description": "推出首款開源程式碼大模型 DeepSeek Coder，支持多種編程語言，在代碼生成和補全任務上表現出色。標誌著 DeepSeek 開源策略的開始。",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "date": "2023-11-29",
+    "title": "DeepSeek-LLM 67B 發布",
+    "description": "發布 DeepSeek-LLM 系列，包括 7B 和 67B 參數版本，並在 GitHub 上全面開源。模型在英文和中文基準測試中表現接近當時的頂尖水平。",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "date": "2024-01-11",
+    "title": "DeepSeek-MoE 發布",
+    "description": "推出基於混合專家架構（Mixture-of-Experts）的 DeepSeek-MoE 模型，以 145B 總參數實現接近 16B 激活參數的高效推理，大幅降低訓練和推理成本。",
+    "category": "research",
+    "impact": 3
+  },
+  {
+    "date": "2024-03-11",
+    "title": "DeepSeek-V2 發布",
+    "description": "發布 DeepSeek-V2，總參數達 236B，但每次推理僅激活 21B。其創新的 MLA（Multi-head Latent Attention）架構使推理成本降低至 GPT-4 Turbo 的 1/70，引發全球 AI 界「價格戰」。",
+    "category": "product",
+    "impact": 5
+  },
+  {
+    "date": "2024-05-01",
+    "title": "DeepSeek-V2 開源並引發價格戰",
+    "description": "DeepSeek-V2 以極低 API 定價（每百萬 token 僅 1 元人民幣）推向市場，迫使字節跳動、阿里、百度等紛紛降價，被業界稱為「AI 價格戰的導火索」。",
+    "category": "milestone",
+    "impact": 4
+  },
+  {
+    "date": "2024-06-17",
+    "title": "DeepSeek-Coder-V2 發布",
+    "description": "發布 DeepSeek-Coder-V2，在代碼生成任務上超越 GPT-4 Turbo，支持 338 種編程語言和 128K 上下文長度。同樣採用 MoE 架構並完全開源。",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2024-09-05",
+    "title": "DeepSeek 數學模型 DeepSeek-Math-7B 引發關注",
+    "description": "研究論文顯示 DeepSeek-Math-7B 在數學競賽級基準測試中接近 GPT-4 水平，證明小模型經過高質量數據訓練也能達到驚人性能。",
+    "category": "research",
+    "impact": 3
+  },
+  {
+    "date": "2024-12-13",
+    "title": "DeepSeek-V3 發布",
+    "description": "發布 DeepSeek-V3，總參數 671B（激活 37B），訓練成本僅約 557.6 萬美元，使用 2048 塊 H800 GPU 在兩個月內完成。性能媲美 GPT-4o 和 Claude 3.5 Sonnet。",
+    "category": "product",
+    "impact": 5
+  },
+  {
+    "date": "2024-12-26",
+    "title": "DeepSeek-V3 開源震動業界",
+    "description": "DeepSeek-V3 在 GitHub 上完全開源模型權重，其極低訓練成本和強大性能引發全球 AI 社區熱議，被視為挑戰西方 AI 巨頭的重要里程碑。",
+    "category": "milestone",
+    "impact": 5
+  },
+  {
+    "date": "2025-01-20",
+    "title": "DeepSeek-R1 發布",
+    "description": "發布推理模型 DeepSeek-R1，在數學、程式碼和邏輯推理任務上媲美 OpenAI o1，並採用完全開源策略發布技術報告和模型權重。引發全球科技股震盪。",
+    "category": "product",
+    "impact": 5
+  },
+  {
+    "date": "2025-01-27",
+    "title": "DeepSeek-R1 登頂美國 App Store",
+    "description": "DeepSeek 應用程式超越 ChatGPT，登上美國 App Store 免費應用榜首。同日英偉達股價暴跌 17%，市值蒸發約 5890 億美元，創下美國股市單日最大市值損失紀錄。",
+    "category": "milestone",
+    "impact": 5
+  },
+  {
+    "date": "2025-01-28",
+    "title": "OpenAI 指控 DeepSeek 蒸餾爭議",
+    "description": "OpenAI 和 Microsoft 表示正在調查 DeepSeek 是否使用 OpenAI 模型輸出進行蒸餾訓練。此爭議引發關於開源模型與閉源模型邊界的廣泛討論。",
+    "category": "legal",
+    "impact": 3
+  },
+  {
+    "date": "2025-02-01",
+    "title": "多國政府機構限制使用 DeepSeek",
+    "description": "美國海軍、NASA 及多個國家政府機構以數據安全為由禁止或限制使用 DeepSeek。澳洲、韓國、日本等國也對 DeepSeek 展開安全審查。",
+    "category": "legal",
+    "impact": 3
+  },
+  {
+    "date": "2025-02-15",
+    "title": "DeepSeek-R1 被主要雲端平台採納",
+    "description": "AWS、Azure、Google Cloud、華為雲、阿里雲等全球主要雲服務商相繼上線 DeepSeek-R1 和 DeepSeek-V3，標誌著開源模型的主流化。",
+    "category": "partnership",
+    "impact": 4
+  },
+  {
+    "date": "2025-03-01",
+    "title": "DeepSeek 宣布下一階段多模態計畫",
+    "description": "梁文鋒在採訪中透露 DeepSeek 正在研發多模態模型和下一代推理系統，並強調將繼續堅持開源路線和極致成本優化策略。",
+    "category": "milestone",
+    "impact": 3
+  },
+  {
+    "date": "2023-07-01",
+    "title": "幻方量化宣布投身 AGI 研發",
+    "description": "幻方量化公開宣布將大量資源投入通用人工智慧研究，並透露已儲備超過 1 萬張 A100 GPU，為後續 DeepSeek 的成立奠定基礎。",
+    "category": "milestone",
+    "impact": 3
+  },
+  {
+    "date": "2024-08-01",
+    "title": "DeepSeek 發布多項研究論文",
+    "description": "DeepSeek 研究團隊發表多篇技術論文，詳細介紹 MLA 注意力機制、輔助損失自由負載均衡等創新，這些技術成為低成本訓練大模型的關鍵。",
+    "category": "research",
+    "impact": 4
+  },
+  {
+    "date": "2025-01-25",
+    "title": "DeepSeek-R1-Lite-Preview 先行發布",
+    "description": "在 R1 正式發布前，DeepSeek 先推出 R1-Lite-Preview 展示其推理能力，該模型在 AIME 和 MATH 等數學基準上表現優於 o1-preview。",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "date": "2024-02-01",
+    "title": "DeepSeek 團隊發表 Fire-Flyer AI-HPC 論文",
+    "description": "發表關於 Fire-Flyer 2 AI 超算集群的論文，詳細介紹如何以極低成本構建高效 AI 訓練基礎設施，展示其在硬件效率和軟件優化上的深厚積累。",
+    "category": "research",
+    "impact": 3
+  },
+  {
+    "date": "2025-03-15",
+    "title": "DeepSeek-V4 開發消息傳出",
+    "description": "業界消息稱 DeepSeek 正在開發下一代模型 V4，預計將進一步提升多模態能力和推理效率，並可能在 2025 年中發布。",
+    "category": "milestone",
+    "impact": 2
+  },
+  {
+    "date": "2024-04-01",
+    "title": "DeepSeek 發布第二代程式碼模型",
+    "description": "在 Coder-V2 之前，DeepSeek 持續迭代其代碼模型，逐步擴展支持的編程語言種類和上下文窗口，建立開發者社區口碑。",
+    "category": "product",
+    "impact": 2
+  },
+  {
+    "date": "2025-02-20",
+    "title": "DeepSeek 開源周活動",
+    "description": "DeepSeek 舉辦開源周，連續五天開源多個核心工具庫和優化方案，包括 FlashMLA、DeepEP、DeepGEMM 等，進一步鞏固其開源領導者形象。",
+    "category": "milestone",
+    "impact": 4
+  },
+  {
+    "date": "2023-08-01",
+    "title": "DeepSeek 首款對話模型內測",
+    "description": "DeepSeek 開始內部測試首款對話 AI 產品，為後續對外發布做準備。模型在中文理解和生成方面進行針對性優化。",
+    "category": "product",
+    "impact": 2
+  },
+  {
+    "date": "2024-10-01",
+    "title": "DeepSeek 技術報告揭示訓練細節",
+    "description": "發布 V2 技術報告詳細披露 MoE 架構、數據處理流程和訓練方法論，成為業界研究低成本大模型訓練的重要參考資料。",
+    "category": "research",
+    "impact": 3
+  }
+]

@@ -1,0 +1,212 @@
+[
+  {
+    "date": "2010-09-23",
+    "title": "DeepMind 成立",
+    "description": "Demis Hassabis、Shane Legg 和 Mustafa Suleyman 在英國倫敦創立 DeepMind Technologies。公司使命是「解決智慧問題，然後用智慧解決一切問題」。",
+    "category": "milestone",
+    "impact": 5
+  },
+  {
+    "date": "2014-01-27",
+    "title": "Google 收購 DeepMind",
+    "description": "Google 以約 4 億至 6.5 億英鎊收購 DeepMind，這是當時 Google 在歐洲最大的收購案之一。DeepMind 成為 Google 旗下獨立運營的 AI 研究實驗室。",
+    "category": "acquisition",
+    "impact": 5
+  },
+  {
+    "date": "2015-10-01",
+    "title": "AlphaGo 首次擊敗職業圍棋棋手",
+    "description": "DeepMind 的 AlphaGo 以 5:0 擊敗歐洲圍棋冠軍樊麾，成為首個擊敗職業圍棋選手的電腦程式。這一成果發表在《自然》期刊。",
+    "category": "research",
+    "impact": 4
+  },
+  {
+    "date": "2016-03-09",
+    "title": "AlphaGo 戰勝李世石",
+    "description": "AlphaGo 在韓國首爾以 4:1 擊敗世界圍棋冠軍李世石九段，這場比賽全球觀看人數超過 2.8 億，標誌著 AI 發展的歷史性時刻。",
+    "category": "milestone",
+    "impact": 5
+  },
+  {
+    "date": "2016-11-01",
+    "title": "Google Brain 推出 TensorFlow",
+    "description": "Google Brain 團隊開源的機器學習框架 TensorFlow 1.0 正式發布，迅速成為全球最流行的深度學習框架之一，重塑了 AI 開發生態。",
+    "category": "product",
+    "impact": 5
+  },
+  {
+    "date": "2017-06-12",
+    "title": "Transformer 論文發表",
+    "description": "Google Brain 團隊發表《Attention Is All You Need》，提出 Transformer 架構。這篇論文徹底改變了自然語言處理領域，成為 GPT、BERT 等現代大語言模型的基礎。",
+    "category": "research",
+    "impact": 5
+  },
+  {
+    "date": "2017-10-18",
+    "title": "DeepMind 推出 AlphaGo Zero",
+    "description": "AlphaGo Zero 僅通過自我對弈學習，無需任何人類棋譜，三天內便超越此前擊敗李世石的 AlphaGo 版本。展示了強化學習的強大潛力。",
+    "category": "research",
+    "impact": 4
+  },
+  {
+    "date": "2018-05-08",
+    "title": "Google Duplex 驚豔發布",
+    "description": "Google I/O 大會上展示的 Duplex AI 能夠以自然語音打電話預約餐廳和理髮，其逼真程度引發關於 AI 倫理和透明度的廣泛討論。",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2018-10-01",
+    "title": "BERT 模型發布",
+    "description": "Google 發布 BERT（Bidirectional Encoder Representations from Transformers），通過雙向訓練理解上下文，在 11 項 NLP 任務上創下新紀錄。",
+    "category": "research",
+    "impact": 5
+  },
+  {
+    "date": "2020-11-30",
+    "title": "AlphaFold2 破解蛋白質折疊問題",
+    "description": "DeepMind 的 AlphaFold2 在 CASP14 競賽中達到原子級精準預測蛋白質結構，被視為解決了困擾生物學 50 年的重大挑戰。成果發表於《自然》。",
+    "category": "research",
+    "impact": 5
+  },
+  {
+    "date": "2021-07-01",
+    "title": "AlphaFold 蛋白質數據庫公開",
+    "description": "DeepMind 與 EMBL-EBI 合作，公開超過 35 萬種蛋白質結構預測數據，涵蓋人類基因組中幾乎所有蛋白質。這一資源免費開放給全球科研人員。",
+    "category": "milestone",
+    "impact": 5
+  },
+  {
+    "date": "2021-10-01",
+    "title": "Google 發表 PaLM 論文",
+    "description": "發表 Pathways Language Model（PaLM），一個 540B 參數的大型語言模型，在多項推理任務上展現出突破性的少樣本學習能力。",
+    "category": "research",
+    "impact": 4
+  },
+  {
+    "date": "2022-04-04",
+    "title": "Google Brain 推出 PaLM",
+    "description": "Google Brain 正式發布 PaLM，展示其在常識推理、數學和代碼生成方面的強大能力，被視為 Google 對 GPT-3 的重要回應。",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2022-05-11",
+    "title": "LaMDA 對話模型引發「意識」爭議",
+    "description": "Google 工程師 Blake Lemoine 聲稱 LaMDA 已具有自我意識，引發全球關於 AI 意識和倫理的激烈辯論。Google 否認這一說法並將其停職。",
+    "category": "personnel",
+    "impact": 3
+  },
+  {
+    "date": "2023-02-06",
+    "title": "Google 發布 Bard",
+    "description": "面對 ChatGPT 的競爭壓力，Google 緊急發布對話 AI Bard。首次演示中出現事實錯誤，導致 Google 股價單日下跌超過 1000 億美元。",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2023-03-21",
+    "title": "Bard 開放公測",
+    "description": "Bard 在美國和英國開放候補名單測試，基於輕量級 LaMDA 版本。Google 強調這是「實驗性」產品，試圖在創新與安全之間取得平衡。",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "date": "2023-04-20",
+    "title": "Google Brain 與 DeepMind 合併",
+    "description": "Google 宣布將 Google Brain 和 DeepMind 合併為 Google DeepMind，由 Demis Hassabis 擔任 CEO。這一整合旨在集中資源與 OpenAI 競爭。",
+    "category": "milestone",
+    "impact": 5
+  },
+  {
+    "date": "2023-05-10",
+    "title": "Google I/O 發布 PaLM 2",
+    "description": "在 Google I/O 大會上發布 PaLM 2，支持多語言和代碼生成，並為 Bard 提供底層支持。同時推出多種尺寸版本以適應不同應用場景。",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2023-12-06",
+    "title": "Gemini 1.0 正式發布",
+    "description": "Google 發布原生多模態大模型 Gemini 1.0，包括 Ultra、Pro 和 Nano 三個版本。Google 宣稱 Ultra 在 32 項基準中有 30 項超過 GPT-4。",
+    "category": "product",
+    "impact": 5
+  },
+  {
+    "date": "2024-02-08",
+    "title": "Bard 更名為 Gemini",
+    "description": "Google 將 Bard 全面更名為 Gemini，並推出 Gemini Advanced 訂閱服務（月費 20 美元），搭載 Gemini Ultra 模型。標誌著 Google AI 產品策略的重新定位。",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2024-05-14",
+    "title": "Google I/O 發布 Gemini 1.5 Pro",
+    "description": "發布 Gemini 1.5 Pro，引入突破性的 100 萬 token 上下文窗口（後擴展至 200 萬），並展示驚人的「大海撈針」長上下文檢索能力。",
+    "category": "product",
+    "impact": 5
+  },
+  {
+    "date": "2024-08-01",
+    "title": "Google 發布 Gemini 1.5 Flash",
+    "description": "推出 Gemini 1.5 Flash，專為速度和效率優化，在保持強大性能的同時大幅降低延遲和成本，與 Pro 形成高低搭配。",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "date": "2024-09-12",
+    "title": "AlphaProteo 發布",
+    "description": "DeepMind 發布 AlphaProteo，專門設計新型蛋白質結合劑的 AI 系統，在 7 種靶標蛋白質測試中表現顯著優於現有最佳方法。",
+    "category": "research",
+    "impact": 4
+  },
+  {
+    "date": "2024-12-11",
+    "title": "Gemini 2.0 Flash 實驗版發布",
+    "description": "Google 發布 Gemini 2.0 Flash Experimental，強調原生多模態輸出（圖像、音頻）和代理能力（Agentic AI），為下一代 AI 助手奠定基礎。",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2025-02-05",
+    "title": "Gemini 2.0 系列全面上線",
+    "description": "Gemini 2.0 Flash、Pro 等模型全面上線，支持文本、圖像、音頻和視頻的多模態理解與生成。Google 強調其「代理式 AI」願景。",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2025-03-25",
+    "title": "Gemini 2.5 Pro 發布",
+    "description": "Google 發布 Gemini 2.5 Pro，被稱為「最強大模型」，在程式碼、數學和科學推理上表現卓越，被視為 Google 對 GPT-4.5 和 Claude 3.7 的直接回應。",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "date": "2011-01-01",
+    "title": "Google Brain 項目啟動",
+    "description": "Google 內部啟動 Google Brain 項目，由 Andrew Ng、Jeff Dean 和 Greg Corrado 領導，專注於深度學習研究。項目最初使用 16,000 個 CPU 核心訓練神經網絡。",
+    "category": "milestone",
+    "impact": 4
+  },
+  {
+    "date": "2012-06-01",
+    "title": "Google Brain 貓圖片識別突破",
+    "description": "Google Brain 使用 1000 萬張 YouTube 影片截圖訓練的神经网络自發學會識別貓臉，這一成果發表後引發深度學習熱潮，被視為現代 AI 浪潮的起點之一。",
+    "category": "research",
+    "impact": 5
+  },
+  {
+    "date": "2019-10-23",
+    "title": "Google 宣布量子霸權",
+    "description": "Google 在《自然》期刊發表論文，宣布其 53 量子比特處理器 Sycamore 在特定任務上實現「量子霸權」，200 秒完成傳統超級計算機需 1 萬年的計算。",
+    "category": "research",
+    "impact": 4
+  },
+  {
+    "date": "2021-06-01",
+    "title": "LaMDA 發布",
+    "description": "Google 發布 LaMDA（Language Model for Dialogue Applications），專為對話設計的 137B 參數模型，強調事實性和安全性。",
+    "category": "product",
+    "impact": 3
+  }
+]

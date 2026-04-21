@@ -81,6 +81,22 @@ const COMPANY_CONFIG: Record<string, CompanyInfo> = {
     description: 'Humanoid robotics company building general-purpose robots. Developed Figure 01, 02, 03 with in-house AI models after dropping OpenAI partnership.',
     color: '#9B59B6',
   },
+  kimi: {
+    name: 'KIMI',
+    fullName: 'Moonshot AI (月之暗面)',
+    founded: '2023-03-01',
+    founder: 'Yang Zhilin (ex-Google Brain, Tsinghua)',
+    description: 'Chinese AI startup focused on long-context processing. Creator of Kimi Chat with 2M token context window. Rapid growth with backing from Alibaba, Tencent, and HongShan.',
+    color: '#00D26A',
+  },
+  qwen: {
+    name: 'Qwen',
+    fullName: 'Tongyi Qianwen (Alibaba)',
+    founded: '2023-04-11',
+    founder: 'Alibaba Cloud (Jingren Zhou team)',
+    description: "Alibaba's large language model family. Pioneer in open-source Chinese LLMs with Qwen series. Strong performance on international benchmarks with aggressive open-source strategy.",
+    color: '#FF6A00',
+  },
 };
 
 const CATEGORY_COLORS: Record<string, string> = {

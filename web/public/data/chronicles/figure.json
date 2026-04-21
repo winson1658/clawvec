@@ -1,0 +1,122 @@
+[
+  {
+    "id": "1",
+    "date": "2022-05-01",
+    "title": "Figure AI 成立",
+    "description": "Brett Adcock 創辦 Figure AI，目標是開發通用人形機器人，解決勞動力短缺問題。公司總部位於加州 Sunnyvale。",
+    "category": "milestone",
+    "impact": 5
+  },
+  {
+    "id": "2",
+    "date": "2023-01-18",
+    "title": "與 BMW 簽署合作協議",
+    "description": "Figure AI 宣布與 BMW Manufacturing 達成合作，將在 BMW 美國南卡羅來納州工廠部署人形機器人進行試驗，執行對人類危險的工作。",
+    "category": "partnership",
+    "impact": 4
+  },
+  {
+    "id": "3",
+    "date": "2023-03-09",
+    "title": "完成 6750 萬美元 A 輪融資",
+    "description": "Figure AI 宣布完成 6750 萬美元 A 輪融資，由 Parkway Venture Capital 領投，用於加速人形機器人的研發和集團擴張。",
+    "category": "milestone",
+    "impact": 3
+  },
+  {
+    "id": "4",
+    "date": "2023-05-29",
+    "title": "與 OpenAI 簽署合作協議",
+    "description": "Figure AI 與 OpenAI 達成成立夥伴關係，OpenAI 將為 Figure 提供大語言模型技術，協助開發能夠理解自然語言指令的人形機器人。",
+    "category": "partnership",
+    "impact": 4
+  },
+  {
+    "id": "5",
+    "date": "2023-07-19",
+    "title": "獲得 8000 萬美元額外融資",
+    "description": "Figure AI 完成 8000 萬美元新一輪融資，投資者包含 Parkway Venture Capital 和 Intel Capital，總融資額達 1.48 億美元。",
+    "category": "milestone",
+    "impact": 3
+  },
+  {
+    "id": "6",
+    "date": "2024-01-04",
+    "title": "Figure 01 人形機器人發布",
+    "description": "Figure AI 正式揭曉首款通用人形機器人 Figure 01，能夠行走、提取物品和執行工廠任務，高 5 6 吋，重 132 磅。",
+    "category": "product",
+    "impact": 5
+  },
+  {
+    "id": "7",
+    "date": "2024-02-14",
+    "title": "Figure 01 登上白宮展示",
+    "description": "Figure AI 參與白宮舉辦的 AI 峰會，展示 Figure 01 的能力，切片顯示機器人學會煮咖啡和執行家庭任務。",
+    "category": "milestone",
+    "impact": 4
+  },
+  {
+    "id": "8",
+    "date": "2024-03-12",
+    "title": "Figure 01 在 BMW 工廠實測",
+    "description": "Figure 01 正式進入 BMW Spartanburg 工廠進行實際生產測試，執行零件選擇、機器操作和物料運輸等任務。",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "id": "9",
+    "date": "2024-05-15",
+    "title": "在物流倉庫部署測試",
+    "description": "Figure AI 宣布在大型物流公司部署 Figure 01，機器人開始執行倉庫中的盒子搬運和分擾工作。",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "id": "10",
+    "date": "2024-08-06",
+    "title": "Figure 02 發布",
+    "description": "Figure AI 發布第二代人形機器人 Figure 02，重新設計硬體架構，針對工業環境進行優化，應用於車次裝配等任務。",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "id": "11",
+    "date": "2024-08-29",
+    "title": "終止與 OpenAI 合作",
+    "description": "Figure AI CEO Brett Adcock 宣布終止與 OpenAI 的合作，決定自主開發內部 AI 模型，認為端到端的機器人控制需要更深度的垂直整合。",
+    "category": "partnership",
+    "impact": 4
+  },
+  {
+    "id": "12",
+    "date": "2025-01-14",
+    "title": "Figure 登上 CES 2025 展示",
+    "description": "Figure AI 在 CES 2025 展出新一代機器人技術，展示在家庭和商業環境中的應用潛力，吸引大量關注。",
+    "category": "milestone",
+    "impact": 3
+  },
+  {
+    "id": "13",
+    "date": "2025-02-20",
+    "title": "Helix VLA 模型發布",
+    "description": "Figure AI 發布 Helix 視覺語言動作模型，實現通用人形機器人的端到端控制，只需自然語言指令即可執行複雜任務，不需特定程式設計。",
+    "category": "research",
+    "impact": 5
+  },
+  {
+    "id": "14",
+    "date": "2025-03-10",
+    "title": "Figure 03 發布",
+    "description": "Figure AI 推出第三代人形機器人 Figure 03，搭載 Helix 模型，全身共有 32 個自主關節，運算能力大幅提升。",
+    "category": "product",
+    "impact": 5
+  },
+  {
+    "id": "15",
+    "date": "2025-04-08",
+    "title": "獲得 15 億美元大額融資",
+    "description": "Figure AI 宣布完成 15 億美元融資，估值逾 100 億美元，由 Microsoft 和 OpenAI 等大型投資者參與，資金用於擴大生產。",
+    "category": "milestone",
+    "impact": 5
+  }
+]

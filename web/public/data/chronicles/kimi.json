@@ -1,0 +1,20 @@
+[
+  {"date": "2023-03-01", "title": "月之暗面（Moonshot AI）在北京成立", "description": "由杨植麟、周昕宇和吴育昕三位清华校友共同创立，公司名灵感来自Pink Floyd专辑《The Dark Side of the Moon》。创始团队核心成员来自Google Brain、Meta AI等国际顶尖AI实验室，目标是构建通用人工智能（AGI）基础模型。", "category": "milestone", "impact": 5},
+  {"date": "2023-06-01", "title": "完成超6000万美元天使轮融资", "description": "公司估值达3亿美元，员工约40人。此轮融资为后续大模型研发奠定了资金基础，使月之暗面成为中国AI创业领域最受关注的新秀之一。", "category": "acquisition", "impact": 4},
+  {"date": "2023-10-10", "title": "发布首款AI聊天机器人Kimi Chat", "description": "Kimi支持单次对话处理20万汉字的长文本，迅速成为百度文心一言的最有力竞争者。产品名源自创始人杨植麟的英文昵称。", "category": "product", "impact": 5},
+  {"date": "2024-02-01", "title": "阿里巴巴领投超10亿美元融资", "description": "本轮融资后公司估值达25亿美元，阿里巴巴获得约36%的股份。红杉中国、小红书、美团等也参与投资，月之暗面跻身中国AI独角兽行列。", "category": "acquisition", "impact": 5},
+  {"date": "2024-03-18", "title": "Kimi升级支持200万字超长上下文", "description": "Moonshot宣布Kimi可单次处理200万汉字，较此前20万字提升十倍，创下当时全球大模型长文本处理的新纪录，引发市场极大关注。", "category": "product", "impact": 5},
+  {"date": "2024-03-21", "title": "Kimi因流量激增连续宕机两日", "description": "由于200万字功能上线后用户量暴增，Kimi服务器连续两天出现故障。月之暗面公开致歉并紧急扩容，侧面反映了产品爆火的程度。", "category": "milestone", "impact": 3},
+  {"date": "2024-06-01", "title": "媒体报道称计划推出海外应用Ohai与Noisee", "description": "媒体报道月之暗面正开发面向美国市场的AI角色扮演应用Ohai和音乐视频生成器Noisee。公司随后回应称暂无海外产品发布计划。", "category": "product", "impact": 3},
+  {"date": "2024-08-01", "title": "腾讯与高榕资本投资3亿美元", "description": "新一轮融资后公司估值升至33亿美元。腾讯的入局意味着月之暗面获得了中国两大互联网巨头（阿里、腾讯）的加持，战略地位进一步提升。", "category": "acquisition", "impact": 4},
+  {"date": "2024-10-01", "title": "Kimi月活用户排名中国AI应用第三", "description": "据aicpb.com数据，Kimi在中国AI应用月活用户榜上排名第三，仅次于字节跳动的豆包和百度的文心一言，巩固了其第一梯队的市场地位。", "category": "milestone", "impact": 4},
+  {"date": "2024-11-01", "title": "发布Muon优化器扩展研究论文", "description": "月之暗面与UCLA联合发表论文，成功将Muon优化器扩展至160亿参数MoE大模型训练，计算效率较AdamW提升约2倍，并开源了相关实现和模型权重。", "category": "research", "impact": 3},
+  {"date": "2025-01-20", "title": "发布Kimi K1.5推理模型", "description": "Moonshot发布Kimi K1.5，声称其在数学、编程和多模态推理能力上匹敌OpenAI的o1模型。该模型采用强化学习技术，无需复杂的蒙特卡洛树搜索即可实现高效推理。", "category": "product", "impact": 5},
+  {"date": "2025-03-01", "title": "Kimi月活排名下滑至第七位", "description": "随着中国AI市场竞争加剧，Kimi的月活用户排名下降至第七位。DeepSeek等竞争对手的崛起对月之暗面构成了新的挑战。", "category": "milestone", "impact": 3},
+  {"date": "2025-06-01", "title": "Mooncake平台获USENIX FAST最佳论文奖", "description": "月之暗面关于Mooncake serving平台的论文荣获USENIX FAST会议Erik Riedel最佳论文奖。Mooncake每日处理超1000亿token，是支撑Kimi运行的核心基础设施。", "category": "research", "impact": 4},
+  {"date": "2025-07-01", "title": "开源发布Kimi K2大模型", "description": "Kimi K2采用混合专家（MoE）架构，总参数1万亿、激活参数320亿，基于15.5万亿token训练。模型以修改版MIT许可证开源，发布首日在Hugging Face下载量登顶。", "category": "product", "impact": 5},
+  {"date": "2025-09-09", "title": "发布Kimi-K2-Instruct-0905更新版", "description": "新版K2在智能体编码任务上性能大幅提升，上下文窗口从128K扩展至256K token，进一步巩固了其在开源大模型中的领先地位。", "category": "product", "impact": 4},
+  {"date": "2025-10-01", "title": "IDG资本领投约6亿美元融资", "description": "公司估值达38亿美元（投前），腾讯等现有股东继续跟投。此次融资为月之暗面在激烈的中国AI竞赛中提供了充足的弹药。", "category": "acquisition", "impact": 4},
+  {"date": "2025-11-01", "title": "发布Kimi K2 Thinking开源推理模型", "description": "K2 Thinking训练成本约460万美元，支持256K上下文和200-300次自主工具调用。在Humanity's Last Exam、BrowseComp和SWE-Bench等基准测试中超越GPT-5和Claude Sonnet 4.5。", "category": "product", "impact": 5},
+  {"date": "2025-11-15", "title": "Kimi与多平台生态达成深度整合", "description": "Kimi陆续接入包括飞书、钉钉等在内的主流办公与协作平台，进一步扩展其在中国企业级市场的应用场景和用户触达能力。", "category": "partnership", "impact": 3}
+]
