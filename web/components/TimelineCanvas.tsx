@@ -668,18 +668,6 @@ function computeLabelLayout(
           ctx.lineTo(cx + side * (bladeW / 2 + 4 + i), cy - 3 - i * 2);
           ctx.stroke();
         }
-
-        // Title to the right of blade (not above — beside)
-        ctx.font = 'bold 12px sans-serif';
-        ctx.fillStyle = '#ffffff';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(item.text, cx + bladeW / 2 + 12, topY + 20);
-
-        // Date below title
-        ctx.font = '10px sans-serif';
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-        ctx.fillText(item.dateText, cx + bladeW / 2 + 12, topY + 36);
       });
     }
 
