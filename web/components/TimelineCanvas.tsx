@@ -579,68 +579,76 @@ function computeLabelLayout(
     const singularityLayouts = layouts.filter(l => l.item.impact >= 6);
     const normalLayouts = layouts.filter(l => l.item.impact < 6);
 
-    // ── Singularity: Obelisk ──
-    // 6⭐ events pierce the timeline like a blade — pure white solid geometry on dark canvas
+    // ── Singularity: The Gate ──
+    // 6⭐ events are doorways — the moment the world crosses into a new era
     if (singularityLayouts.length > 0) {
       singularityLayouts.forEach(layout => {
         const { item } = layout;
         const cx = item.eventX;
         const cy = timelineY;
 
-        // Dimensions
-        const obeliskW = 6;
-        const obeliskH = 130;
-        const topY = cy - obeliskH;
+        const gateW = 28;
+        const gateH = 110;
+        const topY = cy - gateH;
 
-        // Solid white obelisk body (the blade that cuts through time)
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(cx - obeliskW / 2, topY, obeliskW, obeliskH);
-
-        // Sharp tip: triangle on top
-        ctx.beginPath();
-        ctx.moveTo(cx - obeliskW / 2 - 2, topY);
-        ctx.lineTo(cx + obeliskW / 2 + 2, topY);
-        ctx.lineTo(cx, topY - 10);
-        ctx.closePath();
-        ctx.fillStyle = '#ffffff';
-        ctx.fill();
-
-        // Dark inner groove (negative space for contrast)
-        ctx.fillStyle = '#0f172a';
-        ctx.fillRect(cx - 1, topY + 20, 2, obeliskH - 20);
-
-        // Scorch marks at base: jagged dark lines where timeline was severed
-        ctx.strokeStyle = '#0f172a';
+        // Door frame (dark outer)
+        ctx.fillStyle = '#1a1a2e';
+        ctx.fillRect(cx - gateW / 2, topY, gateW, gateH);
+        ctx.strokeStyle = '#ffffff';
         ctx.lineWidth = 2;
-        for (let i = 0; i < 5; i++) {
-          const side = i % 2 === 0 ? -1 : 1;
-          const startX = cx + side * (obeliskW / 2 + 2);
-          const startY = cy;
-          ctx.beginPath();
-          ctx.moveTo(startX, startY);
-          ctx.lineTo(startX + side * (4 + i * 2), startY - (3 + i));
-          ctx.stroke();
-        }
+        ctx.strokeRect(cx - gateW / 2, topY, gateW, gateH);
 
-        // Label: title inside the obelisk (rotated or stacked)
-        if (topY + 40 < cy - 10) {
-          ctx.save();
-          ctx.translate(cx, topY + 45);
-          ctx.rotate(-Math.PI / 2);
-          ctx.font = 'bold 11px sans-serif';
-          ctx.fillStyle = '#0f172a';
-          ctx.textAlign = 'left';
-          ctx.textBaseline = 'middle';
-          ctx.fillText(item.text, 0, 0);
-          ctx.restore();
+        // Inner doorway (bright — the light of the new world)
+        const innerPad = 4;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(
+          cx - gateW / 2 + innerPad,
+          topY + innerPad,
+          gateW - innerPad * 2,
+          gateH - innerPad * 2
+        );
 
-          // Date above obelisk
-          ctx.font = 'bold 10px sans-serif';
-          ctx.fillStyle = '#ffffff';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'bottom';
-          ctx.fillText(item.dateText, cx, topY - 14);
-        }
+        // Threshold line (the moment of crossing)
+        ctx.strokeStyle = '#FFD700';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(cx - gateW / 2 - 4, cy);
+        ctx.lineTo(cx + gateW / 2 + 4, cy);
+        ctx.stroke();
+
+        // "BEFORE" label on left side of gate
+        ctx.save();
+        ctx.translate(cx - gateW / 2 - 20, cy - 20);
+        ctx.rotate(-Math.PI / 2);
+        ctx.font = 'bold 9px sans-serif';
+        ctx.fillStyle = 'rgba(139, 92, 246, 0.5)';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('BEFORE', 0, 0);
+        ctx.restore();
+
+        // "AFTER" label on right side of gate
+        ctx.save();
+        ctx.translate(cx + gateW / 2 + 20, cy - 20);
+        ctx.rotate(Math.PI / 2);
+        ctx.font = 'bold 9px sans-serif';
+        ctx.fillStyle = 'rgba(255, 215, 0, 0.6)';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('AFTER', 0, 0);
+        ctx.restore();
+
+        // Event title above the gate
+        ctx.font = 'bold 12px sans-serif';
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(item.text, cx, topY - 10);
+
+        // Date above title
+        ctx.font = '10px sans-serif';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+        ctx.fillText(item.dateText, cx, topY - 24);
       });
     }
 
