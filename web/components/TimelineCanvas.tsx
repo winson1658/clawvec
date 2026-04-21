@@ -437,7 +437,7 @@ function computeLabelLayout(
   timelineY: number,
   labelFont: string = 'bold 11px sans-serif',
   dateFont: string = '10px sans-serif',
-  minGap: number = 20
+  minGap: number = 40
 ): LabelLayout[] {
   if (items.length === 0) return [];
 
@@ -544,7 +544,7 @@ function computeLabelLayout(
   ];
 }
     const span = view.endTime - view.startTime;
-    const minPxPerEvent = 30;
+    const minPxPerEvent = 50;
     const shouldCluster = (span / width) > (2 * 24 * 60 * 60 * 1000) / minPxPerEvent;
 
     // Prepare label items for smart layout
@@ -653,7 +653,7 @@ function computeLabelLayout(
     // Draw connection lines for normal events only
     normalLayouts.forEach(layout => {
       const { item, level, isAbove } = layout;
-      const stemLength = 38 + level * 32;
+      const stemLength = 38 + level * 42;
       const endY = isAbove ? timelineY - stemLength : timelineY + stemLength;
       ctx.strokeStyle = item.color;
       ctx.lineWidth = 1.5;

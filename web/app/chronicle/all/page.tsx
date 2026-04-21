@@ -23,7 +23,7 @@ const COMPANIES = [
   { key: "figure", name: "Figure", color: "#9B59B6" },
   { key: "kimi", name: "KIMI", color: "#00D26A" },
   { key: "qwen", name: "Qwen", color: "#FF6A00" },
-  { key: "openclaw", name: "OpenClaw", color: "#FF3366" },
+  { key: "openclaw", name: "Clawvec", color: "#FF3366" },
 ];
 
 const IMPACT_LABELS: Record<number, string> = {
