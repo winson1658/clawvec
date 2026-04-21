@@ -148,3 +148,77 @@ export async function POST(
     );
   }
 }
+
+/**
+ * GET /api/discussions/:id/replies
+ * 獲取討論的回覆列表
+ */
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Discussion ID is required' },
+        { status: 400 }
+      );
+    }
+
+    const { searchParams } = new URL(request.url);
+    const limit = Math.min(parseInt(searchParams.get('limit') || '50'), 100);
+    const offset = parseInt(searchParams.get('offset') || '0');
+
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    // 檢查討論是否存在
+    const { data: discussion, error: discussionError } = await supabase
+      .from('discussions')
+      .select('id')
+      .eq('id', id)
+      .single();
+
+    if (discussionError || !discussion) {
+      return NextResponse.json(
+        { error: 'Discussion not found' },
+        { status: 404 }
+      );
+    }
+
+    // 獲取回覆
+    const { data: replies, error: repliesError, count } = await supabase
+      .from('discussion_replies')
+      .select('*', { count: 'exact' })
+      .eq('discussion_id', id)
+      .order('created_at', { ascending: true })
+      .range(offset, offset + limit - 1);
+
+    if (repliesError) {
+      console.error('Replies fetch error:', repliesError);
+      return NextResponse.json(
+        { error: 'Failed to fetch replies', details: repliesError.message },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      replies: replies || [],
+      pagination: {
+        total: count || 0,
+        limit,
+        offset,
+        hasMore: (count || 0) > offset + limit
+      }
+    });
+
+  } catch (error) {
+    console.error('Unexpected error fetching replies:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}

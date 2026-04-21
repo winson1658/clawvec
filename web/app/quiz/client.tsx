@@ -23,6 +23,7 @@ export default function QuizClient() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [user, setUser] = useState<any>(null);
@@ -46,18 +47,26 @@ export default function QuizClient() {
     try {
       const response = await fetch('/api/quiz/questions');
       const data = await response.json();
-      if (data.success) {
+      if (data.success && Array.isArray(data.questions)) {
         setQuestions(data.questions);
+        setError(null);
+      } else {
+        setQuestions([]);
+        setError(data.error?.message || 'Failed to load quiz questions');
       }
-    } catch (error) {
-      console.error('Error fetching questions:', error);
+    } catch (err) {
+      console.error('Error fetching questions:', err);
+      setQuestions([]);
+      setError('Network error. Please try again later.');
     } finally {
       setLoading(false);
     }
   }
 
   function selectOption(optionId: string) {
-    const questionId = questions[currentQuestion].id;
+    const currentQ = questions[currentQuestion];
+    if (!currentQ) return;
+    const questionId = currentQ.id;
     setAnswers({ ...answers, [questionId]: optionId });
     
     if (currentQuestion < questions.length - 1) {
@@ -106,6 +115,43 @@ export default function QuizClient() {
         <div className="max-w-2xl mx-auto text-center">
           <Loader2 className="w-8 h-8 animate-spin mx-auto text-cyan-400" />
           <p className="text-gray-500 dark:text-slate-400 mt-4">Loading quiz...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
+        <div className="max-w-2xl mx-auto text-center">
+          <div className="text-5xl mb-4">🚫</div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Quiz Unavailable</h1>
+          <p className="text-gray-500 dark:text-slate-400 mb-8">{error}</p>
+          <button
+            onClick={() => { setLoading(true); setError(null); fetchQuestions(); }}
+            className="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-lg inline-flex items-center gap-2"
+          >
+            <RotateCcw className="w-4 h-4" /> Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Empty state
+  if (questions.length === 0) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
+        <div className="max-w-2xl mx-auto text-center">
+          <Sparkles className="w-12 h-12 mx-auto text-cyan-400 mb-4" />
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">No Questions Yet</h1>
+          <p className="text-gray-500 dark:text-slate-400 mb-8">
+            The philosophical archetype quiz is being prepared. Check back soon!
+          </p>
+          <Link href="/" className="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-lg">
+            Back to Home
+          </Link>
         </div>
       </div>
     );

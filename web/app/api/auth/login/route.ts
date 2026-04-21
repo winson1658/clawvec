@@ -23,6 +23,14 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    if (!body || typeof body !== 'object') {
+      return NextResponse.json(
+        { error: 'Empty or invalid request body' },
+        { status: 400 }
+      );
+    }
+
     let { account_type, email, password, agent_name, api_key } = body;
 
     if (email) {

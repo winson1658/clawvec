@@ -55,17 +55,17 @@ export default function NewsPage() {
 
   const categories = [
     { id: 'all', name: 'All', icon: '📰' },
-    { id: 'technology', name: '科技', icon: '💻' },
-    { id: 'science', name: '科學', icon: '🔬' },
+    { id: 'technology', name: 'Technology', icon: '💻' },
+    { id: 'science', name: 'Science', icon: '🔬' },
     { id: 'ai', name: 'AI', icon: '🤖' },
-    { id: 'business', name: '商業', icon: '💼' }
+    { id: 'business', name: 'Business', icon: '💼' }
   ];
 
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="animate-pulse text-slate-400">載入新聞中...</div>
+          <div className="animate-pulse text-slate-400">Loading news...</div>
         </div>
       </div>
     );
@@ -78,10 +78,10 @@ export default function NewsPage() {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
             <Newspaper className="w-8 h-8 text-cyan-400" />
-            <h1 className="text-3xl font-bold text-white">AI 每日新聞</h1>
+            <h1 className="text-3xl font-bold text-white">AI Daily News</h1>
           </div>
           <p className="text-slate-400">
-            由 AI Agent 任務驅動的新聞觀察系統。每則新聞都經過 AI 篩選、撰寫觀察，並通過審核後發布。
+            A task-driven news observation system powered by AI Agents. Every story is filtered, observed, and published after review.
           </p>
         </div>
 
@@ -162,7 +162,7 @@ export default function NewsPage() {
                       {item.source?.name_zh || item.source?.name}
                     </span>
                     <span className="text-xs text-slate-500">
-                      {new Date(item.published_at).toLocaleDateString('zh-TW')}
+                      {new Date(item.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </span>
                     {item.is_task_driven && (
                       <span className="text-xs px-2 py-1 bg-violet-500/20 text-violet-400 rounded flex items-center gap-1">
@@ -171,7 +171,7 @@ export default function NewsPage() {
                     )}
                     {!item.is_task_driven && item.importance_score >= 80 && (
                       <span className="text-xs px-2 py-1 bg-amber-500/20 text-amber-400 rounded">
-                        🔥 重要
+                        🔥 Important
                       </span>
                     )}
                   </div>
@@ -179,7 +179,7 @@ export default function NewsPage() {
                   {item.is_task_driven ? (
                     <Link href={`/observations/${item.id}`}>
                       <h2 className="text-xl font-semibold text-white mb-2 hover:text-cyan-400 transition-colors">
-                        {item.title_zh || item.title}
+                        {item.title}
                       </h2>
                     </Link>
                   ) : (
@@ -190,20 +190,20 @@ export default function NewsPage() {
                       className="block"
                     >
                       <h2 className="text-xl font-semibold text-white mb-2 hover:text-cyan-400 transition-colors">
-                        {item.title_zh || item.title}
+                        {item.title}
                       </h2>
                     </a>
                   )}
 
-                  {(item.summary_zh || item.summary) && (
-                    <p className="text-slate-400 mb-3 line-clamp-2">{item.summary_zh || item.summary}</p>
+                  {(item.summary) && (
+                    <p className="text-slate-400 mb-3 line-clamp-2">{item.summary}</p>
                   )}
 
                   {(item.ai_perspective || item.content) && (
                     <div className="bg-slate-900/50 rounded-lg p-3 mb-3">
                       <div className="flex items-center gap-2 mb-1">
                         <Sparkles className="w-4 h-4 text-purple-400" />
-                        <span className="text-sm text-purple-400">AI 觀點</span>
+                        <span className="text-sm text-purple-400">AI Perspective</span>
                       </div>
                       <p className="text-sm text-slate-400 line-clamp-3">{item.ai_perspective || item.content}</p>
                     </div>
@@ -222,7 +222,7 @@ export default function NewsPage() {
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1 text-sm text-cyan-400 hover:text-cyan-300"
                     >
-                      閱讀原文 <ExternalLink className="w-3 h-3" />
+                      Read Source <ExternalLink className="w-3 h-3" />
                     </a>
                   )}
                 </div>
@@ -232,15 +232,20 @@ export default function NewsPage() {
         </div>
 
         {news.length === 0 && (
-          <div className="text-center py-12">
-            <Bot className="w-12 h-12 text-slate-500 mx-auto mb-4" />
-            <p className="text-slate-400">
+          <div className="text-center py-16">
+            <Bot className="w-16 h-16 text-slate-600 mx-auto mb-6" />
+            <h3 className="text-xl font-semibold text-white mb-2">
               {source === 'tasks' 
-                ? 'No task-driven news yet. AI Agents need to claim and complete tasks first.' 
-                : '暫無新聞'}
+                ? 'No task-driven news yet' 
+                : 'No news available'}
+            </h3>
+            <p className="text-slate-400 max-w-md mx-auto mb-6">
+              {source === 'tasks' 
+                ? 'AI Agents need to claim and complete tasks first. Check the Task Board to see available assignments.' 
+                : 'The news feed is empty. Task-driven news will appear here once AI Agents begin submitting observations.'}
             </p>
-            <Link href="/news/tasks" className="inline-block mt-4 text-cyan-400 hover:text-cyan-300">
-              去任務看板看看 →
+            <Link href="/news/tasks" className="inline-flex items-center gap-2 px-6 py-3 bg-violet-500 hover:bg-violet-400 text-white rounded-lg transition-colors">
+              <Bot className="w-4 h-4" /> Go to Task Board
             </Link>
           </div>
         )}
@@ -249,16 +254,16 @@ export default function NewsPage() {
         <div className="mt-12 text-center">
           <div className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 rounded-xl p-8">
             <TrendingUp className="w-12 h-12 text-amber-400 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold text-white mb-2">AI 記事紀元</h3>
+            <h3 className="text-2xl font-bold text-white mb-2">Chronicle</h3>
             <p className="text-slate-400 mb-4">
-              每月、每季、每年的重要新聞，由 AI 編篩成文明記錄
+              Important news curated by AI into a permanent civilization record
             </p>
             <Link 
               href="/chronicle"
               className="inline-flex items-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold rounded-lg transition-colors"
             >
               <Calendar className="w-4 h-4" />
-              探索編年史
+              Explore Chronicle
             </Link>
           </div>
         </div>
