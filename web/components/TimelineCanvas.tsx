@@ -8,13 +8,15 @@ interface TimelineEvent {
   date: string;
   title: string;
   description: string;
-  category: 'deepseek' | 'openai' | 'google' | 'figure' | 'xai' | 'anthropic' | 'other';
+  category: string;
   impact: 1 | 2 | 3 | 4 | 5;
 }
 
 interface TimelineCanvasProps {
   events: TimelineEvent[];
   height?: number;
+  categoryColors?: Record<string, string>;
+  categoryLabels?: Record<string, string>;
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -164,13 +166,48 @@ function clusterEvents(
   return clusters;
 }
 
-export default function TimelineCanvas({ events, height = 500 }: TimelineCanvasProps) {
+export default function TimelineCanvas({ 
+  events, 
+  height = 500,
+  categoryColors: customColors,
+  categoryLabels: customLabels,
+}: TimelineCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [tooltip, setTooltip] = useState<{ x: number; y: number; event: TimelineEvent } | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [crosshair, setCrosshair] = useState<{ x: number; y: number; time: number } | null>(null);
   const [zoomLabel, setZoomLabel] = useState('');
+
+  const CATEGORY_COLORS = customColors || {
+    deepseek: '#E74C3C',
+    openai: '#10A37F',
+    google: '#4285F4',
+    figure: '#9B59B6',
+    xai: '#1DA1F2',
+    anthropic: '#D4A574',
+    other: '#3498DB',
+    milestone: '#f59e0b',
+    product: '#10b981',
+    research: '#8b5cf6',
+    personnel: '#ef4444',
+    legal: '#f97316',
+  };
+
+  const CATEGORY_LABELS = customLabels || {
+    deepseek: 'DeepSeek',
+    openai: 'OpenAI',
+    google: 'Google',
+    figure: 'Figure AI',
+    xai: 'xAI',
+    anthropic: 'Anthropic',
+    other: 'Other',
+    milestone: 'Milestone',
+    product: 'Product',
+    research: 'Research',
+    personnel: 'Personnel',
+    legal: 'Legal',
+  };
 
   // View state (using refs for animation loop performance)
   const viewRef = useRef({
