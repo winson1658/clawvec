@@ -24,7 +24,6 @@ const COMPANIES = [
   { key: "kimi", name: "KIMI", color: "#00D26A" },
   { key: "qwen", name: "Qwen", color: "#FF6A00" },
   { key: "openclaw", name: "OpenClaw", color: "#FF3366" },
-  { key: "hermes", name: "Hermes", color: "#00BFFF" },
 ];
 
 const IMPACT_LABELS: Record<number, string> = {
@@ -61,6 +60,19 @@ export default function AllChroniclePage() {
         } catch {
           // skip missing files
         }
+      }
+      // Load Hermes events under OpenClaw umbrella
+      try {
+        const res = await fetch(`/data/chronicles/hermes.json`);
+        if (res.ok) {
+          const data = await res.json();
+          const eventList = Array.isArray(data) ? data : (data.events || []);
+          for (const ev of eventList) {
+            all.push({ ...ev, company: "openclaw" });
+          }
+        }
+      } catch {
+        // skip missing file
       }
       // Sort by date
       all.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());

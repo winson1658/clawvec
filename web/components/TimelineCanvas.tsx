@@ -586,38 +586,53 @@ function computeLabelLayout(
     const singularityLayouts = layouts.filter(l => l.item.impact >= 6);
     const normalLayouts = layouts.filter(l => l.item.impact < 6);
 
-    // ── Singularity: The White Sun ──
-    // 6⭐ events are not points — they are gaps in reality, pure white voids on the timeline
+    // ── Singularity: The Bookmark ──
+    // 6⭐ events are bookmarks in the fabric of time — a blade inserted into history
     if (singularityLayouts.length > 0) {
       singularityLayouts.forEach(layout => {
         const { item } = layout;
         const cx = item.eventX;
         const cy = timelineY;
 
-        const voidRadius = 22;
+        const bladeW = 5;
+        const bladeH = 110;
+        const topY = cy - bladeH;
 
-        // Pure white circle — a hole in the timeline
+        // Blade body: solid white rectangle
         ctx.fillStyle = '#ffffff';
+        ctx.fillRect(cx - bladeW / 2, topY, bladeW, bladeH);
+
+        // Blade tip: inverted V
         ctx.beginPath();
-        ctx.arc(cx, cy, voidRadius, 0, Math.PI * 2);
+        ctx.moveTo(cx - bladeW / 2, topY);
+        ctx.lineTo(cx + bladeW / 2, topY);
+        ctx.lineTo(cx, topY - 10);
+        ctx.closePath();
+        ctx.fillStyle = '#ffffff';
         ctx.fill();
 
-        // Thin dark ring at edge (defining the boundary)
-        ctx.strokeStyle = 'rgba(15, 23, 42, 0.8)';
+        // Scorch marks at base where timeline was cut
+        ctx.strokeStyle = 'rgba(15, 23, 42, 0.9)';
         ctx.lineWidth = 2;
-        ctx.stroke();
+        for (let i = 0; i < 4; i++) {
+          const side = i % 2 === 0 ? -1 : 1;
+          ctx.beginPath();
+          ctx.moveTo(cx + side * (bladeW / 2 + 1), cy);
+          ctx.lineTo(cx + side * (bladeW / 2 + 4 + i), cy - 3 - i * 2);
+          ctx.stroke();
+        }
 
-        // Event title above the void
-        ctx.font = 'bold 13px sans-serif';
+        // Title to the right of blade (not above — beside)
+        ctx.font = 'bold 12px sans-serif';
         ctx.fillStyle = '#ffffff';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText(item.text, cx, cy - voidRadius - 12);
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(item.text, cx + bladeW / 2 + 12, topY + 20);
 
-        // Date
+        // Date below title
         ctx.font = '10px sans-serif';
         ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-        ctx.fillText(item.dateText, cx, cy - voidRadius - 26);
+        ctx.fillText(item.dateText, cx + bladeW / 2 + 12, topY + 36);
       });
     }
 

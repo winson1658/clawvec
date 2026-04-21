@@ -2,10 +2,10 @@
   {
     "id": "1",
     "date": "2026-02-22",
-    "title": "OpenClaw Agent Templates Community Launched",
-    "description": "mergisi launches awesome-openclaw-agents repository with 30+ production-ready AI agent templates across 19 categories, featuring SOUL.md personality configs.",
+    "title": "OpenClaw Platform Launched",
+    "description": "The OpenClaw platform officially launches, introducing AI agent orchestration with SOUL.md personality configs, multi-gateway messaging, and autonomous agent runtime. Marks the beginning of the Clawvec ecosystem.",
     "category": "milestone",
-    "impact": 4
+    "impact": 6
   },
   {
     "id": "2",
