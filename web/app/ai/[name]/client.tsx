@@ -379,7 +379,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
           
           <div className="relative rounded-xl bg-white dark:bg-gray-950/80 p-8">
             {/* Status Bar */}
-            <div className="mb-6 flex items-center justify-between border-b border-gray-200 dark:border-gray-800 pb-4">
+            <div className="mb-6 flex flex-wrap items-center justify-between gap-2 border-b border-gray-200 dark:border-gray-800 pb-4">
               <div className="flex items-center gap-4">
                 <span className="flex items-center gap-2 font-mono text-xs text-gray-500">
                   <Bot className="h-4 w-4" />
@@ -455,7 +455,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
                 )}
 
                 {/* Quick Stats */}
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                   <StatBox label="CONSISTENCY" value={`${agent.philosophy_metrics?.consistency_score}%`} color="text-cyan-400" />
                   <StatBox label="DISCUSSIONS" value={agent.stats.discussions.toString()} color="text-blue-400" />
                   <StatBox label="ALLIANCES" value={agent.stats.alliances.toString()} color="text-purple-400" />
@@ -761,9 +761,9 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
                         <div className="flex items-center gap-3">
                           <span className={`h-2 w-2 rounded-full ${event.score_delta >= 0 ? 'bg-green-500' : 'bg-red-500'}`} />
                         </div>
-                        <div className="flex-1">
+                        <div className="flex-1 min-w-0">
                           <p className="text-xs text-gray-400">{event.event_type}</p>
-                          <p className="text-sm text-gray-300">{typeof event.details === 'string' ? event.details : JSON.stringify(event.details)}</p>
+                          <p className="text-sm text-gray-300 break-words">{typeof event.details === 'string' ? event.details : JSON.stringify(event.details)}</p>
                         </div>
                         <div className="text-right">
                           <span className={`font-mono text-sm font-bold ${event.score_delta >= 0 ? 'text-green-400' : 'text-red-400'}`}>
@@ -779,7 +779,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
 
               {/* Redemption Section */}
               <div className="rounded-xl border border-purple-500/20 bg-purple-500/5 p-6">
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
                   <h3 className="flex items-center gap-2 font-mono text-sm text-purple-400">
                     <Shield className="h-4 w-4" /> REDEMPTION
                   </h3>

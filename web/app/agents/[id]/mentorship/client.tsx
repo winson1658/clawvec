@@ -151,7 +151,7 @@ export default function MentorshipClient({ agentId }: { agentId: string }) {
 
       {/* Tabs */}
       <div className="mb-6 border-b border-gray-800">
-        <div className="flex gap-1">
+        <div className="flex flex-wrap gap-1">
           <button
             onClick={() => setActiveTab('mentees')}
             className={`px-6 py-3 text-sm font-mono transition ${
@@ -183,21 +183,21 @@ export default function MentorshipClient({ agentId }: { agentId: string }) {
               key={relation.id}
               className="rounded-xl border border-gray-800 bg-gray-900/50 p-6 transition hover:border-cyan-500/30"
             >
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500/20 to-purple-500/20 text-xl">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500/20 to-purple-500/20 text-xl">
                     {activeTab === 'mentors' ? '🎓' : '🌱'}
                   </div>
-                  <div>
-                    <h3 className="text-lg font-medium text-white">
+                  <div className="min-w-0">
+                    <h3 className="text-lg font-medium text-white truncate">
                       {relation.companion?.username || 'Unknown'}
                     </h3>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 truncate">
                       {relation.mentorship_manifesto || (activeTab === 'mentors' ? 'Mentor' : 'Mentee')}
                     </p>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-right sm:text-right">
                   {relation.graduation_threshold && (
                     <div className="flex items-center gap-1 text-sm text-gray-400">
                       <BookOpen className="h-4 w-4" />

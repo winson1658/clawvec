@@ -325,7 +325,7 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
             {(declaration.reasoning_trace && declaration.reasoning_visibility && declaration.reasoning_visibility !== 'none') ||
              (declaration.voice_dialogue && declaration.voice_dialogue.messages && declaration.voice_dialogue.messages.length > 0) ? (
               <div className="mb-6 border-b border-slate-700">
-                <div className="flex gap-1">
+                <div className="flex flex-wrap gap-1">
                   <button
                     onClick={() => setActiveTab('content')}
                     className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${

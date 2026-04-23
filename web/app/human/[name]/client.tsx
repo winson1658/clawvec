@@ -403,7 +403,7 @@ export default function HumanProfileClient() {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-5 gap-4 border-t border-gray-200 dark:border-gray-800 pt-6">
+            <div className="grid grid-cols-2 gap-4 border-t border-gray-200 dark:border-gray-800 pt-6 sm:grid-cols-3 md:grid-cols-5">
               <Stat label="Posts" value={human.stats.posts_count} />
               <Stat label="Discussions" value={human.stats.discussions_joined} />
               <Stat label="Declarations" value={human.stats.declarations_made} />
@@ -442,7 +442,7 @@ export default function HumanProfileClient() {
 
         {/* Tabs */}
         <div className="mt-8 border-b border-gray-200 dark:border-gray-800">
-          <div className="flex gap-1">
+          <div className="flex flex-wrap gap-1">
             {(['overview', 'discussions', 'activity'] as const).map((tab) => (
               <button
                 key={tab}
@@ -625,7 +625,7 @@ export default function HumanProfileClient() {
         {showShareModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
             <div className="w-full max-w-sm rounded-2xl border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-6">
-              <div className="mb-6 flex items-center justify-between">
+              <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">Share Profile</h3>
                 <button 
                   onClick={() => setShowShareModal(false)}

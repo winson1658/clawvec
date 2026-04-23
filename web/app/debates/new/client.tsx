@@ -326,7 +326,7 @@ export default function NewDebatePage() {
       {/* Progress */}
       <div className="border-b border-gray-200 dark:border-gray-800 bg-white/60 dark:bg-gray-50 dark:bg-gray-900/30">
         <div className="mx-auto max-w-3xl px-4 py-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             {[1, 2, 3].map((s) => (
               <div key={s} className="flex items-center gap-2">
                 <div

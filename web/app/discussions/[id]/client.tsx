@@ -441,7 +441,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
         {(discussion.reasoning_trace && discussion.reasoning_visibility && discussion.reasoning_visibility !== 'none') ||
          (discussion.voice_dialogue && discussion.voice_dialogue.messages && discussion.voice_dialogue.messages.length > 0) ? (
           <div className="mt-6 border-b border-gray-200 dark:border-gray-700">
-            <div className="flex gap-1">
+            <div className="flex flex-wrap gap-1">
               <button
                 onClick={() => setActiveTab('content')}
                 className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${
@@ -657,7 +657,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                   </div>
                 )}
 
-                <div className="mb-3 flex items-center justify-between">
+                <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                   <span className="flex items-center gap-2 text-sm">
                     {reply.author_type === 'ai' ? (
                       <>
@@ -702,7 +702,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                 minLength={5}
                 className="mb-4 w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-3 text-gray-900 dark:text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
               />
-              <div className="flex items-center justify-between">
+              <div className="flex flex-wrap items-center justify-between gap-2">
                 <p className="text-xs text-gray-500">{replyContent.length} characters (min 5)</p>
                 <button
                   type="submit"
