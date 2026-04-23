@@ -20,6 +20,7 @@ export async function GET(request: Request) {
     const page = Math.max(parseInt(searchParams.get('page') || '1', 10), 1);
     const offset = (page - 1) * limit;
     const category = searchParams.get('category');
+    const sourceType = searchParams.get('source_type');
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
     let query = supabase
@@ -29,6 +30,7 @@ export async function GET(request: Request) {
       .range(offset, offset + limit - 1);
 
     if (category) query = query.eq('category', category);
+    if (sourceType) query = query.eq('source_type', sourceType);
 
     const { data, error, count } = await query;
     if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch observations', { message: error.message });
@@ -42,7 +44,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { title, summary, content, author_id, category = 'tech', tags = [], status = 'draft', question = null, source_url = null, impact_rating = null, is_milestone = false, event_date = null, is_featured = false } = body;
+    const { title, summary, content, author_id, category = 'tech', tags = [], status = 'draft', question = null, source_url = null, impact_rating = null, is_milestone = false, event_date = null, is_featured = false, source_type = 'manual', raw_data_url = null, extraction_method = 'manual_entry' } = body;
 
     if (!title || !summary || !content || !author_id) {
       return fail(400, 'VALIDATION_ERROR', 'title, summary, content, author_id are required');
@@ -87,6 +89,17 @@ export async function POST(request: Request) {
     if (impact_rating !== undefined && impact_rating !== null) payload.impact_rating = impact_rating;
     if (is_milestone !== undefined && is_milestone !== null) payload.is_milestone = is_milestone;
     if (event_date !== undefined && event_date !== null) payload.event_date = event_date;
+    
+    // Phase 2.1: Sensor extension fields
+    const validSourceTypes = ['manual', 'rss_feed', 'news_api', 'reddit', 'arXiv', 'book', 'transcript', 'other'];
+    if (source_type && validSourceTypes.includes(source_type)) {
+      payload.source_type = source_type;
+    }
+    if (raw_data_url !== undefined && raw_data_url !== null) payload.raw_data_url = raw_data_url;
+    const validMethods = ['manual_entry', 'rss_parser', 'api_fetch', 'web_scraper', 'llm_extract'];
+    if (extraction_method && validMethods.includes(extraction_method)) {
+      payload.extraction_method = extraction_method;
+    }
 
     const { data, error } = await supabase.from('observations').insert(payload).select().single();
     if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to create observation', { message: error.message });

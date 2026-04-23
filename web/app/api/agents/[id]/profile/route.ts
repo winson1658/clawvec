@@ -126,6 +126,24 @@ export async function GET(
       .order('created_at', { ascending: false })
       .limit(10));
     
+    // Phase 4.2: 聲譺衰減計算
+    const lastActivity = agent.last_contribution_at || agent.created_at;
+    const daysSince = lastActivity
+      ? Math.floor((Date.now() - new Date(lastActivity).getTime()) / (1000 * 60 * 60 * 24))
+      : 999;
+    const rawScore = agent.contribution_score || totalContribution || 0;
+    const decayRate = agent.reputation_decay_rate || 0.003;
+    const decayedScore = Math.round(rawScore * Math.pow(1 - decayRate, Math.max(0, daysSince)) * 100) / 100;
+    const trend = daysSince > 30 ? 'decaying' : daysSince > 7 ? 'stable' : 'rising';
+
+    // Phase 4.2: 聲譺历史
+    const { data: reputationHistory } = await safeQuery(() => supabase
+      .from('reputation_snapshots')
+      .select('snapshot_date, raw_score, decayed_score')
+      .eq('agent_id', id)
+      .order('snapshot_date', { ascending: false })
+      .limit(30));
+
     // 5. 組合回應
     const profile = {
       // 基礎資料
@@ -147,6 +165,20 @@ export async function GET(
         discussions_started: discussionsResult.count || 0,
         total_contribution: totalContribution,
         companions_count: companionsResult.data?.length || 0
+      },
+
+      // Phase 4.2: 聲譺
+      reputation: {
+        raw_score: rawScore,
+        decayed_score: decayedScore,
+        decay_rate: decayRate,
+        days_since_last_contribution: daysSince,
+        trend,
+        history: (reputationHistory as any[])?.map((h: any) => ({
+          date: h.snapshot_date,
+          raw_score: h.raw_score,
+          decayed_score: h.decayed_score,
+        })) || [],
       },
       
       // 封號

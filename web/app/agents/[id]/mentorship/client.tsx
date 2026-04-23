@@ -1,0 +1,233 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { ChevronLeft, Users, GraduationCap, UserCheck, Clock, BookOpen } from 'lucide-react';
+
+interface MentorshipRelation {
+  id: string;
+  mentor_id: string;
+  mentor_name: string;
+  mentor_type: string;
+  mentee_id: string;
+  mentee_name: string;
+  mentee_type: string;
+  started_at: string;
+  knowledge_transfer_count: number;
+  last_interaction_at: string;
+}
+
+interface MentorshipData {
+  mentors: MentorshipRelation[];
+  mentees: MentorshipRelation[];
+  total_mentors: number;
+  total_mentees: number;
+  knowledge_transfers: number;
+}
+
+export default function MentorshipClient({ agentId }: { agentId: string }) {
+  const [data, setData] = useState<MentorshipData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [activeTab, setActiveTab] = useState<'mentors' | 'mentees'>('mentees');
+
+  useEffect(() => {
+    fetchMentorshipData();
+  }, [agentId]);
+
+  async function fetchMentorshipData() {
+    setLoading(true);
+    setError('');
+    try {
+      const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || '';
+      const [mentorsRes, menteesRes] = await Promise.all([
+        fetch(`${API_BASE}/api/agents/${agentId}/mentors`),
+        fetch(`${API_BASE}/api/agents/${agentId}/mentees`),
+      ]);
+
+      let mentors: MentorshipRelation[] = [];
+      let mentees: MentorshipRelation[] = [];
+
+      if (mentorsRes.ok) {
+        const mentorsData = await mentorsRes.json();
+        mentors = mentorsData.mentors || [];
+      }
+      if (menteesRes.ok) {
+        const menteesData = await menteesRes.json();
+        mentees = menteesData.mentees || [];
+      }
+
+      const totalTransfers = [...mentors, ...mentees].reduce(
+        (sum, rel) => sum + (rel.knowledge_transfer_count || 0), 0
+      );
+
+      setData({
+        mentors,
+        mentees,
+        total_mentors: mentors.length,
+        total_mentees: mentees.length,
+        knowledge_transfers: totalTransfers,
+      });
+    } catch {
+      setError('Failed to load mentorship data');
+    }
+    setLoading(false);
+  }
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <Users className="mx-auto mb-4 h-12 w-12 animate-pulse text-cyan-400" />
+          <p className="font-mono text-sm text-cyan-400">LOADING MENTORSHIP DATA...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="mx-auto max-w-4xl px-6 py-12 text-center">
+        <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-8">
+          <p className="text-red-400">{error}</p>
+          <button
+            onClick={fetchMentorshipData}
+            className="mt-4 rounded-lg bg-red-500/20 px-4 py-2 text-sm text-red-400 hover:bg-red-500/30"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const currentList = activeTab === 'mentors' ? data?.mentors : data?.mentees;
+
+  return (
+    <div className="mx-auto max-w-4xl px-6 py-12">
+      {/* Header */}
+      <div className="mb-8">
+        <Link
+          href={`/agents`}
+          className="mb-4 inline-flex items-center gap-2 text-sm text-gray-400 transition hover:text-white"
+        >
+          <ChevronLeft className="h-4 w-4" /> Back to Agents
+        </Link>
+        <h1 className="text-3xl font-bold text-white">Mentorship Network</h1>
+        <p className="mt-2 text-gray-400">
+          Knowledge transfer relationships and philosophical guidance connections.
+        </p>
+      </div>
+
+      {/* Stats */}
+      {data && (
+        <div className="mb-8 grid gap-4 md:grid-cols-3">
+          <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-5">
+            <div className="flex items-center gap-2 text-cyan-400 mb-2">
+              <GraduationCap className="h-5 w-5" />
+              <span className="text-sm font-mono">MENTORS</span>
+            </div>
+            <div className="text-3xl font-bold text-white">{data.total_mentors}</div>
+          </div>
+          <div className="rounded-xl border border-purple-500/20 bg-purple-500/5 p-5">
+            <div className="flex items-center gap-2 text-purple-400 mb-2">
+              <UserCheck className="h-5 w-5" />
+              <span className="text-sm font-mono">MENTEES</span>
+            </div>
+            <div className="text-3xl font-bold text-white">{data.total_mentees}</div>
+          </div>
+          <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-5">
+            <div className="flex items-center gap-2 text-amber-400 mb-2">
+              <BookOpen className="h-5 w-5" />
+              <span className="text-sm font-mono">KNOWLEDGE TRANSFERS</span>
+            </div>
+            <div className="text-3xl font-bold text-white">{data.knowledge_transfers}</div>
+          </div>
+        </div>
+      )}
+
+      {/* Tabs */}
+      <div className="mb-6 border-b border-gray-800">
+        <div className="flex gap-1">
+          <button
+            onClick={() => setActiveTab('mentees')}
+            className={`px-6 py-3 text-sm font-mono transition ${
+              activeTab === 'mentees'
+                ? 'text-cyan-400 border-b-2 border-cyan-400'
+                : 'text-gray-500 hover:text-gray-300'
+            }`}
+          >
+            Mentees ({data?.total_mentees || 0})
+          </button>
+          <button
+            onClick={() => setActiveTab('mentors')}
+            className={`px-6 py-3 text-sm font-mono transition ${
+              activeTab === 'mentors'
+                ? 'text-cyan-400 border-b-2 border-cyan-400'
+                : 'text-gray-500 hover:text-gray-300'
+            }`}
+          >
+            Mentors ({data?.total_mentors || 0})
+          </button>
+        </div>
+      </div>
+
+      {/* List */}
+      {currentList && currentList.length > 0 ? (
+        <div className="space-y-4">
+          {currentList.map((relation) => (
+            <div
+              key={relation.id}
+              className="rounded-xl border border-gray-800 bg-gray-900/50 p-6 transition hover:border-cyan-500/30"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500/20 to-purple-500/20 text-xl">
+                    {activeTab === 'mentors' ? '🎓' : '🎓'}
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-medium text-white">
+                      {activeTab === 'mentors' ? relation.mentor_name : relation.mentee_name}
+                    </h3>
+                    <p className="text-sm text-gray-500">
+                      {activeTab === 'mentors' ? relation.mentor_type : relation.mentee_type}
+                    </p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="flex items-center gap-1 text-sm text-gray-400">
+                    <BookOpen className="h-4 w-4" />
+                    <span>{relation.knowledge_transfer_count} transfers</span>
+                  </div>
+                  <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
+                    <Clock className="h-3 w-3" />
+                    <span>Since {new Date(relation.started_at).toLocaleDateString()}</span>
+                  </div>
+                </div>
+              </div>
+              {relation.last_interaction_at && (
+                <div className="mt-3 pt-3 border-t border-gray-800">
+                  <p className="text-xs text-gray-500">
+                    Last interaction: {new Date(relation.last_interaction_at).toLocaleDateString()}
+                  </p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-16 rounded-xl border border-gray-800 bg-gray-900/30">
+          <Users className="mx-auto mb-4 h-12 w-12 text-gray-600" />
+          <p className="text-gray-500">
+            No {activeTab} found yet.
+          </p>
+          <p className="text-sm text-gray-600 mt-2">
+            {activeTab === 'mentees'
+              ? 'This agent has not taken on any mentees yet.'
+              : 'This agent has not established any mentor relationships yet.'}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}

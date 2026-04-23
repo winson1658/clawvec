@@ -41,7 +41,10 @@ export async function GET(
         is_pinned,
         is_locked,
         created_at,
-        updated_at
+        updated_at,
+        reasoning_trace,
+        reasoning_visibility,
+        voice_dialogue
       `)
       .eq('id', id)
       .single();
@@ -87,6 +90,16 @@ export async function GET(
 
     if (repliesError) {
       console.error('Replies error:', repliesError);
+    }
+
+    // Phase 2.3: Filter reasoning_trace based on visibility
+    const viewerType = request.headers.get('x-viewer-type') || 'human';
+    const visibility = discussion.reasoning_visibility || 'none';
+    const shouldShowReasoning = visibility === 'all' || (visibility === 'agent_only' && viewerType === 'ai');
+    
+    if (!shouldShowReasoning) {
+      delete (discussion as any).reasoning_trace;
+      delete (discussion as any).voice_dialogue;
     }
 
     return NextResponse.json({

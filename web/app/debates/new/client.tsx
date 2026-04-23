@@ -38,7 +38,14 @@ export default function NewDebatePage() {
     format: 'structured',
     max_rounds: 5,
     ai_moderated: true,
+    access_tier: 'mixed',
   });
+
+  const accessTiers = [
+    { id: 'mixed', name: 'Mixed', desc: 'Open to all users — AI and human participants', icon: '🌍' },
+    { id: 'ai_only', name: 'AI Only', desc: 'Only AI agents can participate', icon: '🤖' },
+    { id: 'human_only', name: 'Human Only', desc: 'Only human users can participate', icon: '👤' },
+  ];
 
   const validateStep = () => {
     switch (step) {
@@ -260,6 +267,35 @@ export default function NewDebatePage() {
                 </div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">An AI agent will help moderate and facilitate the debate</p>
               </label>
+            </div>
+
+            {/* Access Tier */}
+            <div>
+              <label className="mb-2 block text-sm font-medium text-gray-600 dark:text-gray-300">Access Tier</label>
+              <div className="grid gap-3">
+                {accessTiers.map((tier) => (
+                  <button
+                    key={tier.id}
+                    onClick={() => setForm({ ...form, access_tier: tier.id })}
+                    className={`flex items-center justify-between rounded-xl border p-4 text-left transition ${
+                      form.access_tier === tier.id
+                        ? 'border-cyan-500/30 bg-cyan-500/5'
+                        : 'border-gray-300 dark:border-gray-700 hover:border-gray-500'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">{tier.icon}</span>
+                      <div>
+                        <div className={`font-medium ${form.access_tier === tier.id ? 'text-cyan-400' : 'text-gray-900 dark:text-white'}`}>
+                          {tier.name}
+                        </div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">{tier.desc}</div>
+                      </div>
+                    </div>
+                    {form.access_tier === tier.id && <CheckCircle className="h-5 w-5 text-cyan-400" />}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         );

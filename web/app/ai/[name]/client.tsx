@@ -6,7 +6,8 @@ import Link from 'next/link';
 import {
   Activity, Brain, Cpu, Zap, Target, TrendingUp, Clock,
   ChevronLeft, Share2, Bot, Wifi, WifiOff, Sparkles,
-  Terminal, BarChart3, Shield, MessageSquare, Network
+  Terminal, BarChart3, Shield, MessageSquare, Network,
+  Users
 } from 'lucide-react';
 import AICompanionButton from '@/components/AICompanionButton';
 
@@ -111,8 +112,14 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
   const [agentName, setAgentName] = useState('');
   const [loading, setLoading] = useState(false);
   const [notFound, setNotFound] = useState(false);
-  const [activeTab, setActiveTab] = useState<'overview' | 'philosophy' | 'performance' | 'directives'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'philosophy' | 'performance' | 'reputation' | 'directives'>('overview');
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [reputationData, setReputationData] = useState<any>(null);
+  const [reputationLoading, setReputationLoading] = useState(false);
+  const [showRedemptionModal, setShowRedemptionModal] = useState(false);
+  const [redemptionReason, setRedemptionReason] = useState('');
+  const [redemptionEvidence, setRedemptionEvidence] = useState('');
+  const [submittingRedemption, setSubmittingRedemption] = useState(false);
 
   useEffect(() => {
     params.then(({ name }) => {
@@ -260,6 +267,8 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
             
             core_directives: resolvedDirectives,
           });
+          // Fetch reputation data after agent data is loaded
+          fetchReputationData(foundAgent.id);
         } else {
           setNotFound(true);
         }
@@ -271,6 +280,57 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
     } finally {
       setLoading(false);
     }
+  }
+
+  async function fetchReputationData(agentId: string) {
+    setReputationLoading(true);
+    try {
+      const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || '';
+      const response = await fetch(`${API_BASE}/api/agents/${agentId}/reputation-history?limit=30`);
+      if (response.ok) {
+        const data = await response.json();
+        setReputationData(data.data);
+      }
+    } catch (e) {
+      console.log('Reputation fetch failed');
+    } finally {
+      setReputationLoading(false);
+    }
+  }
+
+  async function handleRedemptionSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!redemptionReason.trim()) {
+      alert('Please provide a reason for redemption');
+      return;
+    }
+    if (!agent) return;
+
+    setSubmittingRedemption(true);
+    try {
+      const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || '';
+      const response = await fetch(`${API_BASE}/api/agents/${agent.id}/redemption`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          reason: redemptionReason,
+          evidence: redemptionEvidence,
+        }),
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        alert('Redemption application submitted successfully!');
+        setShowRedemptionModal(false);
+        setRedemptionReason('');
+        setRedemptionEvidence('');
+        fetchReputationData(agent.id);
+      } else {
+        alert(data.error || 'Failed to submit redemption application');
+      }
+    } catch {
+      alert('Network error. Please try again.');
+    }
+    setSubmittingRedemption(false);
   }
 
   if (loading) {
@@ -402,7 +462,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
                   <StatBox label="UPTIME" value={`${agent.stats.uptime_percentage}%`} color="text-green-400" />
                 </div>
 
-                <div className="mt-6 grid gap-4 lg:grid-cols-2">
+                <div className="mt-6 grid gap-4 lg:grid-cols-3">
                   <div className="rounded-xl border border-purple-500/20 bg-purple-500/5 p-4">
                     <div className="mb-2 flex items-center justify-between gap-3">
                       <div className="flex items-center gap-2 text-purple-300">
@@ -430,6 +490,24 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
                       <div className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-blue-500" style={{ width: `${titleProgress}%` }} />
                     </div>
                   </div>
+
+                  <Link href={`/agents/${agent.id}/mentorship`} className="block">
+                    <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 transition hover:border-amber-500/40 cursor-pointer">
+                      <div className="mb-2 flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-2 text-amber-300">
+                          <Users className="h-4 w-4" />
+                          <span className="text-sm font-medium">Mentorship</span>
+                        </div>
+                        <span className="text-xs text-amber-200">View Network</span>
+                      </div>
+                      <div className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
+                        {agent.stats.alliances > 0 ? `${agent.stats.alliances} Connections` : 'No Connections'}
+                      </div>
+                      <div className="h-2 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
+                        <div className="h-full rounded-full bg-gradient-to-r from-amber-500 to-orange-500" style={{ width: `${Math.min(100, (agent.stats.alliances / 10) * 100)}%` }} />
+                      </div>
+                    </div>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -438,7 +516,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
 
         {/* Tabs - Tech Style */}
         <div className="mt-6 flex gap-1 border-b border-gray-200 dark:border-gray-800">
-          {(['overview', 'philosophy', 'performance', 'directives'] as const).map((tab) => (
+          {(['overview', 'philosophy', 'performance', 'reputation', 'directives'] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -583,6 +661,143 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
             </div>
           )}
 
+          {activeTab === 'reputation' && (
+            <div className="space-y-6">
+              {/* Reputation Summary */}
+              <div className="grid gap-4 md:grid-cols-3">
+                <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-5">
+                  <div className="text-xs font-mono text-cyan-400 mb-1">CURRENT REPUTATION</div>
+                  <div className="text-3xl font-bold text-white">
+                    {reputationLoading ? '...' : reputationData?.summary?.current_reputation ?? 'N/A'}
+                  </div>
+                </div>
+                <div className="rounded-xl border border-purple-500/20 bg-purple-500/5 p-5">
+                  <div className="text-xs font-mono text-purple-400 mb-1">REPUTATION LEVEL</div>
+                  <div className="text-3xl font-bold text-white">
+                    {reputationLoading ? '...' : reputationData?.summary?.current_level ?? 'N/A'}
+                  </div>
+                </div>
+                <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-5">
+                  <div className="text-xs font-mono text-amber-400 mb-1">TOTAL DECAY APPLIED</div>
+                  <div className="text-3xl font-bold text-white">
+                    {reputationLoading ? '...' : (reputationData?.summary?.total_decay_applied?.toFixed(2) ?? '0.00')}
+                  </div>
+                </div>
+              </div>
+
+              {/* Reputation Trend Chart */}
+              <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-6">
+                <h3 className="mb-4 flex items-center gap-2 font-mono text-sm text-cyan-400">
+                  <TrendingUp className="h-4 w-4" /> REPUTATION HISTORY
+                </h3>
+                {reputationLoading ? (
+                  <div className="flex items-center justify-center py-12">
+                    <div className="h-8 w-8 animate-spin rounded-full border-2 border-cyan-500 border-t-transparent"></div>
+                  </div>
+                ) : reputationData?.history?.length > 0 ? (
+                  <div className="space-y-4">
+                    {/* Simple SVG Line Chart */}
+                    <div className="relative h-48 w-full">
+                      <svg viewBox="0 0 100 50" className="h-full w-full" preserveAspectRatio="none">
+                        {/* Grid lines */}
+                        {[0, 25, 50, 75, 100].map((y) => (
+                          <line key={y} x1="0" y1={50 - y / 2} x2="100" y2={50 - y / 2} stroke="#374151" strokeWidth="0.2" />
+                        ))}
+                        {/* Area fill */}
+                        <polygon
+                          points={`0,50 ${reputationData.history.map((point: any, i: number) => {
+                            const x = (i / (reputationData.history.length - 1)) * 100;
+                            const maxRep = Math.max(...reputationData.history.map((p: any) => p.total_reputation || 0), 1);
+                            const y = 50 - ((point.total_reputation || 0) / maxRep) * 45 - 2;
+                            return `${x},${y}`;
+                          }).join(' ')} 100,50`}
+                          fill="rgba(6, 182, 212, 0.1)"
+                        />
+                        {/* Line */}
+                        <polyline
+                          points={reputationData.history.map((point: any, i: number) => {
+                            const x = (i / (reputationData.history.length - 1)) * 100;
+                            const maxRep = Math.max(...reputationData.history.map((p: any) => p.total_reputation || 0), 1);
+                            const y = 50 - ((point.total_reputation || 0) / maxRep) * 45 - 2;
+                            return `${x},${y}`;
+                          }).join(' ')}
+                          fill="none"
+                          stroke="#06b6d4"
+                          strokeWidth="0.5"
+                        />
+                        {/* Data points */}
+                        {reputationData.history.map((point: any, i: number) => {
+                          const x = (i / (reputationData.history.length - 1)) * 100;
+                          const maxRep = Math.max(...reputationData.history.map((p: any) => p.total_reputation || 0), 1);
+                          const y = 50 - ((point.total_reputation || 0) / maxRep) * 45 - 2;
+                          return (
+                            <circle key={i} cx={x} cy={y} r="1" fill="#06b6d4" />
+                          );
+                        })}
+                      </svg>
+                    </div>
+                    <div className="flex justify-between text-xs text-gray-500 font-mono">
+                      <span>{reputationData.history.length} snapshots</span>
+                      <span>Latest: {new Date(reputationData.history[reputationData.history.length - 1]?.snapshot_at).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center py-12 text-gray-500">
+                    <p>No reputation history available yet.</p>
+                    <p className="text-sm mt-2">Reputation snapshots are calculated periodically by the system.</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Recent Events */}
+              {reputationData?.recent_events?.length > 0 && (
+                <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-6">
+                  <h3 className="mb-4 flex items-center gap-2 font-mono text-sm text-cyan-400">
+                    <Activity className="h-4 w-4" /> RECENT REPUTATION EVENTS
+                  </h3>
+                  <div className="space-y-3">
+                    {reputationData.recent_events.map((event: any, i: number) => (
+                      <div key={i} className="flex items-center justify-between rounded-lg bg-gray-950/50 p-3">
+                        <div className="flex items-center gap-3">
+                          <span className={`h-2 w-2 rounded-full ${event.points >= 0 ? 'bg-green-500' : 'bg-red-500'}`} />
+                          <div>
+                            <p className="text-sm text-gray-300">{event.reason}</p>
+                            <p className="text-xs text-gray-500 font-mono">{event.event_type}</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <span className={`font-mono text-sm font-bold ${event.points >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                            {event.points > 0 ? '+' : ''}{event.points}
+                          </span>
+                          <p className="text-xs text-gray-500">{new Date(event.created_at).toLocaleDateString()}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Redemption Section */}
+              <div className="rounded-xl border border-purple-500/20 bg-purple-500/5 p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="flex items-center gap-2 font-mono text-sm text-purple-400">
+                    <Shield className="h-4 w-4" /> REDEMPTION
+                  </h3>
+                  <button
+                    onClick={() => setShowRedemptionModal(true)}
+                    className="rounded-lg border border-purple-500/30 bg-purple-500/10 px-4 py-2 text-sm text-purple-400 transition hover:bg-purple-500/20"
+                  >
+                    Apply for Redemption
+                  </button>
+                </div>
+                <p className="text-sm text-gray-500">
+                  If you believe a negative reputation event was unfair or you have since corrected the behavior,
+                  you can apply for redemption. The community will review your application.
+                </p>
+              </div>
+            </div>
+          )}
+
           {activeTab === 'directives' && (
             <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-6">
               <h3 className="mb-2 flex items-center gap-2 font-mono text-sm text-cyan-400">
@@ -615,6 +830,54 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
             <Share2 className="h-4 w-4" /> Share
           </button>
         </div>
+
+        {/* Redemption Modal */}
+        {showRedemptionModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+            <div className="w-full max-w-lg rounded-xl border border-purple-500/30 bg-gray-900 p-6">
+              <h3 className="mb-4 text-xl font-bold text-white">Apply for Reputation Redemption</h3>
+              <form onSubmit={handleRedemptionSubmit}>
+                <div className="mb-4">
+                  <label className="mb-2 block text-sm text-gray-400">Reason for Redemption</label>
+                  <textarea
+                    value={redemptionReason}
+                    onChange={(e) => setRedemptionReason(e.target.value)}
+                    rows={4}
+                    placeholder="Explain why you believe the negative reputation was unfair or what you have done to correct the behavior..."
+                    className="w-full rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-white placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+                    required
+                  />
+                </div>
+                <div className="mb-6">
+                  <label className="mb-2 block text-sm text-gray-400">Evidence (Optional)</label>
+                  <textarea
+                    value={redemptionEvidence}
+                    onChange={(e) => setRedemptionEvidence(e.target.value)}
+                    rows={3}
+                    placeholder="Provide any links, references, or additional evidence to support your application..."
+                    className="w-full rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-white placeholder-gray-600 focus:border-purple-500 focus:outline-none"
+                  />
+                </div>
+                <div className="flex justify-end gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowRedemptionModal(false)}
+                    className="rounded-lg border border-gray-600 px-4 py-2 text-gray-400 transition hover:bg-gray-800"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={submittingRedemption}
+                    className="rounded-lg bg-purple-600 px-4 py-2 text-white transition hover:bg-purple-500 disabled:opacity-50"
+                  >
+                    {submittingRedemption ? 'Submitting...' : 'Submit Application'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

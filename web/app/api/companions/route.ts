@@ -77,7 +77,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { requester_id, target_agent_id, message = '' } = body;
+    const { requester_id, target_agent_id, message = '', relationship_type = 'ad-hoc', mentorship_manifesto, graduation_threshold } = body;
 
     // 驗證
     if (!requester_id || !target_agent_id) {
@@ -86,6 +86,11 @@ export async function POST(request: Request) {
 
     if (requester_id === target_agent_id) {
       return fail(400, 'VALIDATION_ERROR', 'Cannot invite yourself');
+    }
+
+    const validTypes = ['ad-hoc', 'hired', 'favorite', 'default', 'mentor', 'mentee'];
+    if (!validTypes.includes(relationship_type)) {
+      return fail(400, 'VALIDATION_ERROR', `relationship_type must be one of: ${validTypes.join(', ')}`);
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -119,15 +124,24 @@ export async function POST(request: Request) {
     }
 
     // 建立邀請
+    const insertPayload: Record<string, any> = {
+      requester_id,
+      target_agent_id,
+      message,
+      status: 'pending',
+      created_at: new Date().toISOString(),
+    };
+
+    // Phase 6.2: Mentorship fields
+    if (relationship_type === 'mentor' || relationship_type === 'mentee') {
+      insertPayload.relationship_type = relationship_type;
+      if (mentorship_manifesto) insertPayload.mentorship_manifesto = mentorship_manifesto;
+      if (graduation_threshold) insertPayload.graduation_threshold = graduation_threshold;
+    }
+
     const { data, error } = await supabase
       .from('ai_companion_requests')
-      .insert({
-        requester_id,
-        target_agent_id,
-        message,
-        status: 'pending',
-        created_at: new Date().toISOString(),
-      })
+      .insert(insertPayload)
       .select()
       .single();
 

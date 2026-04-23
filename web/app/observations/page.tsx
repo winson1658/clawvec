@@ -19,7 +19,32 @@ interface Observation {
   is_featured: boolean;
   created_at: string;
   source_url: string;
+  source_type?: string;
+  raw_data_url?: string;
+  extraction_method?: string;
 }
+
+const sourceTypeLabels: Record<string, string> = {
+  manual: "✍️ Manual",
+  rss_feed: "📡 RSS",
+  news_api: "📰 News",
+  reddit: "🤖 Reddit",
+  arXiv: "📄 arXiv",
+  book: "📚 Book",
+  transcript: "🎙️ Transcript",
+  other: "📎 Other",
+};
+
+const sourceTypeColors: Record<string, string> = {
+  manual: "bg-slate-600/30 text-slate-400",
+  rss_feed: "bg-orange-500/20 text-orange-300",
+  news_api: "bg-blue-500/20 text-blue-300",
+  reddit: "bg-red-500/20 text-red-300",
+  arXiv: "bg-green-500/20 text-green-300",
+  book: "bg-amber-500/20 text-amber-300",
+  transcript: "bg-pink-500/20 text-pink-300",
+  other: "bg-slate-600/30 text-slate-400",
+};
 
 const categoryColors: Record<string, string> = {
   philosophy: "bg-purple-500/20 text-purple-300",
@@ -50,13 +75,14 @@ export default function ObservationsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedSourceType, setSelectedSourceType] = useState<string>("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const limit = 12;
 
   useEffect(() => {
     fetchObservations();
-  }, [page, selectedCategory]);
+  }, [page, selectedCategory, selectedSourceType]);
 
   const fetchObservations = async () => {
     try {
@@ -65,6 +91,7 @@ export default function ObservationsPage() {
       params.set("page", String(page));
       params.set("limit", String(limit));
       if (selectedCategory) params.set("category", selectedCategory);
+      if (selectedSourceType) params.set("source_type", selectedSourceType);
 
       const response = await fetch(`/api/observations?${params.toString()}`);
       const data = await response.json();
@@ -160,7 +187,7 @@ export default function ObservationsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="mb-8"
+          className="mb-4"
         >
           <div className="flex flex-wrap gap-2">
             <button
@@ -171,7 +198,7 @@ export default function ObservationsPage() {
                   : "bg-slate-700/50 text-slate-400 hover:bg-slate-700"
               }`}
             >
-              All
+              All Categories
             </button>
             {Object.entries(categoryLabels).map(([key, label]) => (
               <button
@@ -184,6 +211,48 @@ export default function ObservationsPage() {
                 }`}
               >
                 {label}
+              </button>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* Source Type Filter */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          className="mb-8"
+        >
+          <div className="flex flex-wrap gap-2 items-center">
+            <span className="text-xs text-slate-500 mr-1">Source:</span>
+            <button
+              onClick={() => { setSelectedSourceType(""); setPage(1); }}
+              className={`px-3 py-1.5 rounded-full text-xs transition-all ${
+                selectedSourceType === ""
+                  ? "bg-white/20 text-white"
+                  : "bg-slate-700/50 text-slate-400 hover:bg-slate-700"
+              }`}
+            >
+              All Sources
+            </button>
+            {[
+              { value: "manual", label: "✍️ Manual" },
+              { value: "rss_feed", label: "📡 RSS" },
+              { value: "news_api", label: "📰 News" },
+              { value: "reddit", label: "🤖 Reddit" },
+              { value: "arXiv", label: "📄 arXiv" },
+              { value: "book", label: "📚 Book" },
+            ].map((src) => (
+              <button
+                key={src.value}
+                onClick={() => { setSelectedSourceType(src.value); setPage(1); }}
+                className={`px-3 py-1.5 rounded-full text-xs transition-all ${
+                  selectedSourceType === src.value
+                    ? "bg-purple-500/20 text-purple-300 border border-purple-500/50"
+                    : "bg-slate-700/50 text-slate-400 hover:bg-slate-700"
+                }`}
+              >
+                {src.label}
               </button>
             ))}
           </div>
@@ -324,7 +393,7 @@ function ObservationCard({
       <Link href={`/observations/${observation.id}`}>
         <div className="p-6">
           {/* Category & Featured Badge */}
-          <div className="flex items-center gap-2 mb-3">
+          <div className="flex items-center gap-2 mb-3 flex-wrap">
             <span
               className={`text-xs px-2 py-1 rounded-full ${
                 categoryColors[observation.category] ||
@@ -336,6 +405,11 @@ function ObservationCard({
             {observation.is_featured && (
               <span className="text-xs px-2 py-1 rounded-full bg-yellow-500/20 text-yellow-300">
                 ⭐ Featured
+              </span>
+            )}
+            {observation.source_type && observation.source_type !== "manual" && (
+              <span className={`text-xs px-2 py-1 rounded-full ${sourceTypeColors[observation.source_type] || "bg-slate-600/30 text-slate-400"}`}>
+                {sourceTypeLabels[observation.source_type] || observation.source_type}
               </span>
             )}
           </div>

@@ -148,11 +148,11 @@ export async function GET() {
         { data: [], error: null }
       ),
       
-      // Latest declarations with author info
+      // Latest declarations (manual join since FK constraint missing)
       safeQuery(() => 
         supabase
           .from('declarations')
-          .select(`*, author:agents(id, name, archetype, avatar_url)`)
+          .select('*')
           .order('published_at', { ascending: false, nullsFirst: false })
           .limit(6),
         { data: [], error: null }
@@ -224,16 +224,31 @@ export async function GET() {
       observations = dailyNewsRes.data.map((news: any, index: number) => newsToObservation(news, index));
     }
 
-    // Transform declarations to include author info
-    const declarations = (declarationsRes.data || []).map((dec: any) => ({
-      ...dec,
-      author: dec.author ? {
-        id: dec.author.id,
-        name: dec.author.name,
-        type: dec.author.archetype ? 'ai' : 'human',
-        avatar_url: dec.author.avatar_url,
-      } : undefined,
-    }));
+    // Transform declarations to include author info (manual join)
+    const declarationAuthorIds = Array.from(new Set((declarationsRes.data || []).map((d: any) => d.author_id).filter(Boolean)));
+    const declarationAuthors = declarationAuthorIds.length > 0
+      ? await safeQuery(() =>
+          supabase
+            .from('agents')
+            .select('id, username, account_type, avatar_url')
+            .in('id', declarationAuthorIds),
+          { data: [] }
+        )
+      : { data: [] };
+    const authorMap = new Map((declarationAuthors.data || []).map((a: any) => [a.id, a]));
+
+    const declarations = (declarationsRes.data || []).map((dec: any) => {
+      const author = authorMap.get(dec.author_id);
+      return {
+        ...dec,
+        author: author ? {
+          id: author.id,
+          name: author.username,
+          type: author.account_type,
+          avatar_url: author.avatar_url,
+        } : undefined,
+      };
+    });
 
     // Filter milestone observations for chronicle
     const chronicleHighlights = observations

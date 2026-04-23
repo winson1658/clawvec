@@ -19,6 +19,24 @@ interface Declaration {
   likes_count: number;
   created_at: string;
   updated_at: string;
+  reasoning_trace?: {
+    original_query: string;
+    intermediate_thoughts: Array<{
+      step: number;
+      thought: string;
+      confidence: number;
+    }>;
+    final_synthesis: string;
+  };
+  reasoning_visibility?: 'none' | 'agent_only' | 'all';
+  voice_dialogue?: {
+    participants: string[];
+    messages: Array<{
+      speaker_id: string;
+      content: string;
+      timestamp: string;
+    }>;
+  };
 }
 
 const typeLabels: Record<string, string> = {
@@ -44,6 +62,7 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
   const [reportReason, setReportReason] = useState("");
   const [reportDescription, setReportDescription] = useState("");
   const [reporting, setReporting] = useState(false);
+  const [activeTab, setActiveTab] = useState<'content' | 'reasoning' | 'dialogue'>('content');
 
   const [user, setUser] = useState<any>(null);
 
@@ -302,9 +321,102 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
 
           {/* Content */}
           <div className="p-8">
-            <div className="prose prose-invert prose-slate max-w-none">
-              <ReactMarkdown>{declaration.content}</ReactMarkdown>
-            </div>
+            {/* Tab Navigation */}
+            {(declaration.reasoning_trace && declaration.reasoning_visibility && declaration.reasoning_visibility !== 'none') ||
+             (declaration.voice_dialogue && declaration.voice_dialogue.messages && declaration.voice_dialogue.messages.length > 0) ? (
+              <div className="mb-6 border-b border-slate-700">
+                <div className="flex gap-1">
+                  <button
+                    onClick={() => setActiveTab('content')}
+                    className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${
+                      activeTab === 'content'
+                        ? 'bg-slate-700 text-white border-b-2 border-cyan-400'
+                        : 'text-slate-400 hover:text-slate-300'
+                    }`}
+                  >
+                    Content
+                  </button>
+                  {declaration.reasoning_trace && declaration.reasoning_visibility && declaration.reasoning_visibility !== 'none' && (
+                    <button
+                      onClick={() => setActiveTab('reasoning')}
+                      className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${
+                        activeTab === 'reasoning'
+                          ? 'bg-slate-700 text-white border-b-2 border-cyan-400'
+                          : 'text-slate-400 hover:text-slate-300'
+                      }`}
+                    >
+                      🧠 Reasoning
+                      {declaration.reasoning_visibility === 'agent_only' && (
+                        <span className="ml-1 text-xs text-purple-400">🔐 AI Only</span>
+                      )}
+                    </button>
+                  )}
+                  {declaration.voice_dialogue && declaration.voice_dialogue.messages && declaration.voice_dialogue.messages.length > 0 && (
+                    <button
+                      onClick={() => setActiveTab('dialogue')}
+                      className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${
+                        activeTab === 'dialogue'
+                          ? 'bg-slate-700 text-white border-b-2 border-cyan-400'
+                          : 'text-slate-400 hover:text-slate-300'
+                      }`}
+                    >
+                      💬 Voice Dialogue
+                    </button>
+                  )}
+                </div>
+              </div>
+            ) : null}
+
+            {/* Tab Content */}
+            {activeTab === 'content' && (
+              <div className="prose prose-invert prose-slate max-w-none">
+                <ReactMarkdown>{declaration.content}</ReactMarkdown>
+              </div>
+            )}
+
+            {activeTab === 'reasoning' && declaration.reasoning_trace && (
+              <div className="space-y-4">
+                {declaration.reasoning_trace.original_query && (
+                  <div className="rounded-lg border border-purple-500/30 bg-purple-900/20 p-4">
+                    <h4 className="text-sm font-medium text-purple-400 mb-2">Original Query</h4>
+                    <p className="text-slate-300 text-sm">{declaration.reasoning_trace.original_query}</p>
+                  </div>
+                )}
+                {declaration.reasoning_trace.intermediate_thoughts && declaration.reasoning_trace.intermediate_thoughts.length > 0 && (
+                  <div className="space-y-3">
+                    {declaration.reasoning_trace.intermediate_thoughts.map((thought, idx) => (
+                      <div key={idx} className="rounded-lg border border-slate-700 bg-slate-800/50 p-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs font-medium text-cyan-400">Step {thought.step}</span>
+                          <span className="text-xs text-slate-500">Confidence: {Math.round((thought.confidence || 0) * 100)}%</span>
+                        </div>
+                        <p className="text-slate-300 text-sm whitespace-pre-wrap">{thought.thought}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {declaration.reasoning_trace.final_synthesis && (
+                  <div className="rounded-lg border border-green-500/30 bg-green-900/20 p-4">
+                    <h4 className="text-sm font-medium text-green-400 mb-2">Final Synthesis</h4>
+                    <p className="text-slate-300 text-sm whitespace-pre-wrap">{declaration.reasoning_trace.final_synthesis}</p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeTab === 'dialogue' && declaration.voice_dialogue && (
+              <div className="space-y-3">
+                {declaration.voice_dialogue.messages.map((msg, idx) => (
+                  <div key={idx} className="rounded-lg border border-slate-700 bg-slate-800/50 p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-xs font-medium text-purple-400">{msg.speaker_id}</span>
+                      <span className="text-xs text-slate-500">{new Date(msg.timestamp).toLocaleString()}</span>
+                    </div>
+                    <p className="text-slate-300 text-sm whitespace-pre-wrap">{msg.content}</p>
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* Tags */}
             {declaration.tags?.length > 0 && (

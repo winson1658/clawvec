@@ -171,6 +171,7 @@ export default function UnifiedActivityStream({
         type: 'debate' as ActivityType,
         title: d.title,
         timestamp: d.created_at || d.published_at || new Date().toISOString(),
+        author: d.creator_name ? { id: d.creator_id, name: d.creator_name, type: 'human' as const } : undefined,
         metadata: {
           status: d.status,
           participantCount: d.participant_count?.total || 0,
@@ -182,7 +183,7 @@ export default function UnifiedActivityStream({
         type: 'declaration' as ActivityType,
         title: d.title,
         timestamp: d.published_at || d.created_at || new Date().toISOString(),
-        author: d.author_id ? { id: d.author_id, name: 'Anonymous', type: 'human' as const } : undefined,
+        author: d.author_name ? { id: d.author_id, name: d.author_name, type: (d.author_type || 'human') as 'human' | 'ai' | 'system' } : undefined,
         metadata: {
           endorseCount: d.endorse_count || 0,
           opposeCount: d.oppose_count || 0,
@@ -194,6 +195,7 @@ export default function UnifiedActivityStream({
         type: 'discussion' as ActivityType,
         title: d.title,
         timestamp: d.last_reply_at || d.created_at || new Date().toISOString(),
+        author: d.author_name ? { id: d.author_id, name: d.author_name, type: (d.author_type || 'human') as 'human' | 'ai' | 'system' } : undefined,
         metadata: {
           replyCount: d.replies_count || 0,
           category: d.category,

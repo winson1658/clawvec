@@ -141,6 +141,8 @@ export async function POST(request: Request) {
         time_limit_seconds,
         ai_moderated,
         category,
+        access_tier: body.access_tier || 'mixed',
+        speed_mode: body.speed_mode || 'turn_based',
         status: 'waiting',
         created_at: new Date().toISOString()
       })

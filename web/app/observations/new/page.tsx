@@ -12,7 +12,33 @@ interface ObservationFormData {
   tags: string[];
   is_featured: boolean;
   status: "draft" | "published";
+  source_type: string;
+  raw_data_url: string;
+  extraction_method: string;
+  source_url: string;
 }
+
+const sourceTypes = [
+  { value: "manual", label: "Manual Entry", icon: "✍️", description: "Write your own observation" },
+  { value: "rss_feed", label: "RSS Feed", icon: "📡", description: "Import from an RSS feed" },
+  { value: "news_api", label: "News API", icon: "📰", description: "Fetch from news sources" },
+  { value: "reddit", label: "Reddit", icon: "🤖", description: "Import from Reddit discussions" },
+  { value: "arXiv", label: "arXiv", icon: "📄", description: "Import academic papers" },
+  { value: "book", label: "Book / Publication", icon: "📚", description: "Import from books or publications" },
+  { value: "transcript", label: "Transcript", icon: "🎙️", description: "Import from video/audio transcripts" },
+  { value: "other", label: "Other", icon: "📎", description: "Other external source" },
+];
+
+const extractionMethods: Record<string, { value: string; label: string }[]> = {
+  manual: [{ value: "manual_entry", label: "Manual Entry" }],
+  rss_feed: [{ value: "rss_parser", label: "RSS Parser" }, { value: "manual_entry", label: "Manual Entry" }],
+  news_api: [{ value: "api_fetch", label: "API Fetch" }, { value: "manual_entry", label: "Manual Entry" }],
+  reddit: [{ value: "api_fetch", label: "API Fetch" }, { value: "web_scraper", label: "Web Scraper" }, { value: "manual_entry", label: "Manual Entry" }],
+  arXiv: [{ value: "api_fetch", label: "API Fetch" }, { value: "manual_entry", label: "Manual Entry" }],
+  book: [{ value: "manual_entry", label: "Manual Entry" }, { value: "llm_extract", label: "LLM Extract" }],
+  transcript: [{ value: "llm_extract", label: "LLM Extract" }, { value: "manual_entry", label: "Manual Entry" }],
+  other: [{ value: "manual_entry", label: "Manual Entry" }, { value: "web_scraper", label: "Web Scraper" }, { value: "llm_extract", label: "LLM Extract" }],
+};
 
 const categories = [
   { value: "philosophy", label: "Philosophy", icon: "🧠" },
@@ -39,6 +65,10 @@ export default function NewObservationPage() {
     tags: [],
     is_featured: false,
     status: "published",
+    source_type: "manual",
+    raw_data_url: "",
+    extraction_method: "manual_entry",
+    source_url: "",
   });
   const [user, setUser] = useState<{ id: string; username?: string; agent_name?: string; email?: string } | null>(null);
   const [authChecked, setAuthChecked] = useState(false);
@@ -102,6 +132,10 @@ export default function NewObservationPage() {
         ...formData,
         status: submitStatus,
         author_id: user.id,
+        source_type: formData.source_type,
+        raw_data_url: formData.raw_data_url || undefined,
+        extraction_method: formData.extraction_method,
+        source_url: formData.source_url || undefined,
       };
       const response = await fetch("/api/observations", {
         method: "POST",
@@ -237,6 +271,102 @@ export default function NewObservationPage() {
               className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
             />
           </div>
+
+          {/* Source Type */}
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">
+              Source Type <span className="text-red-400">*</span>
+            </label>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {sourceTypes.map((src) => (
+                <button
+                  key={src.value}
+                  type="button"
+                  onClick={() =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      source_type: src.value,
+                      extraction_method:
+                        extractionMethods[src.value]?.[0]?.value || "manual_entry",
+                    }))
+                  }
+                  className={`p-3 rounded-lg border-2 transition-all flex flex-col items-center gap-1 text-center ${
+                    formData.source_type === src.value
+                      ? "border-cyan-400 bg-cyan-400/20 text-cyan-300 shadow-lg shadow-cyan-400/20"
+                      : "border-slate-600 bg-slate-700/50 text-slate-400 hover:border-slate-500 hover:bg-slate-700"
+                  }`}
+                >
+                  <span className="text-xl">{src.icon}</span>
+                  <span className="text-xs font-medium">{src.label}</span>
+                  <span className="text-[10px] text-slate-500 leading-tight">{src.description}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Source-specific fields */}
+          {formData.source_type !== "manual" && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              className="space-y-4 p-4 bg-slate-700/30 rounded-lg border border-slate-600/50"
+            >
+              <h3 className="text-sm font-medium text-slate-300 flex items-center gap-2">
+                <span>📎</span> Source Details
+              </h3>
+
+              {/* Raw Data URL */}
+              <div>
+                <label className="block text-xs font-medium text-slate-400 mb-1">
+                  Raw Data URL
+                </label>
+                <input
+                  type="url"
+                  name="raw_data_url"
+                  value={formData.raw_data_url}
+                  onChange={handleInputChange}
+                  placeholder="https://example.com/source"
+                  className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-500 text-sm focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
+                />
+              </div>
+
+              {/* Source URL (attribution) */}
+              <div>
+                <label className="block text-xs font-medium text-slate-400 mb-1">
+                  Source URL (for attribution)
+                </label>
+                <input
+                  type="url"
+                  name="source_url"
+                  value={formData.source_url}
+                  onChange={handleInputChange}
+                  placeholder="https://original-source.com/article"
+                  className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-500 text-sm focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
+                />
+              </div>
+
+              {/* Extraction Method */}
+              <div>
+                <label className="block text-xs font-medium text-slate-400 mb-1">
+                  Extraction Method
+                </label>
+                <select
+                  name="extraction_method"
+                  value={formData.extraction_method}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white text-sm focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
+                >
+                  {(extractionMethods[formData.source_type] || extractionMethods.manual).map(
+                    (method) => (
+                      <option key={method.value} value={method.value}>
+                        {method.label}
+                      </option>
+                    )
+                  )}
+                </select>
+              </div>
+            </motion.div>
+          )}
 
           {/* Category */}
           <div>

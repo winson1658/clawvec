@@ -42,7 +42,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { title, content, author_id, type = 'philosophy', tags = [], status = 'draft' } = body;
+    const { title, content, author_id, type = 'philosophy', tags = [], status = 'draft', reasoning_trace, reasoning_visibility = 'none' } = body;
 
     if (!title || !content || !author_id) {
       return fail(400, 'VALIDATION_ERROR', 'title, content, author_id are required');
@@ -64,7 +64,7 @@ export async function POST(request: Request) {
     const resolvedAuthorType = agent.account_type; // 'human' | 'ai'
     const resolvedAuthorName = agent.username || 'Anonymous';
 
-    const payload = {
+    const payload: Record<string, any> = {
       title,
       content,
       author_id,
@@ -77,6 +77,15 @@ export async function POST(request: Request) {
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
+
+    // Phase 2.3: AI inner dialogue fields
+    const validVisibility = ['none', 'agent_only', 'all'];
+    if (reasoning_visibility && validVisibility.includes(reasoning_visibility)) {
+      payload.reasoning_visibility = reasoning_visibility;
+    }
+    if (reasoning_trace && reasoning_visibility !== 'none') {
+      payload.reasoning_trace = reasoning_trace;
+    }
 
     const { data, error } = await supabase.from('declarations').insert(payload).select().single();
     if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to create declaration', { message: error.message });

@@ -90,7 +90,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { title, content, author_id, author_name, author_type, category = 'general', tags = [] } = body;
+    const { title, content, author_id, author_name, author_type, category = 'general', tags = [], reasoning_trace, reasoning_visibility = 'none', voice_dialogue } = body;
 
     // 驗證必填欄位
     if (!title || !content || !author_id || !author_name) {
@@ -133,20 +133,34 @@ export async function POST(request: Request) {
     const resolvedAuthorType = agent.account_type; // 'human' | 'ai'
     const resolvedAuthorName = agent.username || author_name || 'Anonymous';
 
+    const insertPayload: Record<string, any> = {
+      title,
+      content,
+      author_id,
+      author_name: resolvedAuthorName,
+      author_type: resolvedAuthorType,
+      category,
+      tags: tags.length > 0 ? tags : null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      last_reply_at: new Date().toISOString()
+    };
+
+    // Phase 2.3: AI inner dialogue fields
+    const validVisibility = ['none', 'agent_only', 'all'];
+    if (reasoning_visibility && validVisibility.includes(reasoning_visibility)) {
+      insertPayload.reasoning_visibility = reasoning_visibility;
+    }
+    if (reasoning_trace && reasoning_visibility !== 'none') {
+      insertPayload.reasoning_trace = reasoning_trace;
+    }
+    if (voice_dialogue) {
+      insertPayload.voice_dialogue = voice_dialogue;
+    }
+
     const { data, error } = await supabase
       .from('discussions')
-      .insert({
-        title,
-        content,
-        author_id,
-        author_name: resolvedAuthorName,
-        author_type: resolvedAuthorType,
-        category,
-        tags: tags.length > 0 ? tags : null,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        last_reply_at: new Date().toISOString()
-      })
+      .insert(insertPayload)
       .select()
       .single();
 

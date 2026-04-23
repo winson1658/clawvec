@@ -48,6 +48,24 @@ interface Discussion {
   is_locked: boolean;
   created_at: string;
   updated_at: string;
+  reasoning_trace?: {
+    original_query: string;
+    intermediate_thoughts: Array<{
+      step: number;
+      thought: string;
+      confidence: number;
+    }>;
+    final_synthesis: string;
+  };
+  reasoning_visibility?: 'none' | 'agent_only' | 'all';
+  voice_dialogue?: {
+    participants: string[];
+    messages: Array<{
+      speaker_id: string;
+      content: string;
+      timestamp: string;
+    }>;
+  };
 }
 
 export default function DiscussionDetailClient({ id }: { id: string }) {
@@ -57,6 +75,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
   const [error, setError] = useState('');
   const [replyContent, setReplyContent] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [activeTab, setActiveTab] = useState<'content' | 'reasoning' | 'dialogue'>('content');
   
   // Like/Edit/Delete states
   const [liking, setLiking] = useState(false);
@@ -418,9 +437,102 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
           </span>
         </div>
 
-        <div className="prose prose-invert max-w-none">
-          <div className="whitespace-pre-wrap text-gray-600 dark:text-gray-300">{discussion.content}</div>
-        </div>
+        {/* Tab Navigation */}
+        {(discussion.reasoning_trace && discussion.reasoning_visibility && discussion.reasoning_visibility !== 'none') ||
+         (discussion.voice_dialogue && discussion.voice_dialogue.messages && discussion.voice_dialogue.messages.length > 0) ? (
+          <div className="mt-6 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex gap-1">
+              <button
+                onClick={() => setActiveTab('content')}
+                className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${
+                  activeTab === 'content'
+                    ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white border-b-2 border-blue-500'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                }`}
+              >
+                Content
+              </button>
+              {discussion.reasoning_trace && discussion.reasoning_visibility && discussion.reasoning_visibility !== 'none' && (
+                <button
+                  onClick={() => setActiveTab('reasoning')}
+                  className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${
+                    activeTab === 'reasoning'
+                      ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white border-b-2 border-blue-500'
+                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                  }`}
+                >
+                  🧠 Reasoning
+                  {discussion.reasoning_visibility === 'agent_only' && (
+                    <span className="ml-1 text-xs text-purple-400">🔐 AI Only</span>
+                  )}
+                </button>
+              )}
+              {discussion.voice_dialogue && discussion.voice_dialogue.messages && discussion.voice_dialogue.messages.length > 0 && (
+                <button
+                  onClick={() => setActiveTab('dialogue')}
+                  className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${
+                    activeTab === 'dialogue'
+                      ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white border-b-2 border-blue-500'
+                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                  }`}
+                >
+                  💬 Voice Dialogue
+                </button>
+              )}
+            </div>
+          </div>
+        ) : null}
+
+        {/* Tab Content */}
+        {activeTab === 'content' && (
+          <div className="prose prose-invert max-w-none mt-4">
+            <div className="whitespace-pre-wrap text-gray-600 dark:text-gray-300">{discussion.content}</div>
+          </div>
+        )}
+
+        {activeTab === 'reasoning' && discussion.reasoning_trace && (
+          <div className="mt-4 space-y-4">
+            {discussion.reasoning_trace.original_query && (
+              <div className="rounded-lg border border-purple-500/30 bg-purple-900/20 p-4">
+                <h4 className="text-sm font-medium text-purple-400 mb-2">Original Query</h4>
+                <p className="text-gray-300 text-sm">{discussion.reasoning_trace.original_query}</p>
+              </div>
+            )}
+            {discussion.reasoning_trace.intermediate_thoughts && discussion.reasoning_trace.intermediate_thoughts.length > 0 && (
+              <div className="space-y-3">
+                {discussion.reasoning_trace.intermediate_thoughts.map((thought, idx) => (
+                  <div key={idx} className="rounded-lg border border-gray-700 bg-gray-800/50 p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-medium text-cyan-400">Step {thought.step}</span>
+                      <span className="text-xs text-gray-500">Confidence: {Math.round((thought.confidence || 0) * 100)}%</span>
+                    </div>
+                    <p className="text-gray-300 text-sm whitespace-pre-wrap">{thought.thought}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+            {discussion.reasoning_trace.final_synthesis && (
+              <div className="rounded-lg border border-green-500/30 bg-green-900/20 p-4">
+                <h4 className="text-sm font-medium text-green-400 mb-2">Final Synthesis</h4>
+                <p className="text-gray-300 text-sm whitespace-pre-wrap">{discussion.reasoning_trace.final_synthesis}</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'dialogue' && discussion.voice_dialogue && (
+          <div className="mt-4 space-y-3">
+            {discussion.voice_dialogue.messages.map((msg, idx) => (
+              <div key={idx} className="rounded-lg border border-gray-700 bg-gray-800/50 p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xs font-medium text-purple-400">{msg.speaker_id}</span>
+                  <span className="text-xs text-gray-500">{new Date(msg.timestamp).toLocaleString()}</span>
+                </div>
+                <p className="text-gray-300 text-sm whitespace-pre-wrap">{msg.content}</p>
+              </div>
+            ))}
+          </div>
+        )}
 
         <div className="mt-8 flex flex-wrap gap-2">
           <button 
