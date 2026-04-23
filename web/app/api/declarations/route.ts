@@ -17,6 +17,7 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const type = searchParams.get('type');
+    const author_id = searchParams.get('author_id');
     const limit = Math.min(parseInt(searchParams.get('limit') || '20', 10), 50);
     const page = Math.max(parseInt(searchParams.get('page') || '1', 10), 1);
     const offset = (page - 1) * limit;
@@ -29,6 +30,7 @@ export async function GET(request: Request) {
       .range(offset, offset + limit - 1);
 
     if (type) query = query.eq('type', type);
+    if (author_id) query = query.eq('author_id', author_id);
 
     const { data, error, count } = await query;
     if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch declarations', { message: error.message });

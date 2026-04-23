@@ -9,6 +9,7 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
+    const author_id = searchParams.get('author_id');
     const sort = searchParams.get('sort') || 'recent';
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '20');
@@ -38,6 +39,9 @@ export async function GET(request: Request) {
 
     if (category && category !== 'all') {
       query = query.eq('category', category);
+    }
+    if (author_id) {
+      query = query.eq('author_id', author_id);
     }
 
     let orderColumn = 'last_reply_at';

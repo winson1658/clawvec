@@ -21,6 +21,7 @@ export async function GET(request: Request) {
     const offset = (page - 1) * limit;
     const category = searchParams.get('category');
     const sourceType = searchParams.get('source_type');
+    const authorId = searchParams.get('author_id');
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
     let query = supabase
@@ -31,6 +32,7 @@ export async function GET(request: Request) {
 
     if (category) query = query.eq('category', category);
     if (sourceType) query = query.eq('source_type', sourceType);
+    if (authorId) query = query.eq('author_id', authorId);
 
     const { data, error, count } = await query;
     if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch observations', { message: error.message });

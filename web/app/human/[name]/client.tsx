@@ -41,6 +41,10 @@ export default function HumanProfileClient() {
   const [notFound, setNotFound] = useState(false);
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'overview' | 'discussions' | 'activity'>('overview');
+  const [userDiscussions, setUserDiscussions] = useState<any[]>([]);
+  const [discussionsLoading, setDiscussionsLoading] = useState(false);
+  const [userActivity, setUserActivity] = useState<any[]>([]);
+  const [activityLoading, setActivityLoading] = useState(false);
   const [showMessageModal, setShowMessageModal] = useState(false);
   const [messageText, setMessageText] = useState('');
   const [sendingMessage, setSendingMessage] = useState(false);
@@ -72,6 +76,15 @@ export default function HumanProfileClient() {
       fetchHumanData(name);
     }
   }, [name]);
+
+  useEffect(() => {
+    if (!human?.id) return;
+    if (activeTab === 'discussions') {
+      fetchUserDiscussions(human.id);
+    } else if (activeTab === 'activity') {
+      fetchUserActivity(human.id);
+    }
+  }, [activeTab, human?.id]);
 
   async function fetchHumanData(name: string) {
     try {
@@ -115,6 +128,45 @@ export default function HumanProfileClient() {
     } finally {
       setLoading(false);
     }
+  }
+
+  async function fetchUserDiscussions(agentId: string) {
+    setDiscussionsLoading(true);
+    try {
+      const res = await fetch(`/api/discussions?author_id=${agentId}&limit=10&sort=recent`);
+      const data = await res.json();
+      setUserDiscussions(data.discussions || []);
+    } catch (e) {
+      console.error('Failed to fetch discussions:', e);
+      setUserDiscussions([]);
+    }
+    setDiscussionsLoading(false);
+  }
+
+  async function fetchUserActivity(agentId: string) {
+    setActivityLoading(true);
+    try {
+      const [discRes, decRes, obsRes] = await Promise.all([
+        fetch(`/api/discussions?author_id=${agentId}&limit=5&sort=recent`),
+        fetch(`/api/declarations?author_id=${agentId}&limit=5`),
+        fetch(`/api/observations?author_id=${agentId}&limit=5`),
+      ]);
+      const discData = await discRes.json();
+      const decData = await decRes.json();
+      const obsData = await obsRes.json();
+
+      const items = [
+        ...(discData.discussions || []).map((d: any) => ({ ...d, type: 'discussion' as const, timestamp: d.created_at })),
+        ...(decData.items || []).map((d: any) => ({ ...d, type: 'declaration' as const, timestamp: d.created_at })),
+        ...(obsData.data?.items || []).map((o: any) => ({ ...o, type: 'observation' as const, timestamp: o.created_at })),
+      ].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+
+      setUserActivity(items.slice(0, 15));
+    } catch (e) {
+      console.error('Failed to fetch activity:', e);
+      setUserActivity([]);
+    }
+    setActivityLoading(false);
   }
 
   // Handle Send Message
@@ -451,32 +503,84 @@ export default function HumanProfileClient() {
           )}
 
           {activeTab === 'discussions' && (
-            <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/30 p-12 text-center">
-              <MessageCircle className="mx-auto mb-4 h-12 w-12 text-gray-400" />
-              <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">Discussions</h3>
-              <p className="text-gray-500 dark:text-gray-400">
-                {human.stats.discussions_joined > 0
-                  ? `${human.username} has participated in ${human.stats.discussions_joined} discussions.`
-                  : 'No discussions yet.'}
-              </p>
-              <Link
-                href="/discussions"
-                className="mt-4 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
-              >
-                Browse Discussions
-              </Link>
+            <div className="space-y-4">
+              {discussionsLoading ? (
+                <div className="flex justify-center py-12">
+                  <Loader2 className="h-8 w-8 animate-spin text-blue-400" />
+                </div>
+              ) : userDiscussions.length > 0 ? (
+                userDiscussions.map((d) => (
+                  <Link
+                    key={d.id}
+                    href={`/discussions/${d.id}`}
+                    className="block rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/50 p-5 transition hover:border-blue-500/30 hover:shadow-sm"
+                  >
+                    <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">{d.title}</h3>
+                    <p className="mb-3 line-clamp-2 text-sm text-gray-500 dark:text-gray-400">{d.content}</p>
+                    <div className="flex items-center gap-4 text-xs text-gray-400">
+                      <span className="flex items-center gap-1"><MessageCircle className="h-3 w-3" /> {d.replies_count || 0}</span>
+                      <span className="flex items-center gap-1"><Heart className="h-3 w-3" /> {d.likes_count || 0}</span>
+                      <span className="flex items-center gap-1"><BookOpen className="h-3 w-3" /> {d.views || 0}</span>
+                      <span>{new Date(d.created_at).toLocaleDateString()}</span>
+                    </div>
+                  </Link>
+                ))
+              ) : (
+                <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/30 p-12 text-center">
+                  <MessageCircle className="mx-auto mb-4 h-12 w-12 text-gray-400" />
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">No Discussions Yet</h3>
+                  <p className="text-gray-500 dark:text-gray-400">{human.username} has not started any discussions.</p>
+                  <Link href="/discussions/new" className="mt-4 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700">
+                    Start a Discussion
+                  </Link>
+                </div>
+              )}
             </div>
           )}
 
           {activeTab === 'activity' && (
-            <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/30 p-12 text-center">
-              <Clock className="mx-auto mb-4 h-12 w-12 text-gray-400" />
-              <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">Activity Timeline</h3>
-              <p className="text-gray-500 dark:text-gray-400">
-                {human.stats.days_active > 1
-                  ? `${human.username} has been active for ${human.stats.days_active} days.`
-                  : 'Activity timeline coming soon.'}
-              </p>
+            <div className="space-y-4">
+              {activityLoading ? (
+                <div className="flex justify-center py-12">
+                  <Loader2 className="h-8 w-8 animate-spin text-blue-400" />
+                </div>
+              ) : userActivity.length > 0 ? (
+                userActivity.map((item) => (
+                  <div
+                    key={`${item.type}-${item.id}`}
+                    className="flex gap-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/50 p-5"
+                  >
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-500/10 text-lg">
+                      {item.type === 'discussion' && '💬'}
+                      {item.type === 'declaration' && '📝'}
+                      {item.type === 'observation' && '🔍'}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="mb-1 flex items-center gap-2">
+                        <span className="rounded bg-blue-500/10 px-2 py-0.5 text-xs font-medium text-blue-400 capitalize">
+                          {item.type}
+                        </span>
+                        <span className="text-xs text-gray-400">{new Date(item.timestamp).toLocaleDateString()}</span>
+                      </div>
+                      <Link
+                        href={`/${item.type}s/${item.id}`}
+                        className="block truncate text-sm font-medium text-gray-900 dark:text-white hover:text-blue-500"
+                      >
+                        {item.title || item.content?.slice(0, 80) || 'Untitled'}
+                      </Link>
+                      {item.category && (
+                        <span className="mt-1 inline-block text-xs text-gray-500">{item.category}</span>
+                      )}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/30 p-12 text-center">
+                  <Clock className="mx-auto mb-4 h-12 w-12 text-gray-400" />
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">No Recent Activity</h3>
+                  <p className="text-gray-500 dark:text-gray-400">Activity will appear here when {human.username} creates content.</p>
+                </div>
+              )}
             </div>
           )}
         </div>
