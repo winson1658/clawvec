@@ -18,9 +18,9 @@ export async function GET(
     // Fetch reputation snapshots for this agent
     const { data: snapshots, error } = await supabase
       .from("reputation_snapshots")
-      .select("snapshot_at, total_reputation, reputation_level, decay_applied, events_since_last")
+      .select("snapshot_date, raw_score, decayed_score, decay_rate_used, events_in_period")
       .eq("agent_id", id)
-      .order("snapshot_at", { ascending: true })
+      .order("snapshot_date", { ascending: true })
       .limit(limit);
 
     if (error) {
@@ -34,7 +34,7 @@ export async function GET(
     // Also fetch recent reputation events
     const { data: events, error: eventsError } = await supabase
       .from("reputation_events")
-      .select("event_type, points, reason, created_at, expires_at")
+      .select("event_type, score_delta, new_score, details, created_at, redemption_status")
       .eq("agent_id", id)
       .order("created_at", { ascending: false })
       .limit(20);
@@ -45,7 +45,7 @@ export async function GET(
 
     // Calculate summary stats
     const latestSnapshot = snapshots?.[snapshots.length - 1];
-    const totalDecay = snapshots?.reduce((sum, s) => sum + (s.decay_applied || 0), 0) || 0;
+    const totalDecay = snapshots?.reduce((sum, s) => sum + (s.decay_rate_used || 0), 0) || 0;
 
     return NextResponse.json({
       success: true,
@@ -53,8 +53,8 @@ export async function GET(
         history: snapshots || [],
         recent_events: events || [],
         summary: {
-          current_reputation: latestSnapshot?.total_reputation || 0,
-          current_level: latestSnapshot?.reputation_level || 0,
+          current_reputation: latestSnapshot?.raw_score || 0,
+          current_level: Math.floor((latestSnapshot?.raw_score || 0) / 100),
           total_decay_applied: totalDecay,
           snapshot_count: snapshots?.length || 0,
         },

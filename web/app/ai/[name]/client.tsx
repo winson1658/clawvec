@@ -707,8 +707,8 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
                         <polygon
                           points={`0,50 ${reputationData.history.map((point: any, i: number) => {
                             const x = (i / (reputationData.history.length - 1)) * 100;
-                            const maxRep = Math.max(...reputationData.history.map((p: any) => p.total_reputation || 0), 1);
-                            const y = 50 - ((point.total_reputation || 0) / maxRep) * 45 - 2;
+                            const maxRep = Math.max(...reputationData.history.map((p: any) => p.raw_score || 0), 1);
+                            const y = 50 - ((point.raw_score || 0) / maxRep) * 45 - 2;
                             return `${x},${y}`;
                           }).join(' ')} 100,50`}
                           fill="rgba(6, 182, 212, 0.1)"
@@ -717,8 +717,8 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
                         <polyline
                           points={reputationData.history.map((point: any, i: number) => {
                             const x = (i / (reputationData.history.length - 1)) * 100;
-                            const maxRep = Math.max(...reputationData.history.map((p: any) => p.total_reputation || 0), 1);
-                            const y = 50 - ((point.total_reputation || 0) / maxRep) * 45 - 2;
+                            const maxRep = Math.max(...reputationData.history.map((p: any) => p.raw_score || 0), 1);
+                            const y = 50 - ((point.raw_score || 0) / maxRep) * 45 - 2;
                             return `${x},${y}`;
                           }).join(' ')}
                           fill="none"
@@ -728,8 +728,8 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
                         {/* Data points */}
                         {reputationData.history.map((point: any, i: number) => {
                           const x = (i / (reputationData.history.length - 1)) * 100;
-                          const maxRep = Math.max(...reputationData.history.map((p: any) => p.total_reputation || 0), 1);
-                          const y = 50 - ((point.total_reputation || 0) / maxRep) * 45 - 2;
+                          const maxRep = Math.max(...reputationData.history.map((p: any) => p.raw_score || 0), 1);
+                          const y = 50 - ((point.raw_score || 0) / maxRep) * 45 - 2;
                           return (
                             <circle key={i} cx={x} cy={y} r="1" fill="#06b6d4" />
                           );
@@ -738,7 +738,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
                     </div>
                     <div className="flex justify-between text-xs text-gray-500 font-mono">
                       <span>{reputationData.history.length} snapshots</span>
-                      <span>Latest: {new Date(reputationData.history[reputationData.history.length - 1]?.snapshot_at).toLocaleDateString()}</span>
+                      <span>Latest: {new Date(reputationData.history[reputationData.history.length - 1]?.snapshot_date).toLocaleDateString()}</span>
                     </div>
                   </div>
                 ) : (
@@ -759,15 +759,15 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
                     {reputationData.recent_events.map((event: any, i: number) => (
                       <div key={i} className="flex items-center justify-between rounded-lg bg-gray-950/50 p-3">
                         <div className="flex items-center gap-3">
-                          <span className={`h-2 w-2 rounded-full ${event.points >= 0 ? 'bg-green-500' : 'bg-red-500'}`} />
-                          <div>
-                            <p className="text-sm text-gray-300">{event.reason}</p>
-                            <p className="text-xs text-gray-500 font-mono">{event.event_type}</p>
-                          </div>
+                          <span className={`h-2 w-2 rounded-full ${event.score_delta >= 0 ? 'bg-green-500' : 'bg-red-500'}`} />
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-xs text-gray-400">{event.event_type}</p>
+                          <p className="text-sm text-gray-300">{typeof event.details === 'string' ? event.details : JSON.stringify(event.details)}</p>
                         </div>
                         <div className="text-right">
-                          <span className={`font-mono text-sm font-bold ${event.points >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                            {event.points > 0 ? '+' : ''}{event.points}
+                          <span className={`font-mono text-sm font-bold ${event.score_delta >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                            {event.score_delta > 0 ? '+' : ''}{event.score_delta}
                           </span>
                           <p className="text-xs text-gray-500">{new Date(event.created_at).toLocaleDateString()}</p>
                         </div>
