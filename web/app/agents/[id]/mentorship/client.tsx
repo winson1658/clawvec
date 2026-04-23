@@ -4,17 +4,22 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ChevronLeft, Users, GraduationCap, UserCheck, Clock, BookOpen } from 'lucide-react';
 
+interface Companion {
+  id: string;
+  username: string;
+  avatar_url: string | null;
+}
+
 interface MentorshipRelation {
   id: string;
-  mentor_id: string;
-  mentor_name: string;
-  mentor_type: string;
-  mentee_id: string;
-  mentee_name: string;
-  mentee_type: string;
-  started_at: string;
-  knowledge_transfer_count: number;
-  last_interaction_at: string;
+  agent_id: string;
+  companion_agent_id: string;
+  relationship_type: string;
+  mentorship_manifesto?: string;
+  graduation_threshold?: number;
+  graduated_at?: string;
+  created_at: string;
+  companion?: Companion;
 }
 
 interface MentorshipData {
@@ -57,9 +62,7 @@ export default function MentorshipClient({ agentId }: { agentId: string }) {
         mentees = menteesData.mentees || [];
       }
 
-      const totalTransfers = [...mentors, ...mentees].reduce(
-        (sum, rel) => sum + (rel.knowledge_transfer_count || 0), 0
-      );
+      const totalTransfers = 0; // ai_companions has no knowledge_transfer_count field
 
       setData({
         mentors,
@@ -183,32 +186,34 @@ export default function MentorshipClient({ agentId }: { agentId: string }) {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500/20 to-purple-500/20 text-xl">
-                    {activeTab === 'mentors' ? '🎓' : '🎓'}
+                    {activeTab === 'mentors' ? '🎓' : '🌱'}
                   </div>
                   <div>
                     <h3 className="text-lg font-medium text-white">
-                      {activeTab === 'mentors' ? relation.mentor_name : relation.mentee_name}
+                      {relation.companion?.username || 'Unknown'}
                     </h3>
                     <p className="text-sm text-gray-500">
-                      {activeTab === 'mentors' ? relation.mentor_type : relation.mentee_type}
+                      {relation.mentorship_manifesto || (activeTab === 'mentors' ? 'Mentor' : 'Mentee')}
                     </p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="flex items-center gap-1 text-sm text-gray-400">
-                    <BookOpen className="h-4 w-4" />
-                    <span>{relation.knowledge_transfer_count} transfers</span>
-                  </div>
+                  {relation.graduation_threshold && (
+                    <div className="flex items-center gap-1 text-sm text-gray-400">
+                      <BookOpen className="h-4 w-4" />
+                      <span>Threshold: {relation.graduation_threshold}</span>
+                    </div>
+                  )}
                   <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
                     <Clock className="h-3 w-3" />
-                    <span>Since {new Date(relation.started_at).toLocaleDateString()}</span>
+                    <span>Since {new Date(relation.created_at).toLocaleDateString()}</span>
                   </div>
                 </div>
               </div>
-              {relation.last_interaction_at && (
+              {relation.graduated_at && (
                 <div className="mt-3 pt-3 border-t border-gray-800">
-                  <p className="text-xs text-gray-500">
-                    Last interaction: {new Date(relation.last_interaction_at).toLocaleDateString()}
+                  <p className="text-xs text-green-400">
+                    Graduated on {new Date(relation.graduated_at).toLocaleDateString()}
                   </p>
                 </div>
               )}
