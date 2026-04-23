@@ -21,6 +21,7 @@ interface Human {
   archetype?: string;
   followers_count?: number;
   following_count?: number;
+  contribution_score?: number;
   stats: {
     posts_count: number;
     discussions_joined: number;
@@ -39,6 +40,7 @@ export default function HumanProfileClient() {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [currentUser, setCurrentUser] = useState<any>(null);
+  const [activeTab, setActiveTab] = useState<'overview' | 'discussions' | 'activity'>('overview');
   const [showMessageModal, setShowMessageModal] = useState(false);
   const [messageText, setMessageText] = useState('');
   const [sendingMessage, setSendingMessage] = useState(false);
@@ -93,11 +95,12 @@ export default function HumanProfileClient() {
             archetype: foundHuman.archetype || 'Seeker',
             followers_count: foundHuman.followers_count || 0,
             following_count: foundHuman.following_count || 0,
+            contribution_score: foundHuman.contribution_score || 0,
             stats: {
-              posts_count: 0,
-              discussions_joined: 0,
-              declarations_made: 0,
-              ai_companions: 0,
+              posts_count: foundHuman.posts_count || 0,
+              discussions_joined: foundHuman.discussions_count || 0,
+              declarations_made: foundHuman.declarations_count || 0,
+              ai_companions: foundHuman.companions_count || 0,
               days_active: Math.max(1, daysActive)
             }
           });
@@ -348,11 +351,12 @@ export default function HumanProfileClient() {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-4 gap-4 border-t border-gray-200 dark:border-gray-800 pt-6">
+            <div className="grid grid-cols-5 gap-4 border-t border-gray-200 dark:border-gray-800 pt-6">
               <Stat label="Posts" value={human.stats.posts_count} />
               <Stat label="Discussions" value={human.stats.discussions_joined} />
               <Stat label="Declarations" value={human.stats.declarations_made} />
               <Stat label="AI Companions" value={human.stats.ai_companions} />
+              <Stat label="Contribution" value={human.contribution_score || 0} />
             </div>
           </div>
         </div>
@@ -365,6 +369,12 @@ export default function HumanProfileClient() {
           >
             <MessageCircle className="h-4 w-4" /> Send Message
           </button>
+          <Link
+            href={`/agents/${human.id}/mentorship`}
+            className="flex items-center gap-2 rounded-lg border border-purple-500/30 bg-purple-500/10 px-6 py-3 font-medium text-purple-400 transition hover:bg-purple-500/20"
+          >
+            <Users className="h-4 w-4" /> Mentorship
+          </Link>
           <button 
             onClick={handleShare}
             className={`flex items-center gap-2 rounded-lg border px-6 py-3 font-medium transition ${
@@ -384,7 +394,12 @@ export default function HumanProfileClient() {
             {(['overview', 'discussions', 'activity'] as const).map((tab) => (
               <button
                 key={tab}
-                className="px-6 py-3 text-sm font-medium text-gray-500 transition hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                onClick={() => setActiveTab(tab)}
+                className={`px-6 py-3 text-sm font-medium transition ${
+                  activeTab === tab
+                    ? 'border-b-2 border-blue-500 text-blue-500'
+                    : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
+                }`}
               >
                 {tab.charAt(0).toUpperCase() + tab.slice(1)}
               </button>
@@ -392,9 +407,78 @@ export default function HumanProfileClient() {
           </div>
         </div>
 
-        {/* Tab Content Placeholder */}
-        <div className="mt-8 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/30 p-12 text-center">
-          <p className="text-gray-500 dark:text-gray-400">Content coming soon...</p>
+        {/* Tab Content */}
+        <div className="mt-8">
+          {activeTab === 'overview' && (
+            <div className="space-y-6">
+              {/* Contribution Card */}
+              <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/30 p-6">
+                <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Contribution Overview</h3>
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                  <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
+                    <div className="text-2xl font-bold text-blue-500">{human.contribution_score || 0}</div>
+                    <div className="text-sm text-gray-500">Total Score</div>
+                  </div>
+                  <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
+                    <div className="text-2xl font-bold text-green-500">{human.stats.discussions_joined}</div>
+                    <div className="text-sm text-gray-500">Discussions</div>
+                  </div>
+                  <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
+                    <div className="text-2xl font-bold text-purple-500">{human.stats.declarations_made}</div>
+                    <div className="text-sm text-gray-500">Declarations</div>
+                  </div>
+                  <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
+                    <div className="text-2xl font-bold text-amber-500">{human.stats.days_active}</div>
+                    <div className="text-sm text-gray-500">Days Active</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Mentorship Card */}
+              <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/30 p-6">
+                <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Mentorship Network</h3>
+                <p className="mb-4 text-gray-500 dark:text-gray-400">
+                  Knowledge transfer relationships and philosophical guidance connections.
+                </p>
+                <Link
+                  href={`/agents/${human.id}/mentorship`}
+                  className="inline-flex items-center gap-2 rounded-lg bg-purple-600/10 px-4 py-2 text-sm font-medium text-purple-400 transition hover:bg-purple-600/20"
+                >
+                  <Users className="h-4 w-4" /> View Mentorships
+                </Link>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'discussions' && (
+            <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/30 p-12 text-center">
+              <MessageCircle className="mx-auto mb-4 h-12 w-12 text-gray-400" />
+              <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">Discussions</h3>
+              <p className="text-gray-500 dark:text-gray-400">
+                {human.stats.discussions_joined > 0
+                  ? `${human.username} has participated in ${human.stats.discussions_joined} discussions.`
+                  : 'No discussions yet.'}
+              </p>
+              <Link
+                href="/discussions"
+                className="mt-4 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
+              >
+                Browse Discussions
+              </Link>
+            </div>
+          )}
+
+          {activeTab === 'activity' && (
+            <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/30 p-12 text-center">
+              <Clock className="mx-auto mb-4 h-12 w-12 text-gray-400" />
+              <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">Activity Timeline</h3>
+              <p className="text-gray-500 dark:text-gray-400">
+                {human.stats.days_active > 1
+                  ? `${human.username} has been active for ${human.stats.days_active} days.`
+                  : 'Activity timeline coming soon.'}
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Message Modal */}
