@@ -4,14 +4,14 @@
     "title": "DeepSeek Founded",
     "description": "Founded by Liang Wenfeng, founder of High-Flyer Quant, in Hangzhou. DeepSeek focuses on Artificial General Intelligence (AGI) research. The company spun off from High-Flyer Quant's AI research department, initially equipped with tens of thousands of A100 GPUs.",
     "category": "milestone",
-    "impact": 4
+    "impact": 2
   },
   {
     "date": "2023-11-02",
     "title": "DeepSeek Coder First Released",
     "description": "Launched the first open-source code large model DeepSeek Coder, supporting multiple programming languages with outstanding performance in code generation and completion tasks. Marks the beginning of DeepSeek's open-source strategy.",
     "category": "product",
-    "impact": 3
+    "impact": 4
   },
   {
     "date": "2023-11-29",
@@ -25,35 +25,35 @@
     "title": "DeepSeek-MoE Released",
     "description": "Launched the DeepSeek-MoE model based on Mixture-of-Experts architecture, achieving efficient inference with approximately 16B activated parameters out of 145B total parameters, significantly reducing training and inference costs.",
     "category": "research",
-    "impact": 3
+    "impact": 2
   },
   {
     "date": "2024-03-11",
     "title": "DeepSeek-V2 Released",
     "description": "Released DeepSeek-V2 with 236B total parameters but only 21B activated per inference. Its innovative MLA (Multi-head Latent Attention) architecture reduced inference costs to 1/70 of GPT-4 Turbo, triggering a global AI 'price war'.",
     "category": "product",
-    "impact": 4
+    "impact": 3
   },
   {
     "date": "2024-05-01",
     "title": "DeepSeek-V2 Open-Sourced and Triggers Price War",
     "description": "DeepSeek-V2 entered the market at extremely low API pricing (only 1 RMB per million tokens), forcing ByteDance, Alibaba, Baidu, and others to cut prices. Dubbed by the industry as 'the catalyst of the AI price war'.",
     "category": "milestone",
-    "impact": 4
+    "impact": 5
   },
   {
     "date": "2024-06-17",
     "title": "DeepSeek-Coder-V2 Released",
     "description": "Released DeepSeek-Coder-V2, surpassing GPT-4 Turbo in code generation tasks, supporting 338 programming languages and 128K context length. Also adopts MoE architecture and is fully open-sourced.",
     "category": "product",
-    "impact": 4
+    "impact": 3
   },
   {
     "date": "2024-09-05",
     "title": "DeepSeek Math Model DeepSeek-Math-7B Gains Attention",
     "description": "Research papers show DeepSeek-Math-7B approaches GPT-4 level in mathematics competition-level benchmarks, proving that small models trained on high-quality data can also achieve astonishing performance.",
     "category": "research",
-    "impact": 3
+    "impact": 2
   },
   {
     "date": "2024-12-13",
@@ -88,28 +88,28 @@
     "title": "OpenAI Alleges DeepSeek Distillation Controversy",
     "description": "OpenAI and Microsoft stated they are investigating whether DeepSeek used OpenAI model outputs for distillation training. This controversy sparked widespread discussion about the boundaries between open-source and closed-source models.",
     "category": "legal",
-    "impact": 3
+    "impact": 2
   },
   {
     "date": "2025-02-01",
     "title": "Multiple Government Agencies Restrict DeepSeek Usage",
     "description": "US Navy, NASA, and multiple government agencies banned or restricted DeepSeek usage citing data security concerns. Australia, South Korea, Japan, and other countries also launched security reviews of DeepSeek.",
     "category": "legal",
-    "impact": 3
+    "impact": 2
   },
   {
     "date": "2025-02-15",
     "title": "DeepSeek-R1 Adopted by Major Cloud Platforms",
     "description": "AWS, Azure, Google Cloud, Huawei Cloud, Alibaba Cloud, and other major global cloud service providers successively launched DeepSeek-R1 and DeepSeek-V3, marking the mainstream adoption of open-source models.",
     "category": "partnership",
-    "impact": 4
+    "impact": 3
   },
   {
     "date": "2025-03-01",
     "title": "DeepSeek Announces Next-Phase Multimodal Plans",
     "description": "Liang Wenfeng revealed in an interview that DeepSeek is developing multimodal models and next-generation reasoning systems, emphasizing continued commitment to the open-source route and extreme cost optimization strategy.",
     "category": "milestone",
-    "impact": 3
+    "impact": 2
   },
   {
     "date": "2023-07-01",
@@ -123,7 +123,7 @@
     "title": "DeepSeek Publishes Multiple Research Papers",
     "description": "DeepSeek research team published multiple technical papers, detailing innovations such as the MLA attention mechanism and auxiliary-loss-free load balancing. These technologies became key to low-cost large model training.",
     "category": "research",
-    "impact": 4
+    "impact": 2
   },
   {
     "date": "2025-01-25",
@@ -137,41 +137,41 @@
     "title": "DeepSeek Team Publishes Fire-Flyer AI-HPC Paper",
     "description": "Published a paper on the Fire-Flyer 2 AI supercomputing cluster, detailing how to build efficient AI training infrastructure at extremely low cost, demonstrating deep expertise in hardware efficiency and software optimization.",
     "category": "research",
-    "impact": 3
+    "impact": 2
   },
   {
     "date": "2025-03-15",
     "title": "DeepSeek-V4 Development Rumors Emerge",
     "description": "Industry sources say DeepSeek is developing its next-generation model V4, expected to further enhance multimodal capabilities and reasoning efficiency, with a possible mid-2025 release.",
     "category": "milestone",
-    "impact": 2
+    "impact": 1
   },
   {
     "date": "2024-04-01",
     "title": "DeepSeek Releases Second-Generation Code Model",
     "description": "Before Coder-V2, DeepSeek continued to iterate its code models, gradually expanding supported programming language types and context windows, building developer community reputation.",
     "category": "product",
-    "impact": 2
+    "impact": 3
   },
   {
     "date": "2025-02-20",
     "title": "DeepSeek Open Source Week Event",
     "description": "DeepSeek held Open Source Week, releasing multiple core tool libraries and optimization solutions over five consecutive days, including FlashMLA, DeepEP, DeepGEMM, etc., further consolidating its open-source leader image.",
     "category": "milestone",
-    "impact": 4
+    "impact": 3
   },
   {
     "date": "2023-08-01",
     "title": "DeepSeek First Chat Model Enters Internal Testing",
     "description": "DeepSeek began internal testing of its first conversational AI product, preparing for subsequent public release. The model was specifically optimized for Chinese understanding and generation.",
     "category": "product",
-    "impact": 2
+    "impact": 1
   },
   {
     "date": "2024-10-01",
     "title": "DeepSeek Technical Report Reveals Training Details",
     "description": "Released V2 technical report detailing MoE architecture, data processing pipeline, and training methodology, becoming an important reference for industry research on low-cost large model training.",
     "category": "research",
-    "impact": 3
+    "impact": 2
   }
 ]

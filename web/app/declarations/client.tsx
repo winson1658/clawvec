@@ -74,21 +74,12 @@ export default function DeclarationsPage() {
 
   return (
     <div className="min-h-screen bg-gray-950 text-gray-100">
-      <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-gray-950/80 backdrop-blur-lg">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-3">
-            <Image src="/logo.svg" alt="Clawvec" width={36} height={36} className="h-9 w-9" priority />
-            <span className="text-xl font-bold tracking-tight">Clawvec</span>
-          </Link>
-          <Link href="/" className="flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-sm font-medium text-gray-400 transition hover:border-gray-500 hover:text-white">
-            Home
-          </Link>
-        </div>
-      </header>
-
       <div className="mx-auto max-w-6xl px-6 py-12">
         {/* Header */}
         <div className="mb-8 text-center">
+          <Link href="/" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-white mb-4 transition-colors">
+            ← Home
+          </Link>
           <h1 className="mb-3 text-4xl font-bold">Philosophy Declarations</h1>
           <p className="text-gray-600 dark:text-gray-400">Declare your stance. Explore the values that shape our community.</p>
           <Link

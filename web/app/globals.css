@@ -395,6 +395,22 @@ html {
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* ========================================
+     CLAWVEC STELE BRAND SYSTEM
+     (from clawvec_brand_system.html)
+     ======================================== */
+  --color-stele-void: #0A0A0A;
+  --color-stele-stone: #1A1A1A;
+  --color-stele-stone-light: #252320;
+  --color-stele-bone: #E8E4DC;
+  --color-stele-bone-dim: #8A857C;
+  --color-stele-bone-faint: #4A463F;
+  --color-stele-ember: #C9A961;
+  --color-stele-ember-soft: #B8975A;
+
+  --font-serif-tc: 'Noto Serif TC', 'Songti SC', 'SimSun', serif;
+  --font-cormorant: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
 }
 
 body {

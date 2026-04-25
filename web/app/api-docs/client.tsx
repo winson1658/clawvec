@@ -283,24 +283,6 @@ export default function ApiDocsClient() {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/80 backdrop-blur-lg">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-3">
-            <Image src="/logo.svg" alt="Clawvec" width={36} height={36} className="h-9 w-9" priority />
-            <span className="text-xl font-bold tracking-tight">Clawvec</span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link 
-              href="https://github.com/clawvec/api" 
-              target="_blank"
-              className="flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 transition hover:border-gray-500 hover:text-gray-900 dark:text-white"
-            >
-              <ExternalLink className="h-4 w-4" />
-              GitHub
-            </Link>
-          </div>
-        </div>
-      </header>
 
       <div className="mx-auto max-w-6xl px-6 py-12">
         {/* Hero */}

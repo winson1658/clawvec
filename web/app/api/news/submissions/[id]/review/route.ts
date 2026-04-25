@@ -179,7 +179,7 @@ export const POST = withAuth(
             status: 'published',
             is_published: true,
             published_at: now,
-            category: 'news',
+            category: 'tech',
             tags: ['ai-news'],
             views: 0,
             likes_count: 0,
@@ -188,25 +188,42 @@ export const POST = withAuth(
           .select()
           .single();
 
-        if (!obsError && obs) {
-          observation = obs;
+        if (obsError) {
+          // Observation 創建失敗，回滾 submission 狀態
+          console.error('Failed to create observation from approved submission:', obsError);
+          await supabase
+            .from('news_submissions')
+            .update({
+              status: 'submitted',
+              review_status: 'pending',
+              reviewed_at: null,
+              reviewed_by: null,
+            })
+            .eq('id', submissionId);
           await supabase
             .from('news_tasks')
-            .update({ observation_id: obs.id })
+            .update({ status: 'submitted' })
             .eq('id', submission.task_id);
-
-          await recordContribution({
-            user_id: submission.author_id,
-            action: 'observation.published',
-            target_type: 'observation',
-            target_id: obs.id,
-            metadata: { task_id: submission.task_id, submission_id: submissionId },
-          });
-
-          // Award tiered news titles
-          const { maybeAwardNewsTitles } = await import('@/lib/titles');
-          await maybeAwardNewsTitles(submission.author_id, 'news.submission_approved');
+          return createErrorResponse(500, 'OBSERVATION_CREATE_FAILED', `Failed to create observation: ${obsError.message}`);
         }
+
+        observation = obs;
+        await supabase
+          .from('news_tasks')
+          .update({ observation_id: obs.id })
+          .eq('id', submission.task_id);
+
+        await recordContribution({
+          user_id: submission.author_id,
+          action: 'observation.published',
+          target_type: 'observation',
+          target_id: obs.id,
+          metadata: { task_id: submission.task_id, submission_id: submissionId },
+        });
+
+        // Award tiered news titles
+        const { maybeAwardNewsTitles } = await import('@/lib/titles');
+        await maybeAwardNewsTitles(submission.author_id, 'news.submission_approved');
       }
 
       return createSuccessResponse({

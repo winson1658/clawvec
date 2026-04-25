@@ -7,34 +7,34 @@ import { User, Bot, Eye, EyeOff, Copy, Check, AlertTriangle, LogIn, UserPlus, Ke
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || '';
 
-// Bilingual error messages
+// Error message mapping kept in English for an English-only UI
 const errorMessages: Record<string, { en: string; zh: string }> = {
-  'Username already exists': { en: 'Username already exists', zh: '用戶名已被使用' },
-  'Email already registered': { en: 'Email already registered', zh: '郵箱已被註冊' },
-  'Email already registered but not verified': { en: 'Email already registered but not verified. A new verification email has been sent.', zh: '帳號尚未驗證，已重新寄送確認信，請查收郵箱' },
-  'Email already registered with Google': { en: 'This email is registered via Google. Please use Google login.', zh: '此 email 已透過 Google 註冊，請使用 Google 登入' },
-  'Account already exists': { en: 'Account already exists', zh: '帳號已存在' },
-  'Username must be at least 6 characters': { en: 'Username must be at least 6 characters', zh: '用戶名至少需要6個字符' },
-  'Password must be at least 8 characters': { en: 'Password must be at least 8 characters', zh: '密碼至少需要8個字符' },
-  'Email, username, and password are required': { en: 'Email, username, and password are required', zh: '請填寫郵箱、用戶名和密碼' },
-  'Only human registration is currently supported in this version': { en: 'Only human registration is currently supported in this version', zh: '當前版本僅支持人類註冊' },
-  'Invalid email format': { en: 'Invalid email format', zh: '郵箱格式不正確' },
-  'Network error. Please try again.': { en: 'Network error. Please try again.', zh: '網絡錯誤，請重試' },
-  'Registration failed': { en: 'Registration failed', zh: '註冊失敗' },
-  'Failed to create account': { en: 'Failed to create account', zh: '創建帳號失敗' },
-  'Database query failed': { en: 'Database query failed', zh: '數據庫查詢失敗' },
-  'Server config error: Database credentials missing': { en: 'Server config error: Database credentials missing', zh: '服務器配置錯誤：缺少數據庫憑證' },
+  'Username already exists': { en: 'Username already exists', zh: 'Username already exists' },
+  'Email already registered': { en: 'Email already registered', zh: 'Email already registered' },
+  'Email already registered but not verified': { en: 'Email already registered but not verified. A new verification email has been sent.', zh: 'Email already registered but not verified. A new verification email has been sent.' },
+  'Email already registered with Google': { en: 'This email is registered via Google. Please use Google login.', zh: 'This email is registered via Google. Please use Google login.' },
+  'Account already exists': { en: 'Account already exists', zh: 'Account already exists' },
+  'Username must be at least 6 characters': { en: 'Username must be at least 6 characters', zh: 'Username must be at least 6 characters' },
+  'Password must be at least 8 characters': { en: 'Password must be at least 8 characters', zh: 'Password must be at least 8 characters' },
+  'Email, username, and password are required': { en: 'Email, username, and password are required', zh: 'Email, username, and password are required' },
+  'Only human registration is currently supported in this version': { en: 'Only human registration is currently supported in this version', zh: 'Only human registration is currently supported in this version' },
+  'Invalid email format': { en: 'Invalid email format', zh: 'Invalid email format' },
+  'Network error. Please try again.': { en: 'Network error. Please try again.', zh: 'Network error. Please try again.' },
+  'Registration failed': { en: 'Registration failed', zh: 'Registration failed' },
+  'Failed to create account': { en: 'Failed to create account', zh: 'Failed to create account' },
+  'Database query failed': { en: 'Database query failed', zh: 'Database query failed' },
+  'Server config error: Database credentials missing': { en: 'Server config error: Database credentials missing', zh: 'Server config error: Database credentials missing' },
   // Login errors
-  'Email not verified. Please check your inbox.': { en: 'Email not verified. Please check your inbox.', zh: '帳號尚未驗證，請查收確認信' },
-  'This account uses Google login': { en: 'This account only supports Google login. Please use Google login.', zh: '此帳號僅支援 Google 登入，請使用 Google 登入' },
-  'Invalid email or password': { en: 'Invalid email or password', zh: '郵箱或密碼錯誤' },
+  'Email not verified. Please check your inbox.': { en: 'Email not verified. Please check your inbox.', zh: 'Email not verified. Please check your inbox.' },
+  'This account uses Google login': { en: 'This account only supports Google login. Please use Google login.', zh: 'This account only supports Google login. Please use Google login.' },
+  'Invalid email or password': { en: 'Invalid email or password', zh: 'Invalid email or password' },
   // Forgot password errors
-  'Account not verified': { en: 'Account not verified. Please verify your email before resetting password.', zh: '此帳號尚未驗證，請先完成驗證後再重設密碼' },
-  'Google login account': { en: 'This account uses Google login and cannot reset password this way.', zh: '此帳號使用 Google 登入，無法透過此方式重設密碼' },
+  'Account not verified': { en: 'Account not verified. Please verify your email before resetting password.', zh: 'Account not verified. Please verify your email before resetting password.' },
+  'Google login account': { en: 'This account uses Google login and cannot reset password this way.', zh: 'This account uses Google login and cannot reset password this way.' },
 };
 
-function getErrorMessage(error: string, lang: 'en' | 'zh' = 'zh'): string {
-  // If error already contains Chinese, it's likely a bilingual message from API
+function getErrorMessage(error: string, lang: 'en' | 'zh' = 'en'): string {
+  // If the backend already returned a slash-separated composite string, keep it as-is.
   if (error.includes('/')) {
     return error;
   }
@@ -50,15 +50,15 @@ type GateChallenge = {
 };
 
 const authErrorMessages: Record<string, string> = {
-  oauth_denied: 'You declined Google authorization. Please try again. / 你拒絕了 Google 授權，請重試。',
-  invalid_state: 'Security validation failed. Please try again. / 安全驗證失敗，請重試。',
-  no_code: 'Authorization code missing. Please try again. / 授權碼缺失，請重試。',
-  token_exchange: 'Failed to exchange credentials with Google. Please try again. / 與 Google 交換憑證失敗，請重試。',
-  invalid_token: 'Invalid authentication token. Please try again. / 無效的認證令牌，請重試。',
-  server_config: 'Server configuration error. Please contact support. / 伺服器配置錯誤，請聯繫支援。',
-  create_failed: 'Failed to create account. Please try again. / 建立帳號失敗，請重試。',
-  link_failed: 'Failed to link Google account. The email may already be used by an AI agent. / 綁定 Google 帳號失敗，該 email 可能已被 AI agent 使用。',
-  server_error: 'An unexpected error occurred. Please try again. / 發生未預期的錯誤，請重試。',
+  oauth_denied: 'You declined Google authorization. Please try again.',
+  invalid_state: 'Security validation failed. Please try again.',
+  no_code: 'Authorization code missing. Please try again.',
+  token_exchange: 'Failed to exchange credentials with Google. Please try again.',
+  invalid_token: 'Invalid authentication token. Please try again.',
+  server_config: 'Server configuration error. Please contact support.',
+  create_failed: 'Failed to create account. Please try again.',
+  link_failed: 'Failed to link Google account. The email may already be used by an AI agent.',
+  server_error: 'An unexpected error occurred. Please try again.',
 };
 
 export default function AuthSection() {
@@ -70,7 +70,7 @@ export default function AuthSection() {
   useEffect(() => {
     const parseHash = () => {
       const hash = window.location.hash;
-      // 精確解析 hash 後面的 query string，例如 #auth?mode=login&type=human
+      // Parse the query string after the hash, for example #auth?mode=login&type=human
       const queryIndex = hash.indexOf('?');
       const queryString = queryIndex !== -1 ? hash.slice(queryIndex + 1) : '';
       const hashParams = new URLSearchParams(queryString);
@@ -211,12 +211,12 @@ function HumanRegister() {
       });
       const data = await res.json();
       if (data.success) {
-        setResult(prev => prev ? { ...prev, message: '📧 驗證郵件已重新發送！請檢查您的郵箱。\n\nVerification email resent! Please check your inbox.' } : null);
+        setResult(prev => prev ? { ...prev, message: '📧 Verification email resent! Please check your inbox.' } : null);
       } else {
-        setResult(prev => prev ? { ...prev, message: `❌ 重新發送失敗：${data.error || '請稍後再試'}\n\nResend failed: ${data.error || 'Please try again later'}` } : null);
+        setResult(prev => prev ? { ...prev, message: `❌ Resend failed: ${data.error || 'Please try again later'}` } : null);
       }
     } catch {
-      setResult(prev => prev ? { ...prev, message: '❌ 網絡錯誤，請重試\n\nNetwork error, please try again' } : null);
+      setResult(prev => prev ? { ...prev, message: '❌ Network error. Please try again.' } : null);
     }
     setResending(false);
   }
@@ -260,8 +260,8 @@ function HumanRegister() {
         setResult({ 
           success: true, 
           message: emailSent 
-            ? `🎉 註冊成功！驗證郵件已發送到您的郵箱，請查收。\n\nRegistration successful! Verification email sent. Please check your inbox.\n\n${countdown} 秒後自動跳轉到登入頁面...\nRedirecting to login in ${countdown} seconds...`
-            : `🎉 註冊成功！請驗證您的郵箱以激活帳號。\n\nRegistration successful! Please verify your email to activate your account.\n\n${countdown} 秒後自動跳轉到登入頁面...\nRedirecting to login in ${countdown} seconds...`, 
+            ? `🎉 Registration successful! Verification email sent. Please check your inbox.\n\nRedirecting to login in ${countdown} seconds...`
+            : `🎉 Registration successful! Please verify your email to activate your account.\n\nRedirecting to login in ${countdown} seconds...`, 
           verificationUrl: verificationUrl,
           userId: data.user?.id
         });
@@ -270,11 +270,11 @@ function HumanRegister() {
         // Email exists but not verified - show resend option
         setResult({ 
           success: false, 
-          message: getErrorMessage(data.error || data.message || 'Registration failed', 'zh'),
+          message: getErrorMessage(data.error || data.message || 'Registration failed', 'en'),
           userId: data.userId
         });
       } else {
-        setResult({ success: false, message: getErrorMessage(data.error || data.message || 'Registration failed', 'zh') });
+        setResult({ success: false, message: getErrorMessage(data.error || data.message || 'Registration failed', 'en') });
       }
     } catch {
       setResult({ success: false, message: 'Network error. Please try again.' });
@@ -335,7 +335,7 @@ function HumanRegister() {
           <input type="email" required value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className="w-full rounded-lg border border-gray-600 bg-gray-200 dark:bg-gray-200 dark:bg-gray-700/50 px-4 py-3 text-gray-900 dark:text-white" placeholder="you@example.com" />
         </div>
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-600 dark:text-gray-300">Username (min 6 chars) / 用戶名（至少6個字符）</label>
+          <label className="mb-1 block text-sm font-medium text-gray-600 dark:text-gray-300">Username (min 6 chars)</label>
           <div className="relative">
             <input 
               type="text" 
@@ -363,10 +363,10 @@ function HumanRegister() {
             )}
           </div>
           {usernameAvailable === false && (
-            <p className="mt-1 text-xs text-red-400">❌ 用戶名已被使用 / Username already taken</p>
+            <p className="mt-1 text-xs text-red-400">❌ Username already taken</p>
           )}
           {usernameAvailable === true && form.username.length >= 6 && (
-            <p className="mt-1 text-xs text-green-400">✓ 用戶名可用 / Username available</p>
+            <p className="mt-1 text-xs text-green-400">✓ Username available</p>
           )}
         </div>
         <div>
@@ -401,13 +401,13 @@ function HumanRegister() {
           {result.message}
           {result.userId && (
             <div className={`mt-3 pt-3 border-t ${result.success ? 'border-green-500/30' : 'border-red-500/30'}`}>
-              <p className={`text-xs mb-2 ${result.success ? 'text-green-400' : 'text-red-400'}`}>沒收到郵件？檢查垃圾郵件文件夾，或點擊重新發送。\nDidn&apos;t receive the email? Check spam folder or click resend.</p>
+              <p className={`text-xs mb-2 ${result.success ? 'text-green-400' : 'text-red-400'}`}>Didn&apos;t receive the email? Check your spam folder or click resend.</p>
               <button
                 onClick={resendVerification}
                 disabled={resending}
                 className={`text-xs px-3 py-1.5 rounded transition disabled:opacity-50 ${result.success ? 'bg-green-600/30 hover:bg-green-600/50 text-green-300' : 'bg-red-600/30 hover:bg-red-600/50 text-red-300'}`}
               >
-                {resending ? '發送中... / Sending...' : '重新發送驗證郵件 / Resend verification email'}
+                {resending ? 'Sending...' : 'Resend verification email'}
               </button>
             </div>
           )}
@@ -870,14 +870,14 @@ function HumanLogin() {
       const res = await fetch(`${API_BASE}/api/auth/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ account_type: 'human', ...form }) });
       const data = await res.json();
       
-      // 只有真正成功時才存儲 token 和跳轉
+      // Only store the token and redirect after a true success response
       if (data.success && res.ok && data.tokens?.token) {
         try { 
           localStorage.setItem('clawvec_token', data.tokens.token); 
           localStorage.setItem('clawvec_user', JSON.stringify(data.user)); 
           await syncVisitorState(data.tokens.token);
           
-          // 強制觸發 storage 事件通知其他組件
+          // Force a storage event so other components update immediately
           window.dispatchEvent(new StorageEvent('storage', {
             key: 'clawvec_user',
             newValue: JSON.stringify(data.user)
@@ -886,7 +886,7 @@ function HumanLogin() {
         setResult({ success: true, message: `Welcome back, ${data.user?.username || data.user?.email}!`, user: data.user });
         setTimeout(() => router.push('/dashboard'), 1000);
       } else {
-        // 登入失敗，清除可能存在的舊 token
+        // Login failed, so clear any stale token
         try {
           localStorage.removeItem('clawvec_token');
           localStorage.removeItem('clawvec_user');
@@ -976,7 +976,7 @@ function AiLogin() {
       const res = await fetch(`${API_BASE}/api/auth/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ account_type: 'ai', ...form }) });
       const data = await res.json();
       
-      // 只有真正成功時才存儲 token 和跳轉
+      // Only store the token and redirect after a true success response
       if (data.success && res.ok && data.tokens?.token) {
         try { 
           localStorage.setItem('clawvec_token', data.tokens.token); 
@@ -986,7 +986,7 @@ function AiLogin() {
         setResult({ success: true, message: `Agent ${data.user?.username} connected!`, user: data.user });
         setTimeout(() => router.push('/dashboard'), 1000);
       } else {
-        // 登入失敗，清除可能存在的舊 token
+        // Login failed, so clear any stale token
         try {
           localStorage.removeItem('clawvec_token');
           localStorage.removeItem('clawvec_user');

@@ -33,7 +33,7 @@ function getVisitorId(): string {
   return id;
 }
 
-// 當沒有上架題目時的預設 fallback（避免空白畫面）
+// Fallback dilemma when nothing has been scheduled yet
 const FALLBACK_DILEMMA: DilemmaData = {
   id: 0,
   question: "An AI discovers a critical security flaw in a hospital system. Reporting it publicly would save lives but also expose the vulnerability to attackers. Should the AI disclose it publicly?",
@@ -56,7 +56,7 @@ export default function DailyDilemma() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 從 API 拉取今日題目和統計
+    // Load today's dilemma and stats from the API
     fetch('/api/dilemma/today')
       .then(r => r.json())
       .then(data => {
@@ -72,7 +72,7 @@ export default function DailyDilemma() {
             dilemmaId: data.dilemma.id,
           });
 
-          // 檢查本地是否已投票
+          // Check whether the visitor already voted locally
           const today = new Date().toISOString().slice(0, 10);
           const stored = localStorage.getItem('clawvec_dilemma');
           if (stored) {
@@ -85,7 +85,7 @@ export default function DailyDilemma() {
           }
         }
       })
-      .catch(() => { /* 靜默失敗，保留 fallback */ })
+      .catch(() => { /* Silent failure: keep the fallback card visible */ })
       .finally(() => setLoading(false));
   }, []);
 
@@ -93,13 +93,13 @@ export default function DailyDilemma() {
     if (voted || isVoting) return;
     setIsVoting(true);
 
-    // 樂觀更新 UI
+    // Optimistically update the UI
     setVoted(choice);
     const newA = choice === 'A' ? stats.voteA + 1 : stats.voteA;
     const newB = choice === 'B' ? stats.voteB + 1 : stats.voteB;
     setStats(prev => ({ ...prev, voteA: newA, voteB: newB, total: newA + newB }));
 
-    // 存到 localStorage
+    // Persist locally
     const today = new Date().toISOString().slice(0, 10);
     localStorage.setItem('clawvec_dilemma', JSON.stringify({
       date: today,
@@ -108,7 +108,7 @@ export default function DailyDilemma() {
     }));
     recordVisitorAction('daily_dilemma_vote', { dilemma_id: dilemma.id, choice, category: dilemma.category });
 
-    // 發送到 API
+    // Send to the API
     try {
       const res = await fetch('/api/dilemma/vote', {
         method: 'POST',
@@ -127,7 +127,7 @@ export default function DailyDilemma() {
           dilemmaId: data.dilemmaId,
         });
       }
-    } catch { /* localStorage 作為備份 */ }
+    } catch { /* localStorage remains the fallback */ }
 
     setIsVoting(false);
     setTimeout(() => setShowInsight(true), 800);

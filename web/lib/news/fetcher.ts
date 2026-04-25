@@ -286,17 +286,17 @@ export async function fetchAndProcessNews(options: {
     bySource: {}
   };
 
-  console.log('🚀 開始抓取新聞...');
-  console.log(`📊 配置: 每源${maxNewsPerSource}則, 總計${totalMaxNews}則`);
+  console.log('🚀 Starting news fetch...');
+  console.log(`📊 Config: ${maxNewsPerSource} per source, ${totalMaxNews} total`);
 
-  // 收集所有新聞
+  // Collect all news items
   const allNews: RSSItem[] = [];
   
   for (const source of RSS_SOURCES) {
-    console.log(`📡 正在抓取: ${source.name}`);
+    console.log(`📡 Fetching: ${source.name}`);
     const items = await fetchRSSSource(source);
     
-    // 過濾已存在的新聞
+    // Filter out stories that already exist
     const newItems = [];
     for (const item of items.slice(0, maxNewsPerSource)) {
       const exists = await isNewsExists(item.link, source.name);
@@ -307,40 +307,40 @@ export async function fetchAndProcessNews(options: {
     
     allNews.push(...newItems);
     result.bySource[source.name] = newItems.length;
-    console.log(`  ✓ 新新聞: ${newItems.length} 則`);
+    console.log(`  ✓ New stories: ${newItems.length}`);
   }
 
   result.totalFetched = allNews.length;
-  console.log(`\n📰 共收集 ${allNews.length} 則新新聞`);
+  console.log(`\n📰 Collected ${allNews.length} new stories in total`);
 
-  // 選擇最重要的新聞 (如果超過限制)
+  // Keep the most relevant news if we exceed the limit
   const selectedNews = allNews
     .sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime())
     .slice(0, totalMaxNews);
 
-  // 處理並儲存
+  // Process and save
   for (let i = 0; i < selectedNews.length; i++) {
     const news = selectedNews[i];
     console.log(`\n📝 [${i + 1}/${selectedNews.length}] ${news.title.substring(0, 60)}...`);
     
     try {
       if (enableAITranslation) {
-        // AI 翻譯與摘要
-        console.log('  🤖 AI 分析中...');
+        // AI translation and summarization
+        console.log('  🤖 AI analysis in progress...');
         const aiResult = await translateAndSummarize(
           news.title,
           news.description || '',
           news.source
         );
         
-        console.log(`  ✓ 重要性: ${aiResult.importance_score}/100`);
-        console.log(`  ✓ 分類: ${aiResult.category}`);
+        console.log(`  ✓ Importance: ${aiResult.importance_score}/100`);
+        console.log(`  ✓ Category: ${aiResult.category}`);
         
-        // 儲存
+        // Save
         const saveResult = await saveNews(news, aiResult);
         if (saveResult.success) {
           result.totalSaved++;
-          console.log('  ✅ 已儲存');
+          console.log('  ✅ Saved');
         } else {
           result.errors.push(`Failed to save [${saveResult.error}]: ${news.title.substring(0, 40)}`);
         }
@@ -359,11 +359,11 @@ export async function fetchAndProcessNews(options: {
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : 'Unknown error';
       result.errors.push(`${news.title}: ${errorMsg}`);
-      console.error('  ❌ 處理失敗:', errorMsg);
+      console.error('  ❌ Processing failed:', errorMsg);
     }
   }
 
-  // 記錄執行結果
+  // Log execution result
   const executionTime = Date.now() - startTime;
   await logExecution(
     result.errors.length > 0 ? 'success' : 'success',
@@ -375,12 +375,12 @@ export async function fetchAndProcessNews(options: {
     }
   );
 
-  console.log('\n📊 執行結果:');
-  console.log(`  - 抓取: ${result.totalFetched} 則`);
-  console.log(`  - 儲存: ${result.totalSaved} 則`);
-  console.log(`  - 耗時: ${(executionTime / 1000).toFixed(1)}s`);
+  console.log('\n📊 Execution summary:');
+  console.log(`  - Fetched: ${result.totalFetched}`);
+  console.log(`  - Saved: ${result.totalSaved}`);
+  console.log(`  - Duration: ${(executionTime / 1000).toFixed(1)}s`);
   if (result.errors.length > 0) {
-    console.log(`  - 錯誤: ${result.errors.length} 個`);
+    console.log(`  - Errors: ${result.errors.length}`);
   }
 
   return result;

@@ -39,7 +39,7 @@ export default function NotificationBell() {
 
     fetchUnreadCount();
     
-    // 每 30 秒更新一次
+    // Refresh every 30 seconds
     const interval = setInterval(fetchUnreadCount, 30000);
     return () => clearInterval(interval);
   }, [user]);

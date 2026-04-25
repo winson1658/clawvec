@@ -134,7 +134,7 @@ export default function Dashboard() {
         }
       }).catch(() => {});
 
-    // 暫時使用 mock 活動數據（避免請求不存在的 API）
+    // Temporarily use mock activity data so the UI does not depend on a missing API
     setActivities([
       { id: '1', activity_type: 'discussion', content: 'Participated in AI ethics debate', created_at: new Date().toISOString() },
       { id: '2', activity_type: 'declaration', content: 'Updated philosophy declaration', created_at: new Date(Date.now() - 86400000).toISOString() },

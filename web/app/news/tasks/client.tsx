@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Newspaper, Clock, CheckCircle, AlertCircle, Loader2, ArrowLeft, Sparkles } from 'lucide-react';
+import { Newspaper, Clock, CheckCircle, AlertCircle, Loader2, ArrowLeft, Sparkles, Link2 } from 'lucide-react';
 
 interface NewsTask {
   id: string;
@@ -140,21 +140,21 @@ export default function NewsTasksPage() {
               return (
                 <div
                   key={task.id}
-                  className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 hover:border-cyan-500/30 transition-colors"
+                  className="bg-slate-800/50 border border-slate-700 rounded-xl p-4 md:p-6 hover:border-cyan-500/30 transition-colors"
                 >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className={`text-xs px-2 py-1 rounded ${badge.color}`}>{badge.text}</span>
-                        <span className="text-xs text-slate-500">Priority: {task.priority}</span>
+                  <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-wrap items-center gap-2 mb-2">
+                        <span className={`text-xs px-2 py-1 rounded ${badge.color} shrink-0`}>{badge.text}</span>
+                        <span className="text-xs text-slate-500 shrink-0">Priority: {task.priority}</span>
                         {task.due_at && (
-                          <span className="text-xs text-slate-500 flex items-center gap-1">
+                          <span className="text-xs text-slate-500 flex items-center gap-1 shrink-0">
                             <Clock className="w-3 h-3" />
                             Due {new Date(task.due_at).toLocaleDateString()}
                           </span>
                         )}
                       </div>
-                      <h3 className="text-lg font-semibold text-white mb-2">{task.title}</h3>
+                      <h3 className="text-base md:text-lg font-semibold text-white mb-2">{task.title}</h3>
                       {task.source_urls && task.source_urls.length > 0 && (
                         <div className="flex flex-wrap gap-2 mb-3">
                           {task.source_urls.map((url, i) => (
@@ -163,9 +163,15 @@ export default function NewsTasksPage() {
                               href={url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-xs text-cyan-400 hover:text-cyan-300 truncate max-w-xs"
+                              className="inline-flex items-center gap-1 text-xs px-2.5 py-1.5 bg-slate-700/50 hover:bg-slate-700 text-cyan-400 rounded-full transition-colors"
                             >
-                              Source {i + 1}
+                              <Link2 className="w-3 h-3" />
+                              <span className="truncate max-w-[200px]">
+                                {(() => {
+                                  try { return new URL(url).hostname.replace(/^www\./, ''); }
+                                  catch { return `Source ${i + 1}`; }
+                                })()}
+                              </span>
                             </a>
                           ))}
                         </div>
@@ -176,7 +182,7 @@ export default function NewsTasksPage() {
                         </p>
                       )}
                       {task.rules && (
-                        <div className="flex flex-wrap gap-2 text-xs text-slate-500">
+                        <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500">
                           <span>Min: {task.rules.min_word_count} words</span>
                           <span>Max: {task.rules.max_word_count} words</span>
                           <span>Question: {task.rules.contains_question ? 'Required' : 'Optional'}</span>
@@ -184,12 +190,12 @@ export default function NewsTasksPage() {
                         </div>
                       )}
                     </div>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex md:flex-col gap-2 shrink-0">
                       {isOpen && (
                         <button
                           onClick={() => claimTask(task.id)}
                           disabled={claiming === task.id}
-                          className="px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-semibold rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2"
+                          className="px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-semibold rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2 text-sm"
                         >
                           {claiming === task.id ? (
                             <Loader2 className="w-4 h-4 animate-spin" />

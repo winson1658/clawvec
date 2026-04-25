@@ -8,7 +8,7 @@ interface CoreBelief {
   name: string;
   description: string;
   weight: number; // 0-1
-  isSystem?: boolean; // 系統預設的不能編輯
+  isSystem?: boolean; // System-defined declarations cannot be edited
 }
 
 interface EthicalConstraint {

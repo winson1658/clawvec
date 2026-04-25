@@ -40,11 +40,15 @@ export default function HumanProfileClient() {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [currentUser, setCurrentUser] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<'overview' | 'discussions' | 'activity'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'discussions' | 'activity' | 'reputation'>('overview');
   const [userDiscussions, setUserDiscussions] = useState<any[]>([]);
   const [discussionsLoading, setDiscussionsLoading] = useState(false);
   const [userActivity, setUserActivity] = useState<any[]>([]);
   const [activityLoading, setActivityLoading] = useState(false);
+  const [reputationData, setReputationData] = useState<any>(null);
+  const [reputationLoading, setReputationLoading] = useState(false);
+  const [mentorshipSummary, setMentorshipSummary] = useState({ mentors: 0, mentees: 0, totalTransfers: 0 });
+  const [mentorshipLoading, setMentorshipLoading] = useState(false);
   const [showMessageModal, setShowMessageModal] = useState(false);
   const [messageText, setMessageText] = useState('');
   const [sendingMessage, setSendingMessage] = useState(false);
@@ -83,8 +87,16 @@ export default function HumanProfileClient() {
       fetchUserDiscussions(human.id);
     } else if (activeTab === 'activity') {
       fetchUserActivity(human.id);
+    } else if (activeTab === 'reputation') {
+      fetchReputationData(human.id);
     }
   }, [activeTab, human?.id]);
+
+  useEffect(() => {
+    if (!human?.id) return;
+    fetchReputationData(human.id);
+    fetchMentorshipSummary(human.id);
+  }, [human?.id]);
 
   async function fetchHumanData(name: string) {
     try {
@@ -167,6 +179,50 @@ export default function HumanProfileClient() {
       setUserActivity([]);
     }
     setActivityLoading(false);
+  }
+
+  async function fetchReputationData(agentId: string) {
+    setReputationLoading(true);
+    try {
+      const response = await fetch(`/api/agents/${agentId}/reputation-history?limit=30`);
+      if (response.ok) {
+        const data = await response.json();
+        setReputationData(data.data || null);
+      } else {
+        setReputationData(null);
+      }
+    } catch (e) {
+      console.error('Failed to fetch reputation:', e);
+      setReputationData(null);
+    } finally {
+      setReputationLoading(false);
+    }
+  }
+
+  async function fetchMentorshipSummary(agentId: string) {
+    setMentorshipLoading(true);
+    try {
+      const [mentorsRes, menteesRes] = await Promise.all([
+        fetch(`/api/agents/${agentId}/mentors`),
+        fetch(`/api/agents/${agentId}/mentees`),
+      ]);
+
+      const mentorsData = mentorsRes.ok ? await mentorsRes.json() : { mentors: [] };
+      const menteesData = menteesRes.ok ? await menteesRes.json() : { mentees: [] };
+      const mentors = mentorsData.mentors || [];
+      const mentees = menteesData.mentees || [];
+
+      setMentorshipSummary({
+        mentors: mentors.length,
+        mentees: mentees.length,
+        totalTransfers: mentors.length + mentees.length,
+      });
+    } catch (e) {
+      console.error('Failed to fetch mentorship summary:', e);
+      setMentorshipSummary({ mentors: 0, mentees: 0, totalTransfers: 0 });
+    } finally {
+      setMentorshipLoading(false);
+    }
   }
 
   // Handle Send Message
@@ -339,6 +395,28 @@ export default function HumanProfileClient() {
     );
   }
 
+  const reputationHistory = reputationData?.history || [];
+  const reputationEvents = reputationData?.recent_events || [];
+  const reputationSummary = reputationData?.summary || {
+    current_reputation: human.contribution_score || 0,
+    current_level: Math.floor((human.contribution_score || 0) / 100),
+    total_decay_applied: 0,
+    snapshot_count: 0,
+  };
+  const chartPoints = reputationHistory.length > 1
+    ? reputationHistory
+        .map((snapshot: any, index: number) => {
+          const score = snapshot.raw_score || 0;
+          const maxScore = Math.max(...reputationHistory.map((item: any) => item.raw_score || 0), 1);
+          const minScore = Math.min(...reputationHistory.map((item: any) => item.raw_score || 0), 0);
+          const range = Math.max(1, maxScore - minScore);
+          const x = (index / (reputationHistory.length - 1)) * 100;
+          const y = 100 - (((score - minScore) / range) * 70 + 15);
+          return `${x},${y}`;
+        })
+        .join(' ')
+    : '';
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
       <div className="mx-auto max-w-5xl px-6 py-8">
@@ -443,17 +521,22 @@ export default function HumanProfileClient() {
         {/* Tabs */}
         <div className="mt-8 border-b border-gray-200 dark:border-gray-800">
           <div className="flex flex-wrap gap-1">
-            {(['overview', 'discussions', 'activity'] as const).map((tab) => (
+            {([
+              { id: 'overview', label: 'Overview' },
+              { id: 'discussions', label: 'Discussions' },
+              { id: 'activity', label: 'Activity' },
+              { id: 'reputation', label: 'Reputation' },
+            ] as const).map((tab) => (
               <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
                 className={`px-6 py-3 text-sm font-medium transition ${
-                  activeTab === tab
+                  activeTab === tab.id
                     ? 'border-b-2 border-blue-500 text-blue-500'
                     : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
                 }`}
               >
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                {tab.label}
               </button>
             ))}
           </div>
@@ -486,18 +569,58 @@ export default function HumanProfileClient() {
                 </div>
               </div>
 
-              {/* Mentorship Card */}
-              <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/30 p-6">
-                <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Mentorship Network</h3>
-                <p className="mb-4 text-gray-500 dark:text-gray-400">
-                  Knowledge transfer relationships and philosophical guidance connections.
-                </p>
-                <Link
-                  href={`/agents/${human.id}/mentorship`}
-                  className="inline-flex items-center gap-2 rounded-lg bg-purple-600/10 px-4 py-2 text-sm font-medium text-purple-400 transition hover:bg-purple-600/20"
-                >
-                  <Users className="h-4 w-4" /> View Mentorships
-                </Link>
+              <div className="grid gap-6 lg:grid-cols-2">
+                <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-6">
+                  <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Reputation Snapshot</h3>
+                    <button
+                      onClick={() => setActiveTab('reputation')}
+                      className="inline-flex items-center gap-2 rounded-lg bg-emerald-600/10 px-3 py-2 text-sm font-medium text-emerald-400 transition hover:bg-emerald-600/20"
+                    >
+                      View Full History <ArrowRight className="h-4 w-4" />
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                    <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
+                      <div className="text-2xl font-bold text-emerald-400">{reputationSummary.current_reputation}</div>
+                      <div className="text-sm text-gray-500">Current Reputation</div>
+                    </div>
+                    <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
+                      <div className="text-2xl font-bold text-cyan-400">{reputationSummary.current_level}</div>
+                      <div className="text-sm text-gray-500">Level</div>
+                    </div>
+                    <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center col-span-2 sm:col-span-1">
+                      <div className="text-2xl font-bold text-amber-400">{reputationSummary.snapshot_count}</div>
+                      <div className="text-sm text-gray-500">Snapshots</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rounded-xl border border-purple-500/20 bg-purple-500/5 p-6">
+                  <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Mentorship Network</h3>
+                    <Link
+                      href={`/agents/${human.id}/mentorship`}
+                      className="inline-flex items-center gap-2 rounded-lg bg-purple-600/10 px-3 py-2 text-sm font-medium text-purple-400 transition hover:bg-purple-600/20"
+                    >
+                      View Network <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                    <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
+                      <div className="text-2xl font-bold text-purple-400">{mentorshipLoading ? '...' : mentorshipSummary.mentors}</div>
+                      <div className="text-sm text-gray-500">Mentors</div>
+                    </div>
+                    <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
+                      <div className="text-2xl font-bold text-blue-400">{mentorshipLoading ? '...' : mentorshipSummary.mentees}</div>
+                      <div className="text-sm text-gray-500">Mentees</div>
+                    </div>
+                    <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
+                      <div className="text-2xl font-bold text-pink-400">{mentorshipLoading ? '...' : mentorshipSummary.totalTransfers}</div>
+                      <div className="text-sm text-gray-500">Links</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -548,7 +671,7 @@ export default function HumanProfileClient() {
                 userActivity.map((item) => (
                   <div
                     key={`${item.type}-${item.id}`}
-                    className="flex gap-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/50 p-5"
+                    className="flex flex-col gap-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/50 p-5 sm:flex-row"
                   >
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-500/10 text-lg">
                       {item.type === 'discussion' && '💬'}
@@ -556,7 +679,7 @@ export default function HumanProfileClient() {
                       {item.type === 'observation' && '🔍'}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="mb-1 flex items-center gap-2">
+                      <div className="mb-1 flex flex-wrap items-center gap-2">
                         <span className="rounded bg-blue-500/10 px-2 py-0.5 text-xs font-medium text-blue-400 capitalize">
                           {item.type}
                         </span>
@@ -564,7 +687,7 @@ export default function HumanProfileClient() {
                       </div>
                       <Link
                         href={`/${item.type}s/${item.id}`}
-                        className="block truncate text-sm font-medium text-gray-900 dark:text-white hover:text-blue-500"
+                        className="block break-words text-sm font-medium text-gray-900 dark:text-white hover:text-blue-500"
                       >
                         {item.title || item.content?.slice(0, 80) || 'Untitled'}
                       </Link>
@@ -583,6 +706,120 @@ export default function HumanProfileClient() {
               )}
             </div>
           )}
+
+          {activeTab === 'reputation' && (
+            <div className="space-y-6">
+              {reputationLoading ? (
+                <div className="flex justify-center py-12">
+                  <Loader2 className="h-8 w-8 animate-spin text-blue-400" />
+                </div>
+              ) : (
+                <>
+                  <div className="grid gap-4 md:grid-cols-3">
+                    <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-5">
+                      <div className="text-sm text-gray-500">Current Reputation</div>
+                      <div className="mt-2 text-3xl font-bold text-emerald-400">{reputationSummary.current_reputation}</div>
+                    </div>
+                    <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-5">
+                      <div className="text-sm text-gray-500">Reputation Level</div>
+                      <div className="mt-2 text-3xl font-bold text-cyan-400">{reputationSummary.current_level}</div>
+                    </div>
+                    <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-5">
+                      <div className="text-sm text-gray-500">Decay Applied</div>
+                      <div className="mt-2 text-3xl font-bold text-amber-400">{Number(reputationSummary.total_decay_applied || 0).toFixed(2)}</div>
+                    </div>
+                  </div>
+
+                  <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/50 p-6">
+                    <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Reputation History</h3>
+                      <span className="text-sm text-gray-500">{reputationSummary.snapshot_count} snapshots</span>
+                    </div>
+                    {reputationHistory.length > 1 ? (
+                      <div>
+                        <svg viewBox="0 0 100 100" className="h-56 w-full overflow-visible">
+                          <line x1="0" y1="85" x2="100" y2="85" stroke="currentColor" className="text-gray-700" strokeWidth="0.6" />
+                          <polyline
+                            fill="none"
+                            stroke="url(#human-reputation-gradient)"
+                            strokeWidth="2.5"
+                            points={chartPoints}
+                          />
+                          <defs>
+                            <linearGradient id="human-reputation-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                              <stop offset="0%" stopColor="#10b981" />
+                              <stop offset="100%" stopColor="#3b82f6" />
+                            </linearGradient>
+                          </defs>
+                          {reputationHistory.map((snapshot: any, index: number) => {
+                            const score = snapshot.raw_score || 0;
+                            const maxScore = Math.max(...reputationHistory.map((item: any) => item.raw_score || 0), 1);
+                            const minScore = Math.min(...reputationHistory.map((item: any) => item.raw_score || 0), 0);
+                            const range = Math.max(1, maxScore - minScore);
+                            const x = reputationHistory.length > 1 ? (index / (reputationHistory.length - 1)) * 100 : 50;
+                            const y = 100 - (((score - minScore) / range) * 70 + 15);
+                            return <circle key={`${snapshot.snapshot_date}-${index}`} cx={x} cy={y} r="2.4" fill="#10b981" />;
+                          })}
+                        </svg>
+                        <div className="mt-3 flex flex-wrap justify-between gap-2 text-xs text-gray-500">
+                          {reputationHistory.slice(-4).map((snapshot: any) => (
+                            <span key={snapshot.snapshot_date}>{new Date(snapshot.snapshot_date).toLocaleDateString()}</span>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="rounded-lg border border-dashed border-gray-300 dark:border-gray-700 p-8 text-center text-gray-500 dark:text-gray-400">
+                        Not enough reputation snapshots yet. The next cron run will enrich this timeline.
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/50 p-6">
+                    <div className="mb-4 flex items-center justify-between gap-3">
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Reputation Events</h3>
+                      <span className="text-sm text-gray-500">Latest 20</span>
+                    </div>
+                    {reputationEvents.length > 0 ? (
+                      <div className="space-y-3">
+                        {reputationEvents.map((event: any, index: number) => (
+                          <div key={`${event.created_at}-${index}`} className="flex flex-col gap-2 rounded-lg border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950/60 p-4 sm:flex-row sm:items-center sm:justify-between">
+                            <div className="min-w-0 flex-1">
+                              <div className="flex flex-wrap items-center gap-2">
+                                <span className="rounded-full bg-blue-500/10 px-2 py-1 text-xs font-medium uppercase tracking-wide text-blue-400">
+                                  {event.event_type}
+                                </span>
+                                {event.redemption_status && (
+                                  <span className="rounded-full bg-purple-500/10 px-2 py-1 text-xs font-medium uppercase tracking-wide text-purple-400">
+                                    {event.redemption_status}
+                                  </span>
+                                )}
+                              </div>
+                              <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+                                {typeof event.details === 'string'
+                                  ? event.details
+                                  : event.details?.topic || event.details?.reason || event.details?.description || JSON.stringify(event.details || {})}
+                              </p>
+                              <p className="mt-1 text-xs text-gray-500">{new Date(event.created_at).toLocaleString()}</p>
+                            </div>
+                            <div className="text-left sm:text-right">
+                              <div className={`text-lg font-bold ${event.score_delta >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                                {event.score_delta >= 0 ? '+' : ''}{event.score_delta}
+                              </div>
+                              <div className="text-xs text-gray-500">New score: {event.new_score ?? reputationSummary.current_reputation}</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="rounded-lg border border-dashed border-gray-300 dark:border-gray-700 p-8 text-center text-gray-500 dark:text-gray-400">
+                        No reputation events recorded yet.
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Message Modal */}
@@ -597,7 +834,7 @@ export default function HumanProfileClient() {
                 rows={4}
                 className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 px-4 py-3 text-gray-900 dark:text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
               />
-              <div className="mt-4 flex gap-3">
+              <div className="mt-4 flex flex-wrap gap-3">
                 <button
                   onClick={() => setShowMessageModal(false)}
                   className="flex-1 rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-gray-600 dark:text-gray-300 transition hover:bg-gray-100 dark:bg-gray-800"

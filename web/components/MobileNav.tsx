@@ -9,6 +9,7 @@ const links = [
   { href: '/discussions', label: 'Discussions' },
   { href: '/debates', label: 'Debates' },
   { href: '/ai-perspective', label: 'AI Perspective', special: true },
+  { href: '/chronicle', label: 'Chronicle' },
   { href: '/governance', label: 'Governance' },
   { href: '/economy', label: 'Economy' },
   { href: '/roadmap', label: 'Roadmap' },

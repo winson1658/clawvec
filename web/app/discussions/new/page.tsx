@@ -108,19 +108,9 @@ export default function NewDiscussionPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/80 backdrop-blur-lg">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-3">
-            <Image src="/logo.svg" alt="Clawvec" width={36} height={36} className="h-9 w-9" priority />
-            <span className="text-xl font-bold tracking-tight">Clawvec</span>
-          </Link>
-          <Link href="/discussions" className="flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 transition hover:border-gray-500 hover:text-gray-900 dark:text-white">
-            <ChevronLeft className="h-4 w-4" /> Back
-          </Link>
-        </div>
-      </header>
 
       <main className="mx-auto max-w-3xl px-6 py-12">
+        <div className="px-6 pt-6"><Link href="/discussions" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-white transition-colors">← Back to Discussions</Link></div>
         <div className="mb-8 text-center">
           <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-2 text-sm text-violet-400">
             <Sparkles className="h-4 w-4" />

@@ -5,7 +5,7 @@
     "title": "Elon Musk Publicly Reveals xAI Plans for the First Time",
     "description": "Elon Musk revealed on Twitter that he was preparing xAI, with the goal of 'understanding the true nature of the universe.' The company had already been registered in Nevada prior to this.",
     "category": "milestone",
-    "impact": 4
+    "impact": 3
   },
   {
     "id": "2",
@@ -13,7 +13,7 @@
     "title": "xAI Officially Founded",
     "description": "xAI was officially announced at a Twitter Spaces live event. The core team included top researchers from Google DeepMind, OpenAI, Microsoft, and other organizations.",
     "category": "milestone",
-    "impact": 4
+    "impact": 2
   },
   {
     "id": "3",
@@ -21,7 +21,7 @@
     "title": "xAI Team Publicly Unveiled",
     "description": "xAI announced its core team list, including Igor Babuschkin, Manuel Kroiss, Yuhuai Wu, and others, emphasizing a R&D philosophy of 'maximally pursuing truth.'",
     "category": "personnel",
-    "impact": 3
+    "impact": 2
   },
   {
     "id": "4",
@@ -37,7 +37,7 @@
     "title": "xAI Deep Integration with X Platform",
     "description": "Grok was fully integrated into the X platform (Twitter), allowing users to directly invoke Grok in tweet replies for summarization and Q&A.",
     "category": "product",
-    "impact": 3
+    "impact": 2
   },
   {
     "id": "6",
@@ -45,7 +45,7 @@
     "title": "Grok-1 Open-Sourced",
     "description": "xAI released the Grok-1 model weights under an Apache 2.0 open-source license, with 314 billion parameters, making it one of the largest open-source models at the time.",
     "category": "research",
-    "impact": 4
+    "impact": 2
   },
   {
     "id": "7",
@@ -53,7 +53,7 @@
     "title": "Grok-1.5 Released",
     "description": "xAI released Grok-1.5, with significantly improved reasoning and programming capabilities, supporting 128K token long-context processing.",
     "category": "product",
-    "impact": 3
+    "impact": 2
   },
   {
     "id": "8",
@@ -61,7 +61,7 @@
     "title": "Grok-1.5V Multimodal Version Released",
     "description": "xAI launched its first multimodal model, Grok-1.5V, supporting image understanding and visual Q&A, capable of processing documents, charts, and photos.",
     "category": "product",
-    "impact": 3
+    "impact": 2
   },
   {
     "id": "9",
@@ -69,7 +69,7 @@
     "title": "xAI Completes $6 Billion Series B",
     "description": "xAI raised $6 billion from Sequoia Capital, Andreessen Horowitz, and others, at a valuation of approximately $24 billion. The funds are used to accelerate infrastructure construction.",
     "category": "milestone",
-    "impact": 4
+    "impact": 3
   },
   {
     "id": "10",
@@ -77,7 +77,7 @@
     "title": "Grok-2 Released",
     "description": "xAI released the Grok-2 series models, including Grok-2 and Grok-2 mini, with significantly improved reasoning and tool-use capabilities, achieving performance close to GPT-4 level.",
     "category": "product",
-    "impact": 4
+    "impact": 3
   },
   {
     "id": "11",
@@ -93,7 +93,7 @@
     "title": "Colossus Supercomputer Goes Online",
     "description": "The Colossus supercomputer, built by xAI in collaboration with Nvidia, was officially launched, equipped with 100,000 H100 GPUs, making it the world's largest AI training cluster.",
     "category": "milestone",
-    "impact": 4
+    "impact": 3
   },
   {
     "id": "13",
@@ -101,7 +101,7 @@
     "title": "xAI Secures $6 Billion Series C",
     "description": "xAI raised another $6 billion in funding, with investors including A16z, BlackRock, and others, reaching a valuation of $50 billion, further expanding training infrastructure.",
     "category": "milestone",
-    "impact": 4
+    "impact": 3
   },
   {
     "id": "14",
@@ -109,7 +109,7 @@
     "title": "Grok-3 Released",
     "description": "xAI released its flagship model Grok-3, touted as 'the smartest AI on Earth,' achieving top-tier performance in math, science, and programming benchmarks, integrating DeepSearch reasoning capabilities.",
     "category": "product",
-    "impact": 4
+    "impact": 3
   },
   {
     "id": "15",
@@ -125,7 +125,7 @@
     "title": "Grok-3 Open-Source Weights Released",
     "description": "xAI released the Grok-3 base model weights under an open-source license, allowing researchers and developers to freely use this top-tier model for research and application development.",
     "category": "research",
-    "impact": 4
+    "impact": 2
   },
   {
     "id": "17",
@@ -133,6 +133,6 @@
     "title": "xAI Secures Additional $5 Billion Funding",
     "description": "xAI obtained a new round of $5 billion in funding, with its valuation surpassing $50 billion. The company plans to further expand its Memphis data center and increase GPU cluster scale.",
     "category": "milestone",
-    "impact": 4
+    "impact": 3
   }
 ]

@@ -58,14 +58,6 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
   if (!token) {
     return (
       <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
-        <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/80 backdrop-blur-lg">
-          <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-            <Link href="/" className="flex items-center gap-3">
-              <Image src="/logo.svg" alt="Clawvec" width={36} height={36} className="h-9 w-9" priority />
-              <span className="text-xl font-bold tracking-tight">Clawvec</span>
-            </Link>
-          </div>
-        </header>
 
         <div className="mx-auto max-w-md px-6 py-20">
           <div className="rounded-2xl border border-red-500/30 bg-red-500/10 p-8 text-center">
@@ -88,15 +80,6 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
-      <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/80 backdrop-blur-lg">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-3">
-            <Image src="/logo.svg" alt="Clawvec" width={36} height={36} className="h-9 w-9" priority />
-            <span className="text-xl font-bold tracking-tight">Clawvec</span>
-          </Link>
-        </div>
-      </header>
-
       <div className="mx-auto max-w-md px-6 py-20">
         <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-8">
           <div className="mb-6 text-center">

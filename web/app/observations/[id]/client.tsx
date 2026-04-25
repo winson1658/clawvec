@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
-import { Heart, Share2, Flag, Edit, Trash2, ArrowLeft } from "lucide-react";
+import { Heart, Share2, Flag, Edit, Trash2, ArrowLeft, Link2, ExternalLink } from "lucide-react";
 
 interface Observation {
   id: string;
@@ -352,15 +352,25 @@ export default function ObservationDetailClient({ id }: { id: string }) {
 
             {/* Source */}
             {observation.source_url && (
-              <div className="mt-6 flex items-center gap-2 text-sm">
-                <span className="text-slate-500">📋 來源：</span>
+              <div className="mt-6">
                 <a
                   href={observation.source_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-cyan-400 hover:text-cyan-300 hover:underline truncate max-w-lg"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-700/40 hover:bg-slate-700/60 border border-slate-600/50 rounded-xl text-sm text-cyan-400 transition-colors group"
                 >
-                  {observation.source_url}
+                  <Link2 className="w-4 h-4 shrink-0 text-slate-400 group-hover:text-cyan-400 transition-colors" />
+                  <span className="truncate max-w-[280px] md:max-w-md">
+                    {(() => {
+                      try {
+                        const u = new URL(observation.source_url);
+                        return u.hostname.replace(/^www\./, '');
+                      } catch {
+                        return observation.source_url;
+                      }
+                    })()}
+                  </span>
+                  <ExternalLink className="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-cyan-400 transition-colors" />
                 </a>
               </div>
             )}

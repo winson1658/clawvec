@@ -5,7 +5,7 @@
     "title": "OpenAI Founded",
     "description": "Sam Altman, Elon Musk, Greg Brockman, Ilya Sutskever, and others announce OpenAI with $1B in pledged funding. Mission: to advance digital intelligence for humanity's benefit.",
     "category": "milestone",
-    "impact": 5
+    "impact": 2
   },
   {
     "id": "2",
@@ -13,7 +13,7 @@
     "title": "OpenAI Gym Released",
     "description": "OpenAI releases Gym, a toolkit for developing and comparing reinforcement learning algorithms. Becomes standard benchmark for RL research.",
     "category": "product",
-    "impact": 3
+    "impact": 2
   },
   {
     "id": "3",
@@ -29,7 +29,7 @@
     "title": "World Models Paper",
     "description": "OpenAI publishes influential research on World Models, showing agents can learn in imagined environments.",
     "category": "research",
-    "impact": 3
+    "impact": 2
   },
   {
     "id": "5",
@@ -37,7 +37,7 @@
     "title": "Dota 2 Bot",
     "description": "OpenAI bot defeats top Dota 2 players at The International, demonstrating emergent teamwork in competitive games.",
     "category": "research",
-    "impact": 4
+    "impact": 2
   },
   {
     "id": "6",
@@ -45,7 +45,7 @@
     "title": "Elon Musk Departs",
     "description": "Elon Musk leaves OpenAI board citing potential future conflicts with Tesla's AI development.",
     "category": "personnel",
-    "impact": 3
+    "impact": 2
   },
   {
     "id": "7",
@@ -69,7 +69,7 @@
     "title": "OpenAI LP Founded",
     "description": "OpenAI transitions from non-profit to 'capped-profit' model (OpenAI LP) to attract capital for AGI development. Profit cap set at 100x investment.",
     "category": "milestone",
-    "impact": 4
+    "impact": 2
   },
   {
     "id": "10",
@@ -85,7 +85,7 @@
     "title": "Rubik's Cube Solved by Robot",
     "description": "OpenAI demonstrates robotic hand solving Rubik's Cube using reinforcement learning — breakthrough in dexterous manipulation.",
     "category": "research",
-    "impact": 3
+    "impact": 2
   },
   {
     "id": "12",
@@ -117,7 +117,7 @@
     "title": "CLIP Released",
     "description": "CLIP (Contrastive Language-Image Pre-training) released — learns visual concepts from natural language supervision. Foundation for many multimodal systems.",
     "category": "research",
-    "impact": 4
+    "impact": 2
   },
   {
     "id": "16",
@@ -133,7 +133,7 @@
     "title": "DALL-E 2 Released",
     "description": "DALL-E 2 launched with photorealistic image generation, outpainting, and variations. Waitlist system due to safety concerns.",
     "category": "product",
-    "impact": 4
+    "impact": 3
   },
   {
     "id": "18",
@@ -141,7 +141,7 @@
     "title": "GPT-3.5 Fine-Tuning API",
     "description": "OpenAI releases fine-tuning API for GPT-3.5, allowing developers to customize models for specific tasks.",
     "category": "product",
-    "impact": 3
+    "impact": 2
   },
   {
     "id": "19",
@@ -173,7 +173,7 @@
     "title": "ChatGPT API Released",
     "description": "OpenAI releases ChatGPT API (gpt-3.5-turbo) at 10x cheaper price than text-davinci-003. Triggers explosion of AI-powered applications.",
     "category": "product",
-    "impact": 4
+    "impact": 2
   },
   {
     "id": "23",
@@ -189,7 +189,7 @@
     "title": "ChatGPT Plugins",
     "description": "OpenAI announces plugin system for ChatGPT, allowing integration with external services (Expedia, Instacart, Wolfram Alpha, etc.).",
     "category": "product",
-    "impact": 3
+    "impact": 2
   },
   {
     "id": "25",
@@ -197,7 +197,7 @@
     "title": "ChatGPT Mobile App",
     "description": "ChatGPT iOS app launched. Android follows in July. Brings conversational AI to mobile mainstream.",
     "category": "product",
-    "impact": 3
+    "impact": 2
   },
   {
     "id": "26",
@@ -205,7 +205,7 @@
     "title": "GPT-4 API General Availability",
     "description": "GPT-4 API made available to all paying customers, democratizing access to frontier model capabilities.",
     "category": "product",
-    "impact": 3
+    "impact": 1
   },
   {
     "id": "27",
@@ -213,7 +213,7 @@
     "title": "ChatGPT Gains Voice & Vision",
     "description": "ChatGPT updated with voice conversations and image understanding capabilities, making it truly multimodal.",
     "category": "product",
-    "impact": 4
+    "impact": 3
   },
   {
     "id": "28",
@@ -253,7 +253,7 @@
     "title": "Elon Musk Sues OpenAI",
     "description": "Elon Musk files lawsuit against OpenAI, alleging breach of founding agreement by prioritizing profit over humanity's benefit. Later withdraws and refiles.",
     "category": "legal",
-    "impact": 3
+    "impact": 2
   },
   {
     "id": "33",
@@ -301,7 +301,7 @@
     "title": "ChatGPT Search Launched",
     "description": "OpenAI launches ChatGPT Search, directly competing with Google and Perplexity. Provides real-time web search with conversational interface.",
     "category": "product",
-    "impact": 4
+    "impact": 3
   },
   {
     "id": "39",
@@ -325,7 +325,7 @@
     "title": "o3 Preview Announced",
     "description": "OpenAI announces o3 and o3-mini preview models. o3 achieves breakthrough scores on ARC-AGI benchmark (87.5%). Not yet publicly available.",
     "category": "product",
-    "impact": 4
+    "impact": 3
   },
   {
     "id": "42",
@@ -365,7 +365,7 @@
     "title": "o3 Full Released",
     "description": "o3 full version launched. Currently the strongest reasoning model with major improvements in coding, math, and scientific reasoning. Available via API.",
     "category": "product",
-    "impact": 4
+    "impact": 3
   },
   {
     "id": "47",
@@ -389,7 +389,7 @@
     "title": "OpenAI Acquires io",
     "description": "OpenAI acquires AI hardware startup io (founded by Jony Ive, former Apple designer) for $6.5B. Aims to build AI-native devices.",
     "category": "milestone",
-    "impact": 4
+    "impact": 3
   },
   {
     "id": "50",

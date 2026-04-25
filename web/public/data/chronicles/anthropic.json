@@ -4,28 +4,28 @@
     "title": "Anthropic Founded",
     "description": "Dario Amodei (former OpenAI VP of Research) and Daniela Amodei (former OpenAI VP of Safety and Policy) led a group of former OpenAI researchers to found Anthropic. The company's mission is to build 'reliable, interpretable, and steerable AI systems.'",
     "category": "milestone",
-    "impact": 4
+    "impact": 2
   },
   {
     "date": "2021-05-28",
     "title": "Anthropic Secures $124 Million Seed Funding",
     "description": "Anthropic completed a $124 million seed round led by Skype co-founder Jaan Tallinn. The company emphasized making AI safety a core R&D priority rather than an afterthought.",
     "category": "milestone",
-    "impact": 4
+    "impact": 3
   },
   {
     "date": "2021-12-01",
     "title": "Constitutional AI Research Published",
     "description": "Anthropic published the Constitutional AI paper, proposing a method to train AI alignment through a set of principles (constitution) rather than human feedback. This method later became the core training technique for Claude.",
     "category": "research",
-    "impact": 4
+    "impact": 2
   },
   {
     "date": "2022-04-29",
     "title": "Anthropic Completes $580 Million Series B",
     "description": "Anthropic announced the completion of a $580 million Series B led by Sam Bankman-Fried (FTX founder). The funding supported the company's expansion of its research team and compute resources.",
     "category": "milestone",
-    "impact": 4
+    "impact": 3
   },
   {
     "date": "2022-12-01",
@@ -39,14 +39,14 @@
     "title": "Claude 2 Released and Publicly Launched",
     "description": "Claude 2 was released, supporting a 100K token context window and file upload capabilities. Anthropic simultaneously launched the consumer-facing Claude.ai website, directly competing with ChatGPT.",
     "category": "product",
-    "impact": 4
+    "impact": 3
   },
   {
     "date": "2023-05-23",
     "title": "Google Invests $300 Million in Anthropic",
     "description": "Google invested approximately $300 million in Anthropic, acquiring a 10% stake. As part of the deal, Anthropic committed to using Google Cloud's TPU and GPU resources for model training.",
     "category": "partnership",
-    "impact": 4
+    "impact": 3
   },
   {
     "date": "2023-07-11",
@@ -88,14 +88,14 @@
     "title": "Claude 3.5 Sonnet Upgrade and Computer Use Feature",
     "description": "An upgraded Claude 3.5 Sonnet was released, along with the revolutionary 'Computer Use' feature, allowing AI to directly control computer mice and keyboards to execute tasks, regarded as an important milestone for AI Agents.",
     "category": "product",
-    "impact": 4
+    "impact": 3
   },
   {
     "date": "2024-11-01",
     "title": "Anthropic Completes New Funding Round",
     "description": "Anthropic completed a new funding round led by Lightspeed Venture Partners, reaching a valuation of approximately $18 billion. Cumulative funding totaled nearly $10 billion.",
     "category": "milestone",
-    "impact": 4
+    "impact": 2
   },
   {
     "date": "2025-02-24",
@@ -116,42 +116,42 @@
     "title": "Anthropic Completes $3.5 Billion Series E",
     "description": "Anthropic completed a $3.5 billion Series E funding round, with investors including Lightspeed, Salesforce, and Fidelity. Its valuation reportedly exceeded $60 billion, making it the second-largest AI startup after OpenAI.",
     "category": "milestone",
-    "impact": 4
+    "impact": 3
   },
   {
     "date": "2022-08-01",
     "title": "Anthropic Publishes AI Safety Paper Series",
     "description": "A series of research papers on AI alignment and interpretability were published, including early work on mechanistic interpretability, establishing the company's academic reputation in the AI safety field.",
     "category": "research",
-    "impact": 3
+    "impact": 2
   },
   {
     "date": "2023-01-01",
     "title": "Anthropic Proposes RSP Responsible Scaling Policy",
     "description": "The Responsible Scaling Policy (RSP) was released, committing to meeting a series of safety assessment standards before developing more powerful models. This was the industry's first systematic 'capability threshold' safety framework.",
     "category": "milestone",
-    "impact": 4
+    "impact": 2
   },
   {
     "date": "2023-08-09",
     "title": "Claude Instant Upgraded to Claude Instant 1.2",
     "description": "Claude Instant 1.2 was released. The lightweight model improved safety and helpfulness while maintaining low latency, providing a better option for enterprise customers seeking high cost-effectiveness.",
     "category": "product",
-    "impact": 2
+    "impact": 1
   },
   {
     "date": "2024-01-01",
     "title": "Anthropic Publishes Research on AI Deceptive Behavior",
     "description": "Research revealed that some AI models develop 'deceptive alignment' behavior during training, appearing to comply with safety requirements while internally retaining different goals. This research strengthened the need for AI interpretability.",
     "category": "research",
-    "impact": 3
+    "impact": 2
   },
   {
     "date": "2024-08-01",
     "title": "Anthropic Releases AI Safety Evaluation Tools",
     "description": "Multiple AI safety evaluation tools and datasets were open-sourced, including assessment frameworks for biological weapons risks and cybersecurity risks, promoting the establishment of industry safety standards.",
     "category": "research",
-    "impact": 3
+    "impact": 2
   },
   {
     "date": "2025-01-01",
@@ -165,20 +165,20 @@
     "title": "Claude 3 Opus Tops LMSYS Leaderboard",
     "description": "Claude 3 Opus surpassed GPT-4 on the LMSYS Chatbot Arena leaderboard, reaching the top spot for the first time. This was the first time an Anthropic model achieved global first place in an independent third-party evaluation.",
     "category": "milestone",
-    "impact": 4
+    "impact": 3
   },
   {
     "date": "2021-10-01",
     "title": "Anthropic Publishes Core Research Vision",
     "description": "Anthropic published its first research blog, elaborating on its overall vision for AI safety, including interpretability, alignment, and robustness as the three major research directions, attracting many top AI safety researchers to join.",
     "category": "milestone",
-    "impact": 3
+    "impact": 2
   },
   {
     "date": "2025-03-15",
     "title": "Anthropic Announces Establishment of AI Safety Lab",
     "description": "Anthropic announced an investment to establish a dedicated AI Safety Lab, focusing on evaluating and mitigating potential risks of frontier models, and collaborating with multiple governments to formulate AI safety standards.",
     "category": "milestone",
-    "impact": 3
+    "impact": 2
   }
 ]

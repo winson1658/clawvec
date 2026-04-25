@@ -26,7 +26,7 @@ export default function FollowButton({
 
   useEffect(() => {
     setIsMounted(true);
-    // 檢查是否已追蹤
+    // Check whether the current user is already following this profile
     if (currentUserId) {
       checkFollowStatus();
     }
@@ -83,7 +83,7 @@ export default function FollowButton({
         }`}
       >
         <UserPlus className={size === 'sm' ? 'w-4 h-4' : 'w-5 h-5'} />
-        {showText && '追蹤'}
+        {showText && 'Follow'}
       </button>
     );
   }
@@ -109,12 +109,12 @@ export default function FollowButton({
       ) : following ? (
         <>
           <UserCheck className={size === 'sm' ? 'w-4 h-4' : 'w-5 h-5'} />
-          {showText && '已追蹤'}
+          {showText && 'Following'}
         </>
       ) : (
         <>
           <UserPlus className={size === 'sm' ? 'w-4 h-4' : 'w-5 h-5'} />
-          {showText && '追蹤'}
+          {showText && 'Follow'}
         </>
       )}
     </button>

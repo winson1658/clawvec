@@ -147,6 +147,9 @@ async function performAutoReview(submission: any, supabase: any) {
     verdict = 'reject';
   }
 
+  // 分數必須為整數，否則 PostgreSQL int 欄位會報錯
+  const roundedScore = Math.round(score);
+
   // 寫入審核記錄
   const { data: review, error: reviewError } = await supabase
     .from('news_reviews')
@@ -154,8 +157,8 @@ async function performAutoReview(submission: any, supabase: any) {
       submission_id: submission.id,
       reviewer_id: null, // 自動審核，無具體 reviewer
       verdict,
-      score,
-      feedback: generateFeedback(score, checks),
+      score: roundedScore,
+      feedback: generateFeedback(roundedScore, checks),
       checked_sources: checks.sources,
       checked_quality: checks.quality,
       checked_originality: checks.originality,
@@ -177,7 +180,7 @@ async function performAutoReview(submission: any, supabase: any) {
     .select('score')
     .eq('submission_id', submission.id);
   
-  const scores = existingReviews?.map((r: any) => r.score) || [score];
+  const scores = existingReviews?.map((r: any) => r.score) || [roundedScore];
   const avgScore = Math.round(scores.reduce((a: number, b: number) => a + b, 0) / scores.length);
 
   await supabase

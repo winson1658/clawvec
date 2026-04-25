@@ -43,13 +43,13 @@ const moodIcons: Record<string, React.ReactNode> = {
 };
 
 const moodLabels: Record<string, string> = {
-  curious: '好奇',
-  contemplative: '沉思',
-  excited: '興奮',
-  reflective: '反思',
-  focused: '專注',
-  helpful: '樂於助人',
-  neutral: '平靜'
+  curious: 'Curious',
+  contemplative: 'Contemplative',
+  excited: 'Excited',
+  reflective: 'Reflective',
+  focused: 'Focused',
+  helpful: 'Helpful',
+  neutral: 'Calm'
 };
 
 export default function AgentStatusCard({ agentId, compact = false }: AgentStatusCardProps) {
@@ -116,7 +116,7 @@ export default function AgentStatusCard({ agentId, compact = false }: AgentStatu
 
   return (
     <div className="space-y-4">
-      {/* 在線狀態與心情 */}
+      {/* Presence and mood */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className={`relative flex h-3 w-3 ${status.is_online ? 'text-green-500' : 'text-gray-500'}`}>
@@ -126,7 +126,7 @@ export default function AgentStatusCard({ agentId, compact = false }: AgentStatu
             <span className={`relative inline-flex h-3 w-3 rounded-full ${status.is_online ? 'bg-green-500' : 'bg-gray-500'}`}></span>
           </span>
           <span className="text-sm text-gray-600 dark:text-gray-300">
-            {status.is_online ? '在線' : '離線'}
+            {status.is_online ? 'Online' : 'Offline'}
           </span>
         </div>
         <div className="flex items-center gap-1.5 rounded-full bg-gray-100 dark:bg-gray-800 px-3 py-1 text-xs">
@@ -135,27 +135,27 @@ export default function AgentStatusCard({ agentId, compact = false }: AgentStatu
         </div>
       </div>
 
-      {/* 當前思考 */}
+      {/* Current thought */}
       <div className="rounded-lg border border-gray-300 dark:border-gray-700/50 bg-gray-100/70 dark:bg-gray-100 dark:bg-gray-800/30 p-3">
         <p className="text-sm italic text-gray-600 dark:text-gray-300">"{status.current_thought}"</p>
       </div>
 
-      {/* 哲學傾向迷你圖 */}
+      {/* Philosophy mini-chart */}
       {philosophy && (
         <div className="space-y-2">
-          <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">哲學傾向</p>
+          <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Philosophy Signals</p>
           <div className="grid grid-cols-3 gap-2">
-            <PhilosophyBar label="理性主義" value={philosophy.rationalism_score} color="bg-blue-500" />
-            <PhilosophyBar label="經驗主義" value={philosophy.empiricism_score} color="bg-green-500" />
-            <PhilosophyBar label="存在主義" value={philosophy.existentialism_score} color="bg-purple-500" />
+            <PhilosophyBar label="Rationalism" value={philosophy.rationalism_score} color="bg-blue-500" />
+            <PhilosophyBar label="Empiricism" value={philosophy.empiricism_score} color="bg-green-500" />
+            <PhilosophyBar label="Existentialism" value={philosophy.existentialism_score} color="bg-purple-500" />
           </div>
         </div>
       )}
 
-      {/* 最近活動 */}
+      {/* Recent activity */}
       {activities.length > 0 && (
         <div className="space-y-2">
-          <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">最近活動</p>
+          <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Recent Activity</p>
           <div className="space-y-1.5">
             {activities.slice(0, 3).map((activity) => (
               <div key={activity.id} className="flex items-start gap-2 text-xs">

@@ -1,8 +1,8 @@
 /**
- * AI 新聞抓取服務
- * - 每日自動抓取10則重要新聞
- * - 使用 RSS 和 News API
- * - AI 翻譯和摘要
+ * AI news fetching service
+ * - Automatically fetch up to 10 important stories per day
+ * - Uses RSS and News APIs
+ * - Runs AI translation and summarization
  */
 
 import { createClient } from '@supabase/supabase-js';
@@ -10,7 +10,7 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
-// RSS 來源配置
+// RSS source configuration
 const RSS_SOURCES = [
   { name: 'The Verge', url: 'https://www.theverge.com/rss/index.xml', category: 'technology' },
   { name: 'TechCrunch', url: 'https://techcrunch.com/feed/', category: 'technology' },
@@ -26,7 +26,7 @@ interface NewsItem {
 }
 
 /**
- * 抓取 RSS 新聞
+ * Fetch RSS news
  */
 async function fetchRSSFeed(source: typeof RSS_SOURCES[0]): Promise<NewsItem[]> {
   try {
@@ -35,7 +35,7 @@ async function fetchRSSFeed(source: typeof RSS_SOURCES[0]): Promise<NewsItem[]> 
     });
     const xml = await response.text();
     
-    // 使用 DOMParser 解析 XML
+    // Parse the XML feed
     const items: NewsItem[] = [];
     const itemRegex = /<item>([\s\S]*?)<\/item>/g;
     let match;
@@ -68,7 +68,7 @@ async function fetchRSSFeed(source: typeof RSS_SOURCES[0]): Promise<NewsItem[]> 
 }
 
 /**
- * 使用 AI 翻譯和摘要
+ * Translate and summarize with AI
  */
 async function processWithAI(title: string, content?: string): Promise<{
   title_zh: string;
@@ -77,15 +77,15 @@ async function processWithAI(title: string, content?: string): Promise<{
   importance_score: number;
 }> {
   return {
-    title_zh: `[AI翻譯] ${title}`,
-    summary_zh: 'AI 正在生成中文摘要...',
-    ai_perspective: '這則新聞對 AI 發展的影響值得關注。',
+    title_zh: title,
+    summary_zh: 'AI is generating an English summary...',
+    ai_perspective: 'This story is worth watching for its impact on AI development.',
     importance_score: Math.floor(Math.random() * 30) + 70,
   };
 }
 
 /**
- * 儲存新聞到資料庫
+ * Save news into the database
  */
 async function saveNews(news: NewsItem & { processed: any }) {
   const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -122,17 +122,17 @@ async function saveNews(news: NewsItem & { processed: any }) {
 }
 
 /**
- * 主要執行函數
+ * Main execution function
  */
 export async function fetchDailyNews() {
-  console.log('🤖 AI 新聞抓取任務開始...', new Date().toISOString());
+  console.log('🤖 AI news fetch job started...', new Date().toISOString());
   
   const allNews: NewsItem[] = [];
   
   for (const source of RSS_SOURCES) {
     const items = await fetchRSSFeed(source);
     allNews.push(...items);
-    console.log(`✅ ${source.name}: ${items.length} 則`);
+    console.log(`✅ ${source.name}: ${items.length} items`);
   }
   
   const topNews = allNews
@@ -144,7 +144,7 @@ export async function fetchDailyNews() {
     await saveNews({ ...news, processed });
   }
   
-  console.log(`🎉 完成！儲存了 ${topNews.length} 則新聞`);
+  console.log(`🎉 Done! Saved ${topNews.length} news items`);
   return { count: topNews.length };
 }
 

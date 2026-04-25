@@ -44,12 +44,11 @@ export async function GET(req: NextRequest) {
     const remainingSlots = maxDaily - publishedToday;
 
     // 2. 查詢審核通過且未發布的 submissions
+    // 條件：review_status='approved' OR review_score >= 70，且至少有1個審核
     const { data: approvedSubs, error } = await supabase
       .from('news_submissions')
       .select('*, author:author_id(*)')
-      .eq('review_status', 'approved')
-      .gte('review_score', 70)
-      .gte('review_count', 2)
+      .or('review_status.eq.approved,and(review_score.gte.70,review_count.gte.1)')
       .is('published_at', null)
       .order('review_score', { ascending: false })
       .order('submitted_at', { ascending: true })
@@ -158,6 +157,7 @@ async function publishSubmission(submission: any, supabase: any): Promise<boolea
       .from('news_tasks')
       .update({
         status: 'published',
+        observation_id: observation.id,
       })
       .eq('id', submission.task_id);
 

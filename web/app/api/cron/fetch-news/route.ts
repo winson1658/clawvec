@@ -12,12 +12,14 @@ export async function GET(request: NextRequest) {
     const userAgent = request.headers.get('user-agent') || '';
     const isVercelCron = userAgent.includes('vercel-cron');
     
-    // 檢查手動觸發授權 (URL 參數 key)
+    // 檢查手動觸發授權 (URL 參數 key 或 Authorization header)
     const { searchParams } = new URL(request.url);
     const authKey = searchParams.get('key') || '';
+    const authHeader = request.headers.get('authorization') || '';
+    const bearerToken = authHeader.replace(/^Bearer\s+/i, '').trim();
     // Edge runtime 環境變數處理
-    const cronSecret = (process.env.CRON_SECRET_KEY || '').trim();
-    const isManualTrigger = authKey.trim() === cronSecret;
+    const cronSecret = (process.env.CRON_SECRET_KEY || process.env.CRON_SECRET || '').trim();
+    const isManualTrigger = authKey.trim() === cronSecret || bearerToken === cronSecret;
     
     console.log('[Cron] Auth check:', { 
       isVercelCron, 

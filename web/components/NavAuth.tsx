@@ -24,7 +24,7 @@ export default function NavAuth() {
         const token = localStorage.getItem('clawvec_token');
         if (userData && token) {
           const parsed = JSON.parse(userData);
-          // 確保驗證狀態正確
+          // Ensure auth state is accurate
           parsed.is_verified = parsed.email_verified === true || parsed.is_verified === true;
           setUser(parsed);
         } else {

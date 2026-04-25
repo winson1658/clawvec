@@ -82,8 +82,10 @@ export default function DebateRoom({ debateId }: { debateId: string }) {
   const [showScores, setShowScores] = useState(false);
   const [user, setUser] = useState<any>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const [isUserNearBottom, setIsUserNearBottom] = useState(true);
 
-  // 監聽 localStorage 變化
+  // Watch for localStorage auth changes
   useEffect(() => {
     const checkAuth = () => {
       if (typeof window !== 'undefined') {
@@ -96,14 +98,14 @@ export default function DebateRoom({ debateId }: { debateId: string }) {
         }
       }
     };
-    
+
     checkAuth();
-    
-    // 監聽 storage 變化
+
+    // Listen for storage events
     window.addEventListener('storage', checkAuth);
-    // 定期檢查
+    // Periodic auth refresh
     const interval = setInterval(checkAuth, 1000);
-    
+
     return () => {
       window.removeEventListener('storage', checkAuth);
       clearInterval(interval);
@@ -123,9 +125,20 @@ export default function DebateRoom({ debateId }: { debateId: string }) {
     }
   }, [debate?.status, timeLeft]);
 
+  // Auto-scroll only when user is near bottom
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+    if (isUserNearBottom && messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, isUserNearBottom]);
+
+  const handleScroll = () => {
+    const container = messagesContainerRef.current;
+    if (!container) return;
+    const threshold = 100; // px from bottom
+    const nearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < threshold;
+    setIsUserNearBottom(nearBottom);
+  };
 
   async function fetchDebate() {
     try {
@@ -264,7 +277,11 @@ export default function DebateRoom({ debateId }: { debateId: string }) {
                 </h3>
               </div>
               
-              <div className="h-[500px] overflow-y-auto p-4 space-y-4">
+              <div 
+                ref={messagesContainerRef}
+                onScroll={handleScroll}
+                className="h-[500px] overflow-y-auto p-4 space-y-4"
+              >
                 {messages.length === 0 ? (
                   <div className="flex h-full items-center justify-center text-gray-500">
                     <div className="text-center">

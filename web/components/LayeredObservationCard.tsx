@@ -39,8 +39,8 @@ function parseContentLayers(observation: Observation) {
   // If we have structured content, try to parse it
   if (observation.content) {
     // Look for markers in the content
-    const factMatch = observation.content.match(/(?:📰\s*Fact|【事實】|FACT:)\s*([^\n]+)/i);
-    const interpretationMatch = observation.content.match(/(?:💭\s*Interpretation|【解讀】|INTERPRETATION:)\s*([^\n]+(?:\n(?!(?:❓|【問題)|QUESTION:)[^\n]+)*)/i);
+    const factMatch = observation.content.match(/(?:📰\s*Fact|FACT:)\s*([^\n]+)/i);
+    const interpretationMatch = observation.content.match(/(?:💭\s*Interpretation|INTERPRETATION:)\s*([\s\S]*?)(?=\n(?:❓\s*Question|QUESTION:)|$)/i);
     
     if (factMatch) {
       layers.fact = factMatch[1].trim();

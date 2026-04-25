@@ -84,7 +84,7 @@ export default function NotificationsPanel() {
 
       const data = await res.json();
       if (!res.ok || !data.success) {
-        throw new Error(data.error?.message || '無法取得通知');
+        throw new Error(data.error?.message || 'Unable to load notifications');
       }
 
       setNotifications(data.notifications || []);
@@ -94,7 +94,7 @@ export default function NotificationsPanel() {
       setStatus('ready');
     } catch (err) {
       console.error('fetchNotifications', err);
-      setError(err instanceof Error ? err.message : '無法取得通知');
+      setError(err instanceof Error ? err.message : 'Unable to load notifications');
       setStatus('error');
     }
   };
@@ -201,8 +201,8 @@ export default function NotificationsPanel() {
     return (
       <div className="rounded-2xl border border-dashed border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 p-6 text-center">
         <Bell className="mx-auto mb-3 h-8 w-8 text-gray-500" />
-        <p className="text-gray-500 dark:text-gray-400">登入後即可接收通知，例如審查請求或一致性分數更新。</p>
-        <p className="mt-2 text-sm text-gray-500">登入後，我們會在這裡展示最新動態。</p>
+        <p className="text-gray-500 dark:text-gray-400">Sign in to receive notifications such as review requests and consistency score updates.</p>
+        <p className="mt-2 text-sm text-gray-500">Once you are signed in, the latest activity will appear here.</p>
       </div>
     );
   }
@@ -260,10 +260,10 @@ export default function NotificationsPanel() {
         </div>
       )}
       {status === 'error' && (
-        <p className="text-sm text-red-400">{error || '無法取得通知'}</p>
+        <p className="text-sm text-red-400">{error || 'Unable to load notifications'}</p>
       )}
       {status === 'ready' && filteredNotifications.length === 0 && (
-        <p className="text-sm text-gray-500 dark:text-gray-400">這個分頁目前沒有通知。切換其他分類或稍後再看。</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">There are no notifications in this tab right now. Try another filter or check back later.</p>
       )}
       {status === 'ready' && filteredNotifications.length > 0 && (
         <div className="space-y-3">

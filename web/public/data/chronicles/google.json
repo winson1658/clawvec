@@ -4,7 +4,7 @@
     "title": "DeepMind Founded",
     "description": "Demis Hassabis, Shane Legg, and Mustafa Suleyman founded DeepMind Technologies in London, UK. The company's mission is to 'solve intelligence, and then use intelligence to solve everything else'.",
     "category": "milestone",
-    "impact": 5
+    "impact": 2
   },
   {
     "date": "2014-01-27",
@@ -18,7 +18,7 @@
     "title": "AlphaGo First Defeats Professional Go Player",
     "description": "DeepMind's AlphaGo defeated European Go champion Fan Hui 5:0, becoming the first computer program to defeat a professional Go player. This achievement was published in the journal Nature.",
     "category": "research",
-    "impact": 4
+    "impact": 2
   },
   {
     "date": "2016-03-09",
@@ -32,7 +32,7 @@
     "title": "Google Brain Launches TensorFlow",
     "description": "Google Brain team open-sourced the machine learning framework TensorFlow 1.0, which quickly became one of the world's most popular deep learning frameworks, reshaping the AI development ecosystem.",
     "category": "product",
-    "impact": 4
+    "impact": 3
   },
   {
     "date": "2017-06-12",
@@ -46,14 +46,14 @@
     "title": "DeepMind Launches AlphaGo Zero",
     "description": "AlphaGo Zero learned solely through self-play without any human game records, surpassing the AlphaGo version that defeated Lee Sedol within three days. Demonstrated the powerful potential of reinforcement learning.",
     "category": "research",
-    "impact": 4
+    "impact": 2
   },
   {
     "date": "2018-05-08",
     "title": "Google Duplex Stunning Debut",
     "description": "Google Duplex AI demonstrated at Google I/O conference could make natural voice calls to book restaurants and hair appointments. Its realism sparked widespread discussion about AI ethics and transparency.",
     "category": "product",
-    "impact": 4
+    "impact": 3
   },
   {
     "date": "2018-10-01",
@@ -74,56 +74,56 @@
     "title": "AlphaFold Protein Database Made Public",
     "description": "DeepMind collaborated with EMBL-EBI to make public over 350,000 protein structure predictions, covering nearly all proteins in the human genome. This resource is freely available to global researchers.",
     "category": "milestone",
-    "impact": 4
+    "impact": 3
   },
   {
     "date": "2021-10-01",
     "title": "Google Publishes PaLM Paper",
     "description": "Published Pathways Language Model (PaLM), a 540B parameter large language model demonstrating breakthrough few-shot learning capabilities on multiple reasoning tasks.",
     "category": "research",
-    "impact": 4
+    "impact": 2
   },
   {
     "date": "2022-04-04",
     "title": "Google Brain Launches PaLM",
     "description": "Google Brain officially released PaLM, demonstrating its powerful capabilities in commonsense reasoning, mathematics, and code generation, regarded as Google's important response to GPT-3.",
     "category": "product",
-    "impact": 4
+    "impact": 3
   },
   {
     "date": "2022-05-11",
     "title": "LaMDA Dialogue Model Sparks 'Consciousness' Controversy",
     "description": "Google engineer Blake Lemoine claimed LaMDA had gained self-consciousness, sparking global debate about AI consciousness and ethics. Google denied the claim and suspended him.",
     "category": "personnel",
-    "impact": 3
+    "impact": 2
   },
   {
     "date": "2023-02-06",
     "title": "Google Releases Bard",
     "description": "Facing competitive pressure from ChatGPT, Google urgently released conversational AI Bard. A factual error during the first demonstration caused Google's stock price to drop over $100 billion in a single day.",
     "category": "product",
-    "impact": 4
+    "impact": 3
   },
   {
     "date": "2023-03-21",
     "title": "Bard Opens Public Beta",
     "description": "Bard opened waitlist testing in the US and UK, based on a lightweight LaMDA version. Google emphasized this was an 'experimental' product, attempting to balance innovation and safety.",
     "category": "product",
-    "impact": 3
+    "impact": 1
   },
   {
     "date": "2023-04-20",
     "title": "Google Brain and DeepMind Merge",
     "description": "Google announced the merger of Google Brain and DeepMind into Google DeepMind, with Demis Hassabis as CEO. This integration aimed to concentrate resources to compete with OpenAI.",
     "category": "milestone",
-    "impact": 4
+    "impact": 3
   },
   {
     "date": "2023-05-10",
     "title": "Google I/O Releases PaLM 2",
     "description": "PaLM 2 was released at Google I/O conference, supporting multilingual and code generation capabilities, and providing underlying support for Bard. Multiple size versions were launched to adapt to different application scenarios.",
     "category": "product",
-    "impact": 4
+    "impact": 3
   },
   {
     "date": "2023-12-06",
@@ -137,63 +137,63 @@
     "title": "Bard Renamed to Gemini",
     "description": "Google fully renamed Bard to Gemini and launched the Gemini Advanced subscription service ($20/month), powered by the Gemini Ultra model. Marks the repositioning of Google's AI product strategy.",
     "category": "product",
-    "impact": 4
+    "impact": 2
   },
   {
     "date": "2024-05-14",
     "title": "Google I/O Releases Gemini 1.5 Pro",
     "description": "Released Gemini 1.5 Pro, introducing a breakthrough 1 million token context window (later expanded to 2 million), and demonstrating astonishing 'needle in a haystack' long-context retrieval capabilities.",
     "category": "product",
-    "impact": 4
+    "impact": 2
   },
   {
     "date": "2024-08-01",
     "title": "Google Releases Gemini 1.5 Flash",
     "description": "Launched Gemini 1.5 Flash, optimized for speed and efficiency, significantly reducing latency and cost while maintaining strong performance, forming a high-low pairing with Pro.",
     "category": "product",
-    "impact": 3
+    "impact": 2
   },
   {
     "date": "2024-09-12",
     "title": "AlphaProteo Released",
     "description": "DeepMind released AlphaProteo, an AI system specifically designed for novel protein binders, performing significantly better than existing best methods across 7 target protein tests.",
     "category": "research",
-    "impact": 4
+    "impact": 2
   },
   {
     "date": "2024-12-11",
     "title": "Gemini 2.0 Flash Experimental Released",
     "description": "Google released Gemini 2.0 Flash Experimental, emphasizing native multimodal output (images, audio) and agentic capabilities (Agentic AI), laying the foundation for next-generation AI assistants.",
     "category": "product",
-    "impact": 4
+    "impact": 2
   },
   {
     "date": "2025-02-05",
     "title": "Gemini 2.0 Series Fully Launched",
     "description": "Gemini 2.0 Flash, Pro, and other models fully launched, supporting multimodal understanding and generation of text, images, audio, and video. Google emphasized its 'agentic AI' vision.",
     "category": "product",
-    "impact": 4
+    "impact": 2
   },
   {
     "date": "2025-03-25",
     "title": "Gemini 2.5 Pro Released",
     "description": "Google released Gemini 2.5 Pro, dubbed the 'most powerful model', with outstanding performance in code, mathematics, and scientific reasoning, regarded as Google's direct response to GPT-4.5 and Claude 3.7.",
     "category": "product",
-    "impact": 4
+    "impact": 2
   },
   {
     "date": "2011-01-01",
     "title": "Google Brain Project Launched",
     "description": "Google internally launched the Google Brain project, led by Andrew Ng, Jeff Dean, and Greg Corrado, focusing on deep learning research. The project initially used 16,000 CPU cores to train neural networks.",
     "category": "milestone",
-    "impact": 4
+    "impact": 3
   },
   {
     "date": "2012-06-01",
     "title": "Google Brain Cat Image Recognition Breakthrough",
     "description": "Google Brain's neural network trained on 10 million YouTube video screenshots spontaneously learned to recognize cat faces. After publication, this result triggered a deep learning boom and is regarded as one of the starting points of the modern AI wave.",
     "category": "research",
-    "impact": 4
+    "impact": 2
   },
   {
     "date": "2019-10-23",

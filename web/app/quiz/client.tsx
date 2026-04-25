@@ -157,7 +157,7 @@ export default function QuizClient() {
     );
   }
 
-  // 顯示結果
+  // Show result state
   if (result) {
     const primary = result.result?.archetypeDetails?.find(
       (a: any) => a.name === result.primaryArchetype
@@ -203,7 +203,7 @@ export default function QuizClient() {
     );
   }
 
-  // 測驗進行中
+  // Quiz in progress
   const question = questions[currentQuestion];
   const progress = ((currentQuestion + 1) / questions.length) * 100;
 

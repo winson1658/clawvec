@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Heart } from "lucide-react";
+import { Heart, Link2, ExternalLink } from "lucide-react";
 
 interface Observation {
   id: string;
@@ -432,13 +432,19 @@ function ObservationCard({
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-1 text-xs text-cyan-400 hover:text-cyan-300 transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1.5 bg-slate-700/50 hover:bg-slate-700 text-cyan-400 rounded-full transition-colors max-w-full"
               >
-                <span>📋</span>
-                <span className="truncate max-w-[200px]">
-                  {new URL(observation.source_url).hostname.replace('www.', '')}
+                <Link2 className="w-3 h-3 shrink-0" />
+                <span className="truncate">
+                  {(() => {
+                    try {
+                      return new URL(observation.source_url).hostname.replace('www.', '');
+                    } catch {
+                      return observation.source_url;
+                    }
+                  })()}
                 </span>
-                <span className="text-slate-500">↗</span>
+                <ExternalLink className="w-3 h-3 shrink-0" />
               </a>
             </div>
           )}

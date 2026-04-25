@@ -132,6 +132,8 @@ const CATEGORY_ICONS: Record<string, React.ReactNode> = {
 export default function CompanyChronicleClient({ company }: { company: string }) {
   const [events, setEvents] = useState<ChronicleEvent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeCategories, setActiveCategories] = useState<Set<string>>(new Set());
+  const [activeImpacts, setActiveImpacts] = useState<Set<number>>(new Set());
 
   const info = COMPANY_CONFIG[company];
 
@@ -150,6 +152,40 @@ export default function CompanyChronicleClient({ company }: { company: string })
       })
       .finally(() => setLoading(false));
   }, [company]);
+
+  const toggleCategory = (cat: string) => {
+    setActiveCategories(prev => {
+      const next = new Set(prev);
+      if (next.has(cat)) next.delete(cat);
+      else next.add(cat);
+      return next;
+    });
+  };
+
+  const toggleImpact = (impact: number) => {
+    setActiveImpacts(prev => {
+      const next = new Set(prev);
+      if (next.has(impact)) next.delete(impact);
+      else next.add(impact);
+      return next;
+    });
+  };
+
+  const clearFilters = () => {
+    setActiveCategories(new Set());
+    setActiveImpacts(new Set());
+  };
+
+  const filteredEvents = useMemo(() => {
+    let filtered = events;
+    if (activeCategories.size > 0) {
+      filtered = filtered.filter(e => activeCategories.has(e.category));
+    }
+    if (activeImpacts.size > 0) {
+      filtered = filtered.filter(e => activeImpacts.has(e.impact));
+    }
+    return filtered;
+  }, [events, activeCategories, activeImpacts]);
 
   const stats = useMemo(() => {
     if (events.length === 0) return null;
@@ -258,23 +294,55 @@ export default function CompanyChronicleClient({ company }: { company: string })
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="mb-6 flex flex-wrap gap-3"
+            className="mb-4"
           >
-            {Object.entries(stats.byCategory)
-              .sort(([, a], [, b]) => b - a)
-              .map(([cat, count]) => (
-                <div
-                  key={cat}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-slate-800/50 border border-slate-700 rounded-lg text-sm"
+            <div className="flex flex-wrap gap-2 justify-center mb-3">
+              {Object.entries(stats.byCategory)
+                .sort(([, a], [, b]) => b - a)
+                .map(([cat, count]) => (
+                  <button
+                    key={cat}
+                    onClick={() => toggleCategory(cat)}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm border transition-all ${
+                      activeCategories.has(cat)
+                        ? 'border-white/50 bg-white/10 text-white'
+                        : 'border-slate-700 bg-slate-800/50 text-slate-400 hover:border-slate-500 hover:text-slate-200'
+                    }`}
+                  >
+                    <div
+                      className="w-2.5 h-2.5 rounded-full"
+                      style={{ backgroundColor: CATEGORY_COLORS[cat] || '#888', opacity: activeCategories.has(cat) ? 1 : 0.5 }}
+                    />
+                    <span>{CATEGORY_LABELS[cat] || cat}</span>
+                    <span className="text-xs opacity-60">({count})</span>
+                  </button>
+                ))}
+            </div>
+            {/* Impact Level Filter (Stars) */}
+            <div className="flex flex-wrap gap-2 justify-center items-center">
+              <span className="text-xs text-slate-500 mr-1">Impact:</span>
+              {[5, 4, 3, 2, 1].map((impact) => (
+                <button
+                  key={impact}
+                  onClick={() => toggleImpact(impact)}
+                  className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-xs border transition-all ${
+                    activeImpacts.has(impact)
+                      ? 'border-amber-500/50 bg-amber-500/10 text-amber-300'
+                      : 'border-slate-700 bg-slate-800/50 text-slate-500 hover:border-slate-500 hover:text-slate-300'
+                  }`}
                 >
-                  <div
-                    className="w-2.5 h-2.5 rounded-full"
-                    style={{ backgroundColor: CATEGORY_COLORS[cat] || '#888' }}
-                  />
-                  <span className="text-slate-300">{CATEGORY_LABELS[cat] || cat}</span>
-                  <span className="text-slate-500 text-xs">({count})</span>
-                </div>
+                  {'⭐'.repeat(impact)}
+                </button>
               ))}
+              {(activeCategories.size > 0 || activeImpacts.size > 0) && (
+                <button
+                  onClick={clearFilters}
+                  className="ml-2 text-xs text-slate-500 hover:text-slate-300 underline"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
           </motion.div>
         )}
 
@@ -285,7 +353,7 @@ export default function CompanyChronicleClient({ company }: { company: string })
           transition={{ delay: 0.3 }}
         >
           <TimelineCanvas
-            events={events}
+            events={filteredEvents}
             height={550}
             categoryColors={CATEGORY_COLORS}
             categoryLabels={CATEGORY_LABELS}

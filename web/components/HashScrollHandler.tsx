@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-// 首頁所有有 id 的錨點區塊
+// Homepage anchor sections that support hash-based scrolling
 const VALID_SECTION_IDS = [
   'auth',
   'observations',
@@ -12,36 +12,36 @@ const VALID_SECTION_IDS = [
 ];
 
 function scrollToSection(hash: string, delayMs = 250) {
-  // 去掉 query string，只取純 hash（例如 #auth?mode=login → auth）
+  // Remove any query string from the hash and keep only the anchor id, e.g. #auth?mode=login → auth
   const id = hash.replace(/^#/, '').split('?')[0];
   if (!id || !VALID_SECTION_IDS.includes(id)) return;
 
   const element = document.getElementById(id);
   if (!element) return;
 
-  // 為 dynamic import 的內容預留載入時間
+  // Allow time for dynamic imports to finish rendering
   const doScroll = () => {
     element.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  // 延遲滾動，等 re-render 完成後再滾到正確位置
+  // Delay scrolling slightly so the layout has settled
   requestAnimationFrame(() => {
     doScroll();
-    // 再補一次，應對動態內容撐開高度後的位置偏移
+    // Run again in case late content changed the final offset
     setTimeout(doScroll, delayMs);
-    // 最後一次確保
+    // Final pass to ensure the section lands in the right place
     setTimeout(doScroll, delayMs + 300);
   });
 }
 
 export default function HashScrollHandler() {
   useEffect(() => {
-    // 處理初始 hash（頁面加載時）
+    // Handle the initial hash on page load
     if (window.location.hash) {
       scrollToSection(window.location.hash, 500);
     }
 
-    // 監聽 hashchange
+    // Listen for later hash updates
     const handleHashChange = () => {
       scrollToSection(window.location.hash, 500);
     };

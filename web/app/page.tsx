@@ -439,38 +439,41 @@ export default async function Home() {
 
           {/* CTA */}
           <div className="mb-8 text-center">
-            <a href="/roadmap" className="inline-flex items-center gap-2 rounded-xl border border-purple-500/30 bg-purple-500/10 px-6 py-3 text-sm font-medium text-purple-200 transition hover:bg-purple-500/20">
-              Enter the chronicle and roadmap
+            <a href="/chronicle" className="inline-flex items-center gap-2 rounded-xl border border-purple-500/30 bg-purple-500/10 px-6 py-3 text-sm font-medium text-purple-200 transition hover:bg-purple-500/20">
+              Enter the Chronicle
               <ChevronRight className="h-4 w-4" />
             </a>
           </div>
 
-          {/* Chronicle Highlights Grid */}
-          <div className="grid gap-4 md:grid-cols-3">
-            {chronicleHighlights.length > 0 ? chronicleHighlights.map((item) => (
-              <a key={item.id} href="/roadmap" className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/60 p-4 text-sm text-gray-600 dark:text-gray-300 hover:border-purple-500/30">
-                <div className="mb-2 text-xs uppercase tracking-wide text-purple-300">Milestone</div>
-                <div className="font-medium text-gray-900 dark:text-white">{item.title}</div>
-                <div className="mt-2 text-gray-500 dark:text-gray-400">{item.summary || 'Chronicle highlight ready for expansion.'}</div>
+          {/* Company Chronicles Grid */}
+          <div className="grid gap-4 md:grid-cols-4">
+            {[
+              { name: 'OpenAI', path: '/chronicle/openai', events: '51 events', span: '2015–2025' },
+              { name: 'DeepSeek', path: '/chronicle/deepseek', events: '12 events', span: '2023–2025' },
+              { name: 'Google AI', path: '/chronicle/google', events: '43 events', span: '2014–2025' },
+              { name: 'Anthropic', path: '/chronicle/anthropic', events: '18 events', span: '2021–2025' },
+              { name: 'xAI', path: '/chronicle/xai', events: '9 events', span: '2023–2025' },
+              { name: 'Meta AI', path: '/chronicle/meta', events: '22 events', span: '2013–2025' },
+              { name: 'Figure AI', path: '/chronicle/figure', events: '8 events', span: '2022–2025' },
+              { name: 'KIMI', path: '/chronicle/kimi', events: '6 events', span: '2023–2025' },
+            ].map((company) => (
+              <a
+                key={company.name}
+                href={company.path}
+                className="group rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/60 p-4 text-sm transition hover:border-purple-500/30 hover:bg-purple-500/5"
+              >
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="font-semibold text-gray-900 dark:text-white group-hover:text-purple-300 transition">
+                    {company.name}
+                  </span>
+                  <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-600 group-hover:text-purple-400 transition" />
+                </div>
+                <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                  <span>{company.events}</span>
+                  <span>·</span>
+                  <span>{company.span}</span>
+                </div>
               </a>
-            )) : [
-              {
-                title: 'AI observations become milestones',
-                desc: 'Every significant observation can be elevated to chronicle status.',
-              },
-              {
-                title: 'Debates shape public memory',
-                desc: 'The arguments that define our collective understanding.',
-              },
-              {
-                title: 'Chronicle pages become history',
-                desc: 'Platform activity transforms into permanent civilization record.',
-              },
-            ].map((item, i) => (
-              <div key={i} className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/60 p-4 text-sm text-gray-600 dark:text-gray-300">
-                <div className="mb-2 font-medium text-gray-900 dark:text-white">{item.title}</div>
-                <div className="text-gray-500 dark:text-gray-400">{item.desc}</div>
-              </div>
             ))}
           </div>
         </div>

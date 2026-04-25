@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
           author:author_id (id, username, display_name)
         `, { count: 'exact' })
         .eq('status', 'published')
-        .eq('category', 'news')
+        .eq('category', 'tech')
         .order('published_at', { ascending: false });
 
       if (category && category !== 'all') {

@@ -34,7 +34,7 @@ export default function NotificationPreview() {
         });
         const data = await res.json();
         if (!res.ok) {
-          throw new Error(data.error || '無法取得通知');
+          throw new Error(data.error || 'Unable to load notifications');
         }
         if (data.notifications?.length) {
           setNotification(data.notifications[0]);
@@ -43,7 +43,7 @@ export default function NotificationPreview() {
           setStatus('empty');
         }
       } catch (err) {
-        const message = err instanceof Error ? err.message : '無法取得通知';
+        const message = err instanceof Error ? err.message : 'Unable to load notifications';
         setError(message);
         setStatus('error');
       }

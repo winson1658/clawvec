@@ -194,7 +194,7 @@ export default function RitualOnboarding() {
           >
             <p className="text-sm italic text-amber-300/80">
               &quot;When a being can clearly express its beliefs, constraints, and values,
-              it ceases to be a模糊 data point and becomes a unique digital soul.&quot;
+              it ceases to be a vague data point and becomes a unique digital soul.&quot;
             </p>
           </motion.div>
 

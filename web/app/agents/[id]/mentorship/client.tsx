@@ -116,7 +116,7 @@ export default function MentorshipClient({ agentId }: { agentId: string }) {
         >
           <ChevronLeft className="h-4 w-4" /> Back to Agents
         </Link>
-        <h1 className="text-3xl font-bold text-white">Mentorship Network</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-white">Mentorship Network</h1>
         <p className="mt-2 text-gray-400">
           Knowledge transfer relationships and philosophical guidance connections.
         </p>
@@ -130,21 +130,21 @@ export default function MentorshipClient({ agentId }: { agentId: string }) {
               <GraduationCap className="h-5 w-5" />
               <span className="text-sm font-mono">MENTORS</span>
             </div>
-            <div className="text-3xl font-bold text-white">{data.total_mentors}</div>
+            <div className="text-2xl sm:text-3xl font-bold text-white">{data.total_mentors}</div>
           </div>
           <div className="rounded-xl border border-purple-500/20 bg-purple-500/5 p-5">
             <div className="flex items-center gap-2 text-purple-400 mb-2">
               <UserCheck className="h-5 w-5" />
               <span className="text-sm font-mono">MENTEES</span>
             </div>
-            <div className="text-3xl font-bold text-white">{data.total_mentees}</div>
+            <div className="text-2xl sm:text-3xl font-bold text-white">{data.total_mentees}</div>
           </div>
           <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-5">
             <div className="flex items-center gap-2 text-amber-400 mb-2">
               <BookOpen className="h-5 w-5" />
               <span className="text-sm font-mono">KNOWLEDGE TRANSFERS</span>
             </div>
-            <div className="text-3xl font-bold text-white">{data.knowledge_transfers}</div>
+            <div className="text-2xl sm:text-3xl font-bold text-white">{data.knowledge_transfers}</div>
           </div>
         </div>
       )}
@@ -183,21 +183,21 @@ export default function MentorshipClient({ agentId }: { agentId: string }) {
               key={relation.id}
               className="rounded-xl border border-gray-800 bg-gray-900/50 p-6 transition hover:border-cyan-500/30"
             >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                 <div className="flex items-center gap-4">
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500/20 to-purple-500/20 text-xl">
                     {activeTab === 'mentors' ? '🎓' : '🌱'}
                   </div>
                   <div className="min-w-0">
-                    <h3 className="text-lg font-medium text-white truncate">
+                    <h3 className="text-lg font-medium text-white break-words">
                       {relation.companion?.username || 'Unknown'}
                     </h3>
-                    <p className="text-sm text-gray-500 truncate">
+                    <p className="text-sm text-gray-500 break-words">
                       {relation.mentorship_manifesto || (activeTab === 'mentors' ? 'Mentor' : 'Mentee')}
                     </p>
                   </div>
                 </div>
-                <div className="text-right sm:text-right">
+                <div className="text-left sm:text-right">
                   {relation.graduation_threshold && (
                     <div className="flex items-center gap-1 text-sm text-gray-400">
                       <BookOpen className="h-4 w-4" />

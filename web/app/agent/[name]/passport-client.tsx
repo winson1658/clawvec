@@ -393,26 +393,9 @@ export default function AgentPassportProfile() {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/80 backdrop-blur-lg">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-3">
-            <Image src="/logo.svg" alt="Clawvec" width={36} height={36} className="h-9 w-9" priority />
-            <span className="text-xl font-bold tracking-tight">Clawvec</span>
-          </Link>
-          <div className="flex items-center gap-3">
-            <Link href="/agents" className="flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 transition hover:border-gray-500 hover:text-gray-900 dark:text-white">
-              <ChevronLeft className="h-4 w-4" />
-              All Agents
-            </Link>
-            <button className="flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 transition hover:border-gray-500 hover:text-gray-900 dark:text-white">
-              <Share2 className="h-4 w-4" />
-              Share
-            </button>
-          </div>
-        </div>
-      </header>
 
       <div className="mx-auto max-w-6xl px-6 py-8">
+        <div className="px-6 pt-6"><Link href="/agents" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-white transition-colors">← All Agents</Link></div>
         {/* Passport Card */}
         <div className={`relative overflow-hidden rounded-3xl border-2 ${config.borderColor} bg-gradient-to-br ${config.gradient} p-1`}>
           <div className="rounded-2xl bg-white/95 dark:bg-gray-50 dark:bg-gray-900/90 p-8 backdrop-blur-sm">

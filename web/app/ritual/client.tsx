@@ -465,30 +465,6 @@ export default function RitualPage() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100">
       {/* Top Navigation */}
-      <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur-md dark:border-gray-800 dark:bg-gray-950/80">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-3">
-            <Link href="/" className="flex items-center gap-2 text-gray-600 transition hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-              <ChevronLeft className="h-5 w-5" />
-              <span className="text-sm">Back</span>
-            </Link>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600 dark:text-gray-500">
-              Step {currentStep + 1} / {ritualSteps.length}
-            </span>
-            <div className="hidden h-2 w-32 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-800 sm:block">
-              <motion.div 
-                className="h-full bg-gradient-to-r from-violet-500 via-cyan-500 to-amber-500"
-                initial={{ width: 0 }}
-                animate={{ width: `${((currentStep + 1) / ritualSteps.length) * 100}%` }}
-                transition={{ duration: 0.5 }}
-              />
-            </div>
-          </div>
-        </div>
-      </header>
 
       <main className="mx-auto max-w-4xl px-6 py-12">
         {/* Ritual Title */}

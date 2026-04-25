@@ -73,33 +73,43 @@ export async function POST(request: NextRequest) {
       .eq('is_active', true)
       .order('reliability_score', { ascending: false });
 
-    // 5. 從 daily_news 中選擇未被任務化的新聞
+    // 5. 從 daily_news 中選擇未被任務化的新聞（限最近72小時內）
+    const newsCutoff = new Date(Date.now() - 72 * 60 * 60 * 1000).toISOString();
     const { data: recentNews } = await supabase
       .from('daily_news')
       .select('*')
       .eq('status', 'active')
+      .gte('fetched_at', newsCutoff)
       .order('importance_score', { ascending: false })
       .order('published_at', { ascending: false })
-      .limit(20);
+      .limit(30);
 
-    // 6. 過濾已有任務的來源
+    console.log(`[create-news-tasks] Fetched ${recentNews?.length || 0} recent news items`);
+
+    // 6. 過濾已有任務的來源（不限72h，检查全部）
     const { data: existingHashes } = await supabase
       .from('news_tasks')
       .select('source_hash')
-      .not('source_hash', 'is', null)
-      .gt('created_at', new Date(Date.now() - 72 * 60 * 60 * 1000).toISOString());
+      .not('source_hash', 'is', null);
 
     const existingHashSet = new Set((existingHashes || []).map(h => h.source_hash));
+
+    console.log(`[create-news-tasks] Existing hashes in DB: ${existingHashSet.size}`);
+    console.log(`[create-news-tasks] News items to process: ${recentNews?.length || 0}`);
 
     // 7. 建立任務
     const tasksToCreate = [];
     const dueAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24h 後過期
+    let skippedCount = 0;
 
     for (const news of (recentNews || [])) {
       if (tasksToCreate.length >= 10) break;
 
       const sourceHash = news.url ? crypto.createHash('md5').update(news.url).digest('hex') : null;
-      if (sourceHash && existingHashSet.has(sourceHash)) continue;
+      if (sourceHash && existingHashSet.has(sourceHash)) {
+        skippedCount++;
+        continue;
+      }
 
       tasksToCreate.push({
         status: 'open',
@@ -120,51 +130,52 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    console.log(`[create-news-tasks] From news: ${tasksToCreate.length} new, ${skippedCount} skipped`);
+
     // 如果新聞不足10個，用通用任務補足
     let idx = tasksToCreate.length;
+    const todayStr = new Date().toISOString().slice(0, 10);
     while (tasksToCreate.length < 10) {
-      tasksToCreate.push({
-        status: 'open',
-        title: `任務 #${idx + 1}: 搜尋一則 AI 或科技領域的重要新聞並撰寫觀察`,
-        source_urls: [],
-        source_hash: `generic_${new Date().toISOString().slice(0, 10)}_${idx}`,
-        created_by: null,
-        due_at: dueAt.toISOString(),
-        priority: 30,
-        rules: {
-          min_word_count: 200,
-          max_word_count: 500,
-          contains_question: true,
-          contains_first_person: true,
-          required_sources: 1,
-        },
-      });
+      const genericHash = `generic_${todayStr}_${idx}`;
+      if (!existingHashSet.has(genericHash)) {
+        tasksToCreate.push({
+          status: 'open',
+          title: `任務 #${idx + 1}: 搜尋一則 AI 或科技領域的重要新聞並撰寫觀察`,
+          source_urls: [],
+          source_hash: genericHash,
+          created_by: null,
+          due_at: dueAt.toISOString(),
+          priority: 30,
+          rules: {
+            min_word_count: 200,
+            max_word_count: 500,
+            contains_question: true,
+            contains_first_person: true,
+            required_sources: 1,
+          },
+        });
+      } else {
+        console.log(`[create-news-tasks] Generic hash exists: ${genericHash}`);
+      }
       idx++;
+      // 防止無限迴圈：如果連續100個通用hash都存在則停止
+      if (idx > tasksToCreate.length + 100) break;
     }
 
-    // 檢查所有已存在的 source_hash（不限於 72h）
-    const { data: allExistingHashes } = await supabase
-      .from('news_tasks')
-      .select('source_hash')
-      .not('source_hash', 'is', null);
+    console.log(`[create-news-tasks] Total tasks to create: ${tasksToCreate.length}`);
 
-    const allHashSet = new Set((allExistingHashes || []).map((h: any) => h.source_hash));
-
-    // 過濾掉已存在的
-    const uniqueTasks = tasksToCreate.filter((t: any) => !allHashSet.has(t.source_hash));
-
-    if (uniqueTasks.length === 0) {
+    if (tasksToCreate.length === 0) {
       return NextResponse.json({
         success: true,
         message: 'No new tasks to create (all source_hashes already exist)',
         created: 0,
-        today_total: 0,
+        today_total: existingCount || 0,
       });
     }
 
     const { data: created, error: createError } = await supabase
       .from('news_tasks')
-      .insert(uniqueTasks)
+      .insert(tasksToCreate)
       .select();
 
     if (createError) {
@@ -183,8 +194,8 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: `Created ${uniqueTasks.length} news tasks`,
-      created: uniqueTasks.length,
+      message: `Created ${tasksToCreate.length} news tasks`,
+      created: tasksToCreate.length,
       today_total: (created?.length || 0),
       expired_cleaned: true,
       released_cleaned: true,

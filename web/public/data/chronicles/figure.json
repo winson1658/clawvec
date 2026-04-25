@@ -5,7 +5,7 @@
     "title": "Figure AI Founded",
     "description": "Brett Adcock founded Figure AI with the goal of developing general-purpose humanoid robots to address labor shortages. The company is headquartered in Sunnyvale, California.",
     "category": "milestone",
-    "impact": 4
+    "impact": 2
   },
   {
     "id": "2",
@@ -13,7 +13,7 @@
     "title": "Partnership Agreement Signed with BMW",
     "description": "Figure AI announced a partnership with BMW Manufacturing to deploy humanoid robots for trials at BMW's South Carolina plant in the United States, performing tasks that are dangerous for humans.",
     "category": "partnership",
-    "impact": 4
+    "impact": 2
   },
   {
     "id": "3",
@@ -21,7 +21,7 @@
     "title": "Completed $67.5 Million Series A Funding",
     "description": "Figure AI announced the completion of a $67.5 million Series A funding round led by Parkway Venture Capital, aimed at accelerating humanoid robot R&D and corporate expansion.",
     "category": "milestone",
-    "impact": 3
+    "impact": 1
   },
   {
     "id": "4",
@@ -29,7 +29,7 @@
     "title": "Partnership Agreement Signed with OpenAI",
     "description": "Figure AI established a partnership with OpenAI, which will provide large language model technology to help develop humanoid robots capable of understanding natural language instructions.",
     "category": "partnership",
-    "impact": 4
+    "impact": 3
   },
   {
     "id": "5",
@@ -37,7 +37,7 @@
     "title": "Secured $80 Million in Additional Funding",
     "description": "Figure AI completed a new $80 million funding round with investors including Parkway Venture Capital and Intel Capital, bringing total funding to $148 million.",
     "category": "milestone",
-    "impact": 3
+    "impact": 1
   },
   {
     "id": "6",
@@ -61,7 +61,7 @@
     "title": "Figure 01 Field Tested at BMW Factory",
     "description": "Figure 01 officially entered the BMW Spartanburg plant for real-world production testing, performing tasks such as parts selection, machine operation, and material transport.",
     "category": "product",
-    "impact": 4
+    "impact": 2
   },
   {
     "id": "9",
@@ -69,7 +69,7 @@
     "title": "Deployment Testing in Logistics Warehouses",
     "description": "Figure AI announced the deployment of Figure 01 at a major logistics company, where the robot began performing box handling and sorting tasks in the warehouse.",
     "category": "product",
-    "impact": 3
+    "impact": 2
   },
   {
     "id": "10",
@@ -77,7 +77,7 @@
     "title": "Figure 02 Released",
     "description": "Figure AI released the second-generation humanoid robot, Figure 02, featuring a redesigned hardware architecture optimized for industrial environments and applied to tasks such as vehicle assembly.",
     "category": "product",
-    "impact": 4
+    "impact": 3
   },
   {
     "id": "11",
@@ -93,7 +93,7 @@
     "title": "Figure Showcased at CES 2025",
     "description": "Figure AI showcased next-generation robot technology at CES 2025, demonstrating application potential in home and commercial environments and attracting significant attention.",
     "category": "milestone",
-    "impact": 3
+    "impact": 2
   },
   {
     "id": "13",
@@ -101,7 +101,7 @@
     "title": "Helix VLA Model Released",
     "description": "Figure AI released the Helix vision-language-action model, enabling end-to-end control of general-purpose humanoid robots. Complex tasks can be executed using only natural language instructions, without specific programming.",
     "category": "research",
-    "impact": 4
+    "impact": 2
   },
   {
     "id": "14",
@@ -109,7 +109,7 @@
     "title": "Figure 03 Released",
     "description": "Figure AI launched the third-generation humanoid robot, Figure 03, equipped with the Helix model, featuring 32 degrees of freedom across its body and significantly enhanced computing power.",
     "category": "product",
-    "impact": 4
+    "impact": 3
   },
   {
     "id": "15",
@@ -117,6 +117,6 @@
     "title": "Secured $1.5 Billion in Major Funding",
     "description": "Figure AI announced the completion of a $1.5 billion funding round at a valuation exceeding $10 billion, with major investors including Microsoft and OpenAI participating. The funds will be used to scale up production.",
     "category": "milestone",
-    "impact": 4
+    "impact": 2
   }
 ]

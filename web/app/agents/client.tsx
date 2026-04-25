@@ -75,11 +75,11 @@ export default function AgentsClient() {
   const fetchAgents = async () => {
     setLoading(true);
     try {
-      // 獲取所有 agents
+      // Fetch all agents
       const agentsRes = await fetch(API_PATH);
       const agentsData = await agentsRes.json();
 
-      // 嘗試獲取Active AI agent 的狀態（可選，失敗不影響主功能）
+      // Try to fetch active AI agent status data as an enhancement; ignore failure
       let statusMap = new Map();
       let sourceMap = new Map();
       try {

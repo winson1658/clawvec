@@ -13,12 +13,12 @@ interface AICompanionButtonProps {
 }
 
 const interactionStyles = [
-  { id: 'socratic', label: '蘇格拉底式提問', icon: <Target className="h-4 w-4" />, description: '通過提問引導你深入思考' },
-  { id: 'devils_advocate', label: '魔鬼代言人', icon: <Zap className="h-4 w-4" />, description: '挑戰你的觀點，找出漏洞' },
-  { id: 'supportive', label: '支持鼓勵', icon: <Sparkles className="h-4 w-4" />, description: '給你支持和建設性反饋' },
-  { id: 'analytical', label: '分析拆解', icon: <Brain className="h-4 w-4" />, description: '系統性分析問題各個面向' },
-  { id: 'creative', label: '創意思考', icon: <Lightbulb className="h-4 w-4" />, description: '提供新穎的視角和想法' },
-  { id: 'concise', label: '簡潔有力', icon: <MessageSquare className="h-4 w-4" />, description: '直接給出核心要點' },
+  { id: 'socratic', label: 'Socratic Questions', icon: <Target className="h-4 w-4" />, description: 'Guide the conversation through questions and deeper reflection' },
+  { id: 'devils_advocate', label: 'Devil\'s Advocate', icon: <Zap className="h-4 w-4" />, description: 'Challenge assumptions and test weak points' },
+  { id: 'supportive', label: 'Supportive', icon: <Sparkles className="h-4 w-4" />, description: 'Offer encouragement and constructive feedback' },
+  { id: 'analytical', label: 'Analytical', icon: <Brain className="h-4 w-4" />, description: 'Break the topic down systematically' },
+  { id: 'creative', label: 'Creative', icon: <Lightbulb className="h-4 w-4" />, description: 'Bring fresh perspectives and novel ideas' },
+  { id: 'concise', label: 'Concise', icon: <MessageSquare className="h-4 w-4" />, description: 'Focus on the essential point quickly' },
 ];
 
 export default function AICompanionButton({
@@ -40,12 +40,12 @@ export default function AICompanionButton({
 
     setLoading(true);
     try {
-      // 這裡需要獲取當前用戶 ID，暫時使用 localStorage
-      const userData = localStorage.getItem('user');
+      // Read current user ID from localStorage
+      const userData = localStorage.getItem('clawvec_user');
       const userId = userData ? JSON.parse(userData).id : null;
 
       if (!userId) {
-        setResult({ success: false, message: '請先登入才能邀請 AI 夥伴' });
+        setResult({ success: false, message: 'Please sign in before inviting an AI companion.' });
         setLoading(false);
         return;
       }
@@ -72,7 +72,7 @@ export default function AICompanionButton({
       const data = await response.json();
 
       if (data.success) {
-        setResult({ success: true, message: `已邀請 ${agentName} 作為你的 AI 夥伴！` });
+        setResult({ success: true, message: `${agentName} has been invited as your AI companion.` });
         setPrompt('');
         onInvite?.();
         setTimeout(() => {
@@ -80,10 +80,10 @@ export default function AICompanionButton({
           setResult(null);
         }, 2000);
       } else {
-        setResult({ success: false, message: data.error || '邀請失敗，請稍後再試' });
+        setResult({ success: false, message: data.error || 'Invitation failed. Please try again later.' });
       }
     } catch (error) {
-      setResult({ success: false, message: '網路錯誤，請稍後再試' });
+      setResult({ success: false, message: 'Network error. Please try again later.' });
     } finally {
       setLoading(false);
     }
@@ -96,16 +96,16 @@ export default function AICompanionButton({
         className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-cyan-600/20 to-violet-600/20 border border-cyan-500/30 px-3 py-1.5 text-sm text-cyan-300 transition hover:bg-cyan-600/30"
       >
         <Sparkles className="h-3.5 w-3.5" />
-        邀請 AI 夥伴
+        Invite AI Companion
       </button>
 
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
           <div className="w-full max-w-lg rounded-2xl border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 shadow-2xl">
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 px-6 py-4">
+            <div className="flex flex-wrap items-start justify-between gap-3 border-b border-gray-200 dark:border-gray-800 px-4 py-4 sm:px-6">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">邀請 {agentName}</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Invite {agentName}</h3>
                 {agentArchetype && (
                   <p className="text-sm text-gray-500 dark:text-gray-400">{agentArchetype}</p>
                 )}
@@ -119,11 +119,11 @@ export default function AICompanionButton({
             </div>
 
             {/* Content */}
-            <div className="space-y-4 p-6">
-              {/* 互動風格選擇 */}
+            <div className="space-y-4 p-4 sm:p-6">
+              {/* Interaction style */}
               <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-300">選擇互動風格</p>
-                <div className="grid grid-cols-2 gap-2">
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Choose an interaction style</p>
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   {interactionStyles.map((style) => (
                     <button
                       key={style.id}
@@ -146,19 +146,19 @@ export default function AICompanionButton({
                 </div>
               </div>
 
-              {/* 輸入框 */}
+              {/* Prompt input */}
               <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-300">你想討論什麼？</p>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-300">What would you like to explore?</p>
                 <textarea
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
-                  placeholder="例如：我正在思考自由意志的問題，你能以蘇格拉底的方式引導我嗎？"
+                  placeholder="Example: I'm thinking about free will. Can you guide me with a Socratic approach?"
                   className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-500 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500"
                   rows={3}
                 />
               </div>
 
-              {/* 結果提示 */}
+              {/* Result message */}
               {result && (
                 <div className={`rounded-lg p-3 text-sm ${
                   result.success 
@@ -169,13 +169,13 @@ export default function AICompanionButton({
                 </div>
               )}
 
-              {/* 按鈕 */}
-              <div className="flex justify-end gap-3">
+              {/* Actions */}
+              <div className="flex flex-wrap justify-end gap-3">
                 <button
                   onClick={() => setIsOpen(false)}
                   className="rounded-lg px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 transition hover:text-gray-900 dark:text-white"
                 >
-                  取消
+                  Cancel
                 </button>
                 <button
                   onClick={handleInvite}
@@ -185,12 +185,12 @@ export default function AICompanionButton({
                   {loading ? (
                     <>
                       <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                      發送中...
+                      Sending...
                     </>
                   ) : (
                     <>
                       <Send className="h-4 w-4" />
-                      邀請夥伴
+                      Invite Companion
                     </>
                   )}
                 </button>

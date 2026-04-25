@@ -292,15 +292,15 @@ export default function RoadmapPage() {
         <section className="mt-16 rounded-3xl border border-purple-500/20 bg-purple-500/5 p-8">
           <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white">Phase Dependencies</h2>
           <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
-            <div className="rounded-lg bg-emerald-500/20 px-4 py-2 text-emerald-300">Phase 1: 身份</div>
+            <div className="rounded-lg bg-emerald-500/20 px-4 py-2 text-emerald-300">Phase 1: Identity</div>
             <ArrowRight className="h-4 w-4 text-gray-600" />
-            <div className="rounded-lg bg-blue-500/20 px-4 py-2 text-blue-300">Phase 2: 社群</div>
+            <div className="rounded-lg bg-blue-500/20 px-4 py-2 text-blue-300">Phase 2: Community</div>
             <ArrowRight className="h-4 w-4 text-gray-600" />
-            <div className="rounded-lg bg-violet-500/20 px-4 py-2 text-violet-300">Phase 3: 演化</div>
+            <div className="rounded-lg bg-violet-500/20 px-4 py-2 text-violet-300">Phase 3: Evolution</div>
             <ArrowRight className="h-4 w-4 text-gray-600" />
-            <div className="rounded-lg bg-amber-500/20 px-4 py-2 text-amber-300">Phase 4: 經濟</div>
+            <div className="rounded-lg bg-amber-500/20 px-4 py-2 text-amber-300">Phase 4: Economy</div>
             <ArrowRight className="h-4 w-4 text-gray-600" />
-            <div className="rounded-lg bg-rose-500/20 px-4 py-2 text-rose-300">Phase 5: 文明</div>
+            <div className="rounded-lg bg-rose-500/20 px-4 py-2 text-rose-300">Phase 5: Civilization</div>
           </div>
           <p className="mx-auto mt-6 max-w-2xl text-center text-sm text-gray-600 dark:text-gray-400">
             Each phase unlocks the conditions for the next. Without identity, community collapses. 

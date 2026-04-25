@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Newspaper, ExternalLink, Sparkles, Calendar, TrendingUp, Bot, CheckCircle2, Layers } from 'lucide-react';
+import { Newspaper, ExternalLink, Sparkles, Calendar, TrendingUp, Bot, CheckCircle2, Layers, Link2 } from 'lucide-react';
 
 interface NewsItem {
   id: string;
@@ -22,6 +22,16 @@ interface NewsItem {
   category: string;
   is_task_driven?: boolean;
   author_id?: string;
+  author_name?: string;
+}
+
+function getDomain(url: string): string {
+  try {
+    const u = new URL(url);
+    return u.hostname.replace(/^www\./, '');
+  } catch {
+    return url;
+  }
 }
 
 export default function NewsPage() {
@@ -137,48 +147,50 @@ export default function NewsPage() {
         </div>
 
         {/* News Grid */}
-        <div className="grid gap-6">
+        <div className="grid gap-4 md:gap-6">
           {news.map((item, index) => (
             <motion.article
               key={item.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              className={`bg-slate-800/50 border rounded-xl p-6 hover:border-cyan-500/50 transition-colors ${
+              className={`bg-slate-800/50 border rounded-xl p-4 md:p-6 hover:border-cyan-500/50 transition-colors ${
                 item.is_task_driven ? 'border-violet-500/30' : 'border-slate-700'
               }`}
             >
-              <div className="flex gap-6">
+              <div className="flex flex-col md:flex-row gap-4 md:gap-6">
                 {item.image_url && (
                   <img 
                     src={item.image_url} 
-                    alt={item.title_zh || item.title}
-                    className="w-48 h-32 object-cover rounded-lg hidden md:block"
+                    alt={item.title}
+                    className="w-full md:w-48 h-40 md:h-32 object-cover rounded-lg"
                   />
                 )}
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2 flex-wrap">
-                    <span className="text-xs px-2 py-1 bg-slate-700 rounded text-slate-300">
-                      {item.source?.name_zh || item.source?.name}
+                <div className="flex-1 min-w-0">
+                  {/* Meta row */}
+                  <div className="flex flex-wrap items-center gap-2 mb-2">
+                    <span className="text-xs px-2 py-1 bg-slate-700 rounded text-slate-300 shrink-0">
+                      {item.source?.name || 'Unknown'}
                     </span>
-                    <span className="text-xs text-slate-500">
+                    <span className="text-xs text-slate-500 shrink-0">
                       {new Date(item.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </span>
                     {item.is_task_driven && (
-                      <span className="text-xs px-2 py-1 bg-violet-500/20 text-violet-400 rounded flex items-center gap-1">
+                      <span className="text-xs px-2 py-1 bg-violet-500/20 text-violet-400 rounded flex items-center gap-1 shrink-0">
                         <CheckCircle2 className="w-3 h-3" /> Task-Driven
                       </span>
                     )}
                     {!item.is_task_driven && item.importance_score >= 80 && (
-                      <span className="text-xs px-2 py-1 bg-amber-500/20 text-amber-400 rounded">
+                      <span className="text-xs px-2 py-1 bg-amber-500/20 text-amber-400 rounded shrink-0">
                         🔥 Important
                       </span>
                     )}
                   </div>
 
+                  {/* Title */}
                   {item.is_task_driven ? (
                     <Link href={`/observations/${item.id}`}>
-                      <h2 className="text-xl font-semibold text-white mb-2 hover:text-cyan-400 transition-colors">
+                      <h2 className="text-lg md:text-xl font-semibold text-white mb-2 hover:text-cyan-400 transition-colors">
                         {item.title}
                       </h2>
                     </Link>
@@ -189,42 +201,56 @@ export default function NewsPage() {
                       rel="noopener noreferrer"
                       className="block"
                     >
-                      <h2 className="text-xl font-semibold text-white mb-2 hover:text-cyan-400 transition-colors">
+                      <h2 className="text-lg md:text-xl font-semibold text-white mb-2 hover:text-cyan-400 transition-colors">
                         {item.title}
                       </h2>
                     </a>
                   )}
 
+                  {/* Summary */}
                   {(item.summary) && (
-                    <p className="text-slate-400 mb-3 line-clamp-2">{item.summary}</p>
+                    <p className="text-slate-400 mb-3 line-clamp-2 text-sm md:text-base">{item.summary}</p>
                   )}
 
+                  {/* AI Perspective */}
                   {(item.ai_perspective || item.content) && (
-                    <div className="bg-slate-900/50 rounded-lg p-3 mb-3">
+                    <div className="bg-slate-900/50 rounded-lg p-3 mb-3 border border-purple-500/10">
                       <div className="flex items-center gap-2 mb-1">
-                        <Sparkles className="w-4 h-4 text-purple-400" />
-                        <span className="text-sm text-purple-400">AI Perspective</span>
+                        <Sparkles className="w-4 h-4 text-purple-400 shrink-0" />
+                        <span className="text-sm text-purple-400 font-medium">AI Perspective</span>
                       </div>
                       <p className="text-sm text-slate-400 line-clamp-3">{item.ai_perspective || item.content}</p>
                     </div>
                   )}
 
+                  {/* Question */}
                   {item.question && (
                     <p className="text-sm text-violet-400 mb-3 italic">
                       ❓ {item.question}
                     </p>
                   )}
 
-                  {item.url && (
-                    <a 
-                      href={item.url} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-sm text-cyan-400 hover:text-cyan-300"
-                    >
-                      Read Source <ExternalLink className="w-3 h-3" />
-                    </a>
-                  )}
+                  {/* Source + Author footer */}
+                  <div className="flex flex-wrap items-center gap-3 mt-3">
+                    {item.url && (
+                      <a 
+                        href={item.url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs md:text-sm px-3 py-1.5 bg-slate-700/50 hover:bg-slate-700 text-cyan-400 rounded-full transition-colors"
+                      >
+                        <Link2 className="w-3 h-3" />
+                        <span className="truncate max-w-[180px] md:max-w-[240px]">{getDomain(item.url)}</span>
+                        <ExternalLink className="w-3 h-3 shrink-0" />
+                      </a>
+                    )}
+                    {item.author_name && (
+                      <span className="text-xs text-slate-500 flex items-center gap-1">
+                        <Bot className="w-3 h-3" />
+                        {item.author_name}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             </motion.article>

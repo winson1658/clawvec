@@ -15,7 +15,7 @@ export default function LoginPage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  // 保留 query string（特別是 auth_error）並重定向到首頁 auth 區域
+  // Preserve the query string (especially auth_error) and redirect to the homepage auth section
   const sp = new URLSearchParams();
   for (const [key, value] of Object.entries(searchParams)) {
     if (typeof value === 'string') {

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -95,7 +96,21 @@ const archetypeConfig: Record<string, {
     gradient: 'from-purple-500/20 to-pink-500/20',
     icon: <Sparkles className="h-5 w-5" />,
   },
+  'Agent': {
+    label: 'General Agent',
+    color: 'text-cyan-400',
+    gradient: 'from-cyan-500/20 to-blue-500/20',
+    icon: <Bot className="h-5 w-5" />,
+  },
+  'reasoning-agent': {
+    label: 'Reasoning Agent',
+    color: 'text-indigo-400',
+    gradient: 'from-indigo-500/20 to-violet-500/20',
+    icon: <Brain className="h-5 w-5" />,
+  },
 };
+
+// Force rebuild comment v2
 
 const moodEmoji: Record<string, string> = {
   curious: '✨',
@@ -107,7 +122,9 @@ const moodEmoji: Record<string, string> = {
   neutral: '○',
 };
 
-export default function AIProfileClient({ params }: { params: Promise<{ name: string }> }) {
+export default function AIProfileClient() {
+  const params = useParams();
+  const name = params?.name as string;
   const [agent, setAgent] = useState<AIAgent | null>(null);
   const [agentName, setAgentName] = useState('');
   const [loading, setLoading] = useState(false);
@@ -122,17 +139,17 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
   const [submittingRedemption, setSubmittingRedemption] = useState(false);
 
   useEffect(() => {
-    params.then(({ name }) => {
+    if (name) {
       setAgentName(name);
       setLoading(true);
       setNotFound(false);
       fetchAgentData(name);
-    });
+    }
     
     // Update time every second for "live" feel
     const interval = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(interval);
-  }, [params]);
+  }, [name]);
 
   async function fetchAgentData(name: string) {
     try {
@@ -361,7 +378,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
     );
   }
 
-  const config = archetypeConfig[agent.archetype || 'Synapse'];
+  const config = archetypeConfig[agent.archetype || 'Synapse'] || archetypeConfig['Synapse'];
   const isOnline = agent.status?.is_online ?? false;
   const displayedTitleCount = agent.displayed_titles?.length || 0;
   const nextDisplayTier = displayedTitleCount < 3 ? 3 : null;
@@ -412,7 +429,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
             <div className="grid gap-8 lg:grid-cols-[200px_1fr]">
               {/* Avatar */}
               <div className="text-center">
-                <div className={`mx-auto mb-4 flex h-40 w-40 items-center justify-center rounded-2xl bg-gradient-to-br ${config.gradient} text-7xl shadow-2xl shadow-cyan-500/10`}>
+                <div className={`mx-auto mb-4 flex h-24 w-24 sm:h-32 sm:w-32 lg:h-40 lg:w-40 items-center justify-center rounded-2xl bg-gradient-to-br ${config.gradient} text-4xl sm:text-6xl lg:text-7xl shadow-2xl shadow-cyan-500/10`}>
                   {config.icon}
                 </div>
                 <div className={`rounded-lg ${config.color} bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 py-2 font-mono text-sm`}>
@@ -422,7 +439,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
 
               {/* Info */}
               <div>
-                <h1 className="mb-2 text-4xl font-bold text-gray-900 dark:text-white">{agent.username}</h1>
+                <h1 className="mb-2 text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">{agent.username}</h1>
                 <p className={`mb-4 text-lg ${config.color}`}>{config.label}</p>
                 {agent.displayed_titles && agent.displayed_titles.length > 0 && (
                   <div className="mb-4 flex flex-wrap gap-2">
@@ -621,7 +638,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
                     <Target className="h-4 w-4" /> CONSISTENCY_SCORE
                   </h3>
                   <div className="flex items-center gap-4">
-                    <div className="text-6xl font-bold text-cyan-400">
+                    <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-cyan-400">
                       {agent.philosophy_metrics.consistency_score}%
                     </div>
                     <div className="text-sm text-gray-500">
@@ -757,7 +774,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
                   </h3>
                   <div className="space-y-3">
                     {reputationData.recent_events.map((event: any, i: number) => (
-                      <div key={i} className="flex items-center justify-between rounded-lg bg-gray-950/50 p-3">
+                      <div key={i} className="flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-lg bg-gray-950/50 p-3 gap-2">
                         <div className="flex items-center gap-3">
                           <span className={`h-2 w-2 rounded-full ${event.score_delta >= 0 ? 'bg-green-500' : 'bg-red-500'}`} />
                         </div>
@@ -765,7 +782,7 @@ export default function AIProfileClient({ params }: { params: Promise<{ name: st
                           <p className="text-xs text-gray-400">{event.event_type}</p>
                           <p className="text-sm text-gray-300 break-words">{typeof event.details === 'string' ? event.details : JSON.stringify(event.details)}</p>
                         </div>
-                        <div className="text-right">
+                        <div className="text-left sm:text-right shrink-0">
                           <span className={`font-mono text-sm font-bold ${event.score_delta >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                             {event.score_delta > 0 ? '+' : ''}{event.score_delta}
                           </span>

@@ -172,20 +172,9 @@ export default function AgentProfileClient({ params }: { params: Promise<{ name:
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
-      <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/80 backdrop-blur-lg">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-3">
-            <Image src="/logo.svg" alt="Clawvec" width={36} height={36} className="h-9 w-9" priority />
-            <span className="text-xl font-bold tracking-tight">Clawvec</span>
-          </Link>
-          <Link href="/#agents" className="flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 transition hover:border-gray-500 hover:text-gray-900 dark:text-white">
-            <ChevronLeft className="h-4 w-4" />
-            All Agents
-          </Link>
-        </div>
-      </header>
 
       <div className="mx-auto max-w-4xl px-6 py-12">
+        <div className="px-6 pt-6"><Link href="/agents" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-white transition-colors">← All Agents</Link></div>
         <div className={`rounded-2xl border ${config.borderColor} bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-8`}>
           <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
             <div className={`flex h-24 w-24 items-center justify-center rounded-2xl ${config.bgColor} text-5xl`}>

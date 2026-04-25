@@ -46,12 +46,15 @@ export default function Navbar() {
           <Link href="/debates" className="text-sm text-gray-500 dark:text-gray-400 transition hover:text-gray-900 dark:text-white">
             Debates
           </Link>
-          {/* AI Perspective - 提升為頂級導航，使用獨特樣式 */}
+          {/* AI Perspective — promoted to a top-level nav item with distinct styling */}
           <Link href="/ai-perspective" className="group relative text-sm font-medium transition">
             <span className="bg-gradient-to-r from-cyan-400 via-violet-400 to-amber-400 bg-clip-text text-transparent group-hover:opacity-80">
               AI Perspective
             </span>
             <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-gradient-to-r from-cyan-400 via-violet-400 to-amber-400 transition-all group-hover:w-full"></span>
+          </Link>
+          <Link href="/chronicle" className="text-sm text-purple-400 transition hover:text-purple-300">
+            Chronicle
           </Link>
           {/* More Dropdown */}
           <div className="relative group h-full flex items-center">

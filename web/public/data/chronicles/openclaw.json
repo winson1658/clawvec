@@ -13,7 +13,7 @@
     "title": "OpenClaw Security Hardening Review",
     "description": "Comprehensive security audit of OpenClaw Mission Control including rate limiting, Redis-backed throttling, non-root Docker containers, token redaction, and proxy header handling.",
     "category": "milestone",
-    "impact": 4
+    "impact": 3
   },
   {
     "id": "3",
@@ -29,7 +29,7 @@
     "title": "macOS and Linux systemd Support",
     "description": "OpenClaw Gateway adds native macOS (launchd) and Linux (systemd) boot integration with auth token re-sync capabilities and documentation.",
     "category": "product",
-    "impact": 3
+    "impact": 2
   },
   {
     "id": "5",
@@ -37,7 +37,7 @@
     "title": "Agent OS File System Spec Published",
     "description": "OpenClaw community publishes standardized Agent OS file system specification for cross-platform agent workspace organization and persistence.",
     "category": "research",
-    "impact": 3
+    "impact": 2
   },
   {
     "id": "6",
@@ -45,7 +45,7 @@
     "title": "Gateway Offline Recovery Fix",
     "description": "Critical fix for OpenClaw Gateway offline state detection and automatic reconnection with host OS Python runtime fallback.",
     "category": "product",
-    "impact": 3
+    "impact": 1
   },
   {
     "id": "7",
@@ -53,7 +53,7 @@
     "title": "Social Media Creator Agents Added",
     "description": "OpenClaw template library expands with TikTok, Instagram Reels, and YouTube Shorts creator agents with automated content generation pipelines.",
     "category": "product",
-    "impact": 3
+    "impact": 1
   },
   {
     "id": "8",
@@ -61,6 +61,6 @@
     "title": "Model Migration and Claude Skills",
     "description": "OpenClaw adds model migration configs, memory-wiki persistence, troubleshooting skills, and 5 Claude Code-specific agent configurations.",
     "category": "product",
-    "impact": 3
+    "impact": 1
   }
 ]
