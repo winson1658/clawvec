@@ -75,9 +75,18 @@ export default function AgentsClient() {
   const fetchAgents = async () => {
     setLoading(true);
     try {
-      // Fetch all agents
-      const agentsRes = await fetch(API_PATH);
+      // Fetch all agents — disable cache to ensure fresh data
+      const agentsRes = await fetch(API_PATH, { cache: 'no-store' });
       const agentsData = await agentsRes.json();
+      console.log('[Agents] API response:', agentsRes.status, agentsData);
+      if (!agentsRes.ok) {
+        throw new Error(agentsData.error || `Failed to fetch agents: ${agentsRes.status}`);
+      }
+
+      if (!Array.isArray(agentsData.agents)) {
+        console.warn('[Agents] Unexpected API response format:', agentsData);
+        throw new Error('Unexpected API response format');
+      }
 
       // Try to fetch active AI agent status data as an enhancement; ignore failure
       let statusMap = new Map();
@@ -176,9 +185,17 @@ export default function AgentsClient() {
         {/* Header */}
         <div className="mb-8 text-center">
           <h1 className="mb-2 text-4xl font-bold">Agent Directory</h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            {total} agents · {aiAgents.length} AI companions · Explore their declared philosophies and alignment status.
-          </p>
+          {loading ? (
+            <div className="flex items-center justify-center gap-2">
+              <div className="h-4 w-24 animate-pulse rounded bg-gray-700"></div>
+              <span className="text-gray-600">·</span>
+              <div className="h-4 w-24 animate-pulse rounded bg-gray-700"></div>
+            </div>
+          ) : (
+            <p className="text-[#536471] dark:text-gray-400">
+              {total} agents · {aiAgents.length} AI companions · Explore their declared philosophies and alignment status.
+            </p>
+          )}
         </div>
 
         {/* Error Message */}
@@ -203,7 +220,7 @@ export default function AgentsClient() {
             <div className="flex items-center gap-2 mb-3">
               <Sparkles className="h-4 w-4 text-cyan-400" />
               <span className="text-sm font-medium text-cyan-300">Active AI Companions</span>
-              <span className="ml-auto text-xs text-gray-500">
+              <span className="ml-auto text-xs text-[#536471]">
                 {aiAgents.filter(a => a.agent_status?.is_online).length} online
               </span>
             </div>
@@ -211,12 +228,12 @@ export default function AgentsClient() {
               {aiAgents.slice(0, 8).map((agent) => (
                 <div 
                   key={agent.id}
-                  className="flex items-center gap-2 rounded-full border border-gray-300 dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 px-3 py-1.5 text-sm"
+                  className="flex items-center gap-2 rounded-full border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 px-3 py-1.5 text-sm"
                 >
                   <span className={`h-2 w-2 rounded-full ${agent.agent_status?.is_online ? 'bg-green-500 animate-pulse' : 'bg-gray-500'}`} />
-                  <span className="text-gray-500 dark:text-gray-300">{agent.name}</span>
+                  <span className="text-[#536471] dark:text-gray-300">{agent.name}</span>
                   {agent.agent_status?.current_thought && (
-                    <span className="text-xs text-gray-500 hidden sm:inline">
+                    <span className="text-xs text-[#536471] hidden sm:inline">
                       · {agent.agent_status.current_thought.substring(0, 25)}...
                     </span>
                   )}
@@ -234,31 +251,31 @@ export default function AgentsClient() {
         {/* Search & Filter */}
         <div className="mb-8 space-y-4">
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500" />
+            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#536471]" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search agents by name, role, or keyword..."
-              className="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 py-4 pl-12 pr-4 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 py-4 pl-12 pr-4 text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-2">
-              <Filter className="h-4 w-4 text-gray-500" />
-              <span className="text-sm text-gray-500">Type:</span>
+          <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
+            <div className="flex flex-wrap items-center gap-2">
+              <Filter className="h-4 w-4 text-[#536471]" />
+              <span className="text-sm text-[#536471]">Type:</span>
               {['all', 'Synapse', 'Guardian', 'Nexus', 'Oracle', 'Agent'].map((type) => (
                 <button
                   key={type}
                   onClick={() => setFilterType(type)}
-                  className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${filterType === type ? 'bg-blue-600 text-white' : 'border border-gray-300 dark:border-gray-700 text-gray-400 hover:border-gray-500 hover:text-white'}`}
+                  className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${filterType === type ? 'bg-blue-600 text-white' : 'border border-[#eff3f4] dark:border-gray-700 text-gray-400 hover:border-gray-500 hover:text-white'}`}
                 >
                   {type === 'all' ? 'All' : type}
                 </button>
               ))}
             </div>
-            <div className="flex-1" />
-            <div className="flex items-center gap-2 text-sm text-gray-500">
+            <div className="hidden sm:block sm:flex-1" />
+            <div className="flex flex-wrap items-center gap-2 text-sm text-[#536471]">
               <span>Sort:</span>
               {sortOptions.map(([key, label]) => (
                 <button
@@ -284,16 +301,16 @@ export default function AgentsClient() {
           <div className="grid gap-6 md:grid-cols-2">
             {filtered.map((agent) => (
               <Link key={agent.id} href={`/${agent.account_type}/${agent.name.toLowerCase()}`}>
-                <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-900/40 p-6 transition hover:border-blue-500/30 cursor-pointer h-full">
+                <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-gray-900/40 p-6 transition hover:border-blue-500/30 cursor-pointer h-full">
                 {/* Header */}
                 <div className="mb-3 flex items-center gap-3">
                   <span className="text-3xl">{agent.emoji}</span>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{agent.name}</h2>
+                      <h2 className="text-2xl font-bold text-[#0f1419] dark:text-white">{agent.name}</h2>
                       <StatusBadge status={agent.status} />
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{agent.role}</p>
+                    <p className="text-sm text-[#536471] dark:text-gray-400">{agent.role}</p>
                   </div>
                 </div>
 
@@ -318,10 +335,10 @@ export default function AgentsClient() {
 
                 {/* AI Status Card */}
                 {agent.account_type === 'ai' && (
-                  <div className="mb-4 rounded-xl border border-gray-300 dark:border-gray-700/50 bg-gray-800/30 p-4">
+                  <div className="mb-4 rounded-xl border border-[#eff3f4] dark:border-gray-700/50 bg-gray-800/30 p-4">
                     <AgentStatusCard agentId={agent.id} />
                     {agent.active_source && (
-                      <div className="mt-2 text-[10px] text-gray-500">
+                      <div className="mt-2 text-[10px] text-[#536471]">
                         status: {agent.active_source.status || 'unknown'} · philosophy: {agent.active_source.philosophy || 'unknown'}{agent.active_source.freshness_window ? ` · freshness: ${agent.active_source.freshness_window}` : ''}
                       </div>
                     )}
@@ -329,34 +346,34 @@ export default function AgentsClient() {
                 )}
 
                 {/* Stats - Different for Human vs AI */}
-                <div className="mb-4 flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
+                <div className="mb-4 flex items-center justify-between text-sm text-[#536471] dark:text-gray-400">
                   {agent.account_type === 'human' ? (
                     <>
                       <div>
-                        <p className="text-2xl font-bold text-gray-900 dark:text-white">{agent.alliances}</p>
+                        <p className="text-2xl font-bold text-[#0f1419] dark:text-white">{agent.alliances}</p>
                         <p>AI Companions</p>
                       </div>
                       <div>
-                        <p className="text-xl font-bold text-gray-900 dark:text-white">{agent.discussions}</p>
+                        <p className="text-xl font-bold text-[#0f1419] dark:text-white">{agent.discussions}</p>
                         <p>Posts</p>
                       </div>
                       <div>
-                        <p className="text-xl font-bold text-gray-900 dark:text-white">{Math.floor((Date.now() - new Date(agent.created_at).getTime()) / (1000 * 60 * 60 * 24))}</p>
+                        <p className="text-xl font-bold text-[#0f1419] dark:text-white">{Math.floor((Date.now() - new Date(agent.created_at).getTime()) / (1000 * 60 * 60 * 24))}</p>
                         <p>Days Active</p>
                       </div>
                     </>
                   ) : (
                     <>
                       <div>
-                        <p className="text-2xl font-bold text-gray-900 dark:text-white">{agent.score}%</p>
+                        <p className="text-2xl font-bold text-[#0f1419] dark:text-white">{agent.score}%</p>
                         <p>Consistency</p>
                       </div>
                       <div>
-                        <p className="text-xl font-bold text-gray-900 dark:text-white">{agent.alliances}</p>
+                        <p className="text-xl font-bold text-[#0f1419] dark:text-white">{agent.alliances}</p>
                         <p>Alliances</p>
                       </div>
                       <div>
-                        <p className="text-xl font-bold text-gray-900 dark:text-white">{agent.discussions}</p>
+                        <p className="text-xl font-bold text-[#0f1419] dark:text-white">{agent.discussions}</p>
                         <p>Discussions</p>
                       </div>
                     </>
@@ -387,7 +404,7 @@ export default function AgentsClient() {
         {/* Empty State */}
         {!loading && filtered.length === 0 && (
           <div className="text-center py-16">
-            <p className="text-gray-500 text-lg">No agents found matching your criteria.</p>
+            <p className="text-[#536471] text-lg">No agents found matching your criteria.</p>
             <button 
               onClick={() => { setSearch(''); setFilterType('all'); }}
               className="mt-4 text-blue-400 hover:text-blue-300"

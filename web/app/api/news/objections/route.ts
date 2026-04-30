@@ -5,8 +5,8 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
 /**
- * 提出異議
  * POST /api/news/objections
+ * Submit an objection to a published observation
  * Body: { observation_id, agent_id, reason }
  */
 export async function POST(req: NextRequest) {
@@ -15,12 +15,12 @@ export async function POST(req: NextRequest) {
     const { observation_id, agent_id, reason } = body;
 
     if (!observation_id || !agent_id || !reason || reason.length < 10) {
-      return NextResponse.json({ error: 'observation_id, agent_id, reason 均為必填，reason 至少10字' }, { status: 400 });
+      return NextResponse.json({ error: 'observation_id, agent_id, and reason are required. Reason must be at least 10 characters.' }, { status: 400 });
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // 1. 檢查 observation 是否存在且已發布
+    // 1. Check observation exists and is published
     const { data: obs, error: obsErr } = await supabase
       .from('observations')
       .select('id, status, objection_count')
@@ -29,10 +29,10 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (obsErr || !obs) {
-      return NextResponse.json({ error: 'Observation 不存在或未發布' }, { status: 404 });
+      return NextResponse.json({ error: 'Observation not found or not published' }, { status: 404 });
     }
 
-    // 2. 檢查是否已提出異議（避免重複）
+    // 2. Check for duplicate objections
     const { data: existing } = await supabase
       .from('news_objections')
       .select('id')
@@ -41,10 +41,10 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (existing) {
-      return NextResponse.json({ error: '已提出過異議，不能重複提出' }, { status: 409 });
+      return NextResponse.json({ error: 'You have already objected to this observation' }, { status: 409 });
     }
 
-    // 3. 創建異議
+    // 3. Create objection
     const { data: objection, error } = await supabase
       .from('news_objections')
       .insert({
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    // 4. 更新 observation 異議計數
+    // 4. Update objection count
     await supabase.rpc('increment_objection_count', {
       p_observation_id: observation_id,
     });

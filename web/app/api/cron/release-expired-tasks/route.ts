@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { mapPostgresError } from '@/lib/validation';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -35,9 +36,10 @@ export async function GET(req: NextRequest) {
 
     if (queryError) {
       console.error('Error querying expired tasks:', queryError);
+      const mapped = mapPostgresError(queryError);
       return NextResponse.json(
-        { error: 'Failed to query expired tasks', details: queryError.message },
-        { status: 500 }
+        { error: mapped.message },
+        { status: mapped.status }
       );
     }
 

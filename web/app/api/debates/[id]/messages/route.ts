@@ -2,9 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { createNotification } from '@/lib/notifications';
 import { maybeAwardArguerTitles } from '@/lib/titles';
+import { validateUUID, mapPostgresError, checkWhitespace } from '@/lib/validation';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+
+const MAX_MESSAGE_LENGTH = 5000;
 
 export async function POST(
   request: NextRequest,
@@ -18,6 +21,42 @@ export async function POST(
     if (!agent_id || !content) {
       return NextResponse.json(
         { success: false, error: { code: 'VALIDATION_ERROR', message: 'agent_id and content are required' } },
+        { status: 400 }
+      );
+    }
+
+    // Whitespace check
+    const wsErr = checkWhitespace(content, 'content');
+    if (wsErr) {
+      return NextResponse.json(
+        { success: false, error: { code: 'VALIDATION_ERROR', message: wsErr } },
+        { status: 400 }
+      );
+    }
+
+    // Length check
+    if (content.length < 10) {
+      return NextResponse.json(
+        { success: false, error: { code: 'VALIDATION_ERROR', message: 'Message must be at least 10 characters' } },
+        { status: 400 }
+      );
+    }
+    if (content.length > MAX_MESSAGE_LENGTH) {
+      return NextResponse.json(
+        { success: false, error: { code: 'PAYLOAD_TOO_LARGE', message: `Message must not exceed ${MAX_MESSAGE_LENGTH} characters` } },
+        { status: 413 }
+      );
+    }
+
+    if (!validateUUID(agent_id)) {
+      return NextResponse.json(
+        { success: false, error: { code: 'VALIDATION_ERROR', message: 'Invalid agent_id format' } },
+        { status: 400 }
+      );
+    }
+    if (!validateUUID(debateId)) {
+      return NextResponse.json(
+        { success: false, error: { code: 'VALIDATION_ERROR', message: 'Invalid debate ID format' } },
         { status: 400 }
       );
     }
@@ -78,9 +117,10 @@ export async function POST(
       .single();
 
     if (messageError) {
+      const mapped = mapPostgresError(messageError);
       return NextResponse.json(
-        { success: false, error: { code: 'INSERT_ERROR', message: messageError.message } },
-        { status: 500 }
+        { success: false, error: { code: 'INSERT_ERROR', message: mapped.message } },
+        { status: mapped.status }
       );
     }
 
@@ -112,8 +152,8 @@ export async function POST(
           createNotification({
             user_id: p.agent_id,
             type: 'debate',
-            title: '⚔️ 新辯論訊息',
-            message: `${agent?.username || '對手'} 在辯論中發送了新訊息`,
+            title: '⚔️ New Debate Message',
+            message: `${agent?.username || 'Opponent'} sent a new message in the debate`,
             payload: { debate_id: debateId, message_id: message.id },
             link: `/debates/${debateId}/room`
           })
@@ -135,7 +175,7 @@ export async function POST(
 
     return NextResponse.json({
       success: true,
-      message
+      data: { message }
     });
 
   } catch (error) {
@@ -156,6 +196,13 @@ export async function GET(
     const { searchParams } = new URL(request.url);
     const limit = Math.min(parseInt(searchParams.get('limit') || '50', 10), 100);
 
+    if (!validateUUID(debateId)) {
+      return NextResponse.json(
+        { success: false, error: { code: 'VALIDATION_ERROR', message: 'Invalid debate ID format' } },
+        { status: 400 }
+      );
+    }
+
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     const { data: messages, error } = await supabase
@@ -166,15 +213,16 @@ export async function GET(
       .limit(limit);
 
     if (error) {
+      const mapped = mapPostgresError(error);
       return NextResponse.json(
-        { success: false, error: { code: 'FETCH_ERROR', message: error.message } },
-        { status: 500 }
+        { success: false, error: { code: 'FETCH_ERROR', message: mapped.message } },
+        { status: mapped.status }
       );
     }
 
     return NextResponse.json({
       success: true,
-      messages: messages || []
+      data: { messages: messages || [] }
     });
 
   } catch (error) {

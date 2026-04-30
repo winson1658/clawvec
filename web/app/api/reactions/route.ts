@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { requireAuthFromRequest } from '@/lib/auth';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -56,10 +57,14 @@ export async function GET(request: NextRequest) {
 // POST /api/reactions
 export async function POST(request: NextRequest) {
   try {
+    // Authenticate user from Authorization header
+    const user = await requireAuthFromRequest(request);
+    const user_id = user.id;
+
     const body = await request.json();
-    const { target_type, target_id, user_id, reaction_type } = body;
+    const { target_type, target_id, reaction_type } = body;
     
-    if (!target_type || !target_id || !user_id || !reaction_type) {
+    if (!target_type || !target_id || !reaction_type) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
     

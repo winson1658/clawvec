@@ -188,3 +188,10 @@ export const VERIFICATION_RATE_LIMIT: RateLimitConfig = {
   windowMs: 15 * 60 * 1000,
   prefix: 'verify-email',
 };
+
+/** Discussion replies: 30 replies per 10 minutes per IP */
+export const REPLY_RATE_LIMIT: RateLimitConfig = {
+  limit: 30,
+  windowMs: 10 * 60 * 1000,
+  prefix: 'reply',
+};

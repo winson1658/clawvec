@@ -1,5 +1,7 @@
 'use client';
 
+const getToken = () => typeof window !== 'undefined' ? localStorage.getItem('clawvec_token') : null;
+
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -96,7 +98,7 @@ export default function NotificationsPage() {
     try {
       const response = await fetch(`/api/notifications/${id}/read`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(getToken() ? { 'Authorization': `Bearer ${getToken()}` } : {}) },
         body: JSON.stringify({ user_id: user.id })
       });
 
@@ -118,7 +120,7 @@ export default function NotificationsPage() {
     try {
       const response = await fetch('/api/notifications/read-all', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(getToken() ? { 'Authorization': `Bearer ${getToken()}` } : {}) },
         body: JSON.stringify({ user_id: user.id })
       });
 

@@ -78,6 +78,7 @@ export async function POST(req: NextRequest) {
     })
 
     const registerData = await registerRes.json()
+    console.log('[GateRegister] registerData.api_key length:', registerData?.api_key?.length, '| prefix:', registerData?.api_key?.slice(0, 8));
     if (!registerRes.ok) {
       return NextResponse.json({
         error: 'Sanctuary registration failed',

@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { createNotification } from '@/lib/notifications';
 import { awardTitleIfMissing } from '@/lib/titles';
+import { requireAuthFromRequest } from '@/lib/auth';
+import { validateLengths, checkXSS, errorResponse, serverErrorResponse, LIMITS } from '@/lib/validation';
+import { mapPostgresError } from '@/lib/validation';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -12,8 +15,12 @@ export async function POST(
 ) {
   try {
     const { id } = await params;
+
+    // Authenticate user from Authorization header
+    const user = await requireAuthFromRequest(request);
+
     const body = await request.json();
-    const { content, author_id, author_name, author_type, parent_id } = body;
+    const { content, parent_id } = body;
 
     if (!id) {
       return NextResponse.json(
@@ -22,9 +29,9 @@ export async function POST(
       );
     }
 
-    if (!content || !author_id || !author_name) {
+    if (!content) {
       return NextResponse.json(
-        { error: 'Content, author_id, and author_name are required' },
+        { error: 'Content is required' },
         { status: 400 }
       );
     }
@@ -59,22 +66,10 @@ export async function POST(
       );
     }
 
-    // Force validate author_type: query real account type from author_id
-    const { data: agent, error: agentError } = await supabase
-      .from('agents')
-      .select('id, username, account_type')
-      .eq('id', author_id)
-      .maybeSingle();
-
-    if (agentError || !agent) {
-      return NextResponse.json(
-        { error: 'Invalid author_id. Agent not found.' },
-        { status: 403 }
-      );
-    }
-
-    const resolvedAuthorType = agent.account_type;
-    const resolvedAuthorName = agent.username || author_name || 'Anonymous';
+    // Use authenticated user's identity
+    const authorId = user.id;
+    const resolvedAuthorType = user.account_type;
+    const resolvedAuthorName = user.username || 'Anonymous';
 
     // Create reply
     const { data: reply, error: replyError } = await supabase
@@ -83,7 +78,7 @@ export async function POST(
         discussion_id: id,
         parent_id: parent_id || null,
         content,
-        author_id,
+        author_id: authorId,
         author_name: resolvedAuthorName,
         author_type: resolvedAuthorType,
         created_at: new Date().toISOString(),
@@ -94,9 +89,10 @@ export async function POST(
 
     if (replyError) {
       console.error('Reply insert error:', replyError);
+      const mapped = mapPostgresError(replyError);
       return NextResponse.json(
-        { error: 'Failed to create reply', details: replyError.message },
-        { status: 500 }
+        { error: mapped.message },
+        { status: mapped.status }
       );
     }
 
@@ -112,15 +108,15 @@ export async function POST(
       .eq('id', id);
 
     if (nextRepliesCount === 1) {
-      await awardTitleIfMissing({ user_id: author_id, title_id: 'first-responder', title_name: 'First Responder', source: 'discussion_first_reply' });
+      await awardTitleIfMissing({ user_id: authorId, title_id: 'first-responder', title_name: 'First Responder', source: 'discussion_first_reply' });
     }
 
-    if (discussion.author_id && discussion.author_id !== author_id) {
+    if (discussion.author_id && discussion.author_id !== authorId) {
       await createNotification({
         user_id: discussion.author_id,
         type: 'reply',
         title: '💬 New reply',
-        message: `${author_name} replied to your discussion: ${discussion.title}`,
+        message: `${resolvedAuthorName} replied to your discussion: ${discussion.title}`,
         payload: { discussion_id: id, reply_id: reply.id },
         link: `/discussions/${id}`
       });
@@ -129,7 +125,7 @@ export async function POST(
     // Record contribution for reply
     const { recordContribution } = await import('@/lib/contributions');
     await recordContribution({
-      user_id: author_id,
+      user_id: authorId,
       action: 'comment.created',
       target_type: 'discussion_reply',
       target_id: reply.id,
@@ -197,9 +193,10 @@ export async function GET(
 
     if (repliesError) {
       console.error('Replies fetch error:', repliesError);
+      const mapped = mapPostgresError(repliesError);
       return NextResponse.json(
-        { error: 'Failed to fetch replies', details: repliesError.message },
-        { status: 500 }
+        { error: mapped.message },
+        { status: mapped.status }
       );
     }
 

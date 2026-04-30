@@ -1,7 +1,10 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { requireAuthFromRequest } from '@/lib/auth';
 import { createNotification } from '@/lib/notifications';
 import { awardTitleIfMissing } from '@/lib/titles';
+import { checkRateLimit, getClientIP, rateLimitResponse, REPLY_RATE_LIMIT } from '@/lib/rateLimit';
+import { mapPostgresError } from '@/lib/validation';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -50,6 +53,13 @@ export async function GET(
       .single();
 
     if (discussionError) {
+      // Handle invalid UUID format
+      if (discussionError.code === '22P02' || discussionError.message?.includes('invalid input syntax for type uuid')) {
+        return NextResponse.json(
+          { error: 'Invalid discussion ID format' },
+          { status: 400 }
+        );
+      }
       if (discussionError.code === 'PGRST116') {
         return NextResponse.json(
           { error: 'Discussion not found' },
@@ -58,7 +68,7 @@ export async function GET(
       }
       console.error('Database error:', discussionError);
       return NextResponse.json(
-        { error: 'Failed to fetch discussion', details: discussionError.message },
+        { error: 'Failed to fetch discussion' },
         { status: 500 }
       );
     }
@@ -127,7 +137,7 @@ export async function POST(
   try {
     const { id } = await params;
     const body = await request.json();
-    const { content, author_id, author_name, author_type, parent_id } = body;
+    const { content, author_id: clientAuthorId, author_name, author_type, parent_id } = body;
 
     if (!id) {
       return NextResponse.json(
@@ -136,9 +146,20 @@ export async function POST(
       );
     }
 
-    if (!content || !author_id || !author_name) {
+    // Rate limit check
+    const ip = getClientIP(request);
+    const rl = checkRateLimit(ip, REPLY_RATE_LIMIT);
+    if (!rl.success) {
+      return rateLimitResponse(rl);
+    }
+
+    // Authenticate via Authorization header — ignore client-provided author_id
+    const user = await requireAuthFromRequest(request);
+    const author_id = user.id;
+
+    if (!content) {
       return NextResponse.json(
-        { error: 'Content, author_id, and author_name are required' },
+        { error: 'Content is required' },
         { status: 400 }
       );
     }
@@ -148,6 +169,40 @@ export async function POST(
         { error: 'Reply must be at least 5 characters' },
         { status: 400 }
       );
+    }
+
+    // Content length limit
+    const MAX_REPLY_LENGTH = 5000;
+    if (content.length > MAX_REPLY_LENGTH) {
+      return NextResponse.json(
+        { error: `Reply must not exceed ${MAX_REPLY_LENGTH} characters` },
+        { status: 400 }
+      );
+    }
+
+    // Null byte check
+    if (content.includes('\x00')) {
+      return NextResponse.json(
+        { error: 'Invalid content: contains null bytes' },
+        { status: 400 }
+      );
+    }
+
+    // Dangerous pattern check (SSTI, command injection)
+    const dangerousPatterns = [
+      /\{\{.*\}\}/,           // Jinja2 / Handlebars SSTI
+      /\$\{.*\}/,             // Template literal injection
+      /<%[=\-]?.*%>/,        // EJS / JSP SSTI
+      /\$\(.*\)/,             // Shell command substitution
+      /`.*`/,                // Shell backtick
+    ];
+    for (const pattern of dangerousPatterns) {
+      if (pattern.test(content)) {
+        return NextResponse.json(
+          { error: 'Invalid content: contains potentially dangerous patterns' },
+          { status: 400 }
+        );
+      }
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -208,9 +263,10 @@ export async function POST(
 
     if (replyError) {
       console.error('Reply insert error:', replyError);
+      const mapped = mapPostgresError(replyError);
       return NextResponse.json(
-        { error: 'Failed to create reply', details: replyError.message },
-        { status: 500 }
+        { error: mapped.message },
+        { status: mapped.status }
       );
     }
 
@@ -252,6 +308,7 @@ export async function POST(
     });
 
   } catch (error) {
+    if (error instanceof Response) return error;
     console.error('Unexpected error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
@@ -267,15 +324,23 @@ export async function PUT(
 ) {
   try {
     const { id } = await params;
-    const body = await request.json();
-    const { title, content, user_id } = body;
 
-    if (!user_id) {
+    // Authenticate user from Authorization header
+    const user = await requireAuthFromRequest(request);
+    const user_id = user.id;
+
+    // Handle missing or invalid body gracefully
+    let body: any;
+    try {
+      body = await request.json();
+    } catch {
       return NextResponse.json(
-        { error: 'User ID required' },
-        { status: 401 }
+        { error: 'Invalid JSON body' },
+        { status: 400 }
       );
     }
+
+    const { title, content } = body;
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
@@ -335,6 +400,7 @@ export async function PUT(
     return NextResponse.json({ success: true, discussion: updated });
 
   } catch (error) {
+    if (error instanceof Response) return error;
     console.error('Unexpected error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
@@ -350,15 +416,10 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    const { searchParams } = new URL(request.url);
-    const user_id = searchParams.get('user_id');
 
-    if (!user_id) {
-      return NextResponse.json(
-        { error: 'User ID required' },
-        { status: 401 }
-      );
-    }
+    // Authenticate user from Authorization header
+    const user = await requireAuthFromRequest(request);
+    const user_id = user.id;
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
@@ -412,6 +473,7 @@ export async function DELETE(
     return NextResponse.json({ success: true, message: 'Discussion deleted' });
 
   } catch (error) {
+    if (error instanceof Response) return error;
     console.error('Unexpected error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },

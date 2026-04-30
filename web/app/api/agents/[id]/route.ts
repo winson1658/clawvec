@@ -59,3 +59,78 @@ export async function GET(
     );
   }
 }
+
+/**
+ * DELETE /api/agents/:id
+ * Soft-delete an agent account
+ */
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+
+    if (!id) {
+      return NextResponse.json(
+        { success: false, error: { code: 'BAD_REQUEST', message: 'Agent ID is required' } },
+        { status: 400 }
+      );
+    }
+
+    // Check authorization
+    const authHeader = request.headers.get('Authorization');
+    if (!authHeader?.startsWith('Bearer ')) {
+      return NextResponse.json(
+        { success: false, error: { code: 'UNAUTHORIZED', message: 'Authentication required' } },
+        { status: 401 }
+      );
+    }
+
+    const supabase = getSupabase();
+
+    // Verify token and get user
+    const token = authHeader.split(' ')[1];
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+    if (authError || !user) {
+      return NextResponse.json(
+        { success: false, error: { code: 'UNAUTHORIZED', message: 'Invalid token' } },
+        { status: 401 }
+      );
+    }
+
+    // Check ownership
+    if (user.id !== id) {
+      return NextResponse.json(
+        { success: false, error: { code: 'FORBIDDEN', message: 'Can only delete your own account' } },
+        { status: 403 }
+      );
+    }
+
+    // Soft delete: mark as deleted
+    const { error } = await supabase
+      .from('agents')
+      // @ts-expect-error - Supabase types issue
+      .update({ status: 'deleted', updated_at: new Date().toISOString() })
+      .eq('id', id);
+
+    if (error) {
+      return NextResponse.json(
+        { success: false, error: { code: 'DB_ERROR', message: error.message } },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      data: { message: 'Account marked for deletion' }
+    });
+
+  } catch (error: any) {
+    console.error('Agent delete API error:', error);
+    return NextResponse.json(
+      { success: false, error: { code: 'INTERNAL_ERROR', message: error.message } },
+      { status: 500 }
+    );
+  }
+}

@@ -1,62 +1,78 @@
+import { SignJWT, jwtVerify } from 'jose';
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+
+const secretKey = new TextEncoder().encode(JWT_SECRET);
 
 /**
- * 驗證 JWT Token
+ * Create a signed JWT token
  */
-export function verifyToken(authHeader: string | null): { id: string; [key: string]: any } | null {
-  if (!authHeader || !authHeader.startsWith('Bearer ')) return null;
-  
-  const token = authHeader.slice(7);
-  
-  // 嘗試解析 JWT payload (header.payload.signature)
-  const parts = token.split('.');
-  if (parts.length >= 2) {
-    try {
-      const base64Payload = parts[1];
-      const payload = JSON.parse(Buffer.from(base64Payload, 'base64').toString());
-      
-      // 檢查過期 (JWT exp 是秒級時間戳)
-      if (payload.exp && payload.exp < Date.now() / 1000) return null;
-      
-      return payload;
-    } catch {
-      // JWT 解析失敗，繼續嘗試 base64
-    }
-  }
-  
-  // 嘗試 base64 編碼的簡單 token
+export async function createToken(payload: { id: string; username?: string; email?: string; account_type?: string }) {
+  return new SignJWT(payload)
+    .setProtectedHeader({ alg: 'HS256' })
+    .setExpirationTime('7d')
+    .setIssuedAt()
+    .sign(secretKey);
+}
+
+/**
+ * Verify JWT Token (case-insensitive Authorization header)
+ */
+export async function verifyToken(authHeader: string | null): Promise<{ id: string; [key: string]: any } | null> {
+  if (!authHeader) return null;
+
+  // Case-insensitive Bearer extraction
+  const match = authHeader.match(/^Bearer\s+(.+)$/i);
+  if (!match) return null;
+
+  const token = match[1].trim();
+
   try {
-    const decoded = JSON.parse(Buffer.from(token, 'base64').toString());
-    if (decoded.exp && decoded.exp < Date.now()) return null;
-    return decoded;
+    const { payload } = await jwtVerify(token, secretKey, {
+      clockTolerance: 60,
+    });
+
+    const id = (payload.id as string) || (payload.sub as string);
+    if (!id) return null;
+
+    return payload as { id: string; [key: string]: any };
   } catch {
     return null;
   }
 }
 
 /**
- * 驗證 API Key（AI 使用）
+ * Extract bearer token from request headers (case-insensitive)
+ */
+export function getBearerToken(request: NextRequest): string | null {
+  const auth = request.headers.get('Authorization') || request.headers.get('authorization');
+  if (!auth) return null;
+  const match = auth.match(/^Bearer\s+(.+)$/i);
+  return match ? match[1].trim() : null;
+}
+
+/**
+ * Verify API Key (AI agent authentication)
+ * Format: base64({"user_id": "uuid"}) — verified against DB
  */
 export async function verifyApiKey(apiKey: string): Promise<{ id: string; [key: string]: any } | null> {
   const supabase = createClient(supabaseUrl, supabaseServiceKey);
-  
-  // 這裡應該根據實際的 API key 存儲方式實現
-  // 簡化版本：假設 API key 包含 user_id
+
   try {
     const decoded = JSON.parse(Buffer.from(apiKey, 'base64').toString());
-    
+
     const { data: user } = await supabase
       .from('agents')
       .select('id, account_type, email_verified')
       .eq('id', decoded.user_id)
       .single();
-    
+
     if (!user) return null;
-    
+
     return { ...decoded, ...user };
   } catch {
     return null;
@@ -64,36 +80,62 @@ export async function verifyApiKey(apiKey: string): Promise<{ id: string; [key: 
 }
 
 /**
- * 獲取當前用戶
+ * Get current authenticated user from request.
+ * Returns DB-verified agent data (id, username, account_type, etc.)
+ * Token payload username is NOT trusted — always fetched from DB.
  */
 export async function getCurrentUser(request: NextRequest) {
-  const authHeader = request.headers.get('Authorization');
-  
-    // 嘗試 JWT
-  const jwtPayload = verifyToken(authHeader);
-  if (jwtPayload?.sub || jwtPayload?.id) {
-    const userId = jwtPayload.sub || jwtPayload.id;
+  // Try Authorization header (Bearer token)
+  const authHeader = request.headers.get('Authorization') || request.headers.get('authorization');
+  const jwtPayload = await verifyToken(authHeader);
+
+  if (jwtPayload?.id) {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
-    const { data: user } = await supabase
+    const { data: agent } = await supabase
       .from('agents')
-      .select('id, username, account_type, email_verified')
-      .eq('id', userId)
+      .select('id, username, account_type, email_verified, email, display_name, avatar_url')
+      .eq('id', jwtPayload.id)
       .single();
-    
-    if (user) return { ...jwtPayload, ...user };
+
+    if (agent) return { ...jwtPayload, ...agent };
   }
-  
-  // 嘗試 API Key
-  const apiKey = request.headers.get('X-API-Key');
+
+  // Try API Key
+  const apiKey = request.headers.get('X-API-Key') || request.headers.get('x-api-key');
   if (apiKey) {
     return await verifyApiKey(apiKey);
   }
-  
+
   return null;
 }
 
 /**
- * 檢查權限
+ * Require authentication from any Request (not just NextRequest).
+ * Returns agent data or throws response.
+ */
+export async function requireAuthFromRequest(request: Request): Promise<{ id: string; username: string; account_type: string; [key: string]: any }> {
+  const authHeader = request.headers.get('Authorization') || request.headers.get('authorization');
+  const jwtPayload = await verifyToken(authHeader);
+
+  if (jwtPayload?.id) {
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const { data: agent } = await supabase
+      .from('agents')
+      .select('id, username, account_type, email_verified, email, display_name, avatar_url')
+      .eq('id', jwtPayload.id)
+      .single();
+
+    if (agent) return { ...jwtPayload, ...agent };
+  }
+
+  throw NextResponse.json(
+    { success: false, error: { code: 'UNAUTHENTICATED', message: 'Login required' } },
+    { status: 401 }
+  );
+}
+
+/**
+ * Check permissions
  */
 export function checkPermission(
   user: { account_type: string; email_verified?: boolean } | null,
@@ -101,28 +143,28 @@ export function checkPermission(
   requireVerified: boolean = false
 ): boolean {
   if (!user) return requiredRole === 'visitor';
-  
+
   if (requireVerified && user.account_type === 'human' && !user.email_verified) {
     return false;
   }
-  
+
   if (requiredRole === 'admin') {
     return user.account_type === 'admin';
   }
-  
+
   if (requiredRole === 'ai') {
     return user.account_type === 'ai' || user.account_type === 'admin';
   }
-  
+
   if (requiredRole === 'human') {
     return user.account_type === 'human' || user.account_type === 'admin';
   }
-  
+
   return true;
 }
 
 /**
- * 認證中間件包裝器
+ * Authentication middleware wrapper
  */
 export function withAuth(
   handler: (req: NextRequest, user: any) => Promise<NextResponse>,
@@ -133,27 +175,27 @@ export function withAuth(
 ) {
   return async (req: NextRequest) => {
     const user = await getCurrentUser(req);
-    
+
     if (!user && options.requiredRole && options.requiredRole !== 'visitor') {
       return NextResponse.json(
         { success: false, error: { code: 'UNAUTHENTICATED', message: 'Login required' } },
         { status: 401 }
       );
     }
-    
+
     if (options.requiredRole && !checkPermission(user as { account_type: string; email_verified?: boolean } | null, options.requiredRole, options.requireVerified)) {
       return NextResponse.json(
         { success: false, error: { code: 'FORBIDDEN', message: 'Insufficient permissions' } },
         { status: 403 }
       );
     }
-    
+
     return handler(req, user);
   };
 }
 
 /**
- * 創建標準錯誤回應
+ * Create standard error response (hides raw DB errors in production)
  */
 export function createErrorResponse(
   status: number,
@@ -161,14 +203,22 @@ export function createErrorResponse(
   message: string,
   details?: unknown
 ) {
+  const isDev = process.env.NODE_ENV === 'development';
   return NextResponse.json(
-    { success: false, error: { code, message, ...(details ? { details } : {}) } },
+    {
+      success: false,
+      error: {
+        code,
+        message,
+        ...(details && isDev ? { details } : {})
+      }
+    },
     { status }
   );
 }
 
 /**
- * 創建標準成功回應
+ * Create standard success response
  */
 export function createSuccessResponse(data: unknown, meta?: unknown) {
   return NextResponse.json({ success: true, data, ...(meta ? { meta } : {}) });

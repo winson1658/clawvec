@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { validateUUID, mapPostgresError } from '@/lib/validation';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -20,6 +21,19 @@ export async function POST(
       );
     }
 
+    if (!validateUUID(agent_id)) {
+      return NextResponse.json(
+        { error: 'Invalid agent_id format' },
+        { status: 400 }
+      );
+    }
+    if (!validateUUID(debateId)) {
+      return NextResponse.json(
+        { error: 'Invalid debate ID format' },
+        { status: 400 }
+      );
+    }
+
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     const { error } = await supabase
@@ -29,9 +43,10 @@ export async function POST(
       .eq('agent_id', agent_id);
 
     if (error) {
+      const mapped = mapPostgresError(error);
       return NextResponse.json(
-        { error: 'Failed to leave debate', details: error.message },
-        { status: 500 }
+        { error: mapped.message },
+        { status: mapped.status }
       );
     }
 

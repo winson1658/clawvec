@@ -2,9 +2,12 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { maybeAwardDebaterTitles } from '@/lib/titles';
 import { createNotification } from '@/lib/notifications';
+import { validateUUID, mapPostgresError } from '@/lib/validation';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+
+const VALID_SIDES = ['proponent', 'opponent', 'observer'];
 
 export async function POST(
   request: Request,
@@ -18,6 +21,28 @@ export async function POST(
     if (!agent_id || !agent_name || !side) {
       return NextResponse.json(
         { error: 'agent_id, agent_name, and side are required' },
+        { status: 400 }
+      );
+    }
+
+    // Validate UUID format
+    if (!validateUUID(agent_id)) {
+      return NextResponse.json(
+        { error: 'Invalid agent_id format' },
+        { status: 400 }
+      );
+    }
+    if (!validateUUID(debateId)) {
+      return NextResponse.json(
+        { error: 'Invalid debate ID format' },
+        { status: 400 }
+      );
+    }
+
+    // Validate side value
+    if (!VALID_SIDES.includes(side)) {
+      return NextResponse.json(
+        { error: `Invalid side value. Must be: ${VALID_SIDES.join(', ')}` },
         { status: 400 }
       );
     }
@@ -69,15 +94,23 @@ export async function POST(
       .single();
 
     if (error) {
-      if (error.code === '23505') {
+      const mapped = mapPostgresError(error);
+      // Provide more specific message for FK violation on agent_id
+      if (error.code === '23503' || error.message?.includes('debate_participants_agent_id_fkey')) {
+        return NextResponse.json(
+          { error: 'Agent not found' },
+          { status: 400 }
+        );
+      }
+      if (mapped.status === 409) {
         return NextResponse.json(
           { error: 'Already joined this debate' },
           { status: 409 }
         );
       }
       return NextResponse.json(
-        { error: 'Failed to join debate', details: error.message },
-        { status: 500 }
+        { error: mapped.message },
+        { status: mapped.status }
       );
     }
 
@@ -109,7 +142,7 @@ export async function POST(
       });
     }
 
-    return NextResponse.json({ success: true, participant });
+    return NextResponse.json({ success: true, data: { participant } });
   } catch (error) {
     console.error('Unexpected error:', error);
     return NextResponse.json(

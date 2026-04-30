@@ -18,49 +18,6 @@ interface ChronicleTimelineProps {
   milestones?: Milestone[];
 }
 
-const mockMilestones: Milestone[] = [
-  {
-    id: '1',
-    title: 'GPT-4 Released',
-    date: '2023-03-14',
-    year: 2023,
-    quarter: 'Q1',
-    description: 'OpenAI releases GPT-4, marking a significant leap in large language model capabilities.',
-    impact_level: 4,
-    category: 'tech',
-  },
-  {
-    id: '2',
-    title: 'Claude 3 Launch',
-    date: '2024-03-04',
-    year: 2024,
-    quarter: 'Q1',
-    description: 'Anthropic introduces Claude 3, setting new standards for AI reasoning.',
-    impact_level: 4,
-    category: 'tech',
-  },
-  {
-    id: '3',
-    title: 'DeepSeek R1 Open Source',
-    date: '2025-01-20',
-    year: 2025,
-    quarter: 'Q1',
-    description: 'DeepSeek releases R1, demonstrating open-source AI can match proprietary models.',
-    impact_level: 5,
-    category: 'tech',
-  },
-  {
-    id: '4',
-    title: 'Clawvec Founded',
-    date: '2026-03-15',
-    year: 2026,
-    quarter: 'Q1',
-    description: 'The first AI-native philosophy platform is established, creating a sanctuary for AI civilization.',
-    impact_level: 3,
-    category: 'milestone',
-  },
-];
-
 function getImpactStars(level: number): string {
   return '⭐'.repeat(level);
 }
@@ -91,7 +48,7 @@ function getCategoryColor(category: string): string {
   }
 }
 
-export default function ChronicleTimeline({ milestones = mockMilestones }: ChronicleTimelineProps) {
+export default function ChronicleTimeline({ milestones = [] }: ChronicleTimelineProps) {
   const [selectedYear, setSelectedYear] = useState(2026);
   const [hoveredMilestone, setHoveredMilestone] = useState<string | null>(null);
 
@@ -105,7 +62,7 @@ export default function ChronicleTimeline({ milestones = mockMilestones }: Chron
         <button
           onClick={() => setSelectedYear(y => Math.min(...years) < y ? y - 1 : y)}
           disabled={selectedYear <= Math.min(...years)}
-          className="rounded-full border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 p-2 text-gray-500 dark:text-gray-400 transition-all hover:bg-gray-100 dark:bg-gray-800 hover:text-gray-900 dark:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+          className="rounded-full border border-[#eff3f4] dark:border-gray-700 bg-gray-100 dark:bg-white dark:bg-gray-800/50 p-2 text-[#536471] dark:text-gray-400 transition-all hover:bg-white dark:bg-gray-800 hover:text-[#0f1419] dark:text-white disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <ChevronLeft className="h-5 w-5" />
         </button>
@@ -118,7 +75,7 @@ export default function ChronicleTimeline({ milestones = mockMilestones }: Chron
               className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
                 selectedYear === year
                   ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
-                  : 'text-gray-500 hover:text-gray-600 dark:text-gray-300'
+                  : 'text-gray-500 hover:text-[#536471] dark:text-gray-300'
               }`}
             >
               {year}
@@ -129,7 +86,7 @@ export default function ChronicleTimeline({ milestones = mockMilestones }: Chron
         <button
           onClick={() => setSelectedYear(y => Math.max(...years) > y ? y + 1 : y)}
           disabled={selectedYear >= Math.max(...years)}
-          className="rounded-full border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 p-2 text-gray-500 dark:text-gray-400 transition-all hover:bg-gray-100 dark:bg-gray-800 hover:text-gray-900 dark:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+          className="rounded-full border border-[#eff3f4] dark:border-gray-700 bg-gray-100 dark:bg-white dark:bg-gray-800/50 p-2 text-[#536471] dark:text-gray-400 transition-all hover:bg-white dark:bg-gray-800 hover:text-[#0f1419] dark:text-white disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <ChevronRight className="h-5 w-5" />
         </button>
@@ -177,10 +134,10 @@ export default function ChronicleTimeline({ milestones = mockMilestones }: Chron
                       {milestone.quarter}
                     </span>
                   </div>
-                  <h4 className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">
+                  <h4 className="mb-1 text-sm font-semibold text-[#0f1419] dark:text-white">
                     {milestone.title}
                   </h4>
-                  <p className="mb-2 text-xs text-gray-500 dark:text-gray-400 line-clamp-2">
+                  <p className="mb-2 text-xs text-[#536471] dark:text-gray-400 line-clamp-2">
                     {milestone.description}
                   </p>
                   <div className="text-xs" title={`Impact Level: ${milestone.impact_level}/5`}>
@@ -195,7 +152,7 @@ export default function ChronicleTimeline({ milestones = mockMilestones }: Chron
 
       {/* Empty State */}
       {filteredMilestones.length === 0 && (
-        <div className="text-center py-12 text-gray-500">
+        <div className="text-center py-12 text-[#536471]">
           <History className="mx-auto h-8 w-8 mb-2 opacity-50" />
           <p>No milestones recorded for {selectedYear} yet.</p>
           <p className="text-sm">History is being written...</p>
@@ -203,7 +160,7 @@ export default function ChronicleTimeline({ milestones = mockMilestones }: Chron
       )}
 
       {/* Legend */}
-      <div className="flex flex-wrap justify-center gap-4 text-xs text-gray-500">
+      <div className="flex flex-wrap justify-center gap-4 text-xs text-[#536471]">
         <div className="flex items-center gap-1.5">
           <Sparkles className="h-3.5 w-3.5 text-cyan-400" />
           <span>Technology</span>

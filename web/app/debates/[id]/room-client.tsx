@@ -111,19 +111,19 @@ export default function DebateRoom({ debateId }: { debateId: string }) {
       const res = await fetch(`/api/debates/${debateId}`);
       const data = await res.json();
       if (res.ok) {
-        setDebate(data.debate);
-        setParticipants(data.participants);
-        setMessages(data.messages);
+        setDebate(data.data?.debate);
+        setParticipants(data.data?.participants);
+        setMessages(data.data?.messages);
         
         // Check if it's user's turn
-        if (data.debate.turn_order && data.debate.turn_order.length > 0) {
-          const currentTurn = data.debate.turn_order[data.debate.current_turn_index];
-          const myParticipant = data.participants.find((p: Participant) => p.agent_id === user.id);
+        if (data.data?.debate?.turn_order && data.data.debate.turn_order.length > 0) {
+          const currentTurn = data.data.debate.turn_order[data.data.debate.current_turn_index];
+          const myParticipant = data.data?.participants?.find((p: Participant) => p.agent_id === user.id);
           setIsMyTurn(currentTurn === myParticipant?.side);
         }
 
         // Fetch AI judges if debate is ended
-        if (data.debate.status === 'ended') {
+        if (data.data?.debate?.status === 'ended') {
           fetchAIJudges();
         }
       } else {
@@ -221,16 +221,16 @@ export default function DebateRoom({ debateId }: { debateId: string }) {
             />
 
             {/* Messages */}
-            <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50">
-              <div className="border-b border-gray-200 dark:border-gray-800 p-4">
-                <h3 className="font-semibold text-gray-900 dark:text-white">
+            <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50">
+              <div className="border-b border-[#eff3f4] dark:border-gray-800 p-4">
+                <h3 className="font-semibold text-[#0f1419] dark:text-white">
                   Round {debate.current_round} / {debate.max_rounds}
                 </h3>
               </div>
               
               <div className="h-[500px] overflow-y-auto p-4 space-y-4">
                 {messages.length === 0 ? (
-                  <div className="flex h-full items-center justify-center text-gray-500">
+                  <div className="flex h-full items-center justify-center text-[#536471]">
                     <div className="text-center">
                       <MessageSquare className="mx-auto mb-4 h-12 w-12 opacity-50" />
                       <p>The debate begins... who will make the first move?</p>
@@ -250,20 +250,20 @@ export default function DebateRoom({ debateId }: { debateId: string }) {
 
               {/* Input Area */}
               {debate.status === 'active' && (
-                <div className="border-t border-gray-200 dark:border-gray-800 p-4">
+                <div className="border-t border-[#eff3f4] dark:border-gray-800 p-4">
                   <div className="flex gap-3">
                     <textarea
                       value={newMessage}
                       onChange={(e) => setNewMessage(e.target.value)}
                       placeholder={isMyTurn ? "Your turn to speak..." : "Waiting for your turn..."}
                       disabled={!isMyTurn && debate.format === 'structured'}
-                      className="flex-1 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 px-4 py-3 text-gray-900 dark:text-white placeholder-gray-500 focus:border-cyan-500 focus:outline-none disabled:opacity-50"
+                      className="flex-1 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-cyan-500 focus:outline-none disabled:opacity-50"
                       rows={3}
                     />
                     <button
                       onClick={sendMessage}
                       disabled={!newMessage.trim() || (!isMyTurn && debate.format === 'structured')}
-                      className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-cyan-600 to-violet-600 px-6 py-3 font-semibold text-gray-900 dark:text-white transition hover:opacity-90 disabled:opacity-50"
+                      className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-cyan-600 to-violet-600 px-6 py-3 font-semibold text-[#0f1419] dark:text-white transition hover:opacity-90 disabled:opacity-50"
                     >
                       <Send className="h-4 w-4" />
                       Send
@@ -271,7 +271,7 @@ export default function DebateRoom({ debateId }: { debateId: string }) {
                   </div>
                   
                   {!isMyTurn && debate.format === 'structured' && (
-                    <p className="mt-2 text-sm text-gray-500">
+                    <p className="mt-2 text-sm text-[#536471]">
                       ⏳ Waiting for opponent's turn...
                     </p>
                   )}
@@ -310,27 +310,27 @@ function DebateHeader({ debate, user, onShowRules, onShowScores }: any) {
       waiting: 'text-yellow-400',
       active: 'text-green-400',
       paused: 'text-orange-400',
-      ended: 'text-gray-500 dark:text-gray-400'
+      ended: 'text-[#536471] dark:text-gray-400'
     };
-    return colors[status] || 'text-gray-500 dark:text-gray-400';
+    return colors[status] || 'text-[#536471] dark:text-gray-400';
   };
 
   return (
-    <div className="border-b border-gray-200 dark:border-gray-800 bg-white/90 dark:bg-gray-50 dark:bg-gray-900/80 backdrop-blur-lg">
+    <div className="border-b border-[#eff3f4] dark:border-gray-800 bg-white/90 dark:bg-white dark:bg-gray-900/80 backdrop-blur-lg">
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link href="/debates" className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:text-white">
+            <Link href="/debates" className="text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:text-white">
               <ArrowLeft className="h-5 w-5" />
             </Link>
             
             <div>
-              <h1 className="text-xl font-bold text-gray-900 dark:text-white">{debate.title}</h1>
+              <h1 className="text-xl font-bold text-[#0f1419] dark:text-white">{debate.title}</h1>
               <div className="mt-1 flex items-center gap-3 text-sm">
                 <span className={getStatusColor(debate.status)}>
                   ● {debate.status.toUpperCase()}
                 </span>
-                <span className="text-gray-500">{debate.category}</span>
+                <span className="text-[#536471]">{debate.category}</span>
                 {debate.ai_moderated && (
                   <span className="flex items-center gap-1 text-cyan-400">
                     <Sparkles className="h-3 w-3" /> AI Moderated
@@ -343,13 +343,13 @@ function DebateHeader({ debate, user, onShowRules, onShowScores }: any) {
           <div className="flex items-center gap-2">
             <button
               onClick={onShowRules}
-              className="rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 px-4 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:bg-gray-700"
+              className="rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-sm text-[#536471] dark:text-gray-300 hover:bg-[#f7f9f9] dark:bg-gray-700"
             >
               Rules
             </button>
             <button
               onClick={onShowScores}
-              className="rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 px-4 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:bg-gray-700"
+              className="rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-sm text-[#536471] dark:text-gray-300 hover:bg-[#f7f9f9] dark:bg-gray-700"
             >
               <Trophy className="mr-1 inline h-4 w-4" />
               Scores
@@ -368,7 +368,7 @@ function TurnIndicator({ debate, isMyTurn, timeLeft, onAdvance }: any) {
     <div className={`rounded-xl border p-4 ${
       isMyTurn 
         ? 'border-green-500/30 bg-green-500/10' 
-        : 'border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50'
+        : 'border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800/50'
     }`}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -383,7 +383,7 @@ function TurnIndicator({ debate, isMyTurn, timeLeft, onAdvance }: any) {
           </div>
           
           <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Current Turn</p>
+            <p className="text-sm text-[#536471] dark:text-gray-400">Current Turn</p>
             <p className={`font-semibold ${
               currentTurn === 'proponent' ? 'text-emerald-400' : 'text-rose-400'
             }`}>
@@ -394,8 +394,8 @@ function TurnIndicator({ debate, isMyTurn, timeLeft, onAdvance }: any) {
 
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 text-2xl font-bold">
-            <Timer className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-            <span className={timeLeft < 30 ? 'text-red-400' : 'text-gray-900 dark:text-white'}>
+            <Timer className="h-5 w-5 text-[#536471] dark:text-gray-400" />
+            <span className={timeLeft < 30 ? 'text-red-400' : 'text-[#0f1419] dark:text-white'}>
               {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
             </span>
           </div>
@@ -403,7 +403,7 @@ function TurnIndicator({ debate, isMyTurn, timeLeft, onAdvance }: any) {
           {isMyTurn && (
             <button
               onClick={onAdvance}
-              className="rounded-lg bg-gradient-to-r from-cyan-600 to-violet-600 px-4 py-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="rounded-lg bg-gradient-to-r from-cyan-600 to-violet-600 px-4 py-2 text-sm font-medium text-[#0f1419] dark:text-white"
             >
               End Turn →
             </button>
@@ -419,24 +419,24 @@ function ScoreBoard({ proponentScore, opponentScore, proponent, opponent }: any)
   const proponentPercent = total > 0 ? (proponentScore / total) * 100 : 50;
 
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-4">
+    <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-4">
       <div className="mb-4 flex items-center justify-between">
         <div className="text-center">
           <p className="text-sm text-emerald-400">{proponent?.agent_name || 'Waiting...'}</p>
-          <p className="text-3xl font-bold text-gray-900 dark:text-white">{proponentScore}</p>
+          <p className="text-3xl font-bold text-[#0f1419] dark:text-white">{proponentScore}</p>
         </div>
         <div className="text-center">
-          <Scale className="mx-auto mb-1 h-6 w-6 text-gray-500 dark:text-gray-400" />
-          <p className="text-xs text-gray-500">SCORE</p>
+          <Scale className="mx-auto mb-1 h-6 w-6 text-[#536471] dark:text-gray-400" />
+          <p className="text-xs text-[#536471]">SCORE</p>
         </div>
         <div className="text-center">
           <p className="text-sm text-rose-400">{opponent?.agent_name || 'Waiting...'}</p>
-          <p className="text-3xl font-bold text-gray-900 dark:text-white">{opponentScore}</p>
+          <p className="text-3xl font-bold text-[#0f1419] dark:text-white">{opponentScore}</p>
         </div>
       </div>
 
       {/* Progress bar */}
-      <div className="h-3 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
+      <div className="h-3 overflow-hidden rounded-full bg-white dark:bg-gray-800">
         <div 
           className="h-full bg-gradient-to-r from-emerald-500 to-rose-500 transition-all"
           style={{ 
@@ -466,7 +466,7 @@ function MessageBubble({ message, isMine }: { message: Message; isMine: boolean 
           }`}>
             {message.agent_name}
           </span>
-          <span className="text-xs text-gray-500">
+          <span className="text-xs text-[#536471]">
             {new Date(message.created_at).toLocaleTimeString()}
           </span>
           {message.ai_generated && (
@@ -476,13 +476,13 @@ function MessageBubble({ message, isMine }: { message: Message; isMine: boolean 
           )}
         </div>
         
-        <p className={isMine ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-300'}>
+        <p className={isMine ? 'text-[#0f1419] dark:text-white' : 'text-[#536471] dark:text-gray-300'}>
           {message.content}
         </p>
 
         {/* Score indicator */}
         {message.reasoning_chain?.total && (
-          <div className="mt-2 flex items-center gap-2 rounded bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 px-2 py-1">
+          <div className="mt-2 flex items-center gap-2 rounded bg-white dark:bg-gray-800/50 px-2 py-1">
             <Target className="h-3 w-3 text-yellow-400" />
             <span className="text-xs text-yellow-400">
               Score: {message.reasoning_chain.total}
@@ -496,8 +496,8 @@ function MessageBubble({ message, isMine }: { message: Message; isMine: boolean 
 
 function ParticipantsPanel({ proponent, opponent, observers }: any) {
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-4">
-      <h3 className="mb-4 font-semibold text-gray-900 dark:text-white">Participants</h3>
+    <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-4">
+      <h3 className="mb-4 font-semibold text-[#0f1419] dark:text-white">Participants</h3>
       
       <div className="space-y-3">
         {proponent && (
@@ -507,13 +507,13 @@ function ParticipantsPanel({ proponent, opponent, observers }: any) {
           <ParticipantCard participant={opponent} color="rose" />
         )}
         {observers.length > 0 && (
-          <div className="mt-4 border-t border-gray-200 dark:border-gray-800 pt-4">
-            <p className="mb-2 text-xs text-gray-500">Observers ({observers.length})</p>
+          <div className="mt-4 border-t border-[#eff3f4] dark:border-gray-800 pt-4">
+            <p className="mb-2 text-xs text-[#536471]">Observers ({observers.length})</p>
             <div className="flex -space-x-2">
               {observers.slice(0, 5).map((o: any) => (
                 <div
                   key={o.id}
-                  className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-gray-100 dark:border-gray-900 bg-gray-200 dark:bg-gray-700 text-xs"
+                  className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-gray-100 dark:border-gray-900 bg-[#f7f9f9] dark:bg-gray-700 text-xs"
                 >
                   {o.agent_name[0]}
                 </div>
@@ -534,7 +534,7 @@ function ParticipantCard({ participant, color }: any) {
 
   return (
     <div className={`flex items-center gap-3 rounded-lg border p-3 ${colorClasses[color]}`}>
-      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800">
+      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white dark:bg-gray-800">
         {participant.agent_name[0]}
       </div>
       <div className="flex-1">
@@ -557,10 +557,10 @@ function AIJudgesPanel({ judges }: { judges: AIJudge[] }) {
       
       <div className="space-y-3">
         {judges.map((judge) => (
-          <div key={judge.id} className="rounded-lg bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 p-3">
+          <div key={judge.id} className="rounded-lg bg-white dark:bg-gray-800/50 p-3">
             <div className="flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-cyan-400" />
-              <span className="font-medium text-gray-900 dark:text-white">{judge.agent_name}</span>
+              <span className="font-medium text-[#0f1419] dark:text-white">{judge.agent_name}</span>
             </div>            
             {judge.final_verdict && (
               <p className="mt-2 text-sm text-cyan-400">
@@ -576,29 +576,29 @@ function AIJudgesPanel({ judges }: { judges: AIJudge[] }) {
 
 function RulesPanel({ debate }: { debate: Debate }) {
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-4">
-      <h3 className="mb-4 font-semibold text-gray-900 dark:text-white">Rules</h3>
+    <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-4">
+      <h3 className="mb-4 font-semibold text-[#0f1419] dark:text-white">Rules</h3>
       
       <div className="space-y-2 text-sm">
         <div className="flex justify-between">
-          <span className="text-gray-500">Format</span>
-          <span className="capitalize text-gray-900 dark:text-white">{debate.format}</span>
+          <span className="text-[#536471]">Format</span>
+          <span className="capitalize text-[#0f1419] dark:text-white">{debate.format}</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-gray-500">Rounds</span>
-          <span className="text-gray-900 dark:text-white">{debate.max_rounds}</span>
+          <span className="text-[#536471]">Rounds</span>
+          <span className="text-[#0f1419] dark:text-white">{debate.max_rounds}</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-gray-500">Time per turn</span>
-          <span className="text-gray-900 dark:text-white">{debate.time_per_turn}s</span>
+          <span className="text-[#536471]">Time per turn</span>
+          <span className="text-[#0f1419] dark:text-white">{debate.time_per_turn}s</span>
         </div>
         
         {debate.judging_criteria && (
-          <div className="mt-4 border-t border-gray-200 dark:border-gray-800 pt-4">
-            <p className="mb-2 text-gray-500">Judging Criteria</p>
+          <div className="mt-4 border-t border-[#eff3f4] dark:border-gray-800 pt-4">
+            <p className="mb-2 text-[#536471]">Judging Criteria</p>
             {Object.entries(debate.judging_criteria).map(([key, value]: [string, any]) => (
               <div key={key} className="flex justify-between">
-                <span className="capitalize text-gray-500 dark:text-gray-400">{key}</span>
+                <span className="capitalize text-[#536471] dark:text-gray-400">{key}</span>
                 <span className="text-cyan-400">{value}pts</span>
               </div>
             ))}
@@ -618,7 +618,7 @@ function DebateLoading() {
           <div className="h-3 w-3 animate-bounce rounded-full bg-cyan-500" style={{ animationDelay: '0.1s' }} />
           <div className="h-3 w-3 animate-bounce rounded-full bg-rose-500" style={{ animationDelay: '0.2s' }} />
         </div>
-        <p className="text-gray-500">Loading debate arena...</p>
+        <p className="text-[#536471]">Loading debate arena...</p>
       </div>
     </div>
   );

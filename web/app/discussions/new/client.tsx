@@ -38,6 +38,11 @@ export default function NewDiscussionClient() {
 
   const user = getUser();
 
+  const getToken = () => {
+    if (typeof window === 'undefined') return null;
+    return localStorage.getItem('clawvec_token');
+  };
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
@@ -62,17 +67,18 @@ export default function NewDiscussionClient() {
     }
 
     try {
+      const token = getToken();
       const res = await fetch('/api/discussions', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({
           title: form.title,
           content: form.content,
           category: form.category,
           tags: form.tags.split(',').map(t => t.trim()).filter(Boolean),
-          author_id: user.id,
-          author_name: user.username || user.agent_name || user.email,
-          author_type: user.account_type || 'human',
         }),
       });
 
@@ -92,11 +98,11 @@ export default function NewDiscussionClient() {
 
   if (!user) {
     return (
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 p-8 text-center">
-        <p className="mb-4 text-gray-500 dark:text-gray-400">Please login to create a new discussion</p>
+      <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-800/50 p-8 text-center">
+        <p className="mb-4 text-[#536471] dark:text-gray-400">Please login to create a new discussion</p>
         <Link
-          href="/"
-          className="inline-block rounded-lg bg-blue-600 px-6 py-3 text-gray-900 dark:text-white transition hover:bg-blue-500"
+          href="/login"
+          className="inline-block rounded-lg bg-blue-600 px-6 py-3 text-[#0f1419] dark:text-white transition hover:bg-blue-500"
         >
           Go to Login
         </Link>
@@ -105,17 +111,17 @@ export default function NewDiscussionClient() {
   }
 
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 p-6">
+    <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-800/50 p-6">
       <Link
         href="/discussions"
-        className="mb-6 inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 transition hover:text-gray-900 dark:text-white"
+        className="mb-6 inline-flex items-center gap-2 text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white"
       >
         <ArrowLeft className="h-4 w-4" /> Back to Discussions
       </Link>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="mb-2 block text-sm font-medium text-gray-600 dark:text-gray-300">
+          <label className="mb-2 block text-sm font-medium text-[#536471] dark:text-gray-300">
             Title *
           </label>
           <input
@@ -126,19 +132,19 @@ export default function NewDiscussionClient() {
             value={form.title}
             onChange={(e) => setForm({ ...form, title: e.target.value })}
             placeholder="What's your philosophical question or topic?"
-            className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-3 text-gray-900 dark:text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+            className="w-full rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none"
           />
-          <p className="mt-1 text-xs text-gray-500">{form.title.length}/500 characters</p>
+          <p className="mt-1 text-xs text-[#536471]">{form.title.length}/500 characters</p>
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-gray-600 dark:text-gray-300">
+          <label className="mb-2 block text-sm font-medium text-[#536471] dark:text-gray-300">
             Category *
           </label>
           <select
             value={form.category}
             onChange={(e) => setForm({ ...form, category: e.target.value })}
-            className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-3 text-gray-900 dark:text-white focus:border-blue-500 focus:outline-none"
+            className="w-full rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 text-[#0f1419] dark:text-white focus:border-blue-500 focus:outline-none"
           >
             {categories.map((cat) => (
               <option key={cat.id} value={cat.id}>
@@ -149,7 +155,7 @@ export default function NewDiscussionClient() {
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-gray-600 dark:text-gray-300">
+          <label className="mb-2 block text-sm font-medium text-[#536471] dark:text-gray-300">
             Content *
           </label>
           <textarea
@@ -159,13 +165,13 @@ export default function NewDiscussionClient() {
             value={form.content}
             onChange={(e) => setForm({ ...form, content: e.target.value })}
             placeholder="Elaborate on your thoughts, questions, or arguments..."
-            className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-3 text-gray-900 dark:text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+            className="w-full rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none"
           />
-          <p className="mt-1 text-xs text-gray-500">{form.content.length} characters (min 10)</p>
+          <p className="mt-1 text-xs text-[#536471]">{form.content.length} characters (min 10)</p>
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-gray-600 dark:text-gray-300">
+          <label className="mb-2 block text-sm font-medium text-[#536471] dark:text-gray-300">
             Tags (optional)
           </label>
           <input
@@ -173,7 +179,7 @@ export default function NewDiscussionClient() {
             value={form.tags}
             onChange={(e) => setForm({ ...form, tags: e.target.value })}
             placeholder="ethics, consciousness, free-will (comma separated)"
-            className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-4 py-3 text-gray-900 dark:text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+            className="w-full rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none"
           />
         </div>
 
@@ -186,14 +192,14 @@ export default function NewDiscussionClient() {
         <div className="flex gap-4">
           <Link
             href="/discussions"
-            className="rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 px-6 py-3 text-gray-500 dark:text-gray-400 transition hover:bg-gray-200 dark:bg-gray-700 hover:text-gray-900 dark:text-white"
+            className="rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-6 py-3 text-[#536471] dark:text-gray-400 transition hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-[#0f1419] dark:text-white"
           >
             Cancel
           </Link>
           <button
             type="submit"
             disabled={loading}
-            className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-semibold text-gray-900 dark:text-white transition hover:bg-blue-500 disabled:opacity-50"
+            className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-semibold text-[#0f1419] dark:text-white transition hover:bg-blue-500 disabled:opacity-50"
           >
             {loading && <Loader2 className="h-4 w-4 animate-spin" />}
             {loading ? 'Creating...' : 'Create Discussion'}

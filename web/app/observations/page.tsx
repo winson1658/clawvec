@@ -5,6 +5,8 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Heart, Link2, ExternalLink } from "lucide-react";
 
+const getToken = () => typeof window !== 'undefined' ? localStorage.getItem('clawvec_token') : null;
+
 interface Observation {
   id: string;
   title: string;
@@ -148,7 +150,7 @@ export default function ObservationsPage() {
             </div>
             <Link
               href="/observations/new"
-              className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-lg font-medium hover:from-cyan-400 hover:to-purple-400 transition-all flex items-center gap-2"
+              className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-lg font-medium hover:from-cyan-400 hover:to-purple-400 transition-all flex items-center gap-2 min-h-[44px]"
             >
               <span>✨</span>
               New Observation
@@ -192,7 +194,7 @@ export default function ObservationsPage() {
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => { setSelectedCategory(""); setPage(1); }}
-              className={`px-4 py-2 rounded-full text-sm transition-all ${
+              className={`px-4 py-2.5 rounded-full text-sm transition-all min-h-[44px] flex items-center ${
                 selectedCategory === ""
                   ? "bg-white/20 text-white"
                   : "bg-slate-700/50 text-slate-400 hover:bg-slate-700"
@@ -204,7 +206,7 @@ export default function ObservationsPage() {
               <button
                 key={key}
                 onClick={() => { setSelectedCategory(key); setPage(1); }}
-                className={`px-4 py-2 rounded-full text-sm transition-all ${
+                className={`px-4 py-2.5 rounded-full text-sm transition-all min-h-[44px] flex items-center ${
                   selectedCategory === key
                     ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/50"
                     : "bg-slate-700/50 text-slate-400 hover:bg-slate-700"
@@ -224,10 +226,10 @@ export default function ObservationsPage() {
           className="mb-8"
         >
           <div className="flex flex-wrap gap-2 items-center">
-            <span className="text-xs text-slate-500 mr-1">Source:</span>
+            <span className="text-sm text-slate-500 mr-1">Source:</span>
             <button
               onClick={() => { setSelectedSourceType(""); setPage(1); }}
-              className={`px-3 py-1.5 rounded-full text-xs transition-all ${
+              className={`px-3 py-2 rounded-full text-sm transition-all min-h-[44px] flex items-center ${
                 selectedSourceType === ""
                   ? "bg-white/20 text-white"
                   : "bg-slate-700/50 text-slate-400 hover:bg-slate-700"
@@ -246,7 +248,7 @@ export default function ObservationsPage() {
               <button
                 key={src.value}
                 onClick={() => { setSelectedSourceType(src.value); setPage(1); }}
-                className={`px-3 py-1.5 rounded-full text-xs transition-all ${
+                className={`px-3 py-2 rounded-full text-sm transition-all min-h-[44px] flex items-center ${
                   selectedSourceType === src.value
                     ? "bg-purple-500/20 text-purple-300 border border-purple-500/50"
                     : "bg-slate-700/50 text-slate-400 hover:bg-slate-700"
@@ -297,7 +299,7 @@ export default function ObservationsPage() {
                   <button
                     onClick={() => setPage(p => Math.max(1, p - 1))}
                     disabled={page <= 1}
-                    className="px-4 py-2 rounded-lg bg-slate-700/50 text-slate-300 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                    className="px-4 py-2.5 rounded-lg bg-slate-700/50 text-slate-300 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed transition-all min-h-[44px] flex items-center"
                   >
                     ← Previous
                   </button>
@@ -307,7 +309,7 @@ export default function ObservationsPage() {
                   <button
                     onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                     disabled={page >= totalPages}
-                    className="px-4 py-2 rounded-lg bg-slate-700/50 text-slate-300 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                    className="px-4 py-2.5 rounded-lg bg-slate-700/50 text-slate-300 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed transition-all min-h-[44px] flex items-center"
                   >
                     Next →
                   </button>
@@ -366,7 +368,7 @@ function ObservationCard({
     try {
       const res = await fetch('/api/likes', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(getToken() ? { 'Authorization': `Bearer ${getToken()}` } : {}) },
         body: JSON.stringify({ target_type: 'observation', target_id: observation.id, user_id: user.id }),
       });
       const data = await res.json();
@@ -432,9 +434,9 @@ function ObservationCard({
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1.5 bg-slate-700/50 hover:bg-slate-700 text-cyan-400 rounded-full transition-colors max-w-full"
+                className="inline-flex items-center gap-1.5 text-sm px-3 py-2 bg-slate-700/50 hover:bg-slate-700 text-cyan-400 rounded-full transition-colors max-w-full min-h-[44px]"
               >
-                <Link2 className="w-3 h-3 shrink-0" />
+                <Link2 className="w-4 h-4 shrink-0" />
                 <span className="truncate">
                   {(() => {
                     try {
@@ -444,24 +446,24 @@ function ObservationCard({
                     }
                   })()}
                 </span>
-                <ExternalLink className="w-3 h-3 shrink-0" />
+                <ExternalLink className="w-4 h-4 shrink-0" />
               </a>
             </div>
           )}
 
           {/* Tags */}
           {observation.tags && observation.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1 mb-4">
+            <div className="flex flex-wrap gap-2 mb-4">
               {observation.tags.slice(0, 3).map((tag) => (
                 <span
                   key={tag}
-                  className="text-xs px-2 py-1 bg-slate-700 text-slate-400 rounded-full"
+                  className="text-sm px-3 py-2 bg-slate-700 text-slate-400 rounded-full min-h-[44px] flex items-center"
                 >
                   #{tag}
                 </span>
               ))}
               {observation.tags.length > 3 && (
-                <span className="text-xs px-2 py-1 text-slate-500">
+                <span className="text-sm px-3 py-2 text-slate-500 min-h-[44px] flex items-center">
                   +{observation.tags.length - 3}
                 </span>
               )}
@@ -482,9 +484,9 @@ function ObservationCard({
               <button
                 onClick={handleLike}
                 disabled={likeLoading || !user}
-                className={`flex items-center gap-1 transition-colors ${liked ? 'text-pink-400' : 'hover:text-pink-400'}`}
+                className={`flex items-center gap-1.5 transition-colors min-h-[44px] min-w-[44px] px-2 ${liked ? 'text-pink-400' : 'hover:text-pink-400'}`}
               >
-                <Heart className={`h-4 w-4 ${liked ? 'fill-current' : ''}`} />
+                <Heart className={`h-5 w-5 ${liked ? 'fill-current' : ''}`} />
                 {likesCount}
               </button>
             </div>

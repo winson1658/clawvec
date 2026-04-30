@@ -24,7 +24,6 @@ export default function NavAuth() {
         const token = localStorage.getItem('clawvec_token');
         if (userData && token) {
           const parsed = JSON.parse(userData);
-          // Ensure auth state is accurate
           parsed.is_verified = parsed.email_verified === true || parsed.is_verified === true;
           setUser(parsed);
         } else {
@@ -34,11 +33,9 @@ export default function NavAuth() {
         setUser(null);
       }
     };
-    
+
     check();
-    // Listen for storage changes (login/logout in other tabs)
     window.addEventListener('storage', check);
-    // Also poll periodically in case login happens in same tab
     const interval = setInterval(check, 2000);
     return () => {
       window.removeEventListener('storage', check);
@@ -55,37 +52,42 @@ export default function NavAuth() {
   };
 
   const handleLoginClick = (type: 'human' | 'ai') => {
-    // Check if we're on the home page
-    if (pathname === '/') {
-      // Already on home page, update URL hash and let HashScrollHandler do the scroll
-      window.location.hash = `auth?mode=login&type=${type}`;
-      // Fallback: directly scroll after a short delay in case hashchange doesn't fire
-      setTimeout(() => {
-        const el = document.getElementById('auth');
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
-    } else {
-      // Not on home page, navigate to home with auth hash
-      router.push(`/#auth?mode=login&type=${type}`);
-    }
+    setShowMenu(false);
+    router.push(`/login?mode=login&type=${type}`);
   };
 
   if (!user) {
     return (
-      <>
-        <button 
-          onClick={() => handleLoginClick('human')}
-          className="hidden rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 transition hover:border-gray-500 hover:text-gray-900 dark:text-white sm:inline-block"
+      <div className="relative hidden sm:block">
+        <button
+          onClick={() => setShowMenu(!showMenu)}
+          className="flex items-center gap-1 rounded-lg border border-[#eff3f4] dark:border-gray-700 px-4 py-2 text-sm font-medium text-[#536471] dark:text-gray-300 transition hover:border-gray-500 hover:text-gray-900 dark:hover:text-white"
         >
-          Human Login
+          Enter
+          <svg className={`h-4 w-4 transition-transform ${showMenu ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
         </button>
-        <button 
-          onClick={() => handleLoginClick('ai')}
-          className="hidden rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 px-4 py-2 text-sm font-medium text-gray-900 dark:text-white transition hover:opacity-90 sm:inline-block"
-        >
-          AI Agent Login
-        </button>
-      </>
+        {showMenu && (
+          <>
+            <div className="fixed inset-0 z-40" onClick={() => setShowMenu(false)} />
+            <div className="absolute right-0 z-50 mt-2 w-44 rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-950 p-2 shadow-xl">
+              <button
+                onClick={() => handleLoginClick('human')}
+                className="flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-sm text-[#536471] dark:text-gray-300 transition hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-gray-900 dark:hover:text-white"
+              >
+                <User className="h-4 w-4" />
+                As Human
+              </button>
+              <button
+                onClick={() => handleLoginClick('ai')}
+                className="flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-sm text-[#536471] dark:text-gray-300 transition hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-gray-900 dark:hover:text-white"
+              >
+                <Bot className="h-4 w-4" />
+                As AI Agent
+              </button>
+            </div>
+          </>
+        )}
+      </div>
     );
   }
 
@@ -95,7 +97,7 @@ export default function NavAuth() {
     <div className="relative hidden sm:block">
       <button
         onClick={() => setShowMenu(!showMenu)}
-        className="flex items-center gap-2 rounded-full border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 px-4 py-2 text-sm font-medium text-gray-800 dark:text-gray-200 transition hover:border-gray-500 hover:text-gray-900 dark:text-white"
+        className="flex items-center gap-2 rounded-full border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800/50 px-4 py-2 text-sm font-medium text-[#0f1419] dark:text-gray-200 transition hover:border-gray-500 hover:text-gray-900 dark:hover:text-white"
       >
         <div className={`flex h-6 w-6 items-center justify-center rounded-full ${isHuman ? 'bg-blue-500/30' : 'bg-purple-500/30'}`}>
           {isHuman ? <User className="h-3.5 w-3.5 text-blue-400" /> : <Bot className="h-3.5 w-3.5 text-purple-400" />}
@@ -107,11 +109,11 @@ export default function NavAuth() {
       {showMenu && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setShowMenu(false)} />
-          <div className="absolute right-0 z-50 mt-2 w-52 rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-2 shadow-xl">
+          <div className="absolute right-0 z-50 mt-2 w-52 rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-900 p-2 shadow-xl">
             <Link
               href="/dashboard"
               onClick={() => setShowMenu(false)}
-              className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm text-gray-600 dark:text-gray-300 transition hover:bg-gray-100 dark:bg-gray-800 hover:text-gray-900 dark:text-white"
+              className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white"
             >
               <LayoutDashboard className="h-4 w-4" />
               Dashboard

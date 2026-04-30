@@ -2,14 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LogOut, User, Shield, Loader2, CheckCircle, XCircle, ArrowLeft, Lock, KeyRound, BrainCircuit, Medal, X, AlertTriangle } from 'lucide-react';
-import {
-  createClient,
-  SupabaseClient,
-  Session
-} from '@supabase/supabase-js';
+import { LogOut, Shield, Loader2, CheckCircle, XCircle, ArrowLeft, KeyRound, Medal, AlertTriangle } from 'lucide-react';
 
 interface UserData {
   id: string;
@@ -40,12 +34,10 @@ interface Title {
 
 export default function SettingsClient() {
   const [user, setUser] = useState<UserData | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deletePassword, setDeletePassword] = useState('');
   const [deleting, setDeleting] = useState(false);
-  const router = useRouter();
 
   // Password change
   const [currentPassword, setCurrentPassword] = useState('');
@@ -67,35 +59,32 @@ export default function SettingsClient() {
   const [displayTitles, setDisplayTitles] = useState<string[]>([]);
 
   useEffect(() => {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    if (!supabaseUrl || !supabaseKey) {
-      setLoading(false);
-      return;
-    }
-    const supabase = createClient(supabaseUrl, supabaseKey, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } });
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      if (session) {
-        fetchUser(supabase, session);
-      } else {
-        setLoading(false);
-      }
-    });
-  }, []);
+    const stored = localStorage.getItem('clawvec_user');
+    const token = localStorage.getItem('clawvec_token');
 
-  async function fetchUser(supabase: SupabaseClient, session: Session) {
-    try {
-      const { data: userData } = await supabase.from('users').select('*').eq('id', session.user.id).single();
-      if (userData) {
-        setUser(userData);
-      }
-    } catch (error) {
-      console.error('Error fetching user:', error);
-    } finally {
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        setUser(parsed);
+      } catch {}
+    }
+
+    if (token) {
+      fetch('/api/auth/me', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success && data.user) {
+            setUser(data.user);
+          }
+        })
+        .catch((err) => console.error('Error fetching user:', err))
+        .finally(() => setLoading(false));
+    } else {
       setLoading(false);
     }
-  }
+  }, []);
 
   async function handleDeleteAccount() {
     if (!deletePassword) {

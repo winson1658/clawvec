@@ -90,18 +90,18 @@ export default function DevelopmentRoadmap() {
             <Calendar className="mr-2 h-4 w-4" />
             Development Roadmap
           </div>
-          <h2 className="mt-2 text-3xl font-bold text-gray-900 dark:text-white">
+          <h2 className="mt-2 text-3xl font-bold text-[#0f1419] dark:text-white">
             From philosophy to implementation
           </h2>
         </div>
         <div className="hidden items-center space-x-2 rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-800 md:flex">
-          <Clock className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-          <span className="text-sm text-gray-600 dark:text-gray-400">Last updated: 2026-03-01</span>
+          <Clock className="h-4 w-4 text-[#536471] dark:text-gray-400" />
+          <span className="text-sm text-[#536471] dark:text-gray-400">Last updated: 2026-03-01</span>
         </div>
       </div>
 
       <div className="mb-12">
-        <h3 className="mb-6 text-xl font-semibold text-gray-900 dark:text-white">Three-phase development plan</h3>
+        <h3 className="mb-6 text-xl font-semibold text-[#0f1419] dark:text-white">Three-phase development plan</h3>
         <div className="space-y-8">
           {phases.map((phase, index) => (
             <div key={index} className="rounded-xl border border-gray-200 p-6 dark:border-gray-800">
@@ -112,7 +112,7 @@ export default function DevelopmentRoadmap() {
                   </div>
                   <div>
                     <div className="flex items-center space-x-2">
-                      <span className="text-sm font-medium text-gray-600 dark:text-gray-400">{phase.phase}</span>
+                      <span className="text-sm font-medium text-[#536471] dark:text-gray-400">{phase.phase}</span>
                       <span
                         className={`rounded-full px-2 py-1 text-xs font-medium ${
                           phase.status === 'In Progress'
@@ -123,17 +123,17 @@ export default function DevelopmentRoadmap() {
                         {phase.status}
                       </span>
                     </div>
-                    <h4 className="text-xl font-bold text-gray-900 dark:text-white">{phase.title}</h4>
-                    <p className="text-gray-600 dark:text-gray-400">{phase.timeframe}</p>
+                    <h4 className="text-xl font-bold text-[#0f1419] dark:text-white">{phase.title}</h4>
+                    <p className="text-[#536471] dark:text-gray-400">{phase.timeframe}</p>
                   </div>
                 </div>
 
                 <div className="w-32">
                   <div className="mb-1 flex justify-between text-sm">
-                    <span className="font-medium text-gray-700 dark:text-gray-300">Progress</span>
-                    <span className="font-bold text-gray-900 dark:text-white">{phase.progress}%</span>
+                    <span className="font-medium text-[#0f1419] dark:text-gray-300">Progress</span>
+                    <span className="font-bold text-[#0f1419] dark:text-white">{phase.progress}%</span>
                   </div>
-                  <div className="h-2 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-800">
+                  <div className="h-2 overflow-hidden rounded-full bg-[#f7f9f9] dark:bg-gray-800">
                     <div
                       className={`h-full rounded-full ${
                         index === 0
@@ -154,9 +154,9 @@ export default function DevelopmentRoadmap() {
                     {item.done ? (
                       <CheckCircle className="mr-3 h-5 w-5 flex-shrink-0 text-green-500" />
                     ) : (
-                      <div className="mr-3 h-5 w-5 flex-shrink-0 rounded-full border-2 border-gray-300 dark:border-gray-700" />
+                      <div className="mr-3 h-5 w-5 flex-shrink-0 rounded-full border-2 border-[#eff3f4] dark:border-gray-700" />
                     )}
-                    <span className={item.done ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400'}>
+                    <span className={item.done ? 'text-[#0f1419] dark:text-white' : 'text-[#536471] dark:text-gray-400'}>
                       {item.text}
                     </span>
                   </div>
@@ -168,18 +168,18 @@ export default function DevelopmentRoadmap() {
       </div>
 
       <div>
-        <h3 className="mb-6 text-xl font-semibold text-gray-900 dark:text-white">Recent updates & milestones</h3>
+        <h3 className="mb-6 text-xl font-semibold text-[#0f1419] dark:text-white">Recent updates & milestones</h3>
         <div className="space-y-4">
           {recentUpdates.map((update, index) => (
             <div key={index} className="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-800/50">
               <div className="mb-1 flex flex-wrap items-center gap-2">
-                <span className="text-sm font-medium text-gray-600 dark:text-gray-400">{update.date}</span>
+                <span className="text-sm font-medium text-[#536471] dark:text-gray-400">{update.date}</span>
                 <span className="rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-800 dark:bg-gray-900 dark:text-gray-200">
                   {update.type}
                 </span>
               </div>
-              <h4 className="mb-1 text-lg font-semibold text-gray-900 dark:text-white">{update.title}</h4>
-              <p className="text-gray-700 dark:text-gray-300">{update.description}</p>
+              <h4 className="mb-1 text-lg font-semibold text-[#0f1419] dark:text-white">{update.title}</h4>
+              <p className="text-[#0f1419] dark:text-gray-300">{update.description}</p>
             </div>
           ))}
         </div>
@@ -188,8 +188,8 @@ export default function DevelopmentRoadmap() {
       <div className="mt-8 rounded-xl bg-gradient-to-r from-gray-50 to-blue-50 p-6 dark:from-gray-800 dark:to-blue-900/30">
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <div>
-            <h4 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">Want to contribute?</h4>
-            <p className="text-gray-700 dark:text-gray-300">
+            <h4 className="mb-2 text-xl font-bold text-[#0f1419] dark:text-white">Want to contribute?</h4>
+            <p className="text-[#0f1419] dark:text-gray-300">
               We welcome developers, designers, and agent researchers who share the same long-term vision.
             </p>
           </div>
@@ -197,7 +197,7 @@ export default function DevelopmentRoadmap() {
             <button className="rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-3 font-medium text-white hover:opacity-90">
               View GitHub
             </button>
-            <button className="rounded-lg border-2 border-gray-300 bg-transparent px-6 py-3 font-medium text-gray-700 hover:bg-gray-100 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">
+            <button className="rounded-lg border-2 border-gray-300 bg-transparent px-6 py-3 font-medium text-gray-700 hover:bg-white dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">
               Contact the Team
             </button>
           </div>

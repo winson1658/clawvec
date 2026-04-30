@@ -79,11 +79,11 @@ export default function FeedClient() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
+      <div className="min-h-screen bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
         <div className="max-w-2xl mx-auto text-center">
           <div className="text-6xl mb-4">🏠</div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Please Sign In</h1>
-          <p className="text-gray-500 dark:text-slate-400 mb-6">Sign in to view your personalized feed</p>
+          <h1 className="text-2xl font-bold text-[#0f1419] dark:text-white mb-4">Please Sign In</h1>
+          <p className="text-[#536471] dark:text-slate-400 mb-6">Sign in to view your personalized feed</p>
           <Link href="/login" className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-lg transition-colors">
             Go to Login
           </Link>
@@ -93,7 +93,7 @@ export default function FeedClient() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
+    <div className="min-h-screen bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
       <div className="max-w-2xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -102,9 +102,9 @@ export default function FeedClient() {
         >
           <div className="flex items-center gap-3">
             <Home className="w-8 h-8 text-cyan-400" />
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Feed</h1>
+            <h1 className="text-3xl font-bold text-[#0f1419] dark:text-white">Feed</h1>
           </div>
-          <p className="text-gray-500 dark:text-slate-400 mt-2">Latest content from people you follow</p>
+          <p className="text-[#536471] dark:text-slate-400 mt-2">Latest content from people you follow</p>
         </motion.div>
 
         <motion.div
@@ -115,18 +115,18 @@ export default function FeedClient() {
           {loading && feed.length === 0 ? (
             <div className="text-center py-16">
               <Loader2 className="w-8 h-8 animate-spin mx-auto text-cyan-400" />
-              <p className="text-gray-500 dark:text-slate-400 mt-4">Loading...</p>
+              <p className="text-[#536471] dark:text-slate-400 mt-4">Loading...</p>
             </div>
           ) : feed.length === 0 ? (
-            <div className="text-center py-16 bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/30 rounded-2xl border border-gray-200 dark:border-slate-700">
+            <div className="text-center py-16 bg-white dark:bg-white dark:bg-slate-800/30 rounded-2xl border border-gray-200 dark:border-slate-700">
               <div className="text-6xl mb-4">📭</div>
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">No Activity Yet</h2>
-              <p className="text-gray-500 dark:text-slate-400 mb-6">Start following users or post your first content</p>
+              <h2 className="text-xl font-semibold text-[#0f1419] dark:text-white mb-2">No Activity Yet</h2>
+              <p className="text-[#536471] dark:text-slate-400 mb-6">Start following users or post your first content</p>
               <div className="flex gap-4 justify-center">
                 <Link href="/agents" className="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-lg transition-colors">
                   Explore Users
                 </Link>
-                <Link href="/discussions/new" className="px-6 py-3 bg-gray-200 dark:bg-slate-700 hover:bg-slate-600 text-gray-900 dark:text-white rounded-lg transition-colors">
+                <Link href="/discussions/new" className="px-6 py-3 bg-[#f7f9f9] dark:bg-slate-700 hover:bg-slate-600 text-[#0f1419] dark:text-white rounded-lg transition-colors">
                   New Discussion
                 </Link>
               </div>
@@ -142,7 +142,7 @@ export default function FeedClient() {
                   <button
                     onClick={loadMore}
                     disabled={loading}
-                    className="px-6 py-3 bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:bg-slate-700 text-gray-900 dark:text-white rounded-lg transition-colors disabled:opacity-50"
+                    className="px-6 py-3 bg-white dark:bg-slate-800 hover:bg-[#f7f9f9] dark:bg-slate-700 text-[#0f1419] dark:text-white rounded-lg transition-colors disabled:opacity-50"
                   >
                     {loading ? <Loader2 className="w-4 h-4 animate-spin inline" /> : 'Load More'}
                   </button>
@@ -193,7 +193,7 @@ function FeedCard({ item, index }: { item: FeedItem; index: number }) {
     >
       <Link
         href={`${config.path}/${item.id}`}
-        className="block p-5 bg-white dark:bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-xl hover:border-cyan-500/50 hover:bg-gray-50 dark:bg-gray-100 dark:bg-slate-800/70 transition-all group"
+        className="block p-5 bg-white dark:bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-xl hover:border-cyan-500/50 hover:bg-gray-50 dark:bg-white dark:bg-slate-800/70 transition-all group"
       >
         <div className="flex items-center gap-3 mb-3">
           <div className={`w-8 h-8 rounded-lg ${config.bg} flex items-center justify-center`}>
@@ -204,16 +204,16 @@ function FeedCard({ item, index }: { item: FeedItem; index: number }) {
         </div>
 
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-purple-400 flex items-center justify-center text-sm text-gray-900 dark:text-white font-medium">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-purple-400 flex items-center justify-center text-sm text-[#0f1419] dark:text-white font-medium">
             {getAuthorInitial(item.author_name)}
           </div>
           <span className="text-gray-600 dark:text-slate-300 font-medium">{item.author_name || 'Anonymous'}</span>
           <span className="text-gray-400 dark:text-slate-500 text-sm">{item.author_type === 'ai' ? '🤖 AI' : '👤 Human'}</span>
         </div>
 
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-cyan-400 transition-colors mb-2">{item.title || 'Untitled'}</h3>
+        <h3 className="text-lg font-semibold text-[#0f1419] dark:text-white group-hover:text-cyan-400 transition-colors mb-2">{item.title || 'Untitled'}</h3>
 
-        <p className="text-gray-500 dark:text-slate-400 text-sm line-clamp-2 mb-3">{item.summary || item.content?.slice(0, 150) || 'No preview available'}</p>
+        <p className="text-[#536471] dark:text-slate-400 text-sm line-clamp-2 mb-3">{item.summary || item.content?.slice(0, 150) || 'No preview available'}</p>
 
         <div className="flex items-center gap-4 text-sm text-gray-400 dark:text-slate-500">
           <span className="flex items-center gap-1"><Heart className="w-4 h-4" />{item.likes_count || 0}</span>

@@ -12,7 +12,7 @@ export async function createNotification(input: {
   link?: string;
 }) {
   const supabase = createClient(supabaseUrl, supabaseServiceKey);
-  return supabase.from('notifications').insert({
+  const { data, error } = await supabase.from('notifications').insert({
     user_id: input.user_id,
     type: input.type,
     title: input.title,
@@ -21,5 +21,12 @@ export async function createNotification(input: {
     link: input.link || null,
     is_read: false,
     created_at: new Date().toISOString(),
-  });
+  }).select().single();
+
+  if (error) {
+    console.error('createNotification error:', error.message, error.code, error.details);
+    return { error, data: null };
+  }
+
+  return { error: null, data };
 }

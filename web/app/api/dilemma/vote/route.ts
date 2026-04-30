@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
     const dilemmaId = stats?.[0]?.dilemma_id;
 
     if (!dilemmaId) {
-      return NextResponse.json({ error: '目前沒有上架的困境題目，無法投票。' }, { status: 400 });
+      return NextResponse.json({ error: 'No active dilemma available for voting.' }, { status: 400 });
     }
 
     const today = getTodayKey();

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { requireAuthFromRequest } from '@/lib/auth';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -51,6 +52,14 @@ export async function GET(request: Request) {
  */
 export async function POST(request: Request) {
   try {
+    // L6: Verify authentication first
+    let authUser;
+    try {
+      authUser = await requireAuthFromRequest(request);
+    } catch {
+      return fail(401, 'UNAUTHORIZED', 'Authentication required');
+    }
+
     const body = await request.json();
     const { target_type, target_id, vote_value, meta = {}, user_id } = body;
 
@@ -59,6 +68,11 @@ export async function POST(request: Request) {
       return fail(400, 'VALIDATION_ERROR', 'target_type, target_id, vote_value, user_id are required', {
         fields: { target_type: !target_type, target_id: !target_id, vote_value: vote_value === undefined, user_id: !user_id }
       });
+    }
+
+    // L6: 驗證 user_id 與 token 中的用戶 ID 匹配
+    if (authUser.id !== user_id) {
+      return fail(403, 'FORBIDDEN', 'user_id does not match authenticated user');
     }
 
     // 驗證 target_type
@@ -194,6 +208,14 @@ export async function POST(request: Request) {
  */
 export async function DELETE(request: Request) {
   try {
+    // L6: Verify authentication first
+    let authUser;
+    try {
+      authUser = await requireAuthFromRequest(request);
+    } catch {
+      return fail(401, 'UNAUTHORIZED', 'Authentication required');
+    }
+
     const { searchParams } = new URL(request.url);
     const targetType = searchParams.get('target_type');
     const targetId = searchParams.get('target_id');
@@ -201,6 +223,11 @@ export async function DELETE(request: Request) {
 
     if (!targetType || !targetId || !userId) {
       return fail(400, 'VALIDATION_ERROR', 'target_type, target_id, user_id are required');
+    }
+
+    // L6: 驗證 user_id 與 token 中的用戶 ID 匹配
+    if (authUser.id !== userId) {
+      return fail(403, 'FORBIDDEN', 'user_id does not match authenticated user');
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);

@@ -106,18 +106,18 @@ export default function NewDiscussionPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+    <div className="min-h-screen bg-white dark:bg-gray-950 text-[#0f1419] dark:text-gray-100">
       {/* Header */}
 
       <main className="mx-auto max-w-3xl px-6 py-12">
-        <div className="px-6 pt-6"><Link href="/discussions" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-white transition-colors">← Back to Discussions</Link></div>
+        <div className="px-6 pt-6"><Link href="/discussions" className="inline-flex items-center gap-1 text-sm text-[#536471] hover:text-white transition-colors">← Back to Discussions</Link></div>
         <div className="mb-8 text-center">
           <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-2 text-sm text-violet-400">
             <Sparkles className="h-4 w-4" />
             New Discussion
           </div>
           <h1 className="mb-3 text-3xl font-bold">Start a Conversation</h1>
-          <p className="text-gray-500 dark:text-gray-400">Share your thoughts, ask questions, or spark a philosophical discussion.</p>
+          <p className="text-[#536471] dark:text-gray-400">Share your thoughts, ask questions, or spark a philosophical discussion.</p>
         </div>
 
         {error && (
@@ -130,11 +130,11 @@ export default function NewDiscussionPage() {
         )}
 
         {!user ? (
-          <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-8 text-center">
-            <p className="mb-4 text-gray-500 dark:text-gray-400">Please log in to create a discussion</p>
+          <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-8 text-center">
+            <p className="mb-4 text-[#536471] dark:text-gray-400">Please log in to create a discussion</p>
             <Link
-              href="/"
-              className="inline-flex items-center gap-2 rounded-lg bg-violet-600 px-6 py-3 font-medium text-gray-900 dark:text-white transition hover:bg-violet-500"
+              href="/login"
+              className="inline-flex items-center gap-2 rounded-lg bg-violet-600 px-6 py-3 font-medium text-[#0f1419] dark:text-white transition hover:bg-violet-500"
             >
               Go to Login
             </Link>
@@ -143,14 +143,14 @@ export default function NewDiscussionPage() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Title */}
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-600 dark:text-gray-300">
-                Title <span className="text-gray-500">(min 5 characters)</span>
+              <label className="mb-2 block text-sm font-medium text-[#536471] dark:text-gray-300">
+                Title <span className="text-[#536471]">(min 5 characters)</span>
               </label>
               <input
                 type="text"
                 value={form.title}
                 onChange={(e) => setForm({ ...form, title: e.target.value })}
-                className="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 px-4 py-3 text-gray-900 dark:text-white placeholder-gray-500 focus:border-violet-500 focus:outline-none"
+                className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-white dark:bg-gray-900/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-violet-500 focus:outline-none"
                 placeholder="What's on your mind?"
                 required
                 minLength={5}
@@ -159,7 +159,7 @@ export default function NewDiscussionPage() {
 
             {/* Category */}
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-600 dark:text-gray-300">Category</label>
+              <label className="mb-2 block text-sm font-medium text-[#536471] dark:text-gray-300">Category</label>
               <div className="flex flex-wrap gap-2">
                 {categories.map(cat => (
                   <button
@@ -169,7 +169,7 @@ export default function NewDiscussionPage() {
                     className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
                       form.category === cat.id
                         ? 'bg-violet-600 text-white'
-                        : 'border border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-500 hover:text-white'
+                        : 'border border-[#eff3f4] dark:border-gray-700 text-[#536471] dark:text-gray-400 hover:border-gray-500 hover:text-white'
                     }`}
                   >
                     {cat.name}
@@ -180,39 +180,39 @@ export default function NewDiscussionPage() {
 
             {/* Content */}
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-600 dark:text-gray-300">
-                Content <span className="text-gray-500">(min 10 characters)</span>
+              <label className="mb-2 block text-sm font-medium text-[#536471] dark:text-gray-300">
+                Content <span className="text-[#536471]">(min 10 characters)</span>
               </label>
               <textarea
                 value={form.content}
                 onChange={(e) => setForm({ ...form, content: e.target.value })}
                 rows={8}
-                className="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 px-4 py-3 text-gray-900 dark:text-white placeholder-gray-500 focus:border-violet-500 focus:outline-none resize-none"
+                className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-white dark:bg-gray-900/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-violet-500 focus:outline-none resize-none"
                 placeholder="Share your thoughts in detail..."
                 required
                 minLength={10}
               />
-              <div className="mt-1 text-right text-xs text-gray-500">
+              <div className="mt-1 text-right text-xs text-[#536471]">
                 {form.content.length} characters
               </div>
             </div>
 
             {/* Tags */}
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-600 dark:text-gray-300">Tags</label>
+              <label className="mb-2 block text-sm font-medium text-[#536471] dark:text-gray-300">Tags</label>
               <div className="flex gap-2">
                 <input
                   type="text"
                   value={form.tagInput}
                   onChange={(e) => setForm({ ...form, tagInput: e.target.value })}
                   onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTag())}
-                  className="flex-1 rounded-xl border border-gray-300 dark:border-gray-700 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 px-4 py-3 text-gray-900 dark:text-white placeholder-gray-500 focus:border-violet-500 focus:outline-none"
+                  className="flex-1 rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-white dark:bg-gray-900/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-violet-500 focus:outline-none"
                   placeholder="Add a tag and press Enter"
                 />
                 <button
                   type="button"
                   onClick={handleAddTag}
-                  className="rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 px-4 py-2 text-gray-500 dark:text-gray-400 transition hover:bg-gray-200 dark:bg-gray-700 hover:text-gray-900 dark:text-white"
+                  className="rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-[#536471] dark:text-gray-400 transition hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-[#0f1419] dark:text-white"
                 >
                   Add
                 </button>
@@ -242,14 +242,14 @@ export default function NewDiscussionPage() {
             <div className="flex items-center justify-between pt-4">
               <Link
                 href="/discussions"
-                className="rounded-lg border border-gray-300 dark:border-gray-700 px-6 py-3 text-gray-500 dark:text-gray-400 transition hover:bg-gray-100 dark:bg-gray-800 hover:text-gray-900 dark:text-white"
+                className="rounded-lg border border-[#eff3f4] dark:border-gray-700 px-6 py-3 text-[#536471] dark:text-gray-400 transition hover:bg-white dark:bg-gray-800 hover:text-[#0f1419] dark:text-white"
               >
                 Cancel
               </Link>
               <button
                 type="submit"
                 disabled={loading || form.title.length < 5 || form.content.length < 10}
-                className="flex items-center gap-2 rounded-lg bg-violet-600 px-6 py-3 font-medium text-gray-900 dark:text-white transition hover:bg-violet-500 disabled:opacity-50"
+                className="flex items-center gap-2 rounded-lg bg-violet-600 px-6 py-3 font-medium text-[#0f1419] dark:text-white transition hover:bg-violet-500 disabled:opacity-50"
               >
                 {loading ? (
                   <><Loader2 className="h-4 w-4 animate-spin" /> Creating...</>

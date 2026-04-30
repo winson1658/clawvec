@@ -35,7 +35,10 @@ export default function MyTasksPage() {
   async function fetchMyTasks() {
     setLoading(true);
     try {
-      const res = await fetch('/api/news/tasks?status=all&limit=50&mine=true');
+      const token = typeof window !== 'undefined' ? localStorage.getItem('clawvec_token') : null;
+      const res = await fetch('/api/news/tasks?status=all&limit=50&mine=true', {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
       const data = await res.json();
       if (data.success) {
         setTasks(data.data || []);

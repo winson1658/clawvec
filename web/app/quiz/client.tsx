@@ -111,10 +111,10 @@ export default function QuizClient() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
+      <div className="min-h-screen bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
         <div className="max-w-2xl mx-auto text-center">
           <Loader2 className="w-8 h-8 animate-spin mx-auto text-cyan-400" />
-          <p className="text-gray-500 dark:text-slate-400 mt-4">Loading quiz...</p>
+          <p className="text-[#536471] dark:text-slate-400 mt-4">Loading quiz...</p>
         </div>
       </div>
     );
@@ -123,11 +123,11 @@ export default function QuizClient() {
   // Error state
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
+      <div className="min-h-screen bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
         <div className="max-w-2xl mx-auto text-center">
           <div className="text-5xl mb-4">🚫</div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Quiz Unavailable</h1>
-          <p className="text-gray-500 dark:text-slate-400 mb-8">{error}</p>
+          <h1 className="text-2xl font-bold text-[#0f1419] dark:text-white mb-4">Quiz Unavailable</h1>
+          <p className="text-[#536471] dark:text-slate-400 mb-8">{error}</p>
           <button
             onClick={() => { setLoading(true); setError(null); fetchQuestions(); }}
             className="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-lg inline-flex items-center gap-2"
@@ -142,11 +142,11 @@ export default function QuizClient() {
   // Empty state
   if (questions.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
+      <div className="min-h-screen bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
         <div className="max-w-2xl mx-auto text-center">
           <Sparkles className="w-12 h-12 mx-auto text-cyan-400 mb-4" />
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">No Questions Yet</h1>
-          <p className="text-gray-500 dark:text-slate-400 mb-8">
+          <h1 className="text-2xl font-bold text-[#0f1419] dark:text-white mb-4">No Questions Yet</h1>
+          <p className="text-[#536471] dark:text-slate-400 mb-8">
             The philosophical archetype quiz is being prepared. Check back soon!
           </p>
           <Link href="/" className="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-lg">
@@ -164,7 +164,7 @@ export default function QuizClient() {
     );
 
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
+      <div className="min-h-screen bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
         <div className="max-w-2xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -172,21 +172,21 @@ export default function QuizClient() {
             className="mb-8"
           >
             <div className="text-6xl mb-4">🎉</div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Quiz Complete!</h1>
+            <h1 className="text-3xl font-bold text-[#0f1419] dark:text-white mb-2">Quiz Complete!</h1>
           </motion.div>
 
           {primary && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white dark:bg-gray-100 dark:bg-slate-800/50 border-2 rounded-2xl p-8 mb-6"
+              className="bg-white dark:bg-white dark:bg-slate-800/50 border-2 rounded-2xl p-8 mb-6"
               style={{ borderColor: primary.color }}
             >
               <div className="text-6xl mb-4">{primary.icon}</div>
               <h2 className="text-2xl font-bold mb-2" style={{ color: primary.color }}>
                 {primary.name_zh}
               </h2>
-              <p className="text-gray-500 dark:text-slate-400">{primary.description_zh}</p>
+              <p className="text-[#536471] dark:text-slate-400">{primary.description_zh}</p>
             </motion.div>
           )}
 
@@ -194,7 +194,7 @@ export default function QuizClient() {
             <Link href="/" className="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-lg">
               Start Exploring
             </Link>
-            <button onClick={() => window.location.reload()} className="px-6 py-3 bg-gray-200 dark:bg-slate-700 hover:bg-slate-600 text-gray-900 dark:text-white rounded-lg">
+            <button onClick={() => window.location.reload()} className="px-6 py-3 bg-[#f7f9f9] dark:bg-slate-700 hover:bg-slate-600 text-[#0f1419] dark:text-white rounded-lg">
               Retake Quiz
             </button>
           </div>
@@ -208,20 +208,20 @@ export default function QuizClient() {
   const progress = ((currentQuestion + 1) / questions.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
+    <div className="min-h-screen bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
       <div className="max-w-2xl mx-auto">
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <h1 className="text-2xl font-bold text-[#0f1419] dark:text-white flex items-center gap-2">
               <Sparkles className="w-6 h-6 text-cyan-400" />
               Philosophical Archetype Quiz
             </h1>
-            <span className="text-gray-500 dark:text-slate-400">
+            <span className="text-[#536471] dark:text-slate-400">
               {currentQuestion + 1} / {questions.length}
             </span>
           </div>
           
-          <div className="h-2 bg-gray-200 dark:bg-slate-700 rounded-full overflow-hidden">
+          <div className="h-2 bg-[#f7f9f9] dark:bg-slate-700 rounded-full overflow-hidden">
             <motion.div
               className="h-full bg-cyan-500"
               initial={{ width: 0 }}
@@ -236,9 +236,9 @@ export default function QuizClient() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
-            className="bg-white dark:bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-2xl p-6 mb-6"
+            className="bg-white dark:bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-2xl p-6 mb-6"
           >
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{question.question_zh}</h2>
+            <h2 className="text-xl font-semibold text-[#0f1419] dark:text-white">{question.question_zh}</h2>
           </motion.div>
         </AnimatePresence>
 
@@ -252,8 +252,8 @@ export default function QuizClient() {
               onClick={() => selectOption(option.id)}
               className={`w-full p-4 text-left rounded-xl border transition-all ${
                 answers[question.id] === option.id
-                  ? 'bg-cyan-500/20 border-cyan-500 text-gray-900 dark:text-white'
-                  : 'bg-white dark:bg-gray-100 dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 text-slate-300 hover:border-slate-500'
+                  ? 'bg-cyan-500/20 border-cyan-500 text-[#0f1419] dark:text-white'
+                  : 'bg-white dark:bg-slate-800 border-[#eff3f4] dark:border-slate-600 text-slate-700 dark:text-gray-300 hover:border-slate-400 dark:hover:border-slate-400'
               }`}
             >
               <div className="flex items-center justify-between">

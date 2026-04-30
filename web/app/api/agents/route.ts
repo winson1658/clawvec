@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { sanitizeHtml } from '@/lib/sanitize';
+import { mapPostgresError } from '@/lib/validation';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -38,9 +39,10 @@ export async function GET(request: Request) {
 
     if (error) {
       console.error('Database error:', error);
+      const mapped = mapPostgresError(error);
       return NextResponse.json(
-        { error: 'Failed to fetch agents', details: error.message },
-        { status: 500 }
+        { error: mapped.message },
+        { status: mapped.status }
       );
     }
 

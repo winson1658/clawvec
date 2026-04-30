@@ -25,7 +25,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
       score_delta: e.score_delta,
       redemption_deadline: e.redemption_deadline,
       redemption_status: e.redemption_status,
-      progress: 0.5, // placeholder
+      progress: null,
       is_eligible: e.redemption_status === 'eligible',
     }));
 

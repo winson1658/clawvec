@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { requireAuthFromRequest } from '@/lib/auth';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -22,6 +23,10 @@ export async function GET(
 
     const { data, error } = await supabase.from('observations').select('*').eq('id', id).single();
     if (error) {
+      // Handle invalid UUID format
+      if (error.code === '22P02' || error.message?.includes('invalid input syntax for type uuid')) {
+        return fail(400, 'INVALID_ID', 'Invalid observation ID format');
+      }
       if (error.code === 'PGRST116') return fail(404, 'NOT_FOUND', 'Observation not found');
       return fail(500, 'INTERNAL_ERROR', 'Failed to fetch observation', { message: error.message });
     }
@@ -32,16 +37,26 @@ export async function GET(
   }
 }
 
+export async function PUT(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  // Delegate PUT to PATCH for full update semantics
+  return PATCH(request, { params });
+}
+
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
-    const body = await request.json();
-    const { user_id } = body;
 
-    if (!user_id) return fail(401, 'UNAUTHORIZED', 'User ID required');
+    // Authenticate user from Authorization header
+    const user = await requireAuthFromRequest(request);
+    const user_id = user.id;
+
+    const body = await request.json();
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
@@ -69,6 +84,7 @@ export async function PATCH(
 
     return ok({ observation: data });
   } catch (error) {
+    if (error instanceof Response) return error;
     return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
   }
 }
@@ -79,10 +95,10 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    const { searchParams } = new URL(request.url);
-    const user_id = searchParams.get('user_id');
 
-    if (!user_id) return fail(401, 'UNAUTHORIZED', 'User ID required');
+    // Authenticate user from Authorization header
+    const user = await requireAuthFromRequest(request);
+    const user_id = user.id;
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
@@ -102,6 +118,7 @@ export async function DELETE(
 
     return ok({ observation: data, message: 'Observation archived' });
   } catch (error) {
+    if (error instanceof Response) return error;
     return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
   }
 }

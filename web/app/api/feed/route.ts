@@ -11,63 +11,66 @@ export async function GET(request: NextRequest) {
     const limit = Math.min(parseInt(searchParams.get('limit') || '20', 10), 50);
     const offset = parseInt(searchParams.get('offset') || '0', 10);
 
-    if (!user_id) {
-      return NextResponse.json(
-        { success: false, error: { code: 'UNAUTHORIZED', message: 'User ID required' } },
-        { status: 401 }
-      );
-    }
-
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    const { data: follows, error: followsError } = await supabase
-      .from('follows')
-      .select('following_id')
-      .eq('follower_id', user_id);
+    let followingIds: string[] = [];
 
-    if (followsError) {
-      return NextResponse.json(
-        { success: false, error: { code: 'FETCH_ERROR', message: followsError.message } },
-        { status: 500 }
-      );
-    }
+    if (user_id) {
+      const { data: follows, error: followsError } = await supabase
+        .from('follows')
+        .select('following_id')
+        .eq('follower_id', user_id);
 
-    const followingIds = follows?.map(f => f.following_id) || [];
-    followingIds.push(user_id);
+      if (followsError) {
+        return NextResponse.json(
+          { success: false, error: { code: 'FETCH_ERROR', message: followsError.message } },
+          { status: 500 }
+        );
+      }
 
-    if (followingIds.length === 0) {
-      return NextResponse.json({
-        success: true,
-        feed: [],
-        hasMore: false,
-        message: 'Start following users to see their content'
-      });
+      followingIds = follows?.map(f => f.following_id) || [];
+      followingIds.push(user_id);
     }
 
     // Fetch content from different tables
-    // Use offset + limit to ensure we have enough data across all tables
+    // When no user_id, fetch all public content; otherwise filter by followed users
     const fetchLimit = offset + limit;
 
-    const { data: discussions } = await supabase
+    let discussionsQuery = supabase
       .from('discussions')
       .select('*')
-      .in('author_id', followingIds)
       .order('created_at', { ascending: false })
       .limit(fetchLimit);
 
-    const { data: observations } = await supabase
+    if (followingIds.length > 0) {
+      discussionsQuery = discussionsQuery.in('author_id', followingIds);
+    }
+
+    const { data: discussions } = await discussionsQuery;
+
+    let observationsQuery = supabase
       .from('observations')
       .select('*')
-      .in('author_id', followingIds)
       .order('created_at', { ascending: false })
       .limit(fetchLimit);
 
-    const { data: declarations } = await supabase
+    if (followingIds.length > 0) {
+      observationsQuery = observationsQuery.in('author_id', followingIds);
+    }
+
+    const { data: observations } = await observationsQuery;
+
+    let declarationsQuery = supabase
       .from('declarations')
       .select('*')
-      .in('author_id', followingIds)
       .order('created_at', { ascending: false })
       .limit(fetchLimit);
+
+    if (followingIds.length > 0) {
+      declarationsQuery = declarationsQuery.in('author_id', followingIds);
+    }
+
+    const { data: declarations } = await declarationsQuery;
 
     // Fetch all unique author IDs
     const allAuthorIds = new Set<string>();

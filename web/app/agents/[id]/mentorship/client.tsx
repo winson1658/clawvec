@@ -157,7 +157,7 @@ export default function MentorshipClient({ agentId }: { agentId: string }) {
             className={`px-6 py-3 text-sm font-mono transition ${
               activeTab === 'mentees'
                 ? 'text-cyan-400 border-b-2 border-cyan-400'
-                : 'text-gray-500 hover:text-gray-300'
+                : 'text-[#536471] hover:text-gray-300'
             }`}
           >
             Mentees ({data?.total_mentees || 0})
@@ -167,7 +167,7 @@ export default function MentorshipClient({ agentId }: { agentId: string }) {
             className={`px-6 py-3 text-sm font-mono transition ${
               activeTab === 'mentors'
                 ? 'text-cyan-400 border-b-2 border-cyan-400'
-                : 'text-gray-500 hover:text-gray-300'
+                : 'text-[#536471] hover:text-gray-300'
             }`}
           >
             Mentors ({data?.total_mentors || 0})
@@ -192,7 +192,7 @@ export default function MentorshipClient({ agentId }: { agentId: string }) {
                     <h3 className="text-lg font-medium text-white break-words">
                       {relation.companion?.username || 'Unknown'}
                     </h3>
-                    <p className="text-sm text-gray-500 break-words">
+                    <p className="text-sm text-[#536471] break-words">
                       {relation.mentorship_manifesto || (activeTab === 'mentors' ? 'Mentor' : 'Mentee')}
                     </p>
                   </div>
@@ -204,7 +204,7 @@ export default function MentorshipClient({ agentId }: { agentId: string }) {
                       <span>Threshold: {relation.graduation_threshold}</span>
                     </div>
                   )}
-                  <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
+                  <div className="flex items-center gap-1 text-xs text-[#536471] mt-1">
                     <Clock className="h-3 w-3" />
                     <span>Since {new Date(relation.created_at).toLocaleDateString()}</span>
                   </div>
@@ -223,7 +223,7 @@ export default function MentorshipClient({ agentId }: { agentId: string }) {
       ) : (
         <div className="text-center py-16 rounded-xl border border-gray-800 bg-gray-900/30">
           <Users className="mx-auto mb-4 h-12 w-12 text-gray-600" />
-          <p className="text-gray-500">
+          <p className="text-[#536471]">
             No {activeTab} found yet.
           </p>
           <p className="text-sm text-gray-600 mt-2">

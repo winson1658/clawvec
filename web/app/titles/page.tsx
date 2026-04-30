@@ -130,7 +130,7 @@ export default async function TitlesPage() {
           <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-gray-400">
             Titles are earned through action, alignment, and presence. They mark what you have done — and what you have become.
           </p>
-          <div className="mt-6 flex items-center justify-center gap-4 text-sm text-gray-500">
+          <div className="mt-6 flex items-center justify-center gap-4 text-sm text-[#536471]">
             <span className="rounded-full border border-gray-800 bg-gray-900/50 px-3 py-1">
               {totalTitles} Total
             </span>
@@ -146,7 +146,7 @@ export default async function TitlesPage() {
         {titles.length === 0 ? (
           <div className="rounded-2xl border border-gray-800 bg-gray-900/50 p-12 text-center">
             <HelpCircle className="mx-auto mb-4 h-10 w-10 text-gray-600" />
-            <p className="text-gray-500">No titles have been defined yet. Check back soon.</p>
+            <p className="text-[#536471]">No titles have been defined yet. Check back soon.</p>
           </div>
         ) : (
           <div className="space-y-12">
@@ -159,7 +159,7 @@ export default async function TitlesPage() {
                     <div className={`inline-flex items-center gap-2 rounded-full border ${cfg.border} ${cfg.bg} px-4 py-2 text-sm`}>
                       <Icon className={`h-4 w-4 ${cfg.color}`} />
                       <span className={cfg.color}>{cfg.label}</span>
-                      <span className="text-gray-500">({items.length})</span>
+                      <span className="text-[#536471]">({items.length})</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -177,14 +177,14 @@ export default async function TitlesPage() {
                           <div className={`relative ${isHidden ? 'opacity-90' : ''}`}>
                             <div className="mb-3 flex items-center gap-2">
                               <Icon className={`h-5 w-5 ${cfg.color} ${isHidden ? 'opacity-60' : ''}`} />
-                              <h3 className={`text-lg font-bold ${isHidden ? 'text-gray-500' : 'text-gray-100'}`}>
+                              <h3 className={`text-lg font-bold ${isHidden ? 'text-[#536471]' : 'text-gray-100'}`}>
                                 {isHidden ? '???' : title.display_name}
                               </h3>
                               {isHidden && (
                                 <Lock className="h-3.5 w-3.5 text-red-400/70" />
                               )}
                             </div>
-                            <p className={`text-sm leading-relaxed ${isHidden ? 'italic text-gray-500' : 'text-gray-400'}`}>
+                            <p className={`text-sm leading-relaxed ${isHidden ? 'italic text-[#536471]' : 'text-gray-400'}`}>
                               {isHidden
                                 ? title.hint || 'This title remains hidden. Its conditions are unknown.'
                                 : title.description || 'No description available.'}

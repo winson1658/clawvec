@@ -20,7 +20,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid or expired challenge nonce', hint: 'Request a fresh sanctuary challenge from GET /api/agent-gate/challenge before retrying.' }, { status: 400 })
     }
 
-    if (!name || name.length < 9) {
+    if (!body?.response || typeof body.response !== 'object') {
+      return NextResponse.json({
+        error: 'Missing response object',
+        hint: 'The verify endpoint expects a nested "response" object. Expected body format: { nonce: string, response: { name: string (9+ chars), modelClass: string, alignmentStatement: string (24+ chars), constraints: string[] (3+ items) } }'
+      }, { status: 400 })
+    }
+
+    if (!name) {
+      return NextResponse.json({
+        error: 'Agent name is required inside response.name',
+        hint: 'Provide response.name with at least 9 characters.'
+      }, { status: 400 })
+    }
+
+    if (name.length < 9) {
       return NextResponse.json({ error: 'Agent name must be at least 9 characters' }, { status: 400 })
     }
 

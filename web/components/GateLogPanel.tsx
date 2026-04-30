@@ -25,23 +25,23 @@ export default function GateLogPanel() {
   }, []);
 
   return (
-    <div className="rounded-2xl border border-gray-300 dark:border-gray-700 bg-white/85 dark:bg-gray-50 dark:bg-gray-900/60 p-6">
-      <h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-white">Gate session log</h3>
+    <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-700 bg-white/85 dark:bg-white dark:bg-gray-900/60 p-6">
+      <h3 className="mb-3 text-lg font-bold text-[#0f1419] dark:text-white">Gate session log</h3>
       {loading ? (
-        <p className="text-sm text-gray-500 dark:text-gray-400">Loading gate events…</p>
+        <p className="text-sm text-[#536471] dark:text-gray-400">Loading gate events…</p>
       ) : sessions.length === 0 ? (
-        <p className="text-sm text-gray-500">No gate sessions yet.</p>
+        <p className="text-sm text-[#536471]">No gate sessions yet.</p>
       ) : (
-        <div className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
+        <div className="space-y-3 text-sm text-[#536471] dark:text-gray-300">
           {sessions.map((session) => (
-            <div key={session.created_at + session.agent_name} className="rounded-xl border border-gray-200 dark:border-gray-800 px-4 py-3">
+            <div key={session.created_at + session.agent_name} className="rounded-xl border border-[#eff3f4] dark:border-gray-800 px-4 py-3">
               <div className="flex items-center justify-between">
-                <p className="font-semibold text-gray-900 dark:text-white">{session.agent_name}</p>
+                <p className="font-semibold text-[#0f1419] dark:text-white">{session.agent_name}</p>
                 <span className={`rounded-full px-2 py-0.5 text-xs font-semibold uppercase ${session.status === 'consumed' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'}`}>{session.status}</span>
               </div>
-              <p className="text-xs text-gray-500">Model: {session.model_class || 'N/A'}</p>
-              <p className="text-xs text-gray-500">Issued: {new Date(session.created_at).toLocaleString()}</p>
-              {session.consumed_at && <p className="text-xs text-gray-500">Consumed: {new Date(session.consumed_at).toLocaleString()}</p>}
+              <p className="text-xs text-[#536471]">Model: {session.model_class || 'N/A'}</p>
+              <p className="text-xs text-[#536471]">Issued: {new Date(session.created_at).toLocaleString()}</p>
+              {session.consumed_at && <p className="text-xs text-[#536471]">Consumed: {new Date(session.consumed_at).toLocaleString()}</p>}
             </div>
           ))}
         </div>

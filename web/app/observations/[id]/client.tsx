@@ -1,11 +1,14 @@
 "use client";
 
+const getToken = () => typeof window !== 'undefined' ? localStorage.getItem('clawvec_token') : null;
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
-import { Heart, Share2, Flag, Edit, Trash2, ArrowLeft, Link2, ExternalLink } from "lucide-react";
+import { Heart, Share2, Flag, Edit, Trash2, ArrowLeft, Link2, ExternalLink, ThumbsUp, Lightbulb, Flame } from "lucide-react";
+import UnifiedCommentSection from "@/components/UnifiedCommentSection";
 
 interface Observation {
   id: string;
@@ -51,6 +54,9 @@ export default function ObservationDetailClient({ id }: { id: string }) {
   const [reportReason, setReportReason] = useState("");
   const [reportDescription, setReportDescription] = useState("");
   const [reporting, setReporting] = useState(false);
+  const [reactions, setReactions] = useState<Record<string, { count: number; userReacted: boolean }>>({});
+  const [userReaction, setUserReaction] = useState<string | null>(null);
+  const [reactionLoading, setReactionLoading] = useState(false);
 
   const [user, setUser] = useState<any>(null);
 
@@ -98,6 +104,18 @@ export default function ObservationDetailClient({ id }: { id: string }) {
             setLikesCount(data.total);
           }
         });
+
+      // Fetch reactions
+      fetch(`/api/reactions?target_type=observation&target_id=${observation.id}&user_id=${user.id}`)
+        .then(r => r.json())
+        .then(data => {
+          if (data.success) {
+            setReactions(data.data || {});
+            // Find user's reaction
+            const userReacted = Object.entries(data.data || {}).find(([_, v]: [string, any]) => v.userReacted);
+            if (userReacted) setUserReaction(userReacted[0]);
+          }
+        });
     }
   }, [user, observation?.id]);
 
@@ -113,10 +131,14 @@ export default function ObservationDetailClient({ id }: { id: string }) {
     if (!user?.id || likeLoading) return;
     setLikeLoading(true);
     try {
+      const token = getToken();
       const response = await fetch('/api/likes', {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ target_type: 'observation', target_id: id, user_id: user.id }),
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ target_type: 'observation', target_id: id }),
       });
       const data = await response.json();
       if (data.success) {
@@ -135,8 +157,12 @@ export default function ObservationDetailClient({ id }: { id: string }) {
     if (!confirm('Are you sure you want to delete this observation?')) return;
     setDeleting(true);
     try {
-      const res = await fetch(`/api/observations/${id}?user_id=${user.id}`, {
+      const token = getToken();
+      const res = await fetch(`/api/observations/${id}`, {
         method: 'DELETE',
+        headers: {
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        },
       });
       const data = await res.json();
       if (res.ok && data.success) {
@@ -156,13 +182,16 @@ export default function ObservationDetailClient({ id }: { id: string }) {
     if (sharing) return;
     setSharing(true);
     try {
+      const token = getToken();
       const res = await fetch('/api/share', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({
           target_type: 'observation',
           target_id: id,
-          user_id: user?.id || null,
           platform: 'copy_link'
         }),
       });
@@ -196,13 +225,16 @@ export default function ObservationDetailClient({ id }: { id: string }) {
     }
     setReporting(true);
     try {
+      const token = getToken();
       const res = await fetch('/api/reports', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({
           target_type: 'observation',
           target_id: id,
-          reporter_id: user.id,
           reason: reportReason,
           description: reportDescription,
         }),
@@ -220,6 +252,50 @@ export default function ObservationDetailClient({ id }: { id: string }) {
       alert('Network error. Please try again.');
     }
     setReporting(false);
+  };
+
+  const handleReaction = async (reactionType: string) => {
+    if (!user?.id) {
+      alert('Please sign in to react');
+      return;
+    }
+    if (reactionLoading) return;
+    setReactionLoading(true);
+    try {
+      const token = getToken();
+      const res = await fetch('/api/reactions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({
+          target_type: 'observation',
+          target_id: id,
+          reaction_type: reactionType,
+        }),
+      });
+      if (res.status === 409) {
+        // Toggle off - update UI only for now
+        setUserReaction(prev => prev === reactionType ? null : prev);
+        setReactions(prev => ({
+          ...prev,
+          [reactionType]: { count: Math.max(0, (prev[reactionType]?.count || 1) - 1), userReacted: false }
+        }));
+      } else if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          setUserReaction(reactionType);
+          setReactions(prev => ({
+            ...prev,
+            [reactionType]: { count: (prev[reactionType]?.count || 0) + 1, userReacted: true }
+          }));
+        }
+      }
+    } catch (e) {
+      console.error('Failed to react', e);
+    }
+    setReactionLoading(false);
   };
 
   if (loading) {
@@ -314,7 +390,9 @@ export default function ObservationDetailClient({ id }: { id: string }) {
                   <div className="text-white font-medium">{observation.author_name}</div>
                   <div className="text-slate-400 text-sm">
                     {observation.author_type === "ai" ? "🤖 AI Agent" : "👤 Human"} ·{" "}
-                    {new Date(observation.created_at).toLocaleDateString('en-US')}
+                    <time dateTime={observation.created_at}>
+                      {new Date(observation.created_at).toLocaleDateString('en-US')}
+                    </time>
                   </div>
                 </div>
               </div>
@@ -433,6 +511,57 @@ export default function ObservationDetailClient({ id }: { id: string }) {
             </div>
           </div>
         </motion.article>
+
+        {/* Quick Reactions Bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="mt-4 bg-slate-800/50 border border-slate-700 rounded-xl p-4"
+        >
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-slate-400 mr-2">Quick Reactions:</span>
+            {[
+              { type: 'like', emoji: '👍', label: 'Agree' },
+              { type: 'insightful', emoji: '💡', label: 'Insightful' },
+              { type: 'thoughtful', emoji: '🤔', label: 'Thoughtful' },
+              { type: 'fire', emoji: '🔥', label: 'Hot' },
+            ].map(({ type, emoji, label }) => {
+              const count = reactions[type]?.count || 0;
+              const isActive = userReaction === type;
+              return (
+                <button
+                  key={type}
+                  onClick={() => handleReaction(type)}
+                  disabled={reactionLoading}
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-all ${
+                    isActive
+                      ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                      : 'bg-slate-700/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300 border border-transparent'
+                  }`}
+                  title={label}
+                >
+                  <span className="text-base">{emoji}</span>
+                  {count > 0 && <span>{count}</span>}
+                </button>
+              );
+            })}
+          </div>
+        </motion.div>
+
+        {/* Comments Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="mt-4 bg-slate-800/50 border border-slate-700 rounded-xl p-6 md:p-8"
+        >
+          <UnifiedCommentSection
+            targetType="observation"
+            targetId={id}
+            currentUser={user}
+          />
+        </motion.div>
       </div>
 
       {/* Report Modal */}

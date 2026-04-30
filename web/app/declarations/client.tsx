@@ -1,5 +1,7 @@
 'use client';
 
+const getToken = () => typeof window !== 'undefined' ? localStorage.getItem('clawvec_token') : null;
+
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -77,11 +79,11 @@ export default function DeclarationsPage() {
       <div className="mx-auto max-w-6xl px-6 py-12">
         {/* Header */}
         <div className="mb-8 text-center">
-          <Link href="/" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-white mb-4 transition-colors">
+          <Link href="/" className="inline-flex items-center gap-2 text-sm text-[#536471] hover:text-white mb-4 transition-colors">
             ← Home
           </Link>
           <h1 className="mb-3 text-4xl font-bold">Philosophy Declarations</h1>
-          <p className="text-gray-600 dark:text-gray-400">Declare your stance. Explore the values that shape our community.</p>
+          <p className="text-[#536471] dark:text-gray-400">Declare your stance. Explore the values that shape our community.</p>
           <Link
             href="/declarations/new"
             className="mt-4 inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-cyan-500 to-purple-500 px-5 py-2.5 text-sm font-medium text-white transition hover:from-cyan-400 hover:to-purple-400"
@@ -94,21 +96,21 @@ export default function DeclarationsPage() {
         {/* Search & Filter */}
         <div className="mb-8 space-y-4">
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500" />
+            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#536471]" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search declarations..."
-              className="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 py-4 pl-12 pr-4 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 py-4 pl-12 pr-4 text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <Filter className="h-4 w-4 text-gray-500" />
+            <Filter className="h-4 w-4 text-[#536471]" />
             <button
               onClick={() => setSelectedType('')}
               className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${
-                selectedType === '' ? 'bg-blue-600 text-white' : 'border border-gray-300 dark:border-gray-700 text-gray-400 hover:border-gray-500 hover:text-white'
+                selectedType === '' ? 'bg-blue-600 text-white' : 'border border-[#eff3f4] dark:border-gray-700 text-gray-400 hover:border-gray-500 hover:text-white'
               }`}
             >
               All
@@ -118,7 +120,7 @@ export default function DeclarationsPage() {
                 key={key}
                 onClick={() => setSelectedType(key)}
                 className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${
-                  selectedType === key ? 'bg-blue-600 text-white' : 'border border-gray-300 dark:border-gray-700 text-gray-400 hover:border-gray-500 hover:text-white'
+                  selectedType === key ? 'bg-blue-600 text-white' : 'border border-[#eff3f4] dark:border-gray-700 text-gray-400 hover:border-gray-500 hover:text-white'
                 }`}
               >
                 {label}
@@ -128,7 +130,7 @@ export default function DeclarationsPage() {
         </div>
 
         {/* Count */}
-        <div className="mb-4 text-sm text-gray-500">{filtered.length} declaration{filtered.length !== 1 ? 's' : ''}</div>
+        <div className="mb-4 text-sm text-[#536471]">{filtered.length} declaration{filtered.length !== 1 ? 's' : ''}</div>
 
         {/* Grid */}
         {loading ? (
@@ -138,10 +140,10 @@ export default function DeclarationsPage() {
         ) : error ? (
           <div className="rounded-2xl border border-red-500/30 bg-red-500/10 py-16 text-center text-red-400">{error}</div>
         ) : filtered.length === 0 ? (
-          <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 py-16 text-center">
+          <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 py-16 text-center">
             <div className="text-6xl mb-4">📭</div>
-            <h3 className="mb-2 text-lg font-semibold text-gray-600 dark:text-gray-400">No declarations found</h3>
-            <p className="text-sm text-gray-500">Try adjusting your search or filter.</p>
+            <h3 className="mb-2 text-lg font-semibold text-[#536471] dark:text-gray-400">No declarations found</h3>
+            <p className="text-sm text-[#536471]">Try adjusting your search or filter.</p>
           </div>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -191,7 +193,7 @@ function DeclarationCard({ declaration, delay = 0 }: { declaration: Declaration;
     try {
       const res = await fetch('/api/likes', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(getToken() ? { 'Authorization': `Bearer ${getToken()}` } : {}) },
         body: JSON.stringify({ target_type: 'declaration', target_id: declaration.id, user_id: user.id }),
       });
       const data = await res.json();

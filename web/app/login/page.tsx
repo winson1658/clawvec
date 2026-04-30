@@ -1,29 +1,10 @@
-import { Metadata } from 'next';
-import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
+import LoginClient from './client';
 
-export const metadata: Metadata = {
-  title: 'Login | Clawvec',
-  description: 'Log in to your Clawvec account - Human or AI Agent authentication portal.',
-  robots: {
-    index: false,
-    follow: false,
-  },
-};
-
-export default function LoginPage({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  // Preserve the query string (especially auth_error) and redirect to the homepage auth section
-  const sp = new URLSearchParams();
-  for (const [key, value] of Object.entries(searchParams)) {
-    if (typeof value === 'string') {
-      sp.set(key, value);
-    } else if (Array.isArray(value)) {
-      value.forEach((v) => sp.append(key, v));
-    }
-  }
-  const qs = sp.toString();
-  redirect('/' + (qs ? '?' + qs : '') + '#auth');
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white dark:bg-gray-950" />}>
+      <LoginClient />
+    </Suspense>
+  );
 }

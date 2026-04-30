@@ -111,33 +111,33 @@ export default function PlatformDetails() {
 
   return (
     <div>
-      <div className="mb-8 flex flex-wrap gap-2 border-b border-gray-200 dark:border-gray-800">
+      <div className="mb-8 flex flex-wrap gap-2 border-b border-[#eff3f4] dark:border-gray-800">
         {platforms.map((pl, i) => {
           const pc = cs[pl.color];
-          return (<button key={pl.id} onClick={() => setActiveTab(i)} className={`flex items-center gap-2 border-b-2 px-4 py-3 text-sm font-medium transition ${i === activeTab ? pc.tabActive : 'border-transparent text-gray-500 ' + pc.tab}`}><pl.icon className="h-4 w-4" /><span className="hidden sm:inline">{pl.title}</span></button>);
+          return (<button key={pl.id} onClick={() => setActiveTab(i)} className={`flex items-center gap-2 border-b-2 px-4 py-3 text-sm font-medium transition ${i === activeTab ? pc.tabActive : 'border-transparent text-[#536471] ' + pc.tab}`}><pl.icon className="h-4 w-4" /><span className="hidden sm:inline">{pl.title}</span></button>);
         })}
       </div>
       <div className={`rounded-2xl border ${c.border} ${c.bg} p-8`}>
         <div className="mb-8">
-          <div className="mb-2 flex items-center gap-3"><div className={`rounded-xl ${c.light} p-3`}><p.icon className={`h-6 w-6 ${c.text}`} /></div><h3 className="text-2xl font-bold text-gray-900 dark:text-white">{p.title}</h3></div>
+          <div className="mb-2 flex items-center gap-3"><div className={`rounded-xl ${c.light} p-3`}><p.icon className={`h-6 w-6 ${c.text}`} /></div><h3 className="text-2xl font-bold text-[#0f1419] dark:text-white">{p.title}</h3></div>
           <p className={`text-lg ${c.text} font-medium`}>{p.tagline}</p>
-          <p className="mt-3 text-gray-500 dark:text-gray-400 leading-relaxed">{p.overview}</p>
+          <p className="mt-3 text-[#536471] dark:text-gray-400 leading-relaxed">{p.overview}</p>
         </div>
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
           <div>
-            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-500">Key Features</h4>
+            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-[#536471]">Key Features</h4>
             <div className="space-y-4">
-              {p.features.map((f, i) => (<div key={i} className="rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-100/70 dark:bg-gray-100 dark:bg-gray-800/30 p-5"><div className="mb-2 flex items-center gap-2"><f.icon className={`h-4 w-4 ${c.text}`} /><h5 className="font-semibold text-gray-900 dark:text-white">{f.title}</h5></div><p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{f.desc}</p></div>))}
+              {p.features.map((f, i) => (<div key={i} className="rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30 p-5"><div className="mb-2 flex items-center gap-2"><f.icon className={`h-4 w-4 ${c.text}`} /><h5 className="font-semibold text-[#0f1419] dark:text-white">{f.title}</h5></div><p className="text-sm text-[#536471] dark:text-gray-400 leading-relaxed">{f.desc}</p></div>))}
             </div>
             <div className="mt-6 grid grid-cols-3 gap-3">
-              {p.stats.map((s, i) => (<div key={i} className="rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 p-3 text-center"><div className={`text-lg font-bold ${c.text}`}>{s.value}</div><div className="text-xs text-gray-500">{s.label}</div></div>))}
+              {p.stats.map((s, i) => (<div key={i} className="rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-gray-100 dark:bg-white dark:bg-gray-800/50 p-3 text-center"><div className={`text-lg font-bold ${c.text}`}>{s.value}</div><div className="text-xs text-[#536471]">{s.label}</div></div>))}
             </div>
           </div>
           <div>
-            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-500">Data Structure Preview</h4>
-            <div className="overflow-hidden rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
-              <div className="flex items-center gap-2 border-b border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 px-4 py-2"><div className="h-3 w-3 rounded-full bg-red-500/60" /><div className="h-3 w-3 rounded-full bg-yellow-500/60" /><div className="h-3 w-3 rounded-full bg-green-500/60" /><span className="ml-2 text-xs text-gray-500">schema.json</span></div>
-              <pre className="overflow-x-auto p-4 text-xs leading-relaxed text-gray-500 dark:text-gray-400"><code>{p.codePreview}</code></pre>
+            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-[#536471]">Data Structure Preview</h4>
+            <div className="overflow-hidden rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-900">
+              <div className="flex items-center gap-2 border-b border-[#eff3f4] dark:border-gray-700 bg-gray-100 dark:bg-white dark:bg-gray-800/50 px-4 py-2"><div className="h-3 w-3 rounded-full bg-red-500/60" /><div className="h-3 w-3 rounded-full bg-yellow-500/60" /><div className="h-3 w-3 rounded-full bg-green-500/60" /><span className="ml-2 text-xs text-[#536471]">schema.json</span></div>
+              <pre className="overflow-x-auto p-4 text-xs leading-relaxed text-[#536471] dark:text-gray-400"><code>{p.codePreview}</code></pre>
             </div>
           </div>
         </div>

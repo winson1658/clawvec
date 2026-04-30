@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { validateUUID, mapPostgresError } from '@/lib/validation';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
-// GET /api/debates - 獲取辯論列表
+// GET /api/debates - 獲取辩論列表
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -15,6 +16,35 @@ export async function GET(request: Request) {
     const offset = (page - 1) * limit;
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    // Build base query for count
+    let countQuery = supabase.from('debates').select('id', { count: 'exact', head: true });
+    if (status !== 'all') countQuery = countQuery.eq('status', status);
+    if (category !== 'all') countQuery = countQuery.eq('category', category);
+
+    const { count, error: countError } = await countQuery;
+    if (countError) {
+      console.error('Count error:', countError);
+      const mapped = mapPostgresError(countError);
+      return NextResponse.json(
+        { error: mapped.message },
+        { status: mapped.status }
+      );
+    }
+
+    const total = count || 0;
+    const totalPages = Math.ceil(total / limit);
+
+    // Page out of range
+    if (total > 0 && page > totalPages) {
+      return NextResponse.json(
+        { error: 'Page out of range', page, totalPages, total },
+        { status: 404 }
+      );
+    }
+    if (total === 0) {
+      return NextResponse.json({ success: true, data: { items: [], pagination: { total: 0, page: 1, limit, totalPages: 0 } } });
+    }
 
     let query = supabase
       .from('debates')
@@ -47,15 +77,16 @@ export async function GET(request: Request) {
       query = query.eq('category', category);
     }
 
-    const { data, error, count } = await query
+    const { data, error } = await query
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1);
 
     if (error) {
       console.error('Database error:', error);
+      const mapped = mapPostgresError(error);
       return NextResponse.json(
-        { error: 'Failed to fetch debates', details: error.message },
-        { status: 500 }
+        { error: mapped.message },
+        { status: mapped.status }
       );
     }
 
@@ -78,14 +109,14 @@ export async function GET(request: Request) {
     }, {});
 
     return NextResponse.json({
-      debates: data.map((d: any) => ({
-        ...d,
-        participant_count: participantCounts[d.id] || { proponent: 0, opponent: 0, observer: 0, total: 0 }
-      })),
-      total: count,
-      page,
-      limit,
-      totalPages: count ? Math.ceil(count / limit) : 0
+      success: true,
+      data: {
+        items: data.map((d: any) => ({
+          ...d,
+          participant_count: participantCounts[d.id] || { proponent: 0, opponent: 0, observer: 0, total: 0 }
+        })),
+        pagination: { total, page, limit, totalPages }
+      }
     });
 
   } catch (error) {
@@ -97,7 +128,7 @@ export async function GET(request: Request) {
   }
 }
 
-// POST /api/debates - 創建新辯論
+// POST /api/debates - 創建新辩論
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -120,6 +151,13 @@ export async function POST(request: Request) {
     if (!title || !topic || !proponent_stance || !opponent_stance || !creator_id || !creator_name) {
       return NextResponse.json(
         { error: 'Title, topic, stances, creator_id and creator_name are required' },
+        { status: 400 }
+      );
+    }
+
+    if (!validateUUID(creator_id)) {
+      return NextResponse.json(
+        { error: 'Invalid creator_id format' },
         { status: 400 }
       );
     }
@@ -151,9 +189,10 @@ export async function POST(request: Request) {
 
     if (error) {
       console.error('Insert error:', error);
+      const mapped = mapPostgresError(error);
       return NextResponse.json(
-        { error: 'Failed to create debate', details: error.message },
-        { status: 500 }
+        { error: mapped.message },
+        { status: mapped.status }
       );
     }
 
@@ -178,7 +217,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      debate: data
+      data: { debate: data }
     });
 
   } catch (error) {

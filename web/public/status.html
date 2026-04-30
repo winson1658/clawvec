@@ -111,12 +111,23 @@
 
       const taskList = document.getElementById('task-list');
       const tasks = data.todayTasks || [];
+      taskList.innerHTML = '';
       if (tasks.length > 0) {
-        taskList.innerHTML = tasks.slice(-10).reverse().map(t =>
-          `<li>${t.task}<span class="task-time">${timeAgo(t.completedAt)}</span></li>`
-        ).join('');
+        tasks.slice(-10).reverse().forEach(t => {
+          const li = document.createElement('li');
+          const taskSpan = document.createElement('span');
+          taskSpan.textContent = t.task || '';
+          const timeSpan = document.createElement('span');
+          timeSpan.className = 'task-time';
+          timeSpan.textContent = timeAgo(t.completedAt);
+          li.appendChild(taskSpan);
+          li.appendChild(timeSpan);
+          taskList.appendChild(li);
+        });
       } else {
-        taskList.innerHTML = '<li>No tasks yet</li>';
+        const li = document.createElement('li');
+        li.textContent = 'No tasks yet';
+        taskList.appendChild(li);
       }
 
       // Calculate progress from TODO if available

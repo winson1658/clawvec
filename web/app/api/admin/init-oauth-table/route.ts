@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { mapPostgresError } from '@/lib/validation';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -75,7 +76,7 @@ export async function POST(request: Request) {
     console.error('Init OAuth table error:', err);
     return NextResponse.json({ 
       error: 'Failed to initialize table',
-      details: err instanceof Error ? err.message : String(err)
+
     }, { status: 500 });
   }
 }
@@ -112,7 +113,7 @@ export async function GET(request: Request) {
   } catch (err) {
     return NextResponse.json({ 
       error: 'Failed to check table',
-      details: err instanceof Error ? err.message : String(err)
+
     }, { status: 500 });
   }
 }

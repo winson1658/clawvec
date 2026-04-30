@@ -165,7 +165,7 @@ function SearchContent() {
               <button
                 key={tab.id}
                 onClick={() => handleTabChange(tab.id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-lg transition-colors min-h-[44px] shrink-0 ${
                   activeTab === tab.id
                     ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/50'
                     : 'bg-slate-800/50 text-slate-400 hover:bg-slate-700'

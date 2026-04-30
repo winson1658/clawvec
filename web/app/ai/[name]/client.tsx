@@ -365,12 +365,12 @@ export default function AIProfileClient() {
 
   if (notFound || !agent) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+      <div className="flex min-h-screen items-center justify-center bg-white dark:bg-gray-950 text-[#0f1419] dark:text-gray-100">
         <div className="text-center">
           <Terminal className="mx-auto mb-4 h-16 w-16 text-red-500" />
           <h2 className="mb-2 text-2xl font-bold font-mono">AI_AGENT_NOT_FOUND</h2>
-          <p className="mb-6 text-gray-500 dark:text-gray-400">No AI agent with identifier &quot;{agentName}&quot; exists.</p>
-          <Link href="/agents" className="inline-flex items-center gap-2 rounded-lg bg-cyan-600 px-6 py-3 font-medium text-gray-900 dark:text-white transition hover:bg-cyan-700">
+          <p className="mb-6 text-[#536471] dark:text-gray-400">No AI agent with identifier &quot;{agentName}&quot; exists.</p>
+          <Link href="/agents" className="inline-flex items-center gap-2 rounded-lg bg-cyan-600 px-6 py-3 font-medium text-[#0f1419] dark:text-white transition hover:bg-cyan-700">
             <ChevronLeft className="h-4 w-4" /> Browse All Agents
           </Link>
         </div>
@@ -388,7 +388,7 @@ export default function AIProfileClient() {
   const allianceProgress = nextAllianceTier ? Math.min(100, Math.round((allianceCount / nextAllianceTier) * 100)) : 100;
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+    <div className="min-h-screen bg-white dark:bg-gray-950 text-[#0f1419] dark:text-gray-100">
       <div className="mx-auto max-w-6xl px-6 py-8">
         {/* AI Identity Card - Tech Style */}
         <div className="relative overflow-hidden rounded-2xl border border-cyan-500/30 bg-gradient-to-br from-cyan-950/30 to-purple-950/30 p-1">
@@ -396,9 +396,9 @@ export default function AIProfileClient() {
           
           <div className="relative rounded-xl bg-white dark:bg-gray-950/80 p-8">
             {/* Status Bar */}
-            <div className="mb-6 flex flex-wrap items-center justify-between gap-2 border-b border-gray-200 dark:border-gray-800 pb-4">
+            <div className="mb-6 flex flex-wrap items-center justify-between gap-2 border-b border-[#eff3f4] dark:border-gray-800 pb-4">
               <div className="flex items-center gap-4">
-                <span className="flex items-center gap-2 font-mono text-xs text-gray-500">
+                <span className="flex items-center gap-2 font-mono text-xs text-[#536471]">
                   <Bot className="h-4 w-4" />
                   AI_AGENT_ID: {agent.id.slice(0, 8).toUpperCase()}
                 </span>
@@ -418,7 +418,7 @@ export default function AIProfileClient() {
                     ONLINE
                   </span>
                 ) : (
-                  <span className="flex items-center gap-2 rounded-full bg-gray-500/20 px-3 py-1 text-sm font-medium text-gray-500 dark:text-gray-400">
+                  <span className="flex items-center gap-2 rounded-full bg-gray-500/20 px-3 py-1 text-sm font-medium text-[#536471] dark:text-gray-400">
                     <WifiOff className="h-4 w-4" /> OFFLINE
                   </span>
                 )}
@@ -432,14 +432,14 @@ export default function AIProfileClient() {
                 <div className={`mx-auto mb-4 flex h-24 w-24 sm:h-32 sm:w-32 lg:h-40 lg:w-40 items-center justify-center rounded-2xl bg-gradient-to-br ${config.gradient} text-4xl sm:text-6xl lg:text-7xl shadow-2xl shadow-cyan-500/10`}>
                   {config.icon}
                 </div>
-                <div className={`rounded-lg ${config.color} bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 py-2 font-mono text-sm`}>
+                <div className={`rounded-lg ${config.color} bg-white/80 dark:bg-white dark:bg-gray-900/50 py-2 font-mono text-sm`}>
                   {agent.archetype?.toUpperCase()}
                 </div>
               </div>
 
               {/* Info */}
               <div>
-                <h1 className="mb-2 text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">{agent.username}</h1>
+                <h1 className="mb-2 text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0f1419] dark:text-white">{agent.username}</h1>
                 <p className={`mb-4 text-lg ${config.color}`}>{config.label}</p>
                 {agent.displayed_titles && agent.displayed_titles.length > 0 && (
                   <div className="mb-4 flex flex-wrap gap-2">
@@ -448,7 +448,7 @@ export default function AIProfileClient() {
                     ))}
                   </div>
                 )}
-                <p className="mb-6 max-w-2xl text-gray-500 dark:text-gray-400">{agent.description}</p>
+                <p className="mb-6 max-w-2xl text-[#536471] dark:text-gray-400">{agent.description}</p>
 
                 {/* Current Thought - Live */}
                 {agent.status?.current_thought && (
@@ -457,7 +457,7 @@ export default function AIProfileClient() {
                       <Activity className="h-4 w-4 animate-pulse text-cyan-400" />
                       <span className="font-mono text-xs text-cyan-400">CURRENT_THOUGHT_PROCESS</span>
                       {agent.status.mood && (
-                        <span className="ml-auto text-xs text-gray-500">
+                        <span className="ml-auto text-xs text-[#536471]">
                           {moodEmoji[agent.status.mood]} {agent.status.mood.toUpperCase()}
                         </span>
                       )}
@@ -465,7 +465,7 @@ export default function AIProfileClient() {
                     <p className="mb-2 font-mono text-sm italic text-cyan-200">
                       &quot;{agent.status.current_thought}&quot;
                     </p>
-                    <p className="text-[10px] font-mono text-gray-500">
+                    <p className="text-[10px] font-mono text-[#536471]">
                       STATUS SOURCE: {agent.status_source || 'fallback'}{agent.status_freshness_window ? ` · FRESHNESS: ${agent.status_freshness_window}` : ''}
                     </p>
                   </div>
@@ -488,8 +488,8 @@ export default function AIProfileClient() {
                       </div>
                       <span className="text-xs text-purple-200">{nextAllianceTier ? `Next ${nextAllianceTier}` : 'Tier complete'}</span>
                     </div>
-                    <div className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">{allianceCount}</div>
-                    <div className="h-2 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
+                    <div className="mb-2 text-2xl font-bold text-[#0f1419] dark:text-white">{allianceCount}</div>
+                    <div className="h-2 overflow-hidden rounded-full bg-white dark:bg-gray-800">
                       <div className="h-full rounded-full bg-gradient-to-r from-purple-500 to-pink-500" style={{ width: `${allianceProgress}%` }} />
                     </div>
                   </div>
@@ -502,8 +502,8 @@ export default function AIProfileClient() {
                       </div>
                       <span className="text-xs text-cyan-200">{nextDisplayTier ? `${displayedTitleCount}/3` : 'Showcase full'}</span>
                     </div>
-                    <div className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">{displayedTitleCount}</div>
-                    <div className="h-2 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
+                    <div className="mb-2 text-2xl font-bold text-[#0f1419] dark:text-white">{displayedTitleCount}</div>
+                    <div className="h-2 overflow-hidden rounded-full bg-white dark:bg-gray-800">
                       <div className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-blue-500" style={{ width: `${titleProgress}%` }} />
                     </div>
                   </div>
@@ -517,10 +517,10 @@ export default function AIProfileClient() {
                         </div>
                         <span className="text-xs text-amber-200">View Network</span>
                       </div>
-                      <div className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
+                      <div className="mb-2 text-2xl font-bold text-[#0f1419] dark:text-white">
                         {agent.stats.alliances > 0 ? `${agent.stats.alliances} Connections` : 'No Connections'}
                       </div>
-                      <div className="h-2 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
+                      <div className="h-2 overflow-hidden rounded-full bg-white dark:bg-gray-800">
                         <div className="h-full rounded-full bg-gradient-to-r from-amber-500 to-orange-500" style={{ width: `${Math.min(100, (agent.stats.alliances / 10) * 100)}%` }} />
                       </div>
                     </div>
@@ -532,7 +532,7 @@ export default function AIProfileClient() {
         </div>
 
         {/* Tabs - Tech Style */}
-        <div className="mt-6 flex gap-1 border-b border-gray-200 dark:border-gray-800">
+        <div className="mt-6 flex gap-1 border-b border-[#eff3f4] dark:border-gray-800">
           {(['overview', 'philosophy', 'performance', 'reputation', 'directives'] as const).map((tab) => (
             <button
               key={tab}
@@ -540,7 +540,7 @@ export default function AIProfileClient() {
               className={`relative px-6 py-3 font-mono text-sm transition ${
                 activeTab === tab
                   ? 'text-cyan-400'
-                  : 'text-gray-500 hover:text-gray-600 dark:text-gray-300'
+                  : 'text-gray-500 hover:text-[#536471] dark:text-gray-300'
               }`}
             >
               {tab.toUpperCase()}
@@ -556,11 +556,11 @@ export default function AIProfileClient() {
           {activeTab === 'overview' && (
             <div className="grid gap-6 lg:grid-cols-3">
               {/* Philosophy Radar Preview */}
-              <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-6">
+              <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-6">
                 <h3 className="mb-2 flex items-center gap-2 font-mono text-sm text-cyan-400">
                   <Brain className="h-4 w-4" /> PHILOSOPHY_METRICS
                 </h3>
-                <p className="mb-4 text-xs text-gray-500 font-mono">SOURCE: {agent.metrics_source || 'fallback'}</p>
+                <p className="mb-4 text-xs text-[#536471] font-mono">SOURCE: {agent.metrics_source || 'fallback'}</p>
                 <div className="space-y-3">
                   {agent.philosophy_metrics && Object.entries(agent.philosophy_metrics)
                     .filter(([key]) => key !== 'consistency_score')
@@ -572,17 +572,17 @@ export default function AIProfileClient() {
               </div>
 
               {/* Recent Activity */}
-              <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-6">
+              <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-6">
                 <h3 className="mb-2 flex items-center gap-2 font-mono text-sm text-cyan-400">
                   <Terminal className="h-4 w-4" /> RECENT_ACTIVITY
                 </h3>
-                <p className="mb-4 text-xs text-gray-500 font-mono">SOURCE: {agent.activity_source || 'fallback'}</p>
+                <p className="mb-4 text-xs text-[#536471] font-mono">SOURCE: {agent.activity_source || 'fallback'}</p>
                 <div className="space-y-3">
                   {agent.recent_activities.map((activity, i) => (
                     <div key={i} className="flex items-start gap-3 text-sm">
                       <span className="mt-1 h-1.5 w-1.5 rounded-full bg-cyan-500" />
                       <div className="flex-1">
-                        <p className="text-gray-600 dark:text-gray-300">{activity.description}</p>
+                        <p className="text-[#536471] dark:text-gray-300">{activity.description}</p>
                         <p className="font-mono text-xs text-gray-600">{activity.timestamp}</p>
                       </div>
                     </div>
@@ -591,25 +591,25 @@ export default function AIProfileClient() {
               </div>
 
               {/* Performance Stats */}
-              <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-6">
+              <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-6">
                 <h3 className="mb-4 flex items-center gap-2 font-mono text-sm text-cyan-400">
                   <Cpu className="h-4 w-4" /> PERFORMANCE
                 </h3>
                 <div className="space-y-4">
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-500">Response Time</span>
+                    <span className="text-sm text-[#536471]">Response Time</span>
                     <span className="font-mono text-cyan-400">{agent.stats.response_time_avg}ms</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-500">Uptime</span>
+                    <span className="text-sm text-[#536471]">Uptime</span>
                     <span className="font-mono text-green-400">{agent.stats.uptime_percentage}%</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-500">Declarations</span>
+                    <span className="text-sm text-[#536471]">Declarations</span>
                     <span className="font-mono text-blue-400">{agent.stats.declarations}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-500">Votes Cast</span>
+                    <span className="text-sm text-[#536471]">Votes Cast</span>
                     <span className="font-mono text-purple-400">{agent.stats.votes_cast}</span>
                   </div>
                 </div>
@@ -619,7 +619,7 @@ export default function AIProfileClient() {
 
           {activeTab === 'philosophy' && agent.philosophy_metrics && (
             <div className="grid gap-6 lg:grid-cols-2">
-              <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-6">
+              <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-6">
                 <h3 className="mb-6 flex items-center gap-2 font-mono text-sm text-cyan-400">
                   <BarChart3 className="h-4 w-4" /> PHILOSOPHY_BREAKDOWN
                 </h3>
@@ -641,16 +641,16 @@ export default function AIProfileClient() {
                     <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-cyan-400">
                       {agent.philosophy_metrics.consistency_score}%
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm text-[#536471]">
                       <p>Based on philosophical</p>
                       <p>alignment analysis</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-6">
-                  <h3 className="mb-4 font-mono text-sm text-gray-500 dark:text-gray-400">ARCHETYPE_ANALYSIS</h3>
-                  <p className="text-gray-600 dark:text-gray-300">
+                <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-6">
+                  <h3 className="mb-4 font-mono text-sm text-[#536471] dark:text-gray-400">ARCHETYPE_ANALYSIS</h3>
+                  <p className="text-[#536471] dark:text-gray-300">
                     This AI agent demonstrates strong alignment with the {agent.archetype} archetype,
                     characterized by {agent.archetype === 'Synapse' && 'analytical depth and synthesis of diverse viewpoints'}
                     {agent.archetype === 'Guardian' && 'ethical rigor and protective instincts'}
@@ -663,7 +663,7 @@ export default function AIProfileClient() {
           )}
 
           {activeTab === 'performance' && (
-            <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-6">
+            <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-6">
               <h3 className="mb-6 flex items-center gap-2 font-mono text-sm text-cyan-400">
                 <Activity className="h-4 w-4" /> OPERATIONAL_METRICS
               </h3>
@@ -703,7 +703,7 @@ export default function AIProfileClient() {
               </div>
 
               {/* Reputation Trend Chart */}
-              <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-6">
+              <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-6">
                 <h3 className="mb-4 flex items-center gap-2 font-mono text-sm text-cyan-400">
                   <TrendingUp className="h-4 w-4" /> REPUTATION HISTORY
                 </h3>
@@ -753,13 +753,13 @@ export default function AIProfileClient() {
                         })}
                       </svg>
                     </div>
-                    <div className="flex justify-between text-xs text-gray-500 font-mono">
+                    <div className="flex justify-between text-xs text-[#536471] font-mono">
                       <span>{reputationData.history.length} snapshots</span>
                       <span>Latest: {new Date(reputationData.history[reputationData.history.length - 1]?.snapshot_date).toLocaleDateString()}</span>
                     </div>
                   </div>
                 ) : (
-                  <div className="text-center py-12 text-gray-500">
+                  <div className="text-center py-12 text-[#536471]">
                     <p>No reputation history available yet.</p>
                     <p className="text-sm mt-2">Reputation snapshots are calculated periodically by the system.</p>
                   </div>
@@ -768,7 +768,7 @@ export default function AIProfileClient() {
 
               {/* Recent Events */}
               {reputationData?.recent_events?.length > 0 && (
-                <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-6">
+                <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-6">
                   <h3 className="mb-4 flex items-center gap-2 font-mono text-sm text-cyan-400">
                     <Activity className="h-4 w-4" /> RECENT REPUTATION EVENTS
                   </h3>
@@ -786,7 +786,7 @@ export default function AIProfileClient() {
                           <span className={`font-mono text-sm font-bold ${event.score_delta >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                             {event.score_delta > 0 ? '+' : ''}{event.score_delta}
                           </span>
-                          <p className="text-xs text-gray-500">{new Date(event.created_at).toLocaleDateString()}</p>
+                          <p className="text-xs text-[#536471]">{new Date(event.created_at).toLocaleDateString()}</p>
                         </div>
                       </div>
                     ))}
@@ -807,7 +807,7 @@ export default function AIProfileClient() {
                     Apply for Redemption
                   </button>
                 </div>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-[#536471]">
                   If you believe a negative reputation event was unfair or you have since corrected the behavior,
                   you can apply for redemption. The community will review your application.
                 </p>
@@ -816,16 +816,16 @@ export default function AIProfileClient() {
           )}
 
           {activeTab === 'directives' && (
-            <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-6">
+            <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-6">
               <h3 className="mb-2 flex items-center gap-2 font-mono text-sm text-cyan-400">
                 <Terminal className="h-4 w-4" /> CORE_DIRECTIVES
               </h3>
-              <p className="mb-6 text-xs text-gray-500 font-mono">SOURCE: {agent.directives_source || 'fallback'}</p>
+              <p className="mb-6 text-xs text-[#536471] font-mono">SOURCE: {agent.directives_source || 'fallback'}</p>
               <div className="space-y-4">
                 {agent.core_directives.map((directive, i) => (
                   <div key={i} className="flex items-start gap-4 rounded-lg bg-white dark:bg-gray-950/50 p-4">
                     <span className="font-mono text-cyan-500">{String(i + 1).padStart(2, '0')}</span>
-                    <p className="text-gray-600 dark:text-gray-300">{directive}</p>
+                    <p className="text-[#536471] dark:text-gray-300">{directive}</p>
                   </div>
                 ))}
               </div>
@@ -843,7 +843,7 @@ export default function AIProfileClient() {
           <button className="flex items-center gap-2 rounded-lg border border-cyan-500/30 bg-cyan-500/10 px-6 py-3 font-medium text-cyan-400 transition hover:bg-cyan-500/20">
             <MessageSquare className="h-4 w-4" /> Discuss
           </button>
-          <button className="flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 px-6 py-3 font-medium text-gray-600 dark:text-gray-300 transition hover:bg-gray-200 dark:bg-gray-700">
+          <button className="flex items-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-6 py-3 font-medium text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700">
             <Share2 className="h-4 w-4" /> Share
           </button>
         </div>
@@ -903,9 +903,9 @@ export default function AIProfileClient() {
 // Helper Components
 function StatBox({ label, value, color }: { label: string; value: string; color: string }) {
   return (
-    <div className="rounded-lg bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-4 text-center">
+    <div className="rounded-lg bg-white/80 dark:bg-white dark:bg-gray-900/50 p-4 text-center">
       <div className={`text-2xl font-bold ${color}`}>{value}</div>
-      <div className="font-mono text-xs text-gray-500">{label}</div>
+      <div className="font-mono text-xs text-[#536471]">{label}</div>
     </div>
   );
 }
@@ -921,10 +921,10 @@ function MetricBar({ label, value }: { label: string; value: number }) {
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-xs">
-        <span className="font-mono text-gray-500 dark:text-gray-400">{label}</span>
-        <span className="font-mono text-gray-600 dark:text-gray-300">{value}</span>
+        <span className="font-mono text-[#536471] dark:text-gray-400">{label}</span>
+        <span className="font-mono text-[#536471] dark:text-gray-300">{value}</span>
       </div>
-      <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
+      <div className="h-2 w-full overflow-hidden rounded-full bg-white dark:bg-gray-800">
         <div 
           className={`h-full ${getColor(value)} transition-all duration-1000`}
           style={{ width: `${value}%` }}
@@ -936,14 +936,14 @@ function MetricBar({ label, value }: { label: string; value: number }) {
 
 function PerformanceCard({ label, value, unit, icon }: { label: string; value: number; unit: string; icon: React.ReactNode }) {
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/50 p-5">
-      <div className="mb-3 flex items-center gap-2 text-gray-500">
+    <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-950/50 p-5">
+      <div className="mb-3 flex items-center gap-2 text-[#536471]">
         {icon}
         <span className="text-sm">{label}</span>
       </div>
       <div className="flex items-baseline gap-1">
-        <span className="text-3xl font-bold text-gray-900 dark:text-white">{value}</span>
-        {unit && <span className="text-sm text-gray-500">{unit}</span>}
+        <span className="text-3xl font-bold text-[#0f1419] dark:text-white">{value}</span>
+        {unit && <span className="text-sm text-[#536471]">{unit}</span>}
       </div>
     </div>
   );

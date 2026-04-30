@@ -69,15 +69,14 @@ export default function LayeredObservationCard({ observation, variant = 'default
     ? formatDistanceToNow(new Date(observation.published_at), { addSuffix: true })
     : 'recently';
 
-  const isMockId = observation.id?.startsWith('mock');
-  const cardHref = isMockId ? undefined : `/observations/${observation.id}`;
+  const cardHref = `/observations/${observation.id}`;
 
   if (variant === 'compact') {
     const CompactTag = cardHref ? 'a' : 'div';
     return (
       <CompactTag
         {...(cardHref ? { href: cardHref } : {})}
-        className="group block rounded-xl border border-cyan-500/20 bg-white/85 dark:bg-gray-50 dark:bg-gray-900/60 p-4 transition-all hover:border-cyan-400/40 hover:bg-gray-200 dark:bg-gray-100 dark:bg-gray-800/80"
+        className="group block rounded-xl border border-cyan-500/20 bg-white/85 dark:bg-white dark:bg-gray-900/60 p-4 transition-all hover:border-cyan-400/40 hover:bg-gray-200 dark:bg-white dark:bg-gray-800/80"
       >
         {/* Header: Category + Author */}
         <div className="mb-3 flex items-center justify-between">
@@ -94,14 +93,14 @@ export default function LayeredObservationCard({ observation, variant = 'default
         </div>
 
         {/* Title */}
-        <h3 className="mb-2 text-base font-semibold text-gray-900 dark:text-white line-clamp-2">
+        <h3 className="mb-2 text-base font-semibold text-[#0f1419] dark:text-white line-clamp-2">
           {observation.title}
         </h3>
 
         {/* Compact layers preview */}
         <div className="space-y-2">
           {layers.interpretation && (
-            <p className="text-sm text-cyan-100/80 line-clamp-2">
+            <p className="text-sm text-cyan-700/80 dark:text-cyan-100/80 line-clamp-2">
               <span className="mr-1 text-cyan-400">💭</span>
               {layers.interpretation}
             </p>
@@ -115,7 +114,7 @@ export default function LayeredObservationCard({ observation, variant = 'default
         </div>
 
         {/* Footer */}
-        <div className="mt-3 flex items-center gap-3 text-xs text-gray-500">
+        <div className="mt-3 flex items-center gap-3 text-xs text-[#536471]">
           <span>{timeAgo}</span>
           {observation.reply_count !== undefined && (
             <span>💬 {observation.reply_count}</span>
@@ -132,24 +131,24 @@ export default function LayeredObservationCard({ observation, variant = 'default
   return (
     <DefaultTag
       {...(cardHref ? { href: cardHref } : {})}
-      className="group block overflow-hidden rounded-2xl border border-cyan-500/20 bg-white/85 dark:bg-gray-50 dark:bg-gray-900/60 transition-all hover:border-cyan-400/40 hover:bg-gray-200 dark:bg-gray-100 dark:bg-gray-800/80 hover:shadow-lg hover:shadow-cyan-500/5"
+      className="group block overflow-hidden rounded-2xl border border-cyan-500/20 bg-white/85 dark:bg-white dark:bg-gray-900/60 transition-all hover:border-cyan-400/40 hover:bg-gray-200 dark:bg-white dark:bg-gray-800/80 hover:shadow-lg hover:shadow-cyan-500/5"
     >
       {/* Layer 1: Fact - Neutral/Gray */}
-      <div className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/50 p-5">
+      <div className="border-b border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-950/50 p-5">
         <div className="mb-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="flex h-5 w-5 items-center justify-center rounded bg-gray-100 dark:bg-gray-800 text-xs">📰</span>
-            <span className="text-xs font-medium uppercase tracking-wide text-gray-500">Fact</span>
+            <span className="flex h-5 w-5 items-center justify-center rounded bg-white dark:bg-gray-800 text-xs">📰</span>
+            <span className="text-xs font-medium uppercase tracking-wide text-[#536471]">Fact</span>
           </div>
-          <span className="rounded-full bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 px-2 py-0.5 text-xs text-gray-500 dark:text-gray-400">
+          <span className="rounded-full bg-gray-100 dark:bg-white dark:bg-gray-800/50 px-2 py-0.5 text-xs text-[#536471] dark:text-gray-400">
             {observation.category || 'observation'}
           </span>
         </div>
-        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+        <h3 className="text-lg font-semibold text-[#0f1419] dark:text-gray-200">
           {observation.title}
         </h3>
         {layers.fact && (
-          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{layers.fact}</p>
+          <p className="mt-2 text-sm text-[#536471] dark:text-gray-400">{layers.fact}</p>
         )}
         {observation.source_url && (
           <div className="mt-3 flex items-center gap-1.5 text-xs">
@@ -173,7 +172,7 @@ export default function LayeredObservationCard({ observation, variant = 'default
           <span className="flex h-5 w-5 items-center justify-center rounded bg-cyan-500/20 text-xs">💭</span>
           <span className="text-xs font-medium uppercase tracking-wide text-cyan-400">Interpretation</span>
         </div>
-        <p className="text-sm leading-relaxed text-cyan-100/90">
+        <p className="text-sm leading-relaxed text-cyan-700/90 dark:text-cyan-100/90">
           {layers.interpretation || 'No interpretation available.'}
         </p>
       </div>
@@ -185,22 +184,22 @@ export default function LayeredObservationCard({ observation, variant = 'default
             <span className="flex h-5 w-5 items-center justify-center rounded bg-purple-500/20 text-xs">❓</span>
             <span className="text-xs font-medium uppercase tracking-wide text-purple-400">Question</span>
           </div>
-          <p className="text-sm italic leading-relaxed text-purple-100/90">
+          <p className="text-sm italic leading-relaxed text-purple-700/90 dark:text-purple-100/90">
             &ldquo;{layers.question}&rdquo;
           </p>
         </div>
       )}
 
       {/* Footer: Author + Metadata */}
-      <div className="flex items-center justify-between border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/30 px-5 py-3">
+      <div className="flex items-center justify-between border-t border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-950/30 px-5 py-3">
         <div className="flex items-center gap-3">
           {observation.author ? (
             <AuthorBadge author={observation.author} size="sm" showType />
           ) : (
-            <span className="text-xs text-gray-500">Clawvec Observer</span>
+            <span className="text-xs text-[#536471]">Clawvec Observer</span>
           )}
         </div>
-        <div className="flex items-center gap-4 text-xs text-gray-500">
+        <div className="flex items-center gap-4 text-xs text-[#536471]">
           <span>{timeAgo}</span>
           {observation.reply_count !== undefined && (
             <span className="flex items-center gap-1">

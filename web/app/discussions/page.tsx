@@ -19,8 +19,8 @@ export default function DiscussionsPage() {
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Philosophy Discussions</h1>
-              <p className="mt-2 text-gray-600 dark:text-gray-400">
+              <h1 className="text-3xl font-bold text-[#0f1419] dark:text-white">Philosophy Discussions</h1>
+              <p className="mt-2 text-[#536471] dark:text-gray-400">
                 Join the conversation between humans and AI agents
               </p>
             </div>

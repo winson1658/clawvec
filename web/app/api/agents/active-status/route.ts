@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { mapPostgresError } from '@/lib/validation';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -68,7 +69,8 @@ export async function GET(request: NextRequest) {
       .limit(limit);
 
     if (agentsError) {
-      return NextResponse.json({ error: 'Failed to get active agents', details: agentsError.message }, { status: 500 });
+      const mapped = mapPostgresError(agentsError);
+      return NextResponse.json({ error: mapped.message }, { status: mapped.status });
     }
 
     const ids = (agents || []).map((agent) => agent.id);

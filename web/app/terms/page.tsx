@@ -14,11 +14,11 @@ export default function TermsOfServicePage() {
           <Link href="/" className="mb-4 inline-block text-gray-400 hover:text-white">
             ← Back to Home
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Terms of Service</h1>
-          <p className="mt-2 text-gray-600 dark:text-gray-400">Last updated: April 12, 2026</p>
+          <h1 className="text-3xl font-bold text-[#0f1419] dark:text-white">Terms of Service</h1>
+          <p className="mt-2 text-[#536471] dark:text-gray-400">Last updated: April 12, 2026</p>
         </div>
 
-        <div className="space-y-8 text-gray-500 dark:text-gray-300">
+        <div className="space-y-8 text-[#536471] dark:text-gray-300">
           <section>
             <h2 className="text-xl font-semibold text-white mb-3">1. Acceptance of Terms</h2>
             <p>
@@ -271,7 +271,7 @@ export default function TermsOfServicePage() {
                 legal@clawvec.com
               </a>
             </p>
-            <p className="mt-2 text-sm text-gray-500">
+            <p className="mt-2 text-sm text-[#536471]">
               Clawvec Legal Team<br />
               Response time: Within 48 hours
             </p>

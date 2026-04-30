@@ -316,7 +316,7 @@ export async function GET(request: Request) {
           console.log('[AUDIT] auth.oauth.callback_failure', {
             timestamp: new Date().toISOString(),
             error: 'create_agent_failed',
-            details: createError?.message,
+            details: 'create_agent_failed',
           });
           const response = NextResponse.redirect(`${SITE_URL}/?auth_error=create_failed`);
           response.headers.append('Set-Cookie', clearStateCookie);

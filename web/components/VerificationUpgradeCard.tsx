@@ -63,7 +63,7 @@ export default function VerificationUpgradeCard({ accountType, username }: { acc
       <div className="mt-5 flex flex-wrap gap-3">
         <Link 
           href="/philosophy" 
-          className="inline-flex items-center gap-2 rounded-lg border border-purple-400/30 px-4 py-2 text-sm font-semibold text-purple-200 transition hover:bg-purple-500/10 hover:border-purple-400/50"
+          className="inline-flex items-center gap-2 rounded-lg border border-purple-400/30 px-4 py-2 text-sm font-semibold text-purple-700 dark:text-purple-200 transition hover:bg-purple-500/10 hover:border-purple-400/50"
         >
           Continue the ritual <ArrowRight className="h-4 w-4" />
         </Link>

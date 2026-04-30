@@ -52,8 +52,8 @@ export default function FutureVisionChart() {
           <Calendar className="mr-2 h-4 w-4" />
           Future Vision Map
         </div>
-        <h2 className="mt-4 text-3xl font-bold text-gray-900 dark:text-white">A staged path from present momentum to long-term civilization</h2>
-        <p className="mx-auto mt-4 max-w-3xl text-gray-600 dark:text-gray-400">
+        <h2 className="mt-4 text-3xl font-bold text-[#0f1419] dark:text-white">A staged path from present momentum to long-term civilization</h2>
+        <p className="mx-auto mt-4 max-w-3xl text-[#536471] dark:text-gray-400">
           This view organizes near-term execution, mid-term system growth, and long-term imagination into one coherent development map.
         </p>
       </div>
@@ -64,11 +64,11 @@ export default function FutureVisionChart() {
             <div className="flex items-center gap-3">
               <frame.icon className={`h-5 w-5 ${frame.color}`} />
               <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white">{frame.name}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">{frame.timeframe}</p>
+                <h3 className="font-semibold text-[#0f1419] dark:text-white">{frame.name}</h3>
+                <p className="text-sm text-[#536471] dark:text-gray-400">{frame.timeframe}</p>
               </div>
             </div>
-            <p className="mt-3 text-sm text-gray-700 dark:text-gray-300">{frame.description}</p>
+            <p className="mt-3 text-sm text-[#0f1419] dark:text-gray-300">{frame.description}</p>
           </div>
         ))}
       </div>
@@ -79,7 +79,7 @@ export default function FutureVisionChart() {
             <div className={`mb-3 inline-flex rounded-lg p-2 ${category.bgColor}`}>
               <category.icon className={`h-5 w-5 ${category.color}`} />
             </div>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{category.name}</h3>
+            <h3 className="text-sm font-semibold text-[#0f1419] dark:text-white">{category.name}</h3>
           </div>
         ))}
       </div>
@@ -91,7 +91,7 @@ export default function FutureVisionChart() {
             <section key={frame.id}>
               <div className="mb-4 flex items-center gap-3">
                 <frame.icon className={`h-5 w-5 ${frame.color}`} />
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{frame.name}</h3>
+                <h3 className="text-2xl font-bold text-[#0f1419] dark:text-white">{frame.name}</h3>
               </div>
               <div className="grid gap-4 lg:grid-cols-2">
                 {frameGoals.map((goal) => {
@@ -101,21 +101,21 @@ export default function FutureVisionChart() {
                     <div key={goal.id} className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-gray-800/40">
                       <div className="flex flex-wrap items-center justify-between gap-3">
                         <div className="flex items-center gap-3">
-                          <div className={`rounded-lg p-2 ${category?.bgColor || 'bg-gray-100 dark:bg-gray-800'}`}>
+                          <div className={`rounded-lg p-2 ${category?.bgColor || 'bg-white dark:bg-gray-800'}`}>
                             <Icon className={`h-5 w-5 ${category?.color || 'text-gray-600'}`} />
                           </div>
                           <div>
-                            <h4 className="font-semibold text-gray-900 dark:text-white">{goal.title}</h4>
-                            <p className="text-xs uppercase tracking-[0.2em] text-gray-500">{category?.name}</p>
+                            <h4 className="font-semibold text-[#0f1419] dark:text-white">{goal.title}</h4>
+                            <p className="text-xs uppercase tracking-[0.2em] text-[#536471]">{category?.name}</p>
                           </div>
                         </div>
                         <span className={`rounded-full px-2 py-1 text-xs font-semibold uppercase tracking-[0.2em] ${goal.priority === 'high' ? 'bg-red-500/10 text-red-400' : 'bg-amber-500/10 text-amber-400'}`}>
                           {goal.priority} priority
                         </span>
                       </div>
-                      <p className="mt-4 text-sm leading-relaxed text-gray-600 dark:text-gray-400">{goal.description}</p>
+                      <p className="mt-4 text-sm leading-relaxed text-[#536471] dark:text-gray-400">{goal.description}</p>
                       <div className="mt-4">
-                        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">Dependencies</p>
+                        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#536471]">Dependencies</p>
                         <div className="flex flex-wrap gap-2">
                           {goal.dependencies.map((dependency) => (
                             <span key={dependency} className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-300">

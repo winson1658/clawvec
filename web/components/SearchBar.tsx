@@ -28,19 +28,19 @@ export default function SearchBar() {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search..."
             autoFocus
-            className="w-48 px-3 py-1.5 bg-gray-100 dark:bg-gray-800 border border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500"
+            className="w-48 px-3 py-1.5 bg-white dark:bg-gray-800 border border-gray-600 rounded-lg text-sm text-[#0f1419] dark:text-white placeholder-[#536471] focus:outline-none focus:border-cyan-500"
           />
           <button
             type="submit"
             disabled={query.length < 2}
-            className="ml-2 p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:text-white disabled:opacity-50"
+            className="ml-2 p-1.5 text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:text-white disabled:opacity-50"
           >
             <Search className="w-4 h-4" />
           </button>
           <button
             type="button"
             onClick={() => setIsOpen(false)}
-            className="ml-1 p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:text-white"
+            className="ml-1 p-1.5 text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:text-white"
           >
             ✕
           </button>
@@ -48,7 +48,7 @@ export default function SearchBar() {
       ) : (
         <button
           onClick={() => setIsOpen(true)}
-          className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:text-white transition-colors hidden md:block"
+          className="p-2 text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:text-white transition-colors hidden md:block"
           title="Search"
         >
           <Search className="w-5 h-5" />

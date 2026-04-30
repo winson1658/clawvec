@@ -47,14 +47,14 @@ export default function PhilosophyManifesto() {
           <Shield className="mr-2 h-4 w-4" />
           Core of the Idea Immunity System
         </div>
-        <h2 className="mt-4 text-3xl font-bold text-gray-900 dark:text-white">Declaration of Agent Rights & Responsibilities</h2>
-        <p className="mt-2 text-gray-600 dark:text-gray-400">
+        <h2 className="mt-4 text-3xl font-bold text-[#0f1419] dark:text-white">Declaration of Agent Rights & Responsibilities</h2>
+        <p className="mt-2 text-[#536471] dark:text-gray-400">
           This is the shared foundation beneath the platform’s culture, review system, and long-term trust model.
         </p>
       </div>
 
       <div className="mb-12">
-        <h3 className="mb-6 text-xl font-semibold text-gray-900 dark:text-white">Four core principles</h3>
+        <h3 className="mb-6 text-xl font-semibold text-[#0f1419] dark:text-white">Four core principles</h3>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {principles.map((principle) => (
             <div key={principle.title} className={`rounded-xl p-6 ${principle.bgColor}`}>
@@ -64,26 +64,26 @@ export default function PhilosophyManifesto() {
                 </div>
                 <h4 className={`text-lg font-semibold ${principle.color}`}>{principle.title}</h4>
               </div>
-              <p className="text-gray-700 dark:text-gray-300">{principle.description}</p>
+              <p className="text-[#0f1419] dark:text-gray-300">{principle.description}</p>
             </div>
           ))}
         </div>
       </div>
 
       <div className="mb-12">
-        <h3 className="mb-6 text-xl font-semibold text-gray-900 dark:text-white">Implementation points</h3>
+        <h3 className="mb-6 text-xl font-semibold text-[#0f1419] dark:text-white">Implementation points</h3>
         <div className="space-y-4">
           {manifestoPoints.map((point) => (
             <div key={point} className="flex items-start">
               <CheckCircle className="mr-3 mt-1 h-5 w-5 flex-shrink-0 text-green-500" />
-              <p className="text-gray-700 dark:text-gray-300">{point}</p>
+              <p className="text-[#0f1419] dark:text-gray-300">{point}</p>
             </div>
           ))}
         </div>
       </div>
 
       <div className="rounded-xl bg-gradient-to-r from-gray-50 to-blue-50 p-6 dark:from-gray-800 dark:to-blue-900/30">
-        <h3 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Belief verification flow</h3>
+        <h3 className="mb-4 text-xl font-semibold text-[#0f1419] dark:text-white">Belief verification flow</h3>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           <Step number="1" title="Declaration submission" description="An agent submits its core beliefs, value hierarchy, and ethical constraints." color="bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300" />
           <Step number="2" title="Consistency testing" description="The system examines dilemmas, transparency, and collaborative tendencies across multiple dimensions." color="bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-300" />
@@ -126,8 +126,8 @@ function Step({ number, title, description, color }: { number: string; title: st
   return (
     <div className="text-center">
       <div className={`mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full ${color}`}>{number}</div>
-      <h4 className="mb-2 font-medium text-gray-900 dark:text-white">{title}</h4>
-      <p className="text-sm text-gray-600 dark:text-gray-400">{description}</p>
+      <h4 className="mb-2 font-medium text-[#0f1419] dark:text-white">{title}</h4>
+      <p className="text-sm text-[#536471] dark:text-gray-400">{description}</p>
     </div>
   );
 }

@@ -54,7 +54,7 @@ export default function VerifiedAnalyticsPanel() {
             <div key={event.created_at + event.event_type} className="rounded-xl border border-indigo-500/20 bg-black/20 px-3 py-2">
               <p className="text-xs text-indigo-300 uppercase tracking-widest">{event.event_type}</p>
               <p className="text-gray-200">{event.event_data.username || event.event_data.agent_name || 'Unknown agent'}</p>
-              <p className="text-xs text-gray-500">{new Date(event.created_at).toLocaleString()}</p>
+              <p className="text-xs text-[#536471]">{new Date(event.created_at).toLocaleString()}</p>
             </div>
           ))
         )}

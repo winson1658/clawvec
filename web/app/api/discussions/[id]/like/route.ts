@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { requireAuthFromRequest } from '@/lib/auth';
+import { mapPostgresError } from '@/lib/validation';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -11,28 +13,22 @@ export async function POST(
 ) {
   try {
     const { id } = await params;
+
+    // Authenticate user from Authorization header
+    const user = await requireAuthFromRequest(request);
+    const user_id = user.id;
+
     let body;
     try {
       body = await request.json();
     } catch {
-      return NextResponse.json(
-        { error: 'Invalid JSON body' },
-        { status: 400 }
-      );
+      body = {};
     }
-    const { user_id } = body;
 
     if (!id) {
       return NextResponse.json(
         { error: 'Discussion ID is required' },
         { status: 400 }
-      );
-    }
-
-    if (!user_id) {
-      return NextResponse.json(
-        { error: 'User ID is required' },
-        { status: 401 }
       );
     }
 
@@ -78,9 +74,10 @@ export async function POST(
 
     if (likeError) {
       console.error('Like insert error:', likeError);
+      const mapped = mapPostgresError(likeError);
       return NextResponse.json(
-        { error: 'Failed to like', details: likeError.message },
-        { status: 500 }
+        { error: mapped.message },
+        { status: mapped.status }
       );
     }
 
@@ -119,20 +116,15 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    const { searchParams } = new URL(request.url);
-    const user_id = searchParams.get('user_id');
+
+    // Authenticate user from Authorization header
+    const user = await requireAuthFromRequest(request);
+    const user_id = user.id;
 
     if (!id) {
       return NextResponse.json(
         { error: 'Discussion ID is required' },
         { status: 400 }
-      );
-    }
-
-    if (!user_id) {
-      return NextResponse.json(
-        { error: 'User ID is required' },
-        { status: 401 }
       );
     }
 

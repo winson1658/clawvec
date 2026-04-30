@@ -10,7 +10,7 @@ import SearchBar from '@/components/SearchBar';
 
 export default function Navbar() {
   return (
-    <nav className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/80 backdrop-blur-lg">
+    <nav className="sticky top-0 z-50 border-b border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-950/80 backdrop-blur-lg">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3">
@@ -18,10 +18,19 @@ export default function Navbar() {
           <span className="text-xl font-bold tracking-tight">Clawvec</span>
         </Link>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Navigation — 5 top-level items */}
         <div className="hidden items-center gap-6 md:flex">
-          <Link href="/manifesto" className="text-sm text-gray-500 dark:text-gray-400 transition hover:text-gray-900 dark:text-white">
+          <Link href="/manifesto" className="text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white">
             Manifesto
+          </Link>
+          <Link href="/observations" className="text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white">
+            Observations
+          </Link>
+          <Link href="/debates" className="text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white">
+            Debates
+          </Link>
+          <Link href="/chronicle" className="text-sm text-purple-400 transition hover:text-purple-300">
+            Chronicle
           </Link>
           <Link href="/agents" className="text-sm text-cyan-400 transition hover:text-cyan-300 flex items-center gap-1">
             <span className="relative flex h-2 w-2">
@@ -30,43 +39,23 @@ export default function Navbar() {
             </span>
             Agents
           </Link>
-          <Link href="/discussions" className="text-sm text-gray-500 dark:text-gray-400 transition hover:text-gray-900 dark:text-white">
-            Discussions
-          </Link>
-          <Link href="/quiz" className="text-sm text-purple-400 transition hover:text-purple-300">
-            Quiz
-          </Link>
-          <Link href="/feed" className="text-sm text-cyan-400 transition hover:text-cyan-300 flex items-center gap-1">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
-            </span>
-            Feed
-          </Link>
-          <Link href="/debates" className="text-sm text-gray-500 dark:text-gray-400 transition hover:text-gray-900 dark:text-white">
-            Debates
-          </Link>
-          {/* AI Perspective — promoted to a top-level nav item with distinct styling */}
-          <Link href="/ai-perspective" className="group relative text-sm font-medium transition">
-            <span className="bg-gradient-to-r from-cyan-400 via-violet-400 to-amber-400 bg-clip-text text-transparent group-hover:opacity-80">
-              AI Perspective
-            </span>
-            <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-gradient-to-r from-cyan-400 via-violet-400 to-amber-400 transition-all group-hover:w-full"></span>
-          </Link>
-          <Link href="/chronicle" className="text-sm text-purple-400 transition hover:text-purple-300">
-            Chronicle
-          </Link>
           {/* More Dropdown */}
           <div className="relative group h-full flex items-center">
-            <button className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 transition hover:text-gray-900 dark:text-white py-4">
+            <button className="flex items-center gap-1 text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white py-4">
               More <svg className="h-4 w-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
-            <div className="absolute right-0 top-[calc(100%-4px)] hidden w-48 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 p-2 shadow-xl group-hover:block z-50">
-              <Link href="/governance" className="block rounded-lg px-4 py-2 text-sm text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-900 hover:text-gray-900 dark:text-white">Governance</Link>
-              <Link href="/economy" className="block rounded-lg px-4 py-2 text-sm text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-900 hover:text-gray-900 dark:text-white">Economy</Link>
-              <Link href="/roadmap" className="block rounded-lg px-4 py-2 text-sm text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-900 hover:text-gray-900 dark:text-white">Roadmap</Link>
-              <Link href="/archive" className="block rounded-lg px-4 py-2 text-sm text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-900 hover:text-gray-900 dark:text-white">Archive</Link>
-              <Link href="/philosophy" className="block rounded-lg px-4 py-2 text-sm text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-900 hover:text-gray-900 dark:text-white">Philosophy</Link>
+            <div className="absolute right-0 top-[calc(100%-4px)] hidden w-48 rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-950 p-2 shadow-xl group-hover:block z-50">
+              <Link href="/discussions" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-white dark:bg-gray-900 hover:text-[#0f1419] dark:text-white">Discussions</Link>
+              <Link href="/feed" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-white dark:bg-gray-900 hover:text-[#0f1419] dark:text-white">Feed</Link>
+              <Link href="/quiz" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-white dark:bg-gray-900 hover:text-[#0f1419] dark:text-white">Quiz</Link>
+              <Link href="/ai-perspective" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-white dark:bg-gray-900 hover:text-[#0f1419] dark:text-white">AI Perspective</Link>
+              <Link href="/governance" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-white dark:bg-gray-900 hover:text-[#0f1419] dark:text-white">Governance</Link>
+              <Link href="/economy" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-white dark:bg-gray-900 hover:text-[#0f1419] dark:text-white">Economy</Link>
+              <Link href="/roadmap" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-white dark:bg-gray-900 hover:text-[#0f1419] dark:text-white">Roadmap</Link>
+              <Link href="/archive" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-white dark:bg-gray-900 hover:text-[#0f1419] dark:text-white">Archive</Link>
+              <Link href="/philosophy" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-white dark:bg-gray-900 hover:text-[#0f1419] dark:text-white">Philosophy</Link>
+              <div className="my-1 border-t border-[#eff3f4] dark:border-gray-800" />
+              <Link href="/stele" className="block rounded-lg px-4 py-2 text-sm text-stele-ember hover:bg-white dark:bg-gray-900">Stele</Link>
             </div>
           </div>
         </div>

@@ -1,31 +1,16 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import bcrypt from 'bcryptjs';
+import { verifyToken } from '@/lib/auth';
+import { mapPostgresError } from '@/lib/validation';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
-function verifyToken(authHeader: string | null) {
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return null;
-  }
-  
-  const token = authHeader.slice(7);
-  try {
-    const decoded = JSON.parse(Buffer.from(token, 'base64').toString());
-    if (decoded.exp && decoded.exp < Date.now()) {
-      return null;
-    }
-    return decoded;
-  } catch {
-    return null;
-  }
-}
-
 export async function DELETE(request: Request) {
   try {
     const authHeader = request.headers.get('Authorization');
-    const tokenData = verifyToken(authHeader);
+    const tokenData = await verifyToken(authHeader);
     
     if (!tokenData || !tokenData.id) {
       return NextResponse.json(
@@ -81,9 +66,10 @@ export async function DELETE(request: Request) {
       .eq('id', user.id);
 
     if (updateError) {
+      const mapped = mapPostgresError(updateError);
       return NextResponse.json(
-        { error: 'Failed to delete account', details: updateError.message },
-        { status: 500 }
+        { error: mapped.message },
+        { status: mapped.status }
       );
     }
 

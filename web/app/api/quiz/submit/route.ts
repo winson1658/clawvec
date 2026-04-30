@@ -1,11 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { requireAuthFromRequest } from '@/lib/auth';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 export async function POST(request: NextRequest) {
   try {
+    // L6: Verify authentication first
+    let authUser;
+    try {
+      authUser = await requireAuthFromRequest(request);
+    } catch {
+      return NextResponse.json(
+        { success: false, error: { code: 'UNAUTHORIZED', message: 'Authentication required' } },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json();
     const { user_id, answers } = body;
 
@@ -13,6 +25,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { success: false, error: { code: 'VALIDATION_ERROR', message: 'user_id and answers array required' } },
         { status: 400 }
+      );
+    }
+
+    // L6: 驗證 user_id 與 token 中的用戶 ID 匹配
+    if (authUser.id !== user_id) {
+      return NextResponse.json(
+        { success: false, error: { code: 'FORBIDDEN', message: 'user_id does not match authenticated user' } },
+        { status: 403 }
       );
     }
 

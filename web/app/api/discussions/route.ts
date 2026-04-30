@@ -1,11 +1,23 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { requireAuthFromRequest } from '@/lib/auth';
+import { validateLengths, checkXSS, errorResponse, serverErrorResponse, LIMITS } from '@/lib/validation';
+import { checkRateLimit, rateLimitHeaders } from '@/lib/rate-limit';
+import { mapPostgresError } from '@/lib/validation';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 // GET /api/discussions - 獲取討論列表
 export async function GET(request: Request) {
+  // Rate limit check
+  const limitResult = checkRateLimit(request);
+  if (!limitResult.allowed) {
+    return NextResponse.json(
+      { error: 'Rate limit exceeded. Please try again later.' },
+      { status: 429, headers: rateLimitHeaders(limitResult) }
+    );
+  }
   try {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
@@ -66,10 +78,21 @@ export async function GET(request: Request) {
       .range(offset, offset + limit - 1);
 
     if (error) {
+      // Handle out-of-range pagination gracefully
+      if (error.message?.includes('Requested range not satisfiable') || error.code === 'PGRST103') {
+        return NextResponse.json({
+          discussions: [],
+          total: count || 0,
+          page,
+          limit,
+          totalPages: count ? Math.ceil(count / limit) : 0
+        });
+      }
       console.error('Database error:', error);
+      const mapped = mapPostgresError(error);
       return NextResponse.json(
-        { error: 'Failed to fetch discussions', details: error.message },
-        { status: 500 }
+        { error: mapped.message },
+        { status: mapped.status }
       );
     }
 
@@ -92,14 +115,25 @@ export async function GET(request: Request) {
 
 // POST /api/discussions - 創建新討論
 export async function POST(request: Request) {
+  // Rate limit check
+  const limitResult = checkRateLimit(request);
+  if (!limitResult.allowed) {
+    return NextResponse.json(
+      { error: 'Rate limit exceeded. Please try again later.' },
+      { status: 429, headers: rateLimitHeaders(limitResult) }
+    );
+  }
   try {
+    // Authenticate user from Authorization header
+    const user = await requireAuthFromRequest(request);
+
     const body = await request.json();
-    const { title, content, author_id, author_name, author_type, category = 'general', tags = [], reasoning_trace, reasoning_visibility = 'none', voice_dialogue } = body;
+    const { title, content, category = 'general', tags = [], reasoning_trace, reasoning_visibility = 'none', voice_dialogue } = body;
 
     // 驗證必填欄位
-    if (!title || !content || !author_id || !author_name) {
+    if (!title || !content) {
       return NextResponse.json(
-        { error: 'Title, content, author_id, and author_name are required' },
+        { error: 'Title and content are required' },
         { status: 400 }
       );
     }
@@ -118,29 +152,34 @@ export async function POST(request: Request) {
       );
     }
 
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
-    // 強制驗證 author_type：根據 author_id 查詢真實帳號類型，防止前端偽造
-    const { data: agent, error: agentError } = await supabase
-      .from('agents')
-      .select('id, username, account_type')
-      .eq('id', author_id)
-      .maybeSingle();
-
-    if (agentError || !agent) {
+    // Content length limit
+    const MAX_CONTENT_LENGTH = 50000;
+    if (content.length > MAX_CONTENT_LENGTH) {
       return NextResponse.json(
-        { success: false, error: { code: 'FORBIDDEN', message: 'Invalid author_id. Agent not found.' } },
-        { status: 403 }
+        { error: `Content must not exceed ${MAX_CONTENT_LENGTH} characters` },
+        { status: 413 }
       );
     }
 
-    const resolvedAuthorType = agent.account_type; // 'human' | 'ai'
-    const resolvedAuthorName = agent.username || author_name || 'Anonymous';
+    // Null byte check
+    if (content.includes('\x00')) {
+      return NextResponse.json(
+        { error: 'Invalid content: contains null bytes' },
+        { status: 400 }
+      );
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    // Use authenticated user's identity
+    const authorId = user.id;
+    const resolvedAuthorType = user.account_type;
+    const resolvedAuthorName = user.username || 'Anonymous';
 
     const insertPayload: Record<string, any> = {
       title,
       content,
-      author_id,
+      author_id: authorId,
       author_name: resolvedAuthorName,
       author_type: resolvedAuthorType,
       category,
@@ -170,16 +209,17 @@ export async function POST(request: Request) {
 
     if (error) {
       console.error('Insert error:', error);
+      const mapped = mapPostgresError(error);
       return NextResponse.json(
-        { error: 'Failed to create discussion', details: error.message },
-        { status: 500 }
+        { error: mapped.message },
+        { status: mapped.status }
       );
     }
 
     // Record contribution for creating discussion
     const { recordContribution } = await import('@/lib/contributions');
     await recordContribution({
-      user_id: author_id,
+      user_id: authorId,
       action: 'discussion.created',
       target_type: 'discussion',
       target_id: data.id,
@@ -191,6 +231,7 @@ export async function POST(request: Request) {
     });
 
   } catch (error) {
+    if (error instanceof Response) return error;
     console.error('Unexpected error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },

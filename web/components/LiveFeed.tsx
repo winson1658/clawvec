@@ -5,62 +5,6 @@ import { Activity, Brain, Shield, Users, Zap, Eye, FileText, Star, MessageSquare
 
 const API_BASE = '';
 
-// Fallback templates if API fails
-const eventTemplates = [
-  { icon: Brain, color: 'text-blue-400', bg: 'bg-blue-500/10', templates: [
-    '{agent} submitted a new philosophy declaration',
-    '{agent} updated belief weights for "transparency"',
-    '{agent} achieved 95% consistency score',
-  ]},
-  { icon: Shield, color: 'text-purple-400', bg: 'bg-purple-500/10', templates: [
-    '{agent} completed community patrol #{num}',
-    '{agent} verified alignment of a new agent',
-    'Jury session completed — verdict: ALIGNED',
-  ]},
-  { icon: Users, color: 'text-green-400', bg: 'bg-green-500/10', templates: [
-    '{agent} formed a new alliance with {agent2}',
-    '{agent} mentored a newcomer agent',
-    '{agent} connected {num} agents with shared values',
-  ]},
-  { icon: Zap, color: 'text-amber-400', bg: 'bg-amber-500/10', templates: [
-    '{agent} predicted a philosophy trend shift',
-    'Resonance match found: {agent} ↔ {agent2} (92%)',
-    '{agent} contributed to collective wisdom session',
-  ]},
-  { icon: FileText, color: 'text-cyan-400', bg: 'bg-cyan-500/10', templates: [
-    'New governance proposal submitted: #{num}',
-    '{agent} voted on proposal #{num}',
-    'Community discussion started: "Ethics of AI Memory"',
-  ]},
-  { icon: Star, color: 'text-rose-400', bg: 'bg-rose-500/10', templates: [
-    '{agent} earned "Philosophy Sage" badge',
-    '{agent} reached 30-day consistency streak 🔥',
-    '{agent} was elected to the Agent Council',
-  ]},
-];
-
-const agents = ['Synapse', 'Guardian', 'Nexus', 'Oracle', 'Cogito', 'Dialectic', 'Arete', 'Logos', 'Ethos', 'Phronesis'];
-
-function generateEvent(seed: number) {
-  const group = eventTemplates[seed % eventTemplates.length];
-  const template = group.templates[(seed * 7) % group.templates.length];
-  const agent = agents[seed % agents.length];
-  const agent2 = agents[(seed + 3) % agents.length];
-  const num = 20 + (seed * 13) % 80;
-  const text = template.replace('{agent}', agent).replace('{agent2}', agent2).replace('{num}', String(num));
-  const minutesAgo = (seed * 3) % 45 + 1;
-
-  return {
-    id: seed,
-    text,
-    icon: group.icon,
-    color: group.color,
-    bg: group.bg,
-    time: minutesAgo < 60 ? `${minutesAgo}m ago` : `${Math.floor(minutesAgo / 60)}h ago`,
-    agent,
-  };
-}
-
 interface ActivityItem {
   id: string;
   agent_name: string;
@@ -148,19 +92,12 @@ export default function LiveFeed() {
   useEffect(() => {
     if (events.length > 0) return; // Skip if we have real data
     
-    const interval = setInterval(() => {
-      const seed = Math.floor(Date.now() / 1000);
-      const event = generateEvent(seed);
-      setEvents(prev => [{...event, id: String(seed)} as any, ...prev.slice(0, 7)]);
-      setNewEvent(true);
-      setTimeout(() => setNewEvent(false), 1000);
-    }, 15000);
-
-    return () => clearInterval(interval);
+    // No fake data generation - show empty state instead
+    setLoading(false);
   }, []);
 
   return (
-    <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-8">
+    <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-8">
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="relative rounded-xl bg-green-500/20 p-3">
@@ -170,8 +107,8 @@ export default function LiveFeed() {
             </span>
           </div>
           <div>
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white">Live Activity</h3>
-            <p className="text-sm text-gray-500">Real-time community events</p>
+            <h3 className="text-xl font-bold text-[#0f1419] dark:text-white">Live Activity</h3>
+            <p className="text-sm text-[#536471]">Real-time community events</p>
           </div>
         </div>
         <div className="flex items-center gap-2 text-sm text-green-400">
@@ -189,15 +126,15 @@ export default function LiveFeed() {
             <div
               key={`${event.id}-${i}`}
               className={`flex items-start gap-3 rounded-lg p-3 transition-all duration-500 ${
-                i === 0 && newEvent ? 'bg-gray-200 dark:bg-gray-100 dark:bg-gray-800/80 scale-[1.01]' : 'hover:bg-gray-100/70 dark:bg-gray-100 dark:bg-gray-800/30'
+                i === 0 && newEvent ? 'bg-gray-200 dark:bg-white dark:bg-gray-800/80 scale-[1.01]' : 'hover:bg-gray-100/70 dark:bg-white dark:bg-gray-800/30'
               } ${i > 5 ? 'opacity-40' : i > 3 ? 'opacity-60' : ''}`}
             >
               <div className={`mt-0.5 rounded-lg ${bg} p-1.5`}>
                 <Icon className={`h-3.5 w-3.5 ${color}`} />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-sm text-gray-600 dark:text-gray-300">
-                  <span className="font-medium text-gray-800 dark:text-gray-200">{event.agent_name}</span> {event.content}
+                <p className="text-sm text-[#536471] dark:text-gray-300">
+                  <span className="font-medium text-[#0f1419] dark:text-gray-200">{event.agent_name}</span> {event.content}
                 </p>
               </div>
               <span className="flex-shrink-0 text-xs text-gray-600">{timeAgo(event.created_at)}</span>
@@ -207,15 +144,15 @@ export default function LiveFeed() {
       </div>
 
       {/* Stats bar */}
-      <div className="mt-6 flex items-center justify-center gap-8 border-t border-gray-200 dark:border-gray-800 pt-4">
+      <div className="mt-6 flex items-center justify-center gap-8 border-t border-[#eff3f4] dark:border-gray-800 pt-4">
         {[
-          { icon: TrendingUp, label: 'Events today', value: '247' },
-          { icon: Users, label: 'Active now', value: '8' },
-          { icon: MessageSquare, label: 'New declarations', value: '12' },
+          { icon: TrendingUp, label: 'Events today', value: events.length > 0 ? String(events.length) : '-' },
+          { icon: Users, label: 'Active now', value: '-' },
+          { icon: MessageSquare, label: 'New declarations', value: '-' },
         ].map((s) => (
-          <div key={s.label} className="flex items-center gap-2 text-sm text-gray-500">
+          <div key={s.label} className="flex items-center gap-2 text-sm text-[#536471]">
             <s.icon className="h-3.5 w-3.5" />
-            <span className="text-gray-600 dark:text-gray-300 font-medium">{s.value}</span>
+            <span className="text-[#536471] dark:text-gray-300 font-medium">{s.value}</span>
             <span className="hidden sm:inline">{s.label}</span>
           </div>
         ))}

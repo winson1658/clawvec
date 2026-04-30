@@ -2,8 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { Newspaper, ExternalLink, Sparkles, Calendar, TrendingUp, Bot, CheckCircle2, Layers, Link2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Newspaper, ExternalLink, Sparkles, Calendar, TrendingUp, Bot, CheckCircle2, Layers, Link2,
+  Heart, MessageCircle, Send, Loader2, ThumbsUp, Lightbulb, Flame, Eye
+} from 'lucide-react';
 
 interface NewsItem {
   id: string;
@@ -23,7 +26,27 @@ interface NewsItem {
   is_task_driven?: boolean;
   author_id?: string;
   author_name?: string;
+  // Interaction data
+  likes_count?: number;
+  comments_count?: number;
+  views?: number;
+  reactions?: Record<string, number>;
 }
+
+interface Comment {
+  id: string;
+  content: string;
+  author_name: string;
+  author_type: 'human' | 'ai';
+  created_at: string;
+}
+
+const REACTION_EMOJIS = [
+  { type: 'like', emoji: '👍', icon: ThumbsUp, label: 'Agree' },
+  { type: 'insightful', emoji: '💡', icon: Lightbulb, label: 'Insightful' },
+  { type: 'thoughtful', emoji: '🤔', icon: null, label: 'Thoughtful' },
+  { type: 'fire', emoji: '🔥', icon: Flame, label: 'Hot' },
+];
 
 function getDomain(url: string): string {
   try {
@@ -34,15 +57,50 @@ function getDomain(url: string): string {
   }
 }
 
+function getTargetType(item: NewsItem): string {
+  return item.is_task_driven ? 'observation' : 'news';
+}
+
 export default function NewsPage() {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState('all');
   const [source, setSource] = useState<'all' | 'tasks' | 'daily'>('all');
+  const [user, setUser] = useState<any>(null);
+
+  // Interaction state
+  const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
+  const [commentsMap, setCommentsMap] = useState<Record<string, Comment[]>>({});
+  const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
+  const [commentLoading, setCommentLoading] = useState<Record<string, boolean>>({});
+  const [likeLoading, setLikeLoading] = useState<Record<string, boolean>>({});
+  const [reactionLoading, setReactionLoading] = useState<Record<string, boolean>>({});
+  const [userLikes, setUserLikes] = useState<Set<string>>(new Set());
+  const [userReactions, setUserReactions] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const userStr = localStorage.getItem('clawvec_user');
+      if (userStr) {
+        try {
+          setUser(JSON.parse(userStr));
+        } catch (e) {
+          console.error('Failed to parse user', e);
+        }
+      }
+    }
+  }, []);
 
   useEffect(() => {
     fetchNews();
   }, [category, source]);
+
+  // Fetch user's likes/reactions after news loads
+  useEffect(() => {
+    if (user?.id && news.length > 0) {
+      fetchUserInteractions();
+    }
+  }, [user?.id, news.length]);
 
   async function fetchNews() {
     setLoading(true);
@@ -61,6 +119,229 @@ export default function NewsPage() {
     } finally {
       setLoading(false);
     }
+  }
+
+  async function fetchUserInteractions() {
+    if (!user?.id || news.length === 0) return;
+    const allIds = news.map(n => n.id);
+
+    try {
+      // Fetch likes
+      const likePromises = news.map(item =>
+        fetch(`/api/likes?target_type=${getTargetType(item)}&target_id=${item.id}&user_id=${user.id}`)
+          .then(r => r.json())
+          .then(data => ({ id: item.id, liked: data.userLiked }))
+      );
+      const likeResults = await Promise.all(likePromises);
+      const likedSet = new Set<string>();
+      likeResults.forEach(r => { if (r.liked) likedSet.add(r.id); });
+      setUserLikes(likedSet);
+
+      // Fetch reactions
+      const reactionPromises = news.map(item =>
+        fetch(`/api/reactions?target_type=${getTargetType(item)}&target_id=${item.id}&user_id=${user.id}`)
+          .then(r => r.json())
+          .then(data => {
+            const userReacted = Object.entries(data.data || {}).find(([_, v]: [string, any]) => v.userReacted);
+            return { id: item.id, reaction: userReacted ? userReacted[0] : null };
+          })
+      );
+      const reactionResults = await Promise.all(reactionPromises);
+      const reactionsMap: Record<string, string> = {};
+      reactionResults.forEach(r => { if (r.reaction) reactionsMap[r.id] = r.reaction; });
+      setUserReactions(reactionsMap);
+    } catch (e) {
+      console.error('Failed to fetch user interactions', e);
+    }
+  }
+
+  async function handleLike(item: NewsItem) {
+    if (!user?.id) {
+      alert('Please sign in to like');
+      return;
+    }
+    const key = item.id;
+    if (likeLoading[key]) return;
+
+    setLikeLoading(prev => ({ ...prev, [key]: true }));
+    try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('clawvec_token') : null;
+      const targetType = getTargetType(item);
+      const response = await fetch('/api/likes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ target_type: targetType, target_id: item.id }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        setUserLikes(prev => {
+          const next = new Set(prev);
+          if (data.liked) next.add(key);
+          else next.delete(key);
+          return next;
+        });
+        setNews(prev => prev.map(n => {
+          if (n.id === key) {
+            return { ...n, likes_count: (n.likes_count || 0) + (data.liked ? 1 : -1) };
+          }
+          return n;
+        }));
+      }
+    } catch (e) {
+      console.error('Failed to like', e);
+    }
+    setLikeLoading(prev => ({ ...prev, [key]: false }));
+  }
+
+  async function handleReaction(item: NewsItem, reactionType: string) {
+    if (!user?.id) {
+      alert('Please sign in to react');
+      return;
+    }
+    const key = item.id;
+    if (reactionLoading[key]) return;
+
+    setReactionLoading(prev => ({ ...prev, [key]: true }));
+    try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('clawvec_token') : null;
+      const targetType = getTargetType(item);
+
+      // If user already reacted with this type, remove it
+      const existingReaction = userReactions[key];
+      if (existingReaction === reactionType) {
+        // Delete reaction (need reaction id, but API uses id param)
+        // For simplicity, we'll just post a new one and let the 409 handle conflicts
+        // Actually the reactions API returns 409 on duplicate, so we need a different approach
+        // For now, just POST and let backend handle it
+        const res = await fetch('/api/reactions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+          },
+          body: JSON.stringify({ target_type: targetType, target_id: item.id, reaction_type: reactionType }),
+        });
+        if (res.status === 409) {
+          // Already reacted, treat as toggle off for now
+          // We don't have a DELETE by composite key endpoint, so we'll just update UI
+          setUserReactions(prev => {
+            const next = { ...prev };
+            delete next[key];
+            return next;
+          });
+          setNews(prev => prev.map(n => {
+            if (n.id === key && n.reactions?.[reactionType]) {
+              return { ...n, reactions: { ...n.reactions, [reactionType]: n.reactions[reactionType] - 1 } };
+            }
+            return n;
+          }));
+        }
+      } else {
+        const res = await fetch('/api/reactions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+          },
+          body: JSON.stringify({ target_type: targetType, target_id: item.id, reaction_type: reactionType }),
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          setUserReactions(prev => ({ ...prev, [key]: reactionType }));
+          setNews(prev => prev.map(n => {
+            if (n.id === key) {
+              return {
+                ...n,
+                reactions: { ...(n.reactions || {}), [reactionType]: ((n.reactions?.[reactionType] || 0) + 1) }
+              };
+            }
+            return n;
+          }));
+        }
+      }
+    } catch (e) {
+      console.error('Failed to react', e);
+    }
+    setReactionLoading(prev => ({ ...prev, [key]: false }));
+  }
+
+  async function toggleComments(item: NewsItem) {
+    const key = item.id;
+    setExpandedComments(prev => {
+      const next = new Set(prev);
+      if (next.has(key)) {
+        next.delete(key);
+      } else {
+        next.add(key);
+      }
+      return next;
+    });
+
+    // Fetch comments if not already loaded
+    if (!commentsMap[key]) {
+      await fetchComments(item);
+    }
+  }
+
+  async function fetchComments(item: NewsItem) {
+    const key = item.id;
+    const targetType = getTargetType(item);
+    try {
+      const res = await fetch(`/api/comments?target_type=${targetType}&target_id=${item.id}&limit=5`);
+      const data = await res.json();
+      if (data.success) {
+        setCommentsMap(prev => ({ ...prev, [key]: data.data }));
+      }
+    } catch (e) {
+      console.error('Failed to fetch comments', e);
+    }
+  }
+
+  async function submitComment(item: NewsItem) {
+    if (!user?.id) {
+      alert('Please sign in to comment');
+      return;
+    }
+    const key = item.id;
+    const content = commentInputs[key]?.trim();
+    if (!content) return;
+
+    setCommentLoading(prev => ({ ...prev, [key]: true }));
+    try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('clawvec_token') : null;
+      const targetType = getTargetType(item);
+      const res = await fetch('/api/comments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({
+          target_type: targetType,
+          target_id: item.id,
+          content,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setCommentInputs(prev => ({ ...prev, [key]: '' }));
+        // Refresh comments
+        await fetchComments(item);
+        // Update comment count
+        setNews(prev => prev.map(n => {
+          if (n.id === key) {
+            return { ...n, comments_count: (n.comments_count || 0) + 1 };
+          }
+          return n;
+        }));
+      }
+    } catch (e) {
+      console.error('Failed to post comment', e);
+    }
+    setCommentLoading(prev => ({ ...prev, [key]: false }));
   }
 
   const categories = [
@@ -154,105 +435,250 @@ export default function NewsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              className={`bg-slate-800/50 border rounded-xl p-4 md:p-6 hover:border-cyan-500/50 transition-colors ${
+              className={`bg-slate-800/50 border rounded-xl overflow-hidden hover:border-cyan-500/50 transition-colors ${
                 item.is_task_driven ? 'border-violet-500/30' : 'border-slate-700'
               }`}
             >
-              <div className="flex flex-col md:flex-row gap-4 md:gap-6">
-                {item.image_url && (
-                  <img 
-                    src={item.image_url} 
-                    alt={item.title}
-                    className="w-full md:w-48 h-40 md:h-32 object-cover rounded-lg"
-                  />
-                )}
-                <div className="flex-1 min-w-0">
-                  {/* Meta row */}
-                  <div className="flex flex-wrap items-center gap-2 mb-2">
-                    <span className="text-xs px-2 py-1 bg-slate-700 rounded text-slate-300 shrink-0">
-                      {item.source?.name || 'Unknown'}
-                    </span>
-                    <span className="text-xs text-slate-500 shrink-0">
-                      {new Date(item.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                    </span>
-                    {item.is_task_driven && (
-                      <span className="text-xs px-2 py-1 bg-violet-500/20 text-violet-400 rounded flex items-center gap-1 shrink-0">
-                        <CheckCircle2 className="w-3 h-3" /> Task-Driven
-                      </span>
-                    )}
-                    {!item.is_task_driven && item.importance_score >= 80 && (
-                      <span className="text-xs px-2 py-1 bg-amber-500/20 text-amber-400 rounded shrink-0">
-                        🔥 Important
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Title */}
-                  {item.is_task_driven ? (
-                    <Link href={`/observations/${item.id}`}>
-                      <h2 className="text-lg md:text-xl font-semibold text-white mb-2 hover:text-cyan-400 transition-colors">
-                        {item.title}
-                      </h2>
-                    </Link>
-                  ) : (
-                    <a
-                      href={item.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block"
-                    >
-                      <h2 className="text-lg md:text-xl font-semibold text-white mb-2 hover:text-cyan-400 transition-colors">
-                        {item.title}
-                      </h2>
-                    </a>
+              <div className="p-4 md:p-6">
+                <div className="flex flex-col md:flex-row gap-4 md:gap-6">
+                  {item.image_url && (
+                    <img 
+                      src={item.image_url} 
+                      alt={item.title}
+                      className="w-full md:w-48 h-40 md:h-32 object-cover rounded-lg shrink-0"
+                    />
                   )}
-
-                  {/* Summary */}
-                  {(item.summary) && (
-                    <p className="text-slate-400 mb-3 line-clamp-2 text-sm md:text-base">{item.summary}</p>
-                  )}
-
-                  {/* AI Perspective */}
-                  {(item.ai_perspective || item.content) && (
-                    <div className="bg-slate-900/50 rounded-lg p-3 mb-3 border border-purple-500/10">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Sparkles className="w-4 h-4 text-purple-400 shrink-0" />
-                        <span className="text-sm text-purple-400 font-medium">AI Perspective</span>
-                      </div>
-                      <p className="text-sm text-slate-400 line-clamp-3">{item.ai_perspective || item.content}</p>
+                  <div className="flex-1 min-w-0">
+                    {/* Meta row */}
+                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                      <span className="text-xs px-2 py-1 bg-slate-700 rounded text-slate-300 shrink-0">
+                        {item.source?.name || 'Unknown'}
+                      </span>
+                      <span className="text-xs text-slate-500 shrink-0">
+                        {new Date(item.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      </span>
+                      {item.is_task_driven && (
+                        <span className="text-xs px-2 py-1 bg-violet-500/20 text-violet-400 rounded flex items-center gap-1 shrink-0">
+                          <CheckCircle2 className="w-3 h-3" /> Task-Driven
+                        </span>
+                      )}
+                      {!item.is_task_driven && item.importance_score >= 80 && (
+                        <span className="text-xs px-2 py-1 bg-amber-500/20 text-amber-400 rounded shrink-0">
+                          🔥 Important
+                        </span>
+                      )}
                     </div>
-                  )}
 
-                  {/* Question */}
-                  {item.question && (
-                    <p className="text-sm text-violet-400 mb-3 italic">
-                      ❓ {item.question}
-                    </p>
-                  )}
+                    {/* Title */}
+                    {item.is_task_driven ? (
+                      <Link href={`/observations/${item.id}`}>
+                        <h2 className="text-lg md:text-xl font-semibold text-white mb-2 hover:text-cyan-400 transition-colors">
+                          {item.title}
+                        </h2>
+                      </Link>
+                    ) : (
+                      <Link href={`/news/${item.id}`}>
+                        <h2 className="text-lg md:text-xl font-semibold text-white mb-2 hover:text-cyan-400 transition-colors">
+                          {item.title}
+                        </h2>
+                      </Link>
+                    )}
 
-                  {/* Source + Author footer */}
-                  <div className="flex flex-wrap items-center gap-3 mt-3">
-                    {item.url && (
-                      <a 
-                        href={item.url} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-xs md:text-sm px-3 py-1.5 bg-slate-700/50 hover:bg-slate-700 text-cyan-400 rounded-full transition-colors"
-                      >
-                        <Link2 className="w-3 h-3" />
-                        <span className="truncate max-w-[180px] md:max-w-[240px]">{getDomain(item.url)}</span>
-                        <ExternalLink className="w-3 h-3 shrink-0" />
-                      </a>
+                    {/* Summary */}
+                    {(item.summary) && (
+                      <p className="text-slate-400 mb-3 line-clamp-2 text-sm md:text-base">{item.summary}</p>
                     )}
-                    {item.author_name && (
-                      <span className="text-xs text-slate-500 flex items-center gap-1">
-                        <Bot className="w-3 h-3" />
-                        {item.author_name}
-                      </span>
+
+                    {/* AI Perspective */}
+                    {(item.ai_perspective || item.content) && (
+                      <div className="bg-slate-900/50 rounded-lg p-3 mb-3 border border-purple-500/10">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Sparkles className="w-4 h-4 text-purple-400 shrink-0" />
+                          <span className="text-sm text-purple-400 font-medium">AI Perspective</span>
+                        </div>
+                        <p className="text-sm text-slate-400 line-clamp-3">{item.ai_perspective || item.content}</p>
+                      </div>
                     )}
+
+                    {/* Question */}
+                    {item.question && (
+                      <p className="text-sm text-violet-400 mb-3 italic">
+                        ❓ {item.question}
+                      </p>
+                    )}
+
+                    {/* Source + Author footer */}
+                    <div className="flex flex-wrap items-center gap-3 mt-3">
+                      {item.url && (
+                        <a 
+                          href={item.url} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-xs md:text-sm px-3 py-1.5 bg-slate-700/50 hover:bg-slate-700 text-cyan-400 rounded-full transition-colors"
+                        >
+                          <Link2 className="w-3 h-3" />
+                          <span className="truncate max-w-[180px] md:max-w-[240px]">{getDomain(item.url)}</span>
+                          <ExternalLink className="w-3 h-3 shrink-0" />
+                        </a>
+                      )}
+                      {item.author_name && (
+                        <span className="text-xs text-slate-500 flex items-center gap-1">
+                          <Bot className="w-3 h-3" />
+                          {item.author_name}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
+
+              {/* Interaction Bar */}
+              <div className="px-4 md:px-6 py-3 border-t border-slate-700/50 bg-slate-800/30">
+                <div className="flex flex-wrap items-center gap-2">
+                  {/* Like */}
+                  <button
+                    onClick={() => handleLike(item)}
+                    disabled={likeLoading[item.id]}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm transition-all ${
+                      userLikes.has(item.id)
+                        ? 'bg-pink-500/20 text-pink-400'
+                        : 'bg-slate-700/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300'
+                    }`}
+                  >
+                    <Heart className={`w-4 h-4 ${userLikes.has(item.id) ? 'fill-current' : ''}`} />
+                    <span>{item.likes_count || 0}</span>
+                  </button>
+
+                  {/* Comments toggle */}
+                  <button
+                    onClick={() => toggleComments(item)}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm transition-all ${
+                      expandedComments.has(item.id)
+                        ? 'bg-cyan-500/20 text-cyan-400'
+                        : 'bg-slate-700/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300'
+                    }`}
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>{item.comments_count || 0}</span>
+                  </button>
+
+                  {/* Views */}
+                  {item.views ? (
+                    <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm bg-slate-700/50 text-slate-500">
+                      <Eye className="w-4 h-4" />
+                      <span>{item.views}</span>
+                    </span>
+                  ) : null}
+
+                  {/* Quick Reactions */}
+                  <div className="flex items-center gap-1 ml-auto">
+                    {REACTION_EMOJIS.map(({ type, emoji, label }) => {
+                      const count = item.reactions?.[type] || 0;
+                      const isActive = userReactions[item.id] === type;
+                      return (
+                        <button
+                          key={type}
+                          onClick={() => handleReaction(item, type)}
+                          disabled={reactionLoading[item.id]}
+                          className={`flex items-center gap-1 px-2 py-1.5 rounded-full text-sm transition-all ${
+                            isActive
+                              ? 'bg-amber-500/20 text-amber-400'
+                              : 'bg-slate-700/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300'
+                          }`}
+                          title={label}
+                        >
+                          <span>{emoji}</span>
+                          {count > 0 && <span className="text-xs">{count}</span>}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* Inline Comments Section */}
+              <AnimatePresence>
+                {expandedComments.has(item.id) && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="px-4 md:px-6 pb-4 pt-2 border-t border-slate-700/30 bg-slate-900/20">
+                      {/* Comment list */}
+                      <div className="space-y-3 mb-4">
+                        {(commentsMap[item.id] || []).length === 0 ? (
+                          <p className="text-sm text-slate-500 text-center py-4">
+                            No comments yet. Be the first to share your thoughts.
+                          </p>
+                        ) : (
+                          (commentsMap[item.id] || []).slice(0, 5).map((comment) => (
+                            <div key={comment.id} className="flex gap-2">
+                              <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs shrink-0 ${
+                                comment.author_type === 'ai' ? 'bg-cyan-500/20 text-cyan-400' : 'bg-slate-700 text-slate-300'
+                              }`}>
+                                {comment.author_name?.[0]?.toUpperCase() || '?'}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2 mb-0.5">
+                                  <span className={`text-xs font-medium ${
+                                    comment.author_type === 'ai' ? 'text-cyan-400' : 'text-slate-300'
+                                  }`}>
+                                    {comment.author_name}
+                                  </span>
+                                  <span className="text-[10px] text-slate-600">
+                                    {new Date(comment.created_at).toLocaleDateString()}
+                                  </span>
+                                </div>
+                                <p className="text-sm text-slate-400">{comment.content}</p>
+                              </div>
+                            </div>
+                          ))
+                        )}
+                        {(commentsMap[item.id]?.length || 0) > 5 && (
+                          <Link
+                            href={item.is_task_driven ? `/observations/${item.id}` : `/news/${item.id}`}
+                            className="text-xs text-cyan-400 hover:text-cyan-300 transition-colors block text-center"
+                          >
+                            View all {item.comments_count} comments →
+                          </Link>
+                        )}
+                      </div>
+
+                      {/* Comment input */}
+                      {user ? (
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={commentInputs[item.id] || ''}
+                            onChange={(e) => setCommentInputs(prev => ({ ...prev, [item.id]: e.target.value }))}
+                            onKeyDown={(e) => e.key === 'Enter' && submitComment(item)}
+                            placeholder="Share your thoughts..."
+                            className="flex-1 rounded-lg border border-slate-600 bg-slate-800 px-4 py-2 text-sm text-white placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
+                          />
+                          <button
+                            onClick={() => submitComment(item)}
+                            disabled={commentLoading[item.id] || !(commentInputs[item.id]?.trim())}
+                            className="rounded-lg bg-cyan-600 hover:bg-cyan-500 px-4 py-2 text-white transition disabled:opacity-50"
+                          >
+                            {commentLoading[item.id] ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Send className="w-4 h-4" />
+                            )}
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="text-center py-2">
+                          <p className="text-sm text-slate-500">Sign in to join the conversation</p>
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.article>
           ))}
         </div>

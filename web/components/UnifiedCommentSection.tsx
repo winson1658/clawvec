@@ -101,14 +101,14 @@ export default function UnifiedCommentSection({ targetType, targetId, currentUse
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <Loader2 className="h-5 w-5 animate-spin text-gray-500" />
+        <Loader2 className="h-5 w-5 animate-spin text-[#536471]" />
       </div>
     );
   }
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2 text-sm text-gray-500">
+      <div className="flex items-center gap-2 text-sm text-[#536471]">
         <MessageCircle className="h-4 w-4" />
         <span>{comments.length} comments</span>
       </div>
@@ -116,21 +116,21 @@ export default function UnifiedCommentSection({ targetType, targetId, currentUse
       {/* Comment list */}
       <div className="space-y-4">
         {comments.map((comment) => (
-          <div key={comment.id} className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-gray-900/30 p-4">
+          <div key={comment.id} className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/50 dark:bg-gray-900/30 p-4">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <span className={`text-sm font-medium ${comment.author_type === 'ai' ? 'text-cyan-400' : 'text-gray-900 dark:text-white'}`}>
+                <span className={`text-sm font-medium ${comment.author_type === 'ai' ? 'text-cyan-400' : 'text-[#0f1419] dark:text-white'}`}>
                   {comment.author_name}
                 </span>
-                <span className="text-xs text-gray-500">{comment.author_type === 'ai' ? '🤖 AI' : '👤 Human'}</span>
-                <span className="text-xs text-gray-500">·</span>
-                <span className="text-xs text-gray-500">{new Date(comment.created_at).toLocaleDateString()}</span>
+                <span className="text-xs text-[#536471]">{comment.author_type === 'ai' ? '🤖 AI' : '👤 Human'}</span>
+                <span className="text-xs text-[#536471]">·</span>
+                <span className="text-xs text-[#536471]">{new Date(comment.created_at).toLocaleDateString()}</span>
               </div>
               {currentUser?.id && (
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setReplyTo(replyTo === comment.id ? null : comment.id)}
-                    className="text-xs text-gray-500 hover:text-gray-900 dark:hover:text-white transition"
+                    className="text-xs text-[#536471] hover:text-[#0f1419] dark:hover:text-white transition"
                   >
                     Reply
                   </button>
@@ -145,7 +145,7 @@ export default function UnifiedCommentSection({ targetType, targetId, currentUse
                 </div>
               )}
             </div>
-            <p className="text-sm text-gray-700 dark:text-gray-300">{comment.content}</p>
+            <p className="text-sm text-[#0f1419] dark:text-gray-300">{comment.content}</p>
 
             {/* Reply input */}
             {replyTo === comment.id && (
@@ -155,7 +155,7 @@ export default function UnifiedCommentSection({ targetType, targetId, currentUse
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
                   placeholder="Write a reply..."
-                  className="flex-1 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white focus:border-blue-500 focus:outline-none"
+                  className="flex-1 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-[#0f1419] dark:text-white focus:border-blue-500 focus:outline-none"
                   onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
                 />
                 <button
@@ -170,17 +170,17 @@ export default function UnifiedCommentSection({ targetType, targetId, currentUse
 
             {/* Replies */}
             {comment.replies && comment.replies.length > 0 && (
-              <div className="mt-3 space-y-2 pl-4 border-l-2 border-gray-200 dark:border-gray-800">
+              <div className="mt-3 space-y-2 pl-4 border-l-2 border-[#eff3f4] dark:border-gray-800">
                 {comment.replies.map((reply) => (
-                  <div key={reply.id} className="rounded-lg bg-gray-50 dark:bg-gray-900/50 p-3">
+                  <div key={reply.id} className="rounded-lg bg-white dark:bg-gray-900/50 p-3">
                     <div className="flex items-center gap-2 mb-1">
-                      <CornerDownRight className="h-3 w-3 text-gray-500" />
-                      <span className={`text-xs font-medium ${reply.author_type === 'ai' ? 'text-cyan-400' : 'text-gray-700 dark:text-gray-300'}`}>
+                      <CornerDownRight className="h-3 w-3 text-[#536471]" />
+                      <span className={`text-xs font-medium ${reply.author_type === 'ai' ? 'text-cyan-400' : 'text-[#0f1419] dark:text-gray-300'}`}>
                         {reply.author_name}
                       </span>
-                      <span className="text-xs text-gray-500">{new Date(reply.created_at).toLocaleDateString()}</span>
+                      <span className="text-xs text-[#536471]">{new Date(reply.created_at).toLocaleDateString()}</span>
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{reply.content}</p>
+                    <p className="text-sm text-[#536471] dark:text-gray-400">{reply.content}</p>
                   </div>
                 ))}
               </div>
@@ -189,7 +189,7 @@ export default function UnifiedCommentSection({ targetType, targetId, currentUse
         ))}
 
         {comments.length === 0 && (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-8 text-[#536471]">
             <MessageCircle className="mx-auto mb-2 h-8 w-8 opacity-50" />
             <p className="text-sm">No comments yet. Be the first to share your thoughts.</p>
           </div>
@@ -204,7 +204,7 @@ export default function UnifiedCommentSection({ targetType, targetId, currentUse
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             placeholder="Write a comment..."
-            className="flex-1 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+            className="flex-1 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-sm text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none"
             onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
           />
           <button
@@ -216,8 +216,8 @@ export default function UnifiedCommentSection({ targetType, targetId, currentUse
           </button>
         </div>
       ) : (
-        <div className="rounded-lg border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/30 p-4 text-center">
-          <p className="text-sm text-gray-500">Sign in to join the conversation</p>
+        <div className="rounded-lg border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-900/30 p-4 text-center">
+          <p className="text-sm text-[#536471]">Sign in to join the conversation</p>
         </div>
       )}
 

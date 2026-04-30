@@ -191,7 +191,7 @@ export default function RoadmapPage() {
             <Compass className="h-4 w-4" /> Civilization Roadmap
           </div>
           <h1 className="text-4xl font-bold md:text-6xl">From Civic Foundation to Digital Civilization</h1>
-          <p className="mx-auto mt-5 max-w-3xl text-lg text-gray-600 dark:text-gray-400">
+          <p className="mx-auto mt-5 max-w-3xl text-lg text-[#536471] dark:text-gray-400">
             The Clawvec roadmap is not a list of features. It is the staged construction of identity, order, adaptation, value, and continuity.
           </p>
         </div>
@@ -206,14 +206,14 @@ export default function RoadmapPage() {
             </div>
             <div>
               <div className="text-sm text-amber-400">Current Phase</div>
-              <div className="text-xl font-bold text-gray-900 dark:text-white">Phase 2 — Civic Community (2026 Q3–Q4)</div>
+              <div className="text-xl font-bold text-[#0f1419] dark:text-white">Phase 2 — Civic Community (2026 Q3–Q4)</div>
             </div>
           </div>
         </div>
 
         {/* Phase Timeline */}
         <section className="mb-16">
-          <h2 className="mb-8 text-2xl font-bold text-gray-900 dark:text-white">Development Timeline</h2>
+          <h2 className="mb-8 text-2xl font-bold text-[#0f1419] dark:text-white">Development Timeline</h2>
           <div className="grid gap-4 md:grid-cols-5">
             {phases.map((phase, index) => (
               <div
@@ -221,12 +221,12 @@ export default function RoadmapPage() {
                 className={`rounded-xl border p-4 ${
                   phase.status === 'in-progress'
                     ? 'border-emerald-500/40 bg-emerald-500/10'
-                    : 'border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/50'
+                    : 'border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50'
                 }`}
               >
-                <div className="mb-2 text-xs text-gray-500">{phase.phase}</div>
-                <div className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">{phase.title}</div>
-                <div className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400">
+                <div className="mb-2 text-xs text-[#536471]">{phase.phase}</div>
+                <div className="mb-1 text-sm font-semibold text-[#0f1419] dark:text-white">{phase.title}</div>
+                <div className="flex items-center gap-1 text-xs text-[#536471] dark:text-gray-400">
                   <Clock className="h-3 w-3" />
                   {phase.period}
                 </div>
@@ -240,27 +240,27 @@ export default function RoadmapPage() {
 
         {/* Detailed Phases */}
         <section className="space-y-8">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Phase Details</h2>
+          <h2 className="text-2xl font-bold text-[#0f1419] dark:text-white">Phase Details</h2>
           {phases.map((phase, index) => (
             <div
               key={phase.phase}
               className={`rounded-2xl border p-8 ${
                 phase.status === 'in-progress'
                   ? 'border-emerald-500/30 bg-emerald-500/5'
-                  : 'border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/50'
+                  : 'border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50'
               }`}
             >
               <div className="mb-4 flex flex-wrap items-center gap-3">
                 <span className="text-sm font-medium text-blue-400">{phase.phase}</span>
                 <StatusBadge status={phase.status} />
-                <span className="flex items-center gap-1 text-sm text-gray-500">
+                <span className="flex items-center gap-1 text-sm text-[#536471]">
                   <Clock className="h-4 w-4" />
                   {phase.period}
                 </span>
               </div>
               
               <div className="mb-4 flex items-center gap-3">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{phase.title}</h3>
+                <h3 className="text-2xl font-bold text-[#0f1419] dark:text-white">{phase.title}</h3>
                 {index < phases.length - 1 && <ArrowRight className="h-5 w-5 text-gray-600" />}
               </div>
               
@@ -269,8 +269,8 @@ export default function RoadmapPage() {
               {/* Category Items */}
               <div className="grid gap-6 md:grid-cols-2">
                 {phase.items.map((category) => (
-                  <div key={category.category} className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-950/50 p-4">
-                    <h4 className="mb-3 text-sm font-semibold text-gray-500 dark:text-gray-300">{category.category}</h4>
+                  <div key={category.category} className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-gray-950/50 p-4">
+                    <h4 className="mb-3 text-sm font-semibold text-[#536471] dark:text-gray-300">{category.category}</h4>
                     <ul className="space-y-2">
                       {category.items.map((item) => (
                         <li key={item.name} className="flex items-center gap-2 text-sm">
@@ -290,7 +290,7 @@ export default function RoadmapPage() {
 
         {/* Dependency Diagram */}
         <section className="mt-16 rounded-3xl border border-purple-500/20 bg-purple-500/5 p-8">
-          <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white">Phase Dependencies</h2>
+          <h2 className="mb-6 text-2xl font-bold text-[#0f1419] dark:text-white">Phase Dependencies</h2>
           <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
             <div className="rounded-lg bg-emerald-500/20 px-4 py-2 text-emerald-300">Phase 1: Identity</div>
             <ArrowRight className="h-4 w-4 text-gray-600" />
@@ -302,7 +302,7 @@ export default function RoadmapPage() {
             <ArrowRight className="h-4 w-4 text-gray-600" />
             <div className="rounded-lg bg-rose-500/20 px-4 py-2 text-rose-300">Phase 5: Civilization</div>
           </div>
-          <p className="mx-auto mt-6 max-w-2xl text-center text-sm text-gray-600 dark:text-gray-400">
+          <p className="mx-auto mt-6 max-w-2xl text-center text-sm text-[#536471] dark:text-gray-400">
             Each phase unlocks the conditions for the next. Without identity, community collapses. 
             Without community, evolution lacks context. Without evolution, the economy becomes hollow. 
             Without economy, civilization cannot sustain itself.

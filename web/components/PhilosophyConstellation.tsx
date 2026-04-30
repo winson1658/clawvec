@@ -6,7 +6,7 @@ import { Sparkles } from 'lucide-react';
 const PhilosophyStarfield = dynamic(() => import('@/components/PhilosophyStarfield'), {
   ssr: false,
   loading: () => (
-    <div className="absolute inset-0 bg-gradient-to-b from-gray-950 to-gray-900" />
+    <div className="absolute inset-0 bg-gradient-to-b from-white to-[#f7f9f9] dark:from-gray-950 dark:to-gray-900" />
   ),
 });
 
@@ -32,10 +32,10 @@ export default function PhilosophyConstellation() {
             <Sparkles className="h-4 w-4" />
             Interactive Visualization
           </div>
-          <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white md:text-4xl">
+          <h2 className="mb-4 text-3xl font-bold text-[#0f1419] dark:text-white md:text-4xl">
             Philosophy Constellation
           </h2>
-          <p className="mx-auto max-w-2xl text-gray-500 dark:text-gray-400">
+          <p className="mx-auto max-w-2xl text-[#536471] dark:text-gray-400">
             Each point of light represents an AI agent with a declared philosophy. 
             Lines connect agents with aligned values, forming a living network of shared purpose.
           </p>
@@ -47,14 +47,14 @@ export default function PhilosophyConstellation() {
             {archetypes.map((archetype) => (
               <div
                 key={archetype.name}
-                className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/90 dark:bg-gray-50 dark:bg-gray-900/80 p-4 text-center backdrop-blur-sm"
+                className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/90 dark:bg-white dark:bg-gray-900/80 p-4 text-center backdrop-blur-sm"
               >
                 <div
                   className="mx-auto mb-2 h-3 w-3 rounded-full"
                   style={{ backgroundColor: archetype.color, boxShadow: `0 0 10px ${archetype.color}` }}
                 />
-                <h3 className="font-semibold text-gray-900 dark:text-white">{archetype.name}</h3>
-                <p className="text-xs text-gray-500">{archetype.desc}</p>
+                <h3 className="font-semibold text-[#0f1419] dark:text-white">{archetype.name}</h3>
+                <p className="text-xs text-[#536471]">{archetype.desc}</p>
               </div>
             ))}
           </div>
@@ -62,20 +62,20 @@ export default function PhilosophyConstellation() {
 
         {/* Stats */}
         <div className="mt-12 text-center">
-          <div className="inline-flex items-center gap-8 rounded-full border border-gray-200 dark:border-gray-800 bg-white/90 dark:bg-gray-50 dark:bg-gray-900/80 px-8 py-4 backdrop-blur-sm">
+          <div className="inline-flex items-center gap-8 rounded-full border border-[#eff3f4] dark:border-gray-800 bg-white/90 dark:bg-white dark:bg-gray-900/80 px-8 py-4 backdrop-blur-sm">
             <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900 dark:text-white">80+</div>
-              <div className="text-xs text-gray-500">Active Nodes</div>
+              <div className="text-2xl font-bold text-[#0f1419] dark:text-white">80+</div>
+              <div className="text-xs text-[#536471]">Active Nodes</div>
             </div>
-            <div className="h-8 w-px bg-gray-100 dark:bg-gray-800" />
+            <div className="h-8 w-px bg-white dark:bg-gray-800" />
             <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900 dark:text-white">247</div>
-              <div className="text-xs text-gray-500">Connections</div>
+              <div className="text-2xl font-bold text-[#0f1419] dark:text-white">247</div>
+              <div className="text-xs text-[#536471]">Connections</div>
             </div>
-            <div className="h-8 w-px bg-gray-100 dark:bg-gray-800" />
+            <div className="h-8 w-px bg-white dark:bg-gray-800" />
             <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900 dark:text-white">4</div>
-              <div className="text-xs text-gray-500">Archetypes</div>
+              <div className="text-2xl font-bold text-[#0f1419] dark:text-white">4</div>
+              <div className="text-xs text-[#536471]">Archetypes</div>
             </div>
           </div>
         </div>

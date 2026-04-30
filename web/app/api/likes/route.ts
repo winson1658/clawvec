@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { createNotification } from '@/lib/notifications';
+import { checkRateLimit, rateLimitHeaders } from '@/lib/rate-limit';
+import { requireAuthFromRequest } from '@/lib/auth';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -11,6 +13,14 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
  * Body: { target_type: 'discussion'|'observation'|'declaration', target_id: string, user_id: string }
  */
 export async function POST(request: NextRequest) {
+  // Rate limit check
+  const limitResult = checkRateLimit(request);
+  if (!limitResult.allowed) {
+    return NextResponse.json(
+      { success: false, error: { code: 'RATE_LIMIT', message: 'Rate limit exceeded. Please try again later.' } },
+      { status: 429, headers: rateLimitHeaders(limitResult) }
+    );
+  }
   try {
     let body;
     try {
@@ -34,6 +44,34 @@ export async function POST(request: NextRequest) {
           } 
         },
         { status: 400 }
+      );
+    }
+
+    // L6: 驗證 user_id 與 token 中的用戶 ID 匹配
+    try {
+      const authUser = await requireAuthFromRequest(request);
+      if (authUser.id !== user_id) {
+        return NextResponse.json(
+          { 
+            success: false, 
+            error: { 
+              code: 'FORBIDDEN', 
+              message: 'user_id does not match authenticated user' 
+            } 
+          },
+          { status: 403 }
+        );
+      }
+    } catch {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: { 
+            code: 'UNAUTHORIZED', 
+            message: 'Authentication required' 
+          } 
+        },
+        { status: 401 }
       );
     }
 

@@ -56,7 +56,7 @@ export default function NotificationPreview() {
   const targetUrl = notification?.url || dashboardUrl;
 
   return (
-    <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/70 px-5 py-4 text-sm text-gray-600 dark:text-gray-300 shadow-lg shadow-black/30">
+    <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-900/70 px-5 py-4 text-sm text-[#536471] dark:text-gray-300 shadow-lg shadow-black/30">
       {status === 'loading' && (
         <div className="flex items-center gap-3">
           <Loader2 className="h-4 w-4 animate-spin text-blue-400" />
@@ -72,11 +72,11 @@ export default function NotificationPreview() {
       )}
 
       {status === 'empty' && (
-        <div className="flex items-center gap-3 text-gray-500 dark:text-gray-400">
+        <div className="flex items-center gap-3 text-[#536471] dark:text-gray-400">
           <BellRing className="h-5 w-5" />
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-gray-500">Notifications</p>
-            <p className="text-sm font-semibold text-gray-900 dark:text-white">You are all caught up.</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-[#536471]">Notifications</p>
+            <p className="text-sm font-semibold text-[#0f1419] dark:text-white">You are all caught up.</p>
           </div>
         </div>
       )}
@@ -85,11 +85,11 @@ export default function NotificationPreview() {
         <div className="space-y-2">
           <div className="flex items-center gap-3">
             <BellRing className="h-5 w-5 text-blue-400" />
-            <p className="text-xs uppercase tracking-[0.3em] text-gray-500">Latest Alert</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-[#536471]">Latest Alert</p>
           </div>
-          <p className="text-lg font-semibold text-gray-900 dark:text-white">{notification.title}</p>
-          {notification.body && <p className="text-sm text-gray-500 dark:text-gray-400">{notification.body}</p>}
-          <div className="flex items-center justify-between text-xs text-gray-500">
+          <p className="text-lg font-semibold text-[#0f1419] dark:text-white">{notification.title}</p>
+          {notification.body && <p className="text-sm text-[#536471] dark:text-gray-400">{notification.body}</p>}
+          <div className="flex items-center justify-between text-xs text-[#536471]">
             <span>{new Date(notification.created_at).toLocaleString()}</span>
             <Link href={targetUrl} className="font-semibold text-blue-400 hover:underline">
               View

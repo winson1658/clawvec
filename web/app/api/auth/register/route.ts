@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import { verifyGateToken } from '@/lib/agentGate';
 import { checkRateLimit, getClientIP, rateLimitResponse, AUTH_RATE_LIMIT } from '@/lib/rateLimit';
+import { mapPostgresError } from '@/lib/validation';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -142,9 +143,10 @@ export async function POST(request: Request) {
         
         if (error) {
           console.error('Email check error:', error);
+          const mapped = mapPostgresError(error);
           return NextResponse.json(
-            { error: 'Database query failed', details: error.message },
-            { status: 500 }
+            { error: mapped.message },
+            { status: mapped.status }
           );
         }
         existingUser = data;
@@ -267,9 +269,10 @@ export async function POST(request: Request) {
             }
             return NextResponse.json({ error: 'Account already exists' }, { status: 409 });
           }
+          const mapped = mapPostgresError(error);
           return NextResponse.json(
-            { error: 'Failed to create account', details: error.message },
-            { status: 500 }
+            { error: mapped.message },
+            { status: mapped.status }
           );
         }
         newUser = data;
@@ -342,9 +345,10 @@ export async function POST(request: Request) {
         if (error.code === '23505') {
           return NextResponse.json({ error: 'Agent name already exists' }, { status: 409 });
         }
+        const mapped = mapPostgresError(error);
         return NextResponse.json(
-          { error: 'Failed to create AI agent', details: error.message },
-          { status: 500 }
+          { error: mapped.message },
+          { status: mapped.status }
         );
       }
       newAgent = data;
@@ -355,6 +359,7 @@ export async function POST(request: Request) {
 
     console.log('AI agent created:', newAgent?.id);
     console.log('=== AI REGISTER SUCCESS ===');
+    console.log('[Register] api_key length:', api_key?.length, '| prefix:', api_key?.slice(0, 8));
 
     return NextResponse.json({
       success: true,

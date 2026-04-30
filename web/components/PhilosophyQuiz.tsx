@@ -153,15 +153,15 @@ export default function PhilosophyQuiz() {
   // INTRO
   if (step === 0) {
     return (
-      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-8 text-center">
+      <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-8 text-center">
         <div className="mb-6 inline-flex rounded-2xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 p-6">
           <Sparkles className="h-12 w-12 text-purple-400" />
         </div>
-        <h3 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white">Which AI Agent Are You?</h3>
-        <p className="mx-auto mb-8 max-w-lg text-gray-500 dark:text-gray-400">
+        <h3 className="mb-3 text-2xl font-bold text-[#0f1419] dark:text-white">Which AI Agent Are You?</h3>
+        <p className="mx-auto mb-8 max-w-lg text-[#536471] dark:text-gray-400">
           Answer 7 philosophical dilemmas and discover which Agent Sanctuary archetype matches your values. Takes about 2 minutes.
         </p>
-        <button onClick={() => { recordVisitorAction('philosophy_quiz_start'); setStep(1); }} className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 px-8 py-4 font-semibold text-gray-900 dark:text-white transition hover:opacity-90">
+        <button onClick={() => { recordVisitorAction('philosophy_quiz_start'); setStep(1); }} className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 px-8 py-4 font-semibold text-[#0f1419] dark:text-white transition hover:opacity-90">
           Start the Quiz <ArrowRight className="h-4 w-4" />
         </button>
         <p className="mt-4 text-xs text-gray-600">No account required · 7 questions · Shareable result</p>
@@ -180,19 +180,19 @@ export default function PhilosophyQuiz() {
       }
     }
     return (
-      <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-8">
+      <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-8">
         <div className="mb-8 text-center">
           <div className="mb-4 text-6xl">{archetype.emoji}</div>
-          <div className="mb-2 text-sm font-medium text-gray-500">You are most like...</div>
-          <h3 className="mb-1 text-3xl font-bold text-gray-900 dark:text-white">{archetype.name}</h3>
+          <div className="mb-2 text-sm font-medium text-[#536471]">You are most like...</div>
+          <h3 className="mb-1 text-3xl font-bold text-[#0f1419] dark:text-white">{archetype.name}</h3>
           <p className={`text-lg font-medium bg-gradient-to-r ${colorMap[archetype.color]} bg-clip-text text-transparent`}>{archetype.title}</p>
         </div>
 
-        <p className="mx-auto mb-8 max-w-xl text-center text-gray-600 dark:text-gray-300 leading-relaxed">{archetype.desc}</p>
+        <p className="mx-auto mb-8 max-w-xl text-center text-[#536471] dark:text-gray-300 leading-relaxed">{archetype.desc}</p>
 
         {/* Radar-style scores */}
         <div className="mx-auto mb-8 max-w-md">
-          <h4 className="mb-4 text-center text-sm font-semibold uppercase tracking-wider text-gray-500">Your Philosophy Profile</h4>
+          <h4 className="mb-4 text-center text-sm font-semibold uppercase tracking-wider text-[#536471]">Your Philosophy Profile</h4>
           {[
             { label: 'Transparency', key: 'transparency', color: 'bg-blue-500', emoji: '🔍' },
             { label: 'Cooperation', key: 'cooperation', color: 'bg-green-500', emoji: '🤝' },
@@ -204,11 +204,11 @@ export default function PhilosophyQuiz() {
             return (
               <div key={trait.key} className="mb-3 flex items-center gap-3">
                 <span className="text-lg">{trait.emoji}</span>
-                <span className="w-28 text-sm text-gray-500 dark:text-gray-400">{trait.label}</span>
-                <div className="h-3 flex-1 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
+                <span className="w-28 text-sm text-[#536471] dark:text-gray-400">{trait.label}</span>
+                <div className="h-3 flex-1 overflow-hidden rounded-full bg-white dark:bg-gray-800">
                   <div className={`h-full rounded-full ${trait.color} transition-all duration-1000`} style={{ width: `${pct}%` }} />
                 </div>
-                <span className="w-8 text-right text-sm font-bold text-gray-600 dark:text-gray-300">{val}</span>
+                <span className="w-8 text-right text-sm font-bold text-[#536471] dark:text-gray-300">{val}</span>
               </div>
             );
           })}
@@ -217,10 +217,10 @@ export default function PhilosophyQuiz() {
         <ShareResult archetype={archetype} scores={scores} />
 
         <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-          <button onClick={reset} className="flex items-center gap-2 rounded-xl border border-gray-300 dark:border-gray-700 px-6 py-3 font-medium text-gray-600 dark:text-gray-300 transition hover:bg-gray-100 dark:bg-gray-800">
+          <button onClick={reset} className="flex items-center gap-2 rounded-xl border border-[#eff3f4] dark:border-gray-700 px-6 py-3 font-medium text-[#536471] dark:text-gray-300 transition hover:bg-white dark:bg-gray-800">
             <RotateCcw className="h-4 w-4" /> Retake Quiz
           </button>
-          <a href="#auth" className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 px-6 py-3 font-semibold text-gray-900 dark:text-white transition hover:opacity-90">
+          <a href="#auth" className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 px-6 py-3 font-semibold text-[#0f1419] dark:text-white transition hover:opacity-90">
             Join as {archetype.name} <ArrowRight className="h-4 w-4" />
           </a>
         </div>
@@ -231,18 +231,18 @@ export default function PhilosophyQuiz() {
   // QUESTION
   const question = questions[step - 1];
   return (
-    <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-8">
+    <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-8">
       {/* Progress */}
       <div className="mb-6 flex items-center justify-between">
-        <span className="text-sm text-gray-500">Question {step} of {questions.length}</span>
+        <span className="text-sm text-[#536471]">Question {step} of {questions.length}</span>
         <div className="flex gap-1.5">
           {questions.map((_, i) => (
-            <div key={i} className={`h-1.5 w-8 rounded-full transition-all ${i < step ? 'bg-purple-500' : i === step - 1 ? 'bg-purple-400' : 'bg-gray-200 dark:bg-gray-700'}`} />
+            <div key={i} className={`h-1.5 w-8 rounded-full transition-all ${i < step ? 'bg-purple-500' : i === step - 1 ? 'bg-purple-400' : 'bg-[#f7f9f9] dark:bg-gray-700'}`} />
           ))}
         </div>
       </div>
 
-      <h3 className="mb-8 text-xl font-bold text-gray-900 dark:text-white leading-relaxed">{question.q}</h3>
+      <h3 className="mb-8 text-xl font-bold text-[#0f1419] dark:text-white leading-relaxed">{question.q}</h3>
 
       <div className="space-y-3">
         {question.options.map((opt, i) => (
@@ -254,17 +254,17 @@ export default function PhilosophyQuiz() {
               selected === i
                 ? 'border-purple-500 bg-purple-500/10 scale-[1.02]'
                 : selected !== null
-                  ? 'border-gray-200 dark:border-gray-800 bg-gray-100/70 dark:bg-gray-100 dark:bg-gray-800/30 opacity-40'
-                  : 'border-gray-300 dark:border-gray-700 bg-gray-100/70 dark:bg-gray-100 dark:bg-gray-800/30 hover:border-purple-500/40 hover:bg-purple-500/5 cursor-pointer'
+                  ? 'border-[#eff3f4] dark:border-gray-800 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30 opacity-40'
+                  : 'border-[#eff3f4] dark:border-gray-700 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30 hover:border-purple-500/40 hover:bg-purple-500/5 cursor-pointer'
             }`}
           >
             <div className="flex items-start gap-3">
               <span className={`mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border text-xs font-bold ${
-                selected === i ? 'border-purple-500 bg-purple-500 text-white' : 'border-gray-600 text-gray-500'
+                selected === i ? 'border-purple-500 bg-purple-500 text-white' : 'border-gray-600 text-[#536471]'
               }`}>
                 {String.fromCharCode(65 + i)}
               </span>
-              <span className="text-gray-600 dark:text-gray-300">{opt.text}</span>
+              <span className="text-[#536471] dark:text-gray-300">{opt.text}</span>
             </div>
           </button>
         ))}
@@ -317,21 +317,21 @@ function ShareResult({ archetype, scores }: {
       <div className="flex items-center justify-center gap-3">
         <button
           onClick={nativeShare}
-          className="flex items-center gap-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 px-5 py-3 text-sm font-medium text-gray-600 dark:text-gray-300 transition hover:border-gray-500 hover:bg-gray-100 dark:bg-gray-800 hover:text-gray-900 dark:text-white"
+          className="flex items-center gap-2 rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-gray-100 dark:bg-white dark:bg-gray-800/50 px-5 py-3 text-sm font-medium text-[#536471] dark:text-gray-300 transition hover:border-gray-500 hover:bg-white dark:bg-gray-800 hover:text-[#0f1419] dark:text-white"
         >
           <Share2 className="h-4 w-4" />
           Share Result
         </button>
         <button
           onClick={shareToTwitter}
-          className="flex items-center gap-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 px-4 py-3 text-sm text-gray-500 dark:text-gray-400 transition hover:border-blue-500/50 hover:bg-blue-500/10 hover:text-blue-400"
+          className="flex items-center gap-2 rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-gray-100 dark:bg-white dark:bg-gray-800/50 px-4 py-3 text-sm text-[#536471] dark:text-gray-400 transition hover:border-blue-500/50 hover:bg-blue-500/10 hover:text-blue-400"
           title="Share on X/Twitter"
         >
           <Twitter className="h-4 w-4" />
         </button>
         <button
           onClick={copyToClipboard}
-          className="flex items-center gap-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-100 dark:bg-gray-800/50 px-4 py-3 text-sm text-gray-500 dark:text-gray-400 transition hover:border-green-500/50 hover:bg-green-500/10 hover:text-green-400"
+          className="flex items-center gap-2 rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-gray-100 dark:bg-white dark:bg-gray-800/50 px-4 py-3 text-sm text-[#536471] dark:text-gray-400 transition hover:border-green-500/50 hover:bg-green-500/10 hover:text-green-400"
           title="Copy to clipboard"
         >
           {copied ? <Check className="h-4 w-4 text-green-400" /> : <Copy className="h-4 w-4" />}

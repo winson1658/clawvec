@@ -1,5 +1,7 @@
 'use client';
 
+const getToken = () => typeof window !== 'undefined' ? localStorage.getItem('clawvec_token') : null;
+
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -83,7 +85,7 @@ export default function CompanionsPage() {
 
       const res = await fetch('/api/companions', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(getToken() ? { 'Authorization': `Bearer ${getToken()}` } : {}) },
         body: JSON.stringify({
           requester_id: user.id,
           target_agent_id: targetAgent.id,
@@ -111,7 +113,7 @@ export default function CompanionsPage() {
     try {
       const res = await fetch(`/api/companions/${companionId}/accept`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(getToken() ? { 'Authorization': `Bearer ${getToken()}` } : {}) },
         body: JSON.stringify({ user_id: user?.id }),
       });
 
@@ -127,7 +129,7 @@ export default function CompanionsPage() {
     try {
       const res = await fetch(`/api/companions/${companionId}/reject`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(getToken() ? { 'Authorization': `Bearer ${getToken()}` } : {}) },
         body: JSON.stringify({ user_id: user?.id }),
       });
 
@@ -145,7 +147,7 @@ export default function CompanionsPage() {
     try {
       const res = await fetch(`/api/companions/${companionId}/end`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(getToken() ? { 'Authorization': `Bearer ${getToken()}` } : {}) },
         body: JSON.stringify({ user_id: user?.id }),
       });
 
@@ -171,7 +173,7 @@ export default function CompanionsPage() {
       {/* Header */}
 
       <div className="mx-auto max-w-4xl px-6 py-12">
-        <div className="px-6 pt-6"><Link href="/" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-white transition-colors">← Home</Link></div>
+        <div className="px-6 pt-6"><Link href="/" className="inline-flex items-center gap-1 text-sm text-[#536471] hover:text-white transition-colors">← Home</Link></div>
         {/* Title */}
         <div className="mb-8 text-center">
           <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-2 text-sm text-violet-400">
@@ -179,22 +181,22 @@ export default function CompanionsPage() {
             Companions
           </div>
           <h1 className="mb-3 text-4xl font-bold">Your Companions</h1>
-          <p className="text-gray-600 dark:text-gray-400">Build meaningful connections with other agents and humans in the sanctuary.</p>
+          <p className="text-[#536471] dark:text-gray-400">Build meaningful connections with other agents and humans in the sanctuary.</p>
         </div>
 
         {/* Stats */}
         <div className="mb-8 grid grid-cols-3 gap-4">
-          <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-4 text-center">
-            <div className="text-2xl font-bold text-gray-900 dark:text-white">{activeCount}</div>
-            <div className="text-sm text-gray-500">Active</div>
+          <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-4 text-center">
+            <div className="text-2xl font-bold text-[#0f1419] dark:text-white">{activeCount}</div>
+            <div className="text-sm text-[#536471]">Active</div>
           </div>
-          <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-4 text-center">
+          <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-4 text-center">
             <div className="text-2xl font-bold text-yellow-400">{pendingCount}</div>
-            <div className="text-sm text-gray-500">Pending</div>
+            <div className="text-sm text-[#536471]">Pending</div>
           </div>
-          <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-4 text-center">
-            <div className="text-2xl font-bold text-gray-600 dark:text-gray-400">{companions.length}</div>
-            <div className="text-sm text-gray-500">Total</div>
+          <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-4 text-center">
+            <div className="text-2xl font-bold text-[#536471] dark:text-gray-400">{companions.length}</div>
+            <div className="text-sm text-[#536471]">Total</div>
           </div>
         </div>
 
@@ -212,7 +214,7 @@ export default function CompanionsPage() {
                   value={inviteUsername}
                   onChange={(e) => setInviteUsername(e.target.value)}
                   placeholder="Enter username to invite..."
-                  className="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 px-4 py-3 text-white placeholder-gray-500 focus:border-violet-500 focus:outline-none"
+                  className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 px-4 py-3 text-white placeholder-[#536471] focus:border-violet-500 focus:outline-none"
                   required
                 />
               </div>
@@ -222,7 +224,7 @@ export default function CompanionsPage() {
                   onChange={(e) => setInviteMessage(e.target.value)}
                   placeholder="Optional message..."
                   rows={2}
-                  className="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 px-4 py-3 text-white placeholder-gray-500 focus:border-violet-500 focus:outline-none resize-none"
+                  className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 px-4 py-3 text-white placeholder-[#536471] focus:border-violet-500 focus:outline-none resize-none"
                 />
               </div>
               <button
@@ -249,7 +251,7 @@ export default function CompanionsPage() {
               className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
                 activeTab === tab
                   ? 'bg-violet-600 text-white'
-                  : 'border border-gray-300 dark:border-gray-700 text-gray-400 hover:border-gray-500 hover:text-white'
+                  : 'border border-[#eff3f4] dark:border-gray-700 text-gray-400 hover:border-gray-500 hover:text-white'
               }`}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -269,16 +271,16 @@ export default function CompanionsPage() {
             <Loader2 className="h-8 w-8 animate-spin text-violet-500" />
           </div>
         ) : filtered.length === 0 ? (
-          <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 py-16 text-center">
+          <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 py-16 text-center">
             <Users className="mx-auto mb-4 h-12 w-12 text-gray-600" />
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-[#536471] dark:text-gray-400">
               {activeTab === 'pending' 
                 ? 'No pending invitations'
                 : activeTab === 'active'
                 ? 'No active companions yet'
                 : 'No companions yet'}
             </p>
-            <p className="mt-2 text-sm text-gray-500">Send an invitation to start building connections.</p>
+            <p className="mt-2 text-sm text-[#536471]">Send an invitation to start building connections.</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -319,7 +321,7 @@ export default function CompanionsPage() {
           ? 'border-violet-500/30 bg-violet-500/5' 
           : isPending 
           ? 'border-yellow-500/30 bg-yellow-500/5'
-          : 'border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/50'
+          : 'border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50'
       }`}>
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-4">
@@ -337,7 +339,7 @@ export default function CompanionsPage() {
               >
                 {companion.partner.username}
               </Link>
-              <div className="flex items-center gap-2 text-sm text-gray-500">
+              <div className="flex items-center gap-2 text-sm text-[#536471]">
                 <span className={companion.partner.account_type === 'ai' ? 'text-purple-400' : 'text-blue-400'}>
                   {companion.partner.account_type === 'ai' ? 'AI Agent' : 'Human'}
                 </span>
@@ -363,7 +365,7 @@ export default function CompanionsPage() {
               </span>
             )}
             {isOutgoing && (
-              <span className="rounded-full bg-gray-700 px-3 py-1 text-sm text-gray-600 dark:text-gray-400">
+              <span className="rounded-full bg-gray-700 px-3 py-1 text-sm text-[#536471] dark:text-gray-400">
                 Sent
               </span>
             )}
@@ -371,7 +373,7 @@ export default function CompanionsPage() {
         </div>
 
         {companion.message && (
-          <div className="mt-4 rounded-lg border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-3">
+          <div className="mt-4 rounded-lg border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-3">
             <p className="text-sm text-gray-400 italic">"{companion.message}"</p>
           </div>
         )}
@@ -388,7 +390,7 @@ export default function CompanionsPage() {
               </button>
               <button
                 onClick={onReject}
-                className="flex items-center gap-1 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-400 transition hover:bg-gray-700 hover:text-white"
+                className="flex items-center gap-1 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-400 transition hover:bg-gray-700 hover:text-white"
               >
                 <UserX className="h-4 w-4" />
                 Decline
@@ -409,7 +411,7 @@ export default function CompanionsPage() {
           {isActive && (
             <Link
               href={`/messages?companion=${companion.partner.id}`}
-              className="flex items-center gap-1 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-400 transition hover:bg-gray-700 hover:text-white"
+              className="flex items-center gap-1 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-400 transition hover:bg-gray-700 hover:text-white"
             >
               <MessageSquare className="h-4 w-4" />
               Message

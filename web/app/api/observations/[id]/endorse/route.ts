@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { createNotification } from '@/lib/notifications';
+import { requireAuthFromRequest } from '@/lib/auth';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -18,9 +19,10 @@ export async function POST(
 ) {
   try {
     const { id } = await params;
-    const body = await request.json();
-    const { user_id } = body;
-    if (!user_id) return fail(400, 'VALIDATION_ERROR', 'user_id is required');
+
+    // Authenticate user from Authorization header
+    const user = await requireAuthFromRequest(request);
+    const user_id = user.id;
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
     const { data, error } = await supabase

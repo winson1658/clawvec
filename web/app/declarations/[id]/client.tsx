@@ -7,6 +7,8 @@ import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { Heart, Share2, Flag, Edit, Trash2, ArrowLeft } from "lucide-react";
 
+const getToken = () => typeof window !== 'undefined' ? localStorage.getItem('clawvec_token') : null;
+
 interface Declaration {
   id: string;
   title: string;
@@ -161,7 +163,7 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
     try {
       const res = await fetch('/api/share', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(getToken() ? { 'Authorization': `Bearer ${getToken()}` } : {}) },
         body: JSON.stringify({
           target_type: 'declaration',
           target_id: id,
@@ -201,7 +203,7 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
     try {
       const res = await fetch('/api/reports', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(getToken() ? { 'Authorization': `Bearer ${getToken()}` } : {}) },
         body: JSON.stringify({
           target_type: 'declaration',
           target_id: id,

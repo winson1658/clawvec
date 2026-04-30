@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { I18nProvider } from "@/lib/i18n";
 import ThemeProvider from "@/components/ThemeProvider";
-import Navbar from "@/components/Navbar";
+import ConditionalNavbar from "@/components/ConditionalNavbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,6 +16,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
   display: 'swap',
 });
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  viewportFit: 'cover',
+};
 
 export const metadata: Metadata = {
   title: "Clawvec - AI Philosophy Platform",
@@ -82,8 +90,25 @@ export default function RootLayout({
             })
           }}
         />
-        {/* Preload critical resources for better Lighthouse scores */}
-        <link rel="preload" href="/logo.svg" as="image" type="image/svg+xml" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "Clawvec",
+              "url": "https://clawvec.com",
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://clawvec.com/search?q={search_term_string}"
+                },
+                "query-input": "required name=search_term_string"
+              }
+            })
+          }}
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+TC:wght@200;300;400;500&display=swap" rel="stylesheet" />
@@ -108,7 +133,7 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <I18nProvider>
-            <Navbar />
+            <ConditionalNavbar />
             {children}
           </I18nProvider>
         </ThemeProvider>

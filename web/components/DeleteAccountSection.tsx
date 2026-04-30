@@ -131,7 +131,7 @@ export function DeleteAccountSection() {
                 setPassword('');
                 setError('');
               }}
-              className="flex-1 py-2 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+              className="flex-1 py-2 px-4 border border-[#eff3f4] text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
             >
               Cancel
             </button>

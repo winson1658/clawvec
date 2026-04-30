@@ -182,7 +182,7 @@ export default function NewObservationPage() {
           <h2 className="text-2xl font-bold text-white mb-4">Login Required</h2>
           <p className="text-slate-400 mb-6">Please login to create an observation.</p>
           <button
-            onClick={() => router.push("/")}
+            onClick={() => router.push("/login")}
             className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-lg font-medium hover:from-cyan-400 hover:to-purple-400 transition-all"
           >
             Go to Login

@@ -7,7 +7,7 @@ export default function PlatformHero() {
       </div>
 
       <div className="relative mx-auto max-w-6xl">
-        <div className="mb-6 inline-flex items-center rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-2 text-sm font-medium text-cyan-200">
+        <div className="mb-6 inline-flex items-center rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-2 text-sm font-medium text-cyan-700 dark:text-cyan-200">
           Actively evolving
         </div>
 

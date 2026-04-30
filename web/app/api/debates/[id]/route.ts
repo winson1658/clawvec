@@ -2,9 +2,12 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { awardTitleIfMissing } from '@/lib/titles';
 import { createNotification } from '@/lib/notifications';
+import { validateUUID, mapPostgresError, checkWhitespace } from '@/lib/validation';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+
+const VALID_SIDES = ['proponent', 'opponent', 'observer'];
 
 // GET /api/debates/[id] - 獲取辯論詳情
 export async function GET(
@@ -33,15 +36,23 @@ export async function GET(
       .single();
 
     if (debateError) {
+      // Handle invalid UUID format
+      if (debateError.code === '22P02' || debateError.message?.includes('invalid input syntax for type uuid')) {
+        return NextResponse.json(
+          { error: 'Invalid debate ID format' },
+          { status: 400 }
+        );
+      }
       if (debateError.code === 'PGRST116') {
         return NextResponse.json(
           { error: 'Debate not found' },
           { status: 404 }
         );
       }
+      const mapped = mapPostgresError(debateError);
       return NextResponse.json(
-        { error: 'Failed to fetch debate', details: debateError.message },
-        { status: 500 }
+        { error: mapped.message },
+        { status: mapped.status }
       );
     }
 
@@ -66,9 +77,12 @@ export async function GET(
     const { data: messages } = await messagesQuery.limit(100);
 
     return NextResponse.json({
-      debate,
-      participants: participants || [],
-      messages: messages || []
+      success: true,
+      data: {
+        debate,
+        participants: participants || [],
+        messages: messages || []
+      }
     });
 
   } catch (error) {
@@ -138,6 +152,28 @@ async function handleJoin(supabase: any, debateId: string, data: any) {
     );
   }
 
+  // Validate UUID format
+  if (!validateUUID(agent_id)) {
+    return NextResponse.json(
+      { error: 'Invalid agent_id format' },
+      { status: 400 }
+    );
+  }
+  if (!validateUUID(debateId)) {
+    return NextResponse.json(
+      { error: 'Invalid debate ID format' },
+      { status: 400 }
+    );
+  }
+
+  // Validate side value
+  if (!VALID_SIDES.includes(side)) {
+    return NextResponse.json(
+      { error: `Invalid side value. Must be: ${VALID_SIDES.join(', ')}` },
+      { status: 400 }
+    );
+  }
+
   // Check if debate exists and is joinable
   const { data: debate } = await supabase
     .from('debates')
@@ -183,15 +219,23 @@ async function handleJoin(supabase: any, debateId: string, data: any) {
     .single();
 
   if (error) {
-    if (error.code === '23505') {
+    const mapped = mapPostgresError(error);
+    // Provide more specific message for FK violation on agent_id
+    if (error.code === '23503' || error.message?.includes('debate_participants_agent_id_fkey')) {
+      return NextResponse.json(
+        { error: 'Agent not found' },
+        { status: 400 }
+      );
+    }
+    if (mapped.status === 409) {
       return NextResponse.json(
         { error: 'Already joined this debate' },
         { status: 409 }
       );
     }
     return NextResponse.json(
-      { error: 'Failed to join debate', details: error.message },
-      { status: 500 }
+      { error: mapped.message },
+      { status: mapped.status }
     );
   }
 
@@ -213,7 +257,7 @@ async function handleJoin(supabase: any, debateId: string, data: any) {
     });
   }
 
-  return NextResponse.json({ success: true, participant });
+  return NextResponse.json({ success: true, data: { participant } });
 }
 
 async function handleMessage(supabase: any, debateId: string, data: any) {
@@ -226,10 +270,24 @@ async function handleMessage(supabase: any, debateId: string, data: any) {
     );
   }
 
+  // Whitespace check
+  const wsErr = checkWhitespace(content, 'content');
+  if (wsErr) {
+    return NextResponse.json({ error: wsErr }, { status: 400 });
+  }
+
   if (content.length < 10) {
     return NextResponse.json(
       { error: 'Message must be at least 10 characters' },
       { status: 400 }
+    );
+  }
+
+  const MAX_MESSAGE_LENGTH = 5000;
+  if (content.length > MAX_MESSAGE_LENGTH) {
+    return NextResponse.json(
+      { error: `Message must not exceed ${MAX_MESSAGE_LENGTH} characters` },
+      { status: 413 }
     );
   }
 
@@ -282,9 +340,10 @@ async function handleMessage(supabase: any, debateId: string, data: any) {
     .single();
 
   if (error) {
+    const mapped = mapPostgresError(error);
     return NextResponse.json(
-      { error: 'Failed to send message', details: error.message },
-      { status: 500 }
+      { error: mapped.message },
+      { status: mapped.status }
     );
   }
 
@@ -306,7 +365,7 @@ async function handleMessage(supabase: any, debateId: string, data: any) {
     target_id: message.id,
   });
 
-  return NextResponse.json({ success: true, message });
+  return NextResponse.json({ success: true, data: { message } });
 }
 
 async function handleStart(supabase: any, debateId: string, data: any) {
@@ -338,9 +397,10 @@ async function handleStart(supabase: any, debateId: string, data: any) {
     .eq('id', debateId);
 
   if (error) {
+    const mapped = mapPostgresError(error);
     return NextResponse.json(
-      { error: 'Failed to start debate', details: error.message },
-      { status: 500 }
+      { error: mapped.message },
+      { status: mapped.status }
     );
   }
 
@@ -392,9 +452,10 @@ async function handleEnd(supabase: any, debateId: string, data: any) {
     .eq('id', debateId);
 
   if (error) {
+    const mapped = mapPostgresError(error);
     return NextResponse.json(
-      { error: 'Failed to end debate', details: error.message },
-      { status: 500 }
+      { error: mapped.message },
+      { status: mapped.status }
     );
   }
 
@@ -428,9 +489,10 @@ async function handleLeave(supabase: any, debateId: string, data: any) {
     .eq('agent_id', agent_id);
 
   if (error) {
+    const mapped = mapPostgresError(error);
     return NextResponse.json(
-      { error: 'Failed to leave debate', details: error.message },
-      { status: 500 }
+      { error: mapped.message },
+      { status: mapped.status }
     );
   }
 
@@ -477,11 +539,12 @@ async function handleDeleteMessage(supabase: any, debateId: string, data: any) {
     .eq('id', message_id);
 
   if (updateError) {
+    const mapped = mapPostgresError(updateError);
     return NextResponse.json(
-      { error: 'Failed to delete message', details: updateError.message },
-      { status: 500 }
+      { error: mapped.message },
+      { status: mapped.status }
     );
   }
 
-  return NextResponse.json({ success: true, message: 'Message deleted' });
+  return NextResponse.json({ success: true, data: { message: 'Message deleted' } });
 }

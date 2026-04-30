@@ -39,20 +39,20 @@ export default function ForgotPasswordClient() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+    <div className="min-h-screen bg-white dark:bg-gray-950 text-[#0f1419] dark:text-gray-100">
       {/* Header */}
 
       <div className="mx-auto max-w-md px-6 py-20">
-        <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-50 dark:bg-gray-900/50 p-8">
+        <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-8">
           <div className="mb-6 text-center">
             <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-500/20">
               <Mail className="h-8 w-8 text-blue-400" />
             </div>
             <h1 className="text-2xl font-bold">Forgot Password?</h1>
-            <p className="mt-2 text-gray-500 dark:text-gray-400">
+            <p className="mt-2 text-[#536471] dark:text-gray-400">
               Enter your email address and we&apos;ll send you a link to reset your password.
             </p>
-            <p className="mt-2 text-xs text-gray-500">
+            <p className="mt-2 text-xs text-[#536471]">
               If the account exists, Clawvec will also record a password recovery event in your notification timeline.
             </p>
           </div>
@@ -61,7 +61,7 @@ export default function ForgotPasswordClient() {
             <div className="rounded-xl border border-green-500/30 bg-green-500/10 p-6 text-center">
               <CheckCircle className="mx-auto mb-3 h-12 w-12 text-green-400" />
               <h3 className="mb-2 text-lg font-semibold text-green-400">Check Your Email</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
+              <p className="text-sm text-[#536471] dark:text-gray-300">
                 We&apos;ve sent a password reset link to <strong>{email}</strong>. 
                 Please check your inbox and follow the instructions to reset your password.
               </p>
@@ -71,7 +71,7 @@ export default function ForgotPasswordClient() {
               <div className="mt-6">
                 <Link
                   href="/#auth"
-                  className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-gray-900 dark:text-white transition hover:bg-blue-700"
+                  className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-[#0f1419] dark:text-white transition hover:bg-blue-700"
                 >
                   <ArrowLeft className="h-4 w-4" />
                   Back to Login
@@ -90,13 +90,13 @@ export default function ForgotPasswordClient() {
               )}
 
               <div>
-                <label className="mb-1 block text-sm font-medium text-gray-600 dark:text-gray-300">Email Address</label>
+                <label className="mb-1 block text-sm font-medium text-[#536471] dark:text-gray-300">Email Address</label>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full rounded-lg border border-gray-600 bg-gray-200 dark:bg-gray-200 dark:bg-gray-700/50 px-4 py-3 text-gray-900 dark:text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-gray-600 bg-[#f7f9f9] dark:bg-gray-700/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none"
                   placeholder="you@example.com"
                 />
               </div>
@@ -104,7 +104,7 @@ export default function ForgotPasswordClient() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 px-6 py-3 font-semibold text-gray-900 dark:text-white transition hover:opacity-90 disabled:opacity-50"
+                className="w-full rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 px-6 py-3 font-semibold text-[#0f1419] dark:text-white transition hover:opacity-90 disabled:opacity-50"
               >
                 {loading ? (
                   <span className="flex items-center justify-center gap-2">
@@ -119,7 +119,7 @@ export default function ForgotPasswordClient() {
               <div className="text-center">
                 <Link
                   href="/#auth"
-                  className="inline-flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 transition hover:text-gray-900 dark:text-white"
+                  className="inline-flex items-center gap-1 text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white"
                 >
                   <ArrowLeft className="h-3 w-3" />
                   Back to Login

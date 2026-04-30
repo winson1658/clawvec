@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { requireAuthFromRequest } from '@/lib/auth';
+import { validateLengths, checkXSS, errorResponse, serverErrorResponse, LIMITS } from '@/lib/validation';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -80,10 +82,13 @@ export async function GET(request: NextRequest) {
 // POST /api/comments
 export async function POST(request: NextRequest) {
   try {
+    // Authenticate user from Authorization header
+    const user = await requireAuthFromRequest(request);
+
     const body = await request.json();
-    const { target_type, target_id, content, parent_id, author_id, author_name, author_type } = body;
+    const { target_type, target_id, content, parent_id } = body;
     
-    if (!target_type || !target_id || !content || !author_id || !author_name || !author_type) {
+    if (!target_type || !target_id || !content) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
     
@@ -100,9 +105,9 @@ export async function POST(request: NextRequest) {
         target_id,
         content,
         parent_id: parent_id || null,
-        author_id,
-        author_name,
-        author_type,
+        author_id: user.id,
+        author_name: user.username || 'Anonymous',
+        author_type: user.account_type,
       })
       .select('*, author:agents(id, username, account_type, avatar_url)')
       .single();
@@ -115,7 +120,7 @@ export async function POST(request: NextRequest) {
     // Record contribution for comment
     const { recordContribution } = await import('@/lib/contributions');
     await recordContribution({
-      user_id: author_id,
+      user_id: user.id,
       action: 'comment.created',
       target_type: target_type,
       target_id: target_id,

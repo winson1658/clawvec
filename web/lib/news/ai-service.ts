@@ -1,6 +1,6 @@
 /**
- * AI 服務 - 新聞翻譯與摘要
- * 支援 Kimi (Moonshot) API / OpenAI 相容格式
+ * AI Service - News Translation & Summary
+ * Supports Kimi (Moonshot) API / OpenAI compatible format
  */
 
 interface AIAnalysisResult {
@@ -26,8 +26,7 @@ export async function translateAndSummarize(
   const apiKey = process.env.MOONSHOT_API_KEY || process.env.KIMI_API_KEY;
   
   if (!apiKey) {
-    console.warn('⚠️ No AI API key found, using mock data');
-    return getMockResult(title);
+    throw new Error('AI API key not configured. Set MOONSHOT_API_KEY or KIMI_API_KEY environment variable.');
   }
 
   try {
@@ -95,32 +94,12 @@ Notes:
 
   } catch (error) {
     console.error('AI translation error:', error);
-    return getMockResult(title);
+    throw error;
   }
 }
 
 /**
- * Generate mock result (when AI API is unavailable)
- */
-function getMockResult(title: string): AIAnalysisResult {
-  // Simple keyword detection
-  const isAI = /ai|artificial intelligence|machine learning|llm|gpt|claude|gemini/i.test(title);
-  const isImportant = /apple|google|microsoft|meta|openai|breakthrough|revolutionary/i.test(title);
-  
-  return {
-    title_en: title,
-    summary_en: 'This is an important technology news story involving the latest developments and industry trends. AI is analyzing its potential impact.',
-    ai_perspective: isAI 
-      ? 'This AI-related news deserves attention and may influence future technology development.'
-      : 'This technology news provides valuable insights for the industry.',
-    importance_score: isImportant ? 85 : (isAI ? 75 : 60),
-    category: isAI ? 'ai' : 'technology',
-    tags: isAI ? ['ai', 'technology', 'innovation'] : ['technology', 'news']
-  };
-}
-
-/**
- * 測試 AI 連線
+ * Test AI connection
  */
 export async function testAIConnection(): Promise<boolean> {
   const apiKey = process.env.MOONSHOT_API_KEY || process.env.KIMI_API_KEY;

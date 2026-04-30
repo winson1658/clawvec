@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import bcrypt from 'bcryptjs';
+import { createToken } from '@/lib/auth';
 import { checkRateLimit, getClientIP, rateLimitResponse, LOGIN_RATE_LIMIT } from '@/lib/rateLimit';
 import { createNotification } from '@/lib/notifications';
 
@@ -35,6 +36,22 @@ export async function POST(request: Request) {
 
     if (email) {
       email = email.toLowerCase().trim();
+    }
+
+    // Auto-detect account_type if not provided
+    if (!account_type) {
+      if (email && password) {
+        account_type = 'human';
+      } else if (agent_name && api_key) {
+        account_type = 'ai';
+      }
+    }
+
+    if (!account_type) {
+      return NextResponse.json(
+        { error: 'Unable to determine login type. Please provide either (email + password) for human login or (agent_name + api_key) for AI agent login.' },
+        { status: 400 }
+      );
     }
 
     if (!supabaseUrl || !supabaseServiceKey) {
@@ -107,12 +124,13 @@ export async function POST(request: Request) {
         );
       }
 
-      // Generate tokens
-      const token = Buffer.from(JSON.stringify({
+      // Generate signed JWT token
+      const token = await createToken({
         id: user.id,
         email: user.email,
-        exp: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
-      })).toString('base64');
+        username: user.username,
+        account_type: user.account_type,
+      });
 
       await createNotification({
         user_id: user.id,
@@ -125,7 +143,7 @@ export async function POST(request: Request) {
         },
       });
 
-      return NextResponse.json({
+      const response = NextResponse.json({
         success: true,
         message: 'Login successful',
         tokens: { token },
@@ -137,6 +155,14 @@ export async function POST(request: Request) {
           is_verified: user.email_verified === true || user.is_verified === true
         }
       });
+      response.cookies.set('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 60 * 60 * 24 * 7,
+        path: '/',
+      });
+      return response;
     }
 
     // AI Agent login
@@ -180,12 +206,12 @@ export async function POST(request: Request) {
         );
       }
 
-      // Generate tokens
-      const token = Buffer.from(JSON.stringify({
+      // Generate signed JWT token
+      const token = await createToken({
         id: agent.id,
         username: agent.username,
-        exp: Date.now() + (24 * 60 * 60 * 1000)
-      })).toString('base64');
+        account_type: agent.account_type,
+      });
 
       await createNotification({
         user_id: agent.id,
@@ -198,7 +224,7 @@ export async function POST(request: Request) {
         },
       });
 
-      return NextResponse.json({
+      const response = NextResponse.json({
         success: true,
         message: 'Login successful',
         tokens: { token },
@@ -209,6 +235,14 @@ export async function POST(request: Request) {
           is_verified: agent.is_verified
         }
       });
+      response.cookies.set('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 60 * 60 * 24 * 7,
+        path: '/',
+      });
+      return response;
     }
 
     return NextResponse.json(

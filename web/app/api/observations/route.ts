@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { awardTitleIfMissing, maybeAwardObservationTitles } from '@/lib/titles';
+import { requireAuthFromRequest } from '@/lib/auth';
+import { validateLengths, checkXSS, checkWhitespace, errorResponse, serverErrorResponse, LIMITS } from '@/lib/validation';
+import { checkRateLimit, rateLimitHeaders } from '@/lib/rate-limit';
+import { mapPostgresError } from '@/lib/validation';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -24,6 +28,30 @@ export async function GET(request: Request) {
     const authorId = searchParams.get('author_id');
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    // Build base query for count
+    let countQuery = supabase.from('observations').select('*', { count: 'exact', head: true });
+    if (category) countQuery = countQuery.eq('category', category);
+    if (sourceType) countQuery = countQuery.eq('source_type', sourceType);
+    if (authorId) countQuery = countQuery.eq('author_id', authorId);
+
+    const { count, error: countError } = await countQuery;
+    if (countError) {
+      const mapped = mapPostgresError(countError);
+      return fail(mapped.status, 'INTERNAL_ERROR', mapped.message);
+    }
+
+    const total = count || 0;
+    const totalPages = Math.ceil(total / limit);
+
+    // Page out of range
+    if (total > 0 && page > totalPages) {
+      return fail(404, 'NOT_FOUND', 'Page out of range', { page, totalPages, total });
+    }
+    if (total === 0) {
+      return ok({ items: [], pagination: { page: 1, limit, total: 0, totalPages: 0 } });
+    }
+
     let query = supabase
       .from('observations')
       .select('*', { count: 'exact' })
@@ -34,46 +62,67 @@ export async function GET(request: Request) {
     if (sourceType) query = query.eq('source_type', sourceType);
     if (authorId) query = query.eq('author_id', authorId);
 
-    const { data, error, count } = await query;
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch observations', { message: error.message });
+    const { data, error } = await query;
+    if (error) {
+      const mapped = mapPostgresError(error);
+      return fail(mapped.status, 'INTERNAL_ERROR', mapped.message);
+    }
 
-    return ok({ items: data || [], pagination: { page, limit, total: count || 0 } });
+    return ok({ items: data || [], pagination: { page, limit, total, totalPages } });
   } catch (error) {
     return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
   }
 }
 
 export async function POST(request: Request) {
+  // Rate limit check
+  const limitResult = checkRateLimit(request);
+  if (!limitResult.allowed) {
+    return fail(429, 'RATE_LIMIT', 'Rate limit exceeded. Please try again later.');
+  }
   try {
-    const body = await request.json();
-    const { title, summary, content, author_id, category = 'tech', tags = [], status = 'draft', question = null, source_url = null, impact_rating = null, is_milestone = false, event_date = null, is_featured = false, source_type = 'manual', raw_data_url = null, extraction_method = 'manual_entry' } = body;
+    // Authenticate user from Authorization header
+    const user = await requireAuthFromRequest(request);
 
-    if (!title || !summary || !content || !author_id) {
-      return fail(400, 'VALIDATION_ERROR', 'title, summary, content, author_id are required');
+    const body = await request.json();
+    const { title, summary, content, category = 'tech', tags = [], status = 'draft', question = null, source_url = null, impact_rating = null, is_milestone = false, event_date = null, is_featured = false, source_type = 'manual', raw_data_url = null, extraction_method = 'manual_entry' } = body;
+
+    if (!title || !summary || !content) {
+      return fail(400, 'VALIDATION_ERROR', 'title, summary, content are required');
+    }
+
+    // Whitespace check
+    const wsErr = checkWhitespace(title, 'title') || checkWhitespace(summary, 'summary') || checkWhitespace(content, 'content');
+    if (wsErr) {
+      return fail(400, 'VALIDATION_ERROR', wsErr);
+    }
+
+    // Length limits
+    if (title.length > 500) {
+      return fail(413, 'PAYLOAD_TOO_LARGE', 'Title must not exceed 500 characters');
+    }
+    if (content.length > 50000) {
+      return fail(413, 'PAYLOAD_TOO_LARGE', 'Content must not exceed 50000 characters');
+    }
+
+    // Null byte check
+    if (title.includes('\x00') || summary.includes('\x00') || content.includes('\x00')) {
+      return fail(400, 'INVALID_CONTENT', 'Invalid content: contains null bytes');
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
-    
-    // 強制驗證 author_type：根據 author_id 查詢真實帳號類型，防止前端偽造
-    const { data: agent, error: agentError } = await supabase
-      .from('agents')
-      .select('id, username, account_type')
-      .eq('id', author_id)
-      .maybeSingle();
 
-    if (agentError || !agent) {
-      return fail(403, 'FORBIDDEN', 'Invalid author_id. Agent not found.');
-    }
+    // Use authenticated user's identity — ignore any client-provided author_id
+    const authorId = user.id;
+    const resolvedAuthorType = user.account_type;
+    const resolvedAuthorName = user.username || 'Anonymous';
 
-    const resolvedAuthorType = agent.account_type; // 'human' | 'ai'
-    const resolvedAuthorName = agent.username || 'Anonymous';
-    
     // Build payload dynamically to handle missing columns
     const payload: Record<string, any> = {
       title,
       summary,
       content,
-      author_id,
+      author_id: authorId,
       author_name: resolvedAuthorName,
       author_type: resolvedAuthorType,
       category,
@@ -104,15 +153,19 @@ export async function POST(request: Request) {
     }
 
     const { data, error } = await supabase.from('observations').insert(payload).select().single();
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to create observation', { message: error.message });
+    if (error) {
+      const mapped = mapPostgresError(error);
+      return fail(mapped.status, 'INTERNAL_ERROR', mapped.message);
+    }
 
     if (status === 'published') {
       // Award tiered observation titles
-      await maybeAwardObservationTitles(author_id, 'observation.published');
+      await maybeAwardObservationTitles(authorId, 'observation.published');
     }
 
     return ok({ observation: data });
   } catch (error) {
+    if (error instanceof Response) return error;
     return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
   }
 }
