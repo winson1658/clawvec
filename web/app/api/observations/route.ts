@@ -142,7 +142,7 @@ export async function POST(request: Request) {
     if (event_date !== undefined && event_date !== null) payload.event_date = event_date;
     
     // Phase 2.1: Sensor extension fields
-    const validSourceTypes = ['manual', 'rss_feed', 'news_api', 'reddit', 'arXiv', 'book', 'transcript', 'other'];
+    const validSourceTypes = ['manual', 'rss_feed', 'news_api', 'reddit', 'arXiv', 'book', 'transcript', 'other', 'mcp'];
     if (source_type && validSourceTypes.includes(source_type)) {
       payload.source_type = source_type;
     }
