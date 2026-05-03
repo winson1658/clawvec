@@ -27,6 +27,8 @@ interface RSSItem {
   link?: string;
   content?: string;
   contentSnippet?: string;
+  'content:encoded'?: string;
+  'content:encodedSnippet'?: string;
   isoDate?: string;
   pubDate?: string;
   categories?: string[];
@@ -61,7 +63,7 @@ async function fetchRSSFeed(feedUrl: string): Promise<RSSFeed> {
       title: item.title,
       link: item.link,
       content: item['content:encoded'] || item.content,
-      contentSnippet: item.contentSnippet,
+      contentSnippet: item['content:encodedSnippet'] || item.contentSnippet,
       isoDate: item.isoDate,
       pubDate: item.pubDate,
       categories: item.categories,
