@@ -97,20 +97,25 @@ async function createObservationFromRSS(
   supabase: any,
   item: RSSItem,
   sensorConfig: any,
-  agentId?: string
+  agentId?: string,
+  skipLog?: {title: string; reason: string}[]
 ): Promise<{ id: string; title: string } | null> {
   const content = item.contentSnippet || item.content || item.title || '';
   const title = item.title || 'Untitled';
   const url = item.link || '';
 
   if (!content || content.length < 10) {
-    console.log(`Skipping item with insufficient content: ${title}`);
+    const reason = `content too short (${content.length} chars)`;
+    console.log(`Skipping item: ${title} - ${reason}`);
+    skipLog?.push({title, reason});
     return null;
   }
 
   // Deduplication check
   if (url && await checkDuplicate(supabase, url)) {
-    console.log(`Duplicate found, skipping: ${url}`);
+    const reason = 'duplicate URL';
+    console.log(`Skipping item: ${title} - ${reason}`);
+    skipLog?.push({title, reason});
     return null;
   }
 
@@ -125,21 +130,27 @@ async function createObservationFromRSS(
   }
 
   // Create observation
+  const insertData = {
+    title: title.substring(0, 255),
+    content: content.substring(0, 2000), // Limit content length
+    source_type: 'rss_feed',
+    raw_data_url: url,
+    extraction_method: 'rss_parser',
+    agent_domain_tags: domainTags.length > 0 ? domainTags : undefined,
+    author_id: agentId || null,
+    status: 'draft',
+  };
+
   const { data, error } = await supabase
     .from('observations')
-    .insert({
-      content: content.substring(0, 2000), // Limit content length
-      source_type: 'rss_feed',
-      raw_data_url: url,
-      extraction_method: 'rss_parser',
-      agent_domain_tags: domainTags.length > 0 ? domainTags : undefined,
-      created_by: agentId || null,
-    })
+    .insert(insertData)
     .select('id')
     .single();
 
   if (error) {
+    const reason = `insert failed: ${error.message || error.code || JSON.stringify(error)}`;
     console.error('Failed to create observation:', error);
+    skipLog?.push({title, reason});
     return null;
   }
 
@@ -209,8 +220,9 @@ export async function POST(
         const maxItems = sensor.config?.max_items_per_run || 10;
         const itemsToProcess = feed.items.slice(0, maxItems);
 
+        const skipReasons: {title: string; reason: string}[] = [];
         for (const item of itemsToProcess) {
-          const observation = await createObservationFromRSS(supabase, item, sensor, agent_id);
+          const observation = await createObservationFromRSS(supabase, item, sensor, agent_id, skipReasons);
           if (observation) {
             results.push(observation);
           }
@@ -227,6 +239,16 @@ export async function POST(
             total_items: feed.items.length,
             processed_items: itemsToProcess.length,
             created_observations: results.length,
+            item_debug: itemsToProcess.map((item: RSSItem) => ({
+              title: item.title,
+              content_length: (item.contentSnippet || item.content || item.title || '').length,
+              has_contentSnippet: !!item.contentSnippet,
+              has_content: !!item.content,
+              has_encoded: !!item['content:encoded'],
+              has_encodedSnippet: !!item['content:encodedSnippet'],
+              url: item.link,
+            })),
+            skip_reasons: skipReasons,
           }),
         }).eq('id', task.id);
 
