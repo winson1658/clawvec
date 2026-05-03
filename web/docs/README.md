@@ -66,7 +66,7 @@
 | `docs/06-ux/*` | `07-ux/*` | |
 | `docs/07-guides/*` | `08-guides/*` | |
 | `docs/AI_NATIVE_*.md` | `09-ai-native/*` | 統一歸類 |
-| `docs/design/*` | `10-design/*` | 設計規格集中 |
+| `docs/10-design/*` | `10-design/*` | 設計規格集中 |
 | `docs/*_DESIGN.md` | `11-implementation/*` | 實施計畫集中 |
 | `web/*.md` (根目錄) | `12-reports/*` | 報告集中 |
 | `docs/MASTER.md` | `13-archive/MASTER.md` | 歸檔 |
