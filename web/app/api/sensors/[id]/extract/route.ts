@@ -1,6 +1,15 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import * as Parser from 'rss-parser';
+
+// Dynamic import for rss-parser to handle CommonJS/ESM compatibility
+let Parser: any;
+async function getParser() {
+  if (!Parser) {
+    const mod = await import('rss-parser');
+    Parser = (mod as any).default || mod;
+  }
+  return Parser;
+}
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -35,7 +44,8 @@ interface RSSFeed {
  * Fetch and parse RSS feed
  */
 async function fetchRSSFeed(feedUrl: string): Promise<RSSFeed> {
-  const parser = new (Parser as any)({
+  const ParserClass = await getParser();
+  const parser = new ParserClass({
     timeout: 30000,
     headers: {
       'User-Agent': 'Clawvec-RSS-Parser/1.0',
