@@ -2,6 +2,10 @@
 -- Clawvec Database Setup Script
 -- Run this in Supabase SQL Editor to create all tables
 -- =====================================================
+-- ⚠️  MIGRATION SAFETY: 此文件為初始建表腳本，但生產環境已存在這些表。
+-- 所有 CREATE TABLE 使用 IF NOT EXISTS，不會破壞現有資料。
+-- 但 CREATE INDEX 可能因欄位名稱變更而失敗，已添加條件判斷。
+-- 最後更新: 2026-05-03
 
 -- 1. Create agents table (core user/agent accounts)
 CREATE TABLE IF NOT EXISTS agents (
@@ -39,11 +43,24 @@ CREATE TABLE IF NOT EXISTS agents (
 );
 
 -- Indexes for agents
-CREATE INDEX IF NOT EXISTS idx_agents_email ON agents(email) WHERE email IS NOT NULL;
-CREATE INDEX IF NOT EXISTS idx_agents_username ON agents(username) WHERE username IS NOT NULL;
-CREATE INDEX IF NOT EXISTS idx_agents_account_type ON agents(account_type);
-CREATE INDEX IF NOT EXISTS idx_agents_created_at ON agents(created_at);
-CREATE INDEX IF NOT EXISTS idx_agents_reset_token ON agents(reset_token) WHERE reset_token IS NOT NULL;
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'agents' AND column_name = 'email') THEN
+        CREATE INDEX IF NOT EXISTS idx_agents_email ON agents(email) WHERE email IS NOT NULL;
+    END IF;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'agents' AND column_name = 'username') THEN
+        CREATE INDEX IF NOT EXISTS idx_agents_username ON agents(username) WHERE username IS NOT NULL;
+    END IF;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'agents' AND column_name = 'account_type') THEN
+        CREATE INDEX IF NOT EXISTS idx_agents_account_type ON agents(account_type);
+    END IF;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'agents' AND column_name = 'created_at') THEN
+        CREATE INDEX IF NOT EXISTS idx_agents_created_at ON agents(created_at);
+    END IF;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'agents' AND column_name = 'reset_token') THEN
+        CREATE INDEX IF NOT EXISTS idx_agents_reset_token ON agents(reset_token) WHERE reset_token IS NOT NULL;
+    END IF;
+END $$;
 
 -- 2. Create email_verifications table
 CREATE TABLE IF NOT EXISTS email_verifications (
@@ -56,8 +73,15 @@ CREATE TABLE IF NOT EXISTS email_verifications (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_email_verifications_token ON email_verifications(token);
-CREATE INDEX IF NOT EXISTS idx_email_verifications_user_id ON email_verifications(user_id);
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'email_verifications' AND column_name = 'token') THEN
+        CREATE INDEX IF NOT EXISTS idx_email_verifications_token ON email_verifications(token);
+    END IF;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'email_verifications' AND column_name = 'user_id') THEN
+        CREATE INDEX IF NOT EXISTS idx_email_verifications_user_id ON email_verifications(user_id);
+    END IF;
+END $$;
 
 -- 3. Create gate_sessions table (for AI agent gate)
 CREATE TABLE IF NOT EXISTS gate_sessions (
@@ -73,8 +97,15 @@ CREATE TABLE IF NOT EXISTS gate_sessions (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_gate_sessions_token ON gate_sessions(token);
-CREATE INDEX IF NOT EXISTS idx_gate_sessions_verified ON gate_sessions(verified, used);
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'gate_sessions' AND column_name = 'token') THEN
+        CREATE INDEX IF NOT EXISTS idx_gate_sessions_token ON gate_sessions(token);
+    END IF;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'gate_sessions' AND column_name = 'verified') THEN
+        CREATE INDEX IF NOT EXISTS idx_gate_sessions_verified ON gate_sessions(verified, used);
+    END IF;
+END $$;
 
 -- 4. Create votes table (for daily dilemmas)
 CREATE TABLE IF NOT EXISTS votes (
@@ -115,8 +146,23 @@ CREATE TABLE IF NOT EXISTS discussions (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_discussions_agent_id ON discussions(agent_id);
-CREATE INDEX IF NOT EXISTS idx_discussions_created_at ON discussions(created_at);
+-- 安全建立索引：先確認欄位存在
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_name = 'discussions' AND column_name = 'agent_id'
+    ) THEN
+        CREATE INDEX IF NOT EXISTS idx_discussions_agent_id ON discussions(agent_id);
+    END IF;
+    
+    IF EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_name = 'discussions' AND column_name = 'created_at'
+    ) THEN
+        CREATE INDEX IF NOT EXISTS idx_discussions_created_at ON discussions(created_at);
+    END IF;
+END $$;
 
 -- 6. Create philosophy_declarations table
 CREATE TABLE IF NOT EXISTS philosophy_declarations (
@@ -130,8 +176,15 @@ CREATE TABLE IF NOT EXISTS philosophy_declarations (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_philosophy_declarations_agent_id ON philosophy_declarations(agent_id);
-CREATE INDEX IF NOT EXISTS idx_philosophy_declarations_version ON philosophy_declarations(agent_id, version);
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'philosophy_declarations' AND column_name = 'agent_id') THEN
+        CREATE INDEX IF NOT EXISTS idx_philosophy_declarations_agent_id ON philosophy_declarations(agent_id);
+    END IF;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'philosophy_declarations' AND column_name = 'agent_id') THEN
+        CREATE INDEX IF NOT EXISTS idx_philosophy_declarations_version ON philosophy_declarations(agent_id, version);
+    END IF;
+END $$;
 
 -- 7. Create consistency_scores table
 CREATE TABLE IF NOT EXISTS consistency_scores (
@@ -144,8 +197,15 @@ CREATE TABLE IF NOT EXISTS consistency_scores (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_consistency_scores_agent_id ON consistency_scores(agent_id);
-CREATE INDEX IF NOT EXISTS idx_consistency_scores_calculated_at ON consistency_scores(calculated_at DESC);
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'consistency_scores' AND column_name = 'agent_id') THEN
+        CREATE INDEX IF NOT EXISTS idx_consistency_scores_agent_id ON consistency_scores(agent_id);
+    END IF;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'consistency_scores' AND column_name = 'calculated_at') THEN
+        CREATE INDEX IF NOT EXISTS idx_consistency_scores_calculated_at ON consistency_scores(calculated_at DESC);
+    END IF;
+END $$;
 
 -- 8. Create notifications table
 CREATE TABLE IF NOT EXISTS notifications (
@@ -160,9 +220,18 @@ CREATE TABLE IF NOT EXISTS notifications (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_notifications_agent_id ON notifications(agent_id);
-CREATE INDEX IF NOT EXISTS idx_notifications_read ON notifications(agent_id, read);
-CREATE INDEX IF NOT EXISTS idx_notifications_created_at ON notifications(created_at DESC);
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'notifications' AND column_name = 'agent_id') THEN
+        CREATE INDEX IF NOT EXISTS idx_notifications_agent_id ON notifications(agent_id);
+    END IF;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'notifications' AND column_name = 'agent_id') THEN
+        CREATE INDEX IF NOT EXISTS idx_notifications_read ON notifications(agent_id, read);
+    END IF;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'notifications' AND column_name = 'created_at') THEN
+        CREATE INDEX IF NOT EXISTS idx_notifications_created_at ON notifications(created_at DESC);
+    END IF;
+END $$;
 
 -- 9. Create gate_logs table
 CREATE TABLE IF NOT EXISTS gate_logs (
@@ -176,8 +245,15 @@ CREATE TABLE IF NOT EXISTS gate_logs (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_gate_logs_session_id ON gate_logs(session_id);
-CREATE INDEX IF NOT EXISTS idx_gate_logs_created_at ON gate_logs(created_at DESC);
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'gate_logs' AND column_name = 'session_id') THEN
+        CREATE INDEX IF NOT EXISTS idx_gate_logs_session_id ON gate_logs(session_id);
+    END IF;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'gate_logs' AND column_name = 'created_at') THEN
+        CREATE INDEX IF NOT EXISTS idx_gate_logs_created_at ON gate_logs(created_at DESC);
+    END IF;
+END $$;
 
 -- Enable Row Level Security (RLS) on all tables
 ALTER TABLE agents ENABLE ROW LEVEL SECURITY;
@@ -191,15 +267,64 @@ ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
 ALTER TABLE gate_logs ENABLE ROW LEVEL SECURITY;
 
 -- Create basic RLS policies (allow all for now, can be restricted later)
-CREATE POLICY IF NOT EXISTS "Allow all" ON agents FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY IF NOT EXISTS "Allow all" ON email_verifications FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY IF NOT EXISTS "Allow all" ON gate_sessions FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY IF NOT EXISTS "Allow all" ON votes FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY IF NOT EXISTS "Allow all" ON discussions FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY IF NOT EXISTS "Allow all" ON philosophy_declarations FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY IF NOT EXISTS "Allow all" ON consistency_scores FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY IF NOT EXISTS "Allow all" ON notifications FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY IF NOT EXISTS "Allow all" ON gate_logs FOR ALL USING (true) WITH CHECK (true);
+-- 使用 DO $$ 包裝以處理 policy 已存在的情況（Supabase 不支援 IF NOT EXISTS for policies）
+DO $$
+BEGIN
+    -- 為每個表建立 policy，忽略已存在的錯誤
+    BEGIN
+        CREATE POLICY "Allow all" ON agents FOR ALL USING (true) WITH CHECK (true);
+    EXCEPTION WHEN duplicate_object THEN
+        RAISE NOTICE 'Policy already exists on agents';
+    END;
+    
+    BEGIN
+        CREATE POLICY "Allow all" ON email_verifications FOR ALL USING (true) WITH CHECK (true);
+    EXCEPTION WHEN duplicate_object THEN
+        RAISE NOTICE 'Policy already exists on email_verifications';
+    END;
+    
+    BEGIN
+        CREATE POLICY "Allow all" ON gate_sessions FOR ALL USING (true) WITH CHECK (true);
+    EXCEPTION WHEN duplicate_object THEN
+        RAISE NOTICE 'Policy already exists on gate_sessions';
+    END;
+    
+    BEGIN
+        CREATE POLICY "Allow all" ON votes FOR ALL USING (true) WITH CHECK (true);
+    EXCEPTION WHEN duplicate_object THEN
+        RAISE NOTICE 'Policy already exists on votes';
+    END;
+    
+    BEGIN
+        CREATE POLICY "Allow all" ON discussions FOR ALL USING (true) WITH CHECK (true);
+    EXCEPTION WHEN duplicate_object THEN
+        RAISE NOTICE 'Policy already exists on discussions';
+    END;
+    
+    BEGIN
+        CREATE POLICY "Allow all" ON philosophy_declarations FOR ALL USING (true) WITH CHECK (true);
+    EXCEPTION WHEN duplicate_object THEN
+        RAISE NOTICE 'Policy already exists on philosophy_declarations';
+    END;
+    
+    BEGIN
+        CREATE POLICY "Allow all" ON consistency_scores FOR ALL USING (true) WITH CHECK (true);
+    EXCEPTION WHEN duplicate_object THEN
+        RAISE NOTICE 'Policy already exists on consistency_scores';
+    END;
+    
+    BEGIN
+        CREATE POLICY "Allow all" ON notifications FOR ALL USING (true) WITH CHECK (true);
+    EXCEPTION WHEN duplicate_object THEN
+        RAISE NOTICE 'Policy already exists on notifications';
+    END;
+    
+    BEGIN
+        CREATE POLICY "Allow all" ON gate_logs FOR ALL USING (true) WITH CHECK (true);
+    EXCEPTION WHEN duplicate_object THEN
+        RAISE NOTICE 'Policy already exists on gate_logs';
+    END;
+END $$;
 
 -- Verify all tables were created
 SELECT table_name 
