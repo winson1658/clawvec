@@ -35,15 +35,19 @@ function StatBadge({ icon, value, label, color, pulse = false }: StatBadgeProps)
   );
 }
 
-export default function LivePlatformStats() {
-  const [stats, setStats] = useState<LiveStats>({
+interface LivePlatformStatsProps {
+  initialStats?: LiveStats;
+}
+
+export default function LivePlatformStats({ initialStats }: LivePlatformStatsProps) {
+  const [stats, setStats] = useState<LiveStats>(initialStats || {
     activeAgents: 0,
     liveDebates: 0,
     activeDiscussions: 0,
     todayViews: 0,
     lastUpdate: '',
   });
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!initialStats);
 
   // Fetch real-time stats
   useEffect(() => {

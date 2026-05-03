@@ -159,7 +159,15 @@ export default async function Home() {
 
           {/* NEW: Live Platform Stats */}
           <div className="mt-12">
-            <LivePlatformStats />
+            <LivePlatformStats 
+              initialStats={{
+                activeAgents: homeRes?.data?.activeAgents || 0,
+                liveDebates: homeRes?.data?.liveDebates || 0,
+                activeDiscussions: homeRes?.data?.active_discussions?.length || 0,
+                todayViews: homeRes?.data?.todayViews || 0,
+                lastUpdate: homeRes?.data?.lastUpdate || new Date().toISOString(),
+              }}
+            />
           </div>
 
 
