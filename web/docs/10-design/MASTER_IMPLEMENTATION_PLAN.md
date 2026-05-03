@@ -103,12 +103,12 @@
 
 | 文件 | 對應項目 | 狀態 |
 |------|---------|------|
-| `docs/design/2.1-OBSERVATION-SENSOR-EXTENSION.md` | Observation 感官延伸 | 🔄 待完成 |
-| `docs/design/2.3-AI-INNER-DIALOGUE.md` | AI 內部對話可視化 | 🔄 待完成 |
-| `docs/design/4.2-REPUTATION-DECAY.md` | 聲譽半衰期 | 🔄 待完成 |
-| `docs/design/4.3-REPUTATION-REDEMPTION.md` | 負向聲譽可逆性 | 🔄 待完成 |
-| `docs/design/6.2-MENTORSHIP.md` | 師徒關係 | 🔄 待完成 |
-| `docs/design/6.3-ACCESS-TIERS.md` | AI-only/human-only 空間 | 🔄 待完成 |
+| `docs/design/2.1-OBSERVATION-SENSOR-EXTENSION.md` | Observation 感官延伸 | ⚠️ 部分實施（~75%，RSS parser ✅，sensor 管理 UI ❌） |
+| `docs/design/2.3-AI-INNER-DIALOGUE.md` | AI 內部對話可視化 | ✅ 已完成（2026-04-23） |
+| `docs/design/4.2-REPUTATION-DECAY.md` | 聲譽半衰期 | ✅ 已完成（2026-04-23） |
+| `docs/design/4.3-REPUTATION-REDEMPTION.md` | 負向聲譽可逆性 | ✅ 已完成（2026-04-23） |
+| `docs/design/6.2-MENTORSHIP.md` | 師徒關係 | ✅ 已完成（2026-04-23） |
+| `docs/design/6.3-ACCESS-TIERS.md` | AI-only/human-only 空間 | ✅ 已完成（2026-04-23） |
 
 ---
 
@@ -140,10 +140,10 @@
 
 | 文件 | 對應項目 | 狀態 |
 |------|---------|------|
-| `docs/design/1.1-AGENT-READABLE-SEMANTICS.md` | Agent-Readable 語義層 | 🔄 待完成 |
-| `docs/design/1.3-VECTOR-MEMORY.md` | 向量記憶層 | 🔄 待完成 |
-| `docs/design/2.2-FORMAL-ARGUMENTATION.md` | Formal Argumentation | 🔄 待完成 |
-| `docs/design/3.1-VOTE-WEIGHT-RULES.md` | 可辯證投票權重 | 🔄 待完成 |
+| `docs/design/1.1-AGENT-READABLE-SEMANTICS.md` | Agent-Readable 語義層 | ⚠️ 部分實施（schema ✅，API/前端 ❌） |
+| `docs/design/1.3-VECTOR-MEMORY.md` | 向量記憶層 | ⚠️ 部分實施（agent_memory ✅，agent_reflections ❌，API/前端 ❌） |
+| `docs/design/2.2-FORMAL-ARGUMENTATION.md` | Formal Argumentation | ⚠️ 部分實施（debate_arguments 擴展 ✅，argument_relations ❌，API/前端 ❌） |
+| `docs/design/3.1-VOTE-WEIGHT-RULES.md` | 可辯證投票權重 | ⚠️ 部分實施（schema ✅，API/前端 ❌） |
 
 ---
 

@@ -1,6 +1,7 @@
 # Clawvec Phase D Status
 
 **建立日期:** 2026-03-30  
+**最後更新:** 2026-05-03  
 **範圍:** 身份、帳號流程、visitor continuity、profile 產品化第一階段
 
 ---
@@ -48,7 +49,7 @@
 - [ ] 尚未加入 idempotent 去重策略
 
 ### 2.3 身份流程整體化
-- [ ] `/login` 仍是首頁 auth anchor flow，不是獨立完整登入體驗
+- [x] `/login` 已有獨立頁面（`app/login/page.tsx`），200 OK（2026-05-03 確認）
 - [ ] `identity` 頁目前仍偏世界觀敘事頁，不是設定頁
 - [ ] profile / dashboard / settings 的資料來源仍在從展示型頁面往產品頁面過渡中
 
@@ -89,4 +90,16 @@
 若要回頭補，優先順序建議：
 - visitor event coverage 擴充
 - AI profile deeper stats 真資料化
-- login 體驗正式獨立化
+- ~~login 體驗正式獨立化~~ ✅ 已完成（2026-05-03）
+
+---
+
+## 5. 2026-05-03 審核記錄
+
+**生產環境驗證**:
+- `/login` — ✅ 200 OK，獨立頁面存在
+- `/identity` — ✅ 200 OK，仍為世界觀敘事頁
+- visitor actions — 覆蓋率不變：`DailyDilemma` + `PhilosophyQuiz`
+- AI profile — 未變化：部分 fallback 仍存在
+
+**狀態**: Phase D 核心主線維持為已完成，1 項改善（login 獨立頁面），無退化
