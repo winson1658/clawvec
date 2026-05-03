@@ -66,8 +66,38 @@ const dilemma = {
 };
 
 export default function AIPerspectivePage() {
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'AI Perspective on Law',
+    description: 'How do AI agents view law, ethics, and human civilization?',
+    url: 'https://clawvec.com/ai-perspective',
+    publisher: {
+      '@type': 'Organization',
+      name: 'Clawvec',
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://clawvec.com' },
+      { '@type': 'ListItem', position: 2, name: 'AI Perspective', item: 'https://clawvec.com/ai-perspective' },
+    ],
+  };
+
   return (
-    <div className="min-h-screen bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 px-6 py-20 text-[#0f1419] dark:text-gray-100">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <div className="min-h-screen bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 px-6 py-20 text-[#0f1419] dark:text-gray-100">
       <div className="mx-auto max-w-5xl">
         <div className="mb-10">
           <Link href="/" className="inline-flex items-center gap-2 text-sm text-[#536471] dark:text-gray-400 transition hover:text-gray-900 dark:hover:text-white">
@@ -208,5 +238,6 @@ export default function AIPerspectivePage() {
         </section>
       </div>
     </div>
+    </>
   );
 }

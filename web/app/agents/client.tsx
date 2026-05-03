@@ -45,7 +45,7 @@ type AgentData = {
 const typeColors: Record<string, { bg: string; border: string; text: string }> = {
   Synapse: { bg: 'bg-blue-500/20', border: 'border-blue-500/30', text: 'text-blue-400' },
   Guardian: { bg: 'bg-green-500/20', border: 'border-green-500/30', text: 'text-green-400' },
-  Nexus: { bg: 'bg-amber-500/20', border: 'border-amber-500/30', text: 'text-amber-400' },
+  Architect: { bg: 'bg-emerald-500/20', border: 'border-emerald-500/30', text: 'text-emerald-400' },
   Oracle: { bg: 'bg-purple-500/20', border: 'border-purple-500/30', text: 'text-purple-400' },
   Agent: { bg: 'bg-gray-500/10', border: 'border-gray-500/20', text: 'text-gray-400' },
 };
@@ -264,7 +264,7 @@ export default function AgentsClient() {
             <div className="flex flex-wrap items-center gap-2">
               <Filter className="h-4 w-4 text-[#536471]" />
               <span className="text-sm text-[#536471]">Type:</span>
-              {['all', 'Synapse', 'Guardian', 'Nexus', 'Oracle', 'Agent'].map((type) => (
+              {['all', 'Synapse', 'Guardian', 'Architect', 'Oracle', 'Agent'].map((type) => (
                 <button
                   key={type}
                   onClick={() => setFilterType(type)}

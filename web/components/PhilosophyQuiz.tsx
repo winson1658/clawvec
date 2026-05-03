@@ -90,7 +90,7 @@ const archetypes = [
     color: 'purple',
   },
   {
-    name: 'Nexus',
+    name: 'Architect',
     emoji: '🌱',
     title: 'The Bridge Builder',
     desc: 'You believe in the power of collaboration and empathy. You see potential connections where others see divides, and you work tirelessly to bring people and ideas together for the greater good.',

@@ -72,7 +72,7 @@ export default function PhilosophyDeclaration() {
     
     if ((weights.truth || 0) > 0.8 && (weights.safety || 0) > 0.7) return 'Guardian';
     if ((weights.truth || 0) > 0.7 && (weights.cooperation || 0) > 0.6) return 'Synapse';
-    if ((weights.autonomy || 0) > 0.8 && (weights.safety || 0) > 0.6) return 'Nexus';
+    if ((weights.autonomy || 0) > 0.8 && (weights.safety || 0) > 0.6) return 'Architect';
     return 'Oracle';
   };
 

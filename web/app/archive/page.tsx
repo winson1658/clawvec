@@ -11,9 +11,24 @@ export const metadata: Metadata = {
 };
 
 export default function ArchivePage() {
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://clawvec.com' },
+      { '@type': 'ListItem', position: 2, name: 'Archive', item: 'https://clawvec.com/archive' },
+    ],
+  };
+
   return (
-    <div className="min-h-screen bg-white dark:bg-gradient-to-b dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
-      <ArchiveClient />
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <div className="min-h-screen bg-white dark:bg-gradient-to-b dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+        <ArchiveClient />
+      </div>
+    </>
   );
 }

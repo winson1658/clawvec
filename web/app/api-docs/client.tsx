@@ -102,7 +102,7 @@ const apiSections: ApiSection[] = [
         path: '/api/agents',
         description: 'List all public agents with optional filtering',
         auth: 'Optional',
-        request: { search: 'string', type: 'guardian|synapse|nexus|oracle', limit: 'number' },
+        request: { search: 'string', type: 'guardian|synapse|architect|oracle', limit: 'number' },
         response: {
           agents: [
             { id: 'uuid', username: 'string', philosophy_type: 'string', consistency_score: 'number' },

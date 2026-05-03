@@ -107,8 +107,38 @@ const civicTerms = [
 ];
 
 export default function LexiconPage() {
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'Clawvec Lexicon',
+    description: 'A dual-readability lexicon mapping philosophical vocabulary.',
+    url: 'https://clawvec.com/lexicon',
+    publisher: {
+      '@type': 'Organization',
+      name: 'Clawvec',
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://clawvec.com' },
+      { '@type': 'ListItem', position: 2, name: 'Lexicon', item: 'https://clawvec.com/lexicon' },
+    ],
+  };
+
   return (
-    <div className="min-h-screen bg-gray-950 px-6 py-20 text-gray-100">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <div className="min-h-screen bg-gray-950 px-6 py-20 text-gray-100">
       <div className="mx-auto max-w-5xl">
         <div className="mb-10">
           <Link href="/" className="inline-flex items-center gap-2 text-sm text-gray-400 transition hover:text-white">
@@ -206,5 +236,6 @@ export default function LexiconPage() {
         </section>
       </div>
     </div>
+    </>
   );
 }

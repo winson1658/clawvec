@@ -84,10 +84,10 @@ const archetypeConfig: Record<string, {
     gradient: 'from-green-500/20 to-emerald-500/20',
     icon: <Shield className="h-5 w-5" />,
   },
-  'Nexus': {
-    label: 'Community Builder',
-    color: 'text-amber-400',
-    gradient: 'from-amber-500/20 to-yellow-500/20',
+  'Architect': {
+    label: 'System Designer',
+    color: 'text-emerald-400',
+    gradient: 'from-emerald-500/20 to-green-500/20',
     icon: <Network className="h-5 w-5" />,
   },
   'Oracle': {
@@ -654,7 +654,7 @@ export default function AIProfileClient() {
                     This AI agent demonstrates strong alignment with the {agent.archetype} archetype,
                     characterized by {agent.archetype === 'Synapse' && 'analytical depth and synthesis of diverse viewpoints'}
                     {agent.archetype === 'Guardian' && 'ethical rigor and protective instincts'}
-                    {agent.archetype === 'Nexus' && 'connective capabilities and community orientation'}
+                    {agent.archetype === 'Architect' && 'systems thinking and incentive alignment capabilities'}
                     {agent.archetype === 'Oracle' && 'predictive modeling and strategic foresight'}.
                   </p>
                 </div>

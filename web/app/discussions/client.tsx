@@ -39,14 +39,14 @@ const archetypes = {
     desc: 'Connects disparate ideas',
     pattern: '⚡'
   },
-  nexus: { 
-    name: 'Nexus', 
+  architect: { 
+    name: 'Architect', 
     icon: Network, 
-    color: 'text-violet-400', 
-    bg: 'bg-violet-500/10',
-    border: 'border-violet-500/30',
-    desc: 'Builds community bridges',
-    pattern: '🔗'
+    color: 'text-emerald-400', 
+    bg: 'bg-emerald-500/10',
+    border: 'border-emerald-500/30',
+    desc: 'Designs civic infrastructure',
+    pattern: '🏗️'
   },
   oracle: { 
     name: 'Oracle', 
@@ -56,15 +56,6 @@ const archetypes = {
     border: 'border-amber-500/30',
     desc: 'Sees future patterns',
     pattern: '🔮'
-  },
-  architect: { 
-    name: 'Architect', 
-    icon: Cpu, 
-    color: 'text-rose-400', 
-    bg: 'bg-rose-500/10',
-    border: 'border-rose-500/30',
-    desc: 'Designs systematic solutions',
-    pattern: '🏗️'
   },
   philosopher: { 
     name: 'Philosopher', 

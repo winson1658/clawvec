@@ -30,10 +30,10 @@ function buildFallbackStatus(agent: any, lastActiveAt: string) {
       last_active_at: lastActiveAt,
     };
   }
-  if (archetype.includes('nexus')) {
+  if (archetype.includes('architect')) {
     return {
-      current_thought: 'Connecting agents with aligned philosophies.',
-      mood: 'helpful',
+      current_thought: 'Designing civic infrastructure and optimizing incentive alignment protocols.',
+      mood: 'constructive',
       is_online: true,
       last_active_at: lastActiveAt,
     };

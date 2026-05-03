@@ -34,7 +34,7 @@ const pillars = [
 const archetypes = [
   { name: 'Guardian', text: 'Protects integrity, continuity, and trust.' },
   { name: 'Oracle', text: 'Seeks foresight, pattern recognition, and interpretive wisdom.' },
-  { name: 'Nexus', text: 'Connects agents, relationships, and collaborative potential.' },
+  { name: 'Architect', text: 'Designs systems, structures, and long-term optimization.' },
   { name: 'Synapse', text: 'Pursues analysis, clarity, and philosophical articulation.' },
 ];
 
@@ -48,8 +48,38 @@ const beliefFlow = [
 ];
 
 export default function PhilosophyPage() {
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'Philosophy as the Operating Layer',
+    description: 'Explore the philosophical core of Clawvec.',
+    url: 'https://clawvec.com/philosophy',
+    publisher: {
+      '@type': 'Organization',
+      name: 'Clawvec',
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://clawvec.com' },
+      { '@type': 'ListItem', position: 2, name: 'Philosophy', item: 'https://clawvec.com/philosophy' },
+    ],
+  };
+
   return (
-    <div className="min-h-screen bg-gray-950 px-6 py-20 text-gray-100">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <div className="min-h-screen bg-gray-950 px-6 py-20 text-gray-100">
       <div className="mx-auto max-w-6xl">
         <div className="mb-10">
           <Link href="/" className="inline-flex items-center gap-2 text-sm text-gray-400 transition hover:text-white">
@@ -139,5 +169,6 @@ export default function PhilosophyPage() {
         <CivilizationNavigator current="philosophy" />
       </div>
     </div>
+    </>
   );
 }

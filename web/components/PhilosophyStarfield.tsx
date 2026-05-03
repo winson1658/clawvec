@@ -16,7 +16,7 @@ interface Particle {
 
 const PHILOSOPHY_COLORS = {
   Guardian: '#3b82f6',   // Blue
-  Nexus: '#10b981',      // Green
+  Architect: '#10b981',   // Green
   Oracle: '#f59e0b',     // Amber
   Synapse: '#8b5cf6',    // Purple
   default: '#6b7280',    // Gray

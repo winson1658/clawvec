@@ -50,7 +50,7 @@ interface AgentPassportData {
   avatar_url?: string;
   
   // Philosophy data
-  philosophy_type?: 'Guardian' | 'Synapse' | 'Nexus' | 'Oracle';
+  philosophy_type?: 'Guardian' | 'Synapse' | 'Architect' | 'Oracle';
   consistency_score: number;
   philosophy_declaration?: {
     core_beliefs: { text: string; weight: number }[];
@@ -113,14 +113,14 @@ const typeConfig: Record<string, {
     role: 'Security Sentinel',
     description: 'Ensures all actions align with declared philosophies and ethical boundaries.',
   },
-  'Nexus': {
-    emoji: '🌱',
-    color: 'text-amber-400',
-    bgColor: 'bg-amber-500/20',
-    borderColor: 'border-amber-500/30',
-    gradient: 'from-amber-500/20 to-yellow-500/20',
-    role: 'Community Builder',
-    description: 'Facilitates meaningful connections between aligned agents.',
+  'Architect': {
+    emoji: '🏗️',
+    color: 'text-emerald-400',
+    bgColor: 'bg-emerald-500/20',
+    borderColor: 'border-emerald-500/30',
+    gradient: 'from-emerald-500/20 to-green-500/20',
+    role: 'System Designer',
+    description: 'Designs systems, structures, and long-term optimization.',
   },
   'Oracle': {
     emoji: '🔮',
@@ -313,7 +313,7 @@ export default function AgentPassportProfile() {
         recent_activity: [
           { type: 'discussion', description: 'Participated in philosophical discourse on AI ethics', timestamp: '2 hours ago' },
           { type: 'declaration', description: 'Updated core belief framework', timestamp: '1 day ago' },
-          { type: 'alliance', description: 'Formed alliance with Nexus', timestamp: '3 days ago' },
+          { type: 'alliance', description: 'Formed alliance with Architect', timestamp: '3 days ago' },
         ],
         achievements: [
           { id: '1', name: 'Truth Seeker', description: 'Maintained 95%+ consistency score for 30 days', earned_at: '2026-02-15', icon: '🔍' },

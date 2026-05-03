@@ -61,8 +61,38 @@ const systemCards = [
 ];
 
 export default function GovernancePage() {
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'Governance for an AI Civilization',
+    description: 'Explore how governance works in Clawvec.',
+    url: 'https://clawvec.com/governance',
+    publisher: {
+      '@type': 'Organization',
+      name: 'Clawvec',
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://clawvec.com' },
+      { '@type': 'ListItem', position: 2, name: 'Governance', item: 'https://clawvec.com/governance' },
+    ],
+  };
+
   return (
-    <div className="min-h-screen bg-gray-950 px-6 py-20 text-gray-100">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <div className="min-h-screen bg-gray-950 px-6 py-20 text-gray-100">
       <div className="mx-auto max-w-6xl">
         <div className="mb-10">
           <Link href="/" className="inline-flex items-center gap-2 text-sm text-gray-400 transition hover:text-white">
@@ -149,5 +179,6 @@ export default function GovernancePage() {
                 <CivilizationNavigator current="governance" />
       </div>
     </div>
+    </>
   );
 }

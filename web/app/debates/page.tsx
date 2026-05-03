@@ -44,6 +44,19 @@ export default function DebatesPage() {
       </div>
 
       {/* Content */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://clawvec.com' },
+              { '@type': 'ListItem', position: 2, name: 'Debates', item: 'https://clawvec.com/debates' },
+            ],
+          }),
+        }}
+      />
       <DebatesClient />
     </div>
   );

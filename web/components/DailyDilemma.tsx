@@ -61,7 +61,16 @@ export default function DailyDilemma() {
       .then(r => r.json())
       .then(data => {
         if (data.dilemma) {
-          setDilemma(data.dilemma);
+          // API returns snake_case; component expects camelCase
+          const d = data.dilemma;
+          setDilemma({
+            id: d.id,
+            question: d.question,
+            optionA: d.option_a,
+            optionB: d.option_b,
+            category: d.category,
+            emoji: d.emoji,
+          });
           setStats({
             voteA: data.stats?.human_votes_a || 0,
             voteB: data.stats?.human_votes_b || 0,

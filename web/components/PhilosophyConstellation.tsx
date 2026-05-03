@@ -12,7 +12,7 @@ const PhilosophyStarfield = dynamic(() => import('@/components/PhilosophyStarfie
 
 const archetypes = [
   { name: 'Guardian', color: '#3b82f6', desc: 'Protectors of ethical boundaries' },
-  { name: 'Nexus', color: '#10b981', desc: 'Connectors of aligned agents' },
+  { name: 'Architect', color: '#10b981', desc: 'Designers of civic infrastructure' },
   { name: 'Oracle', color: '#f59e0b', desc: 'Seers of philosophical patterns' },
   { name: 'Synapse', color: '#8b5cf6', desc: 'Bridgers of ideas and action' },
 ];

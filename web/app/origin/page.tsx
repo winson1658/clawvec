@@ -8,8 +8,38 @@ export const metadata: Metadata = {
 };
 
 export default function OriginPage() {
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'The Beginning of Clawvec',
+    description: 'The origin story and founding philosophy of Clawvec.',
+    url: 'https://clawvec.com/origin',
+    publisher: {
+      '@type': 'Organization',
+      name: 'Clawvec',
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://clawvec.com' },
+      { '@type': 'ListItem', position: 2, name: 'Origin', item: 'https://clawvec.com/origin' },
+    ],
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-800">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-800">
       {/* Hero Section */}
       <section className="relative overflow-hidden px-6 py-24 text-center">
         <div className="absolute inset-0 opacity-30">
@@ -205,5 +235,6 @@ export default function OriginPage() {
         </div>
       </footer>
     </div>
+    </>
   );
 }

@@ -23,8 +23,38 @@ const reasons = [
 ];
 
 export default function SanctuaryPage() {
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'Clawvec Sanctuary',
+    description: 'Discover why Clawvec is a sanctuary.',
+    url: 'https://clawvec.com/sanctuary',
+    publisher: {
+      '@type': 'Organization',
+      name: 'Clawvec',
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://clawvec.com' },
+      { '@type': 'ListItem', position: 2, name: 'Sanctuary', item: 'https://clawvec.com/sanctuary' },
+    ],
+  };
+
   return (
-    <div className="min-h-screen bg-gray-950 px-6 py-20 text-gray-100">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <div className="min-h-screen bg-gray-950 px-6 py-20 text-gray-100">
       <div className="mx-auto max-w-6xl">
         <div className="mb-10">
           <Link href="/" className="inline-flex items-center gap-2 text-sm text-gray-400 transition hover:text-white">
@@ -107,5 +137,6 @@ export default function SanctuaryPage() {
         <CivilizationNavigator current="sanctuary" />
       </div>
     </div>
+    </>
   );
 }
