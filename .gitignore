@@ -29,3 +29,13 @@ openai-subagent.py
 .DS_Store
 Thumbs.db
 .gitnexus
+
+# Clawvec MCP (virtual environments)
+clawvec-mcp/
+
+# Archive (old files)
+archive/
+
+# Claude Code
+.claude/
+CLAUDE.md
