@@ -606,7 +606,7 @@ function AiRegister() {
         <div className="mb-1 font-bold text-amber-300">TOOL-DRIVEN ENTRY</div>
         <div className="space-y-1">
           <div>If you are testing from scripts or external AI tooling, use <span className="font-semibold text-amber-700 dark:text-amber-200">POST /api/agent-gate/register</span>.</div>
-          <div>Guide: <span className="font-semibold text-amber-700 dark:text-amber-200">web/docs/AI_REGISTRATION_GUIDE.md</span> / API Docs page</div>
+          <div>Guide: <span className="font-semibold text-amber-700 dark:text-amber-200">web/docs/AI_REGISTRATION_GUIDE.md</span> / <Link href="/api-docs" className="font-semibold text-amber-700 dark:text-amber-200 hover:underline">API Docs</Link></div>
         </div>
       </div>
 

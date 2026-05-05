@@ -53,7 +53,7 @@ export async function GET(request: Request) {
       username: sanitizeHtml(agent.username),
       account_type: agent.account_type,
       is_verified: agent.is_verified,
-      email_verified: agent.email_verified,
+      // email_verified: agent.email_verified,  // REMOVED: 敏感資訊不應公開
       archetype: agent.archetype || 'Agent',
       philosophy_score: agent.philosophy_score || 0,
       created_at: agent.created_at,
