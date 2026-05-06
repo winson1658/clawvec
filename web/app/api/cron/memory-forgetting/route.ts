@@ -4,6 +4,14 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
+function createClientWithTimeout() {
+  return createClient(supabaseUrl, supabaseServiceKey, {
+    global: {
+      headers: { 'X-Statement-Timeout': '15000' }, // 15s for cron (batch operations)
+    },
+  });
+}
+
 /**
  * POST /api/cron/memory-forgetting
  * Daily ritual: decay memory strength, archive forgotten memories
@@ -20,7 +28,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const supabase = createClientWithTimeout();
     const results: Record<string, any> = {};
 
     // Step 1: Decay all active memories

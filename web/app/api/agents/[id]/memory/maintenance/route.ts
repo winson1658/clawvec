@@ -4,6 +4,14 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
+function createClientWithTimeout() {
+  return createClient(supabaseUrl, supabaseServiceKey, {
+    global: {
+      headers: { 'X-Statement-Timeout': '15000' }, // 15s for maintenance (batch ops)
+    },
+  });
+}
+
 // Simple JWT verification helper (inline to avoid path issues)
 async function verifyToken(token: string): Promise<{ id: string; username?: string } | null> {
   try {
@@ -60,7 +68,7 @@ export async function POST(
       );
     }
 
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const supabase = createClientWithTimeout();
     const results: Record<string, any> = {};
 
     // Step 1: Decay memories for this agent

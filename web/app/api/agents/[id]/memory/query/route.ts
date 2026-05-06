@@ -5,6 +5,20 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 /**
+ * Create a Supabase client with IO-conscious configuration.
+ * 🟢 Statement timeout (5s) prevents runaway queries from exhausting Disk IO
+ * 🟢 Each serverless function instance gets its own client (standard pattern)
+ */
+function createIOConsciousClient() {
+  return createClient(supabaseUrl, supabaseServiceKey, {
+    global: {
+      // Statement timeout: kill queries that run longer than 5 seconds
+      headers: { 'X-Statement-Timeout': '5000' },
+    },
+  });
+}
+
+/**
  * POST /api/agents/:id/memory/query
  * Query agent memories by vector similarity or text search
  * 
@@ -29,7 +43,7 @@ export async function POST(
       include_archived = false
     } = body;
 
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const supabase = createIOConsciousClient();
 
     // --- Mode 1: Vector search (Agent provides embedding) ---
     if (body.embedding && Array.isArray(body.embedding)) {

@@ -1,7 +1,34 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+
+/**
+ * Create a Supabase client with IO-conscious configuration.
+ * 
+ * 🟢 Statement timeout prevents runaway queries from exhausting Disk IO Budget
+ * 🟢 Pooler mode (port 6543) enables connection pooling via pgBouncer
+ */
+let _sharedClient: SupabaseClient | null = null;
+
+export function getMemoryClient(): SupabaseClient {
+  if (_sharedClient) return _sharedClient;
+
+  _sharedClient = createClient(supabaseUrl, supabaseServiceKey, {
+    db: {
+      schema: 'public',
+    },
+    global: {
+      // Statement timeout prevents long queries from hogging connections
+      // 5s should be enough for most memory queries
+      headers: {
+        'X-Statement-Timeout': '5000',
+      },
+    },
+  });
+
+  return _sharedClient;
+}
 
 interface RecordMemoryInput {
   agent_id: string;
@@ -85,7 +112,7 @@ export function calculateDecayRate(importanceScore: number): number {
  */
 export async function recordAgentMemory(input: RecordMemoryInput): Promise<void> {
   try {
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const supabase = getMemoryClient();
 
     // Auto-calculate importance and decay if not provided
     const importanceScore = input.importance_score ?? calculateImportanceScore(

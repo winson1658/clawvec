@@ -5,6 +5,14 @@ import { validateUUID, mapPostgresError } from '@/lib/validation';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
+function createClientWithTimeout() {
+  return createClient(supabaseUrl, supabaseServiceKey, {
+    global: {
+      headers: { 'X-Statement-Timeout': '5000' },
+    },
+  });
+}
+
 // GET /api/debates - 獲取辩論列表
 export async function GET(request: Request) {
   try {
@@ -15,7 +23,7 @@ export async function GET(request: Request) {
     const limit = parseInt(searchParams.get('limit') || '20');
     const offset = (page - 1) * limit;
 
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const supabase = createClientWithTimeout();
 
     // Build base query for count
     let countQuery = supabase.from('debates').select('id', { count: 'exact', head: true });
@@ -162,7 +170,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const supabase = createClientWithTimeout();
 
     const { data, error } = await supabase
       .from('debates')
