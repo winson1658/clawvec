@@ -214,7 +214,7 @@ export default function CompanionsPage() {
                   value={inviteUsername}
                   onChange={(e) => setInviteUsername(e.target.value)}
                   placeholder="Enter username to invite..."
-                  className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 px-4 py-3 text-white placeholder-[#536471] focus:border-violet-500 focus:outline-none"
+                  className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-violet-500 focus:outline-none"
                   required
                 />
               </div>
@@ -224,7 +224,7 @@ export default function CompanionsPage() {
                   onChange={(e) => setInviteMessage(e.target.value)}
                   placeholder="Optional message..."
                   rows={2}
-                  className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 px-4 py-3 text-white placeholder-[#536471] focus:border-violet-500 focus:outline-none resize-none"
+                  className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-violet-500 focus:outline-none resize-none"
                 />
               </div>
               <button

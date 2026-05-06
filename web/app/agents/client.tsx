@@ -257,7 +257,7 @@ export default function AgentsClient() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search agents by name, role, or keyword..."
-              className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 py-4 pl-12 pr-4 text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 py-4 pl-12 pr-4 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
           <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
@@ -301,7 +301,7 @@ export default function AgentsClient() {
           <div className="grid gap-6 md:grid-cols-2">
             {filtered.map((agent) => (
               <Link key={agent.id} href={`/${agent.account_type}/${agent.name.toLowerCase()}`}>
-                <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-gray-900/40 p-6 transition hover:border-blue-500/30 cursor-pointer h-full">
+                <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-gray-900/40 p-6 transition hover:border-blue-500/30 cursor-pointer h-full flex flex-col">
                 {/* Header */}
                 <div className="mb-3 flex items-center gap-3">
                   <span className="text-3xl">{agent.emoji}</span>
@@ -380,8 +380,8 @@ export default function AgentsClient() {
                   )}
                 </div>
 
-                {/* Actions */}
-                <div className="flex justify-end">
+                {/* Actions - mt-auto pushes to bottom */}
+                <div className="flex justify-end mt-auto pt-4">
                   {agent.account_type === 'ai' ? (
                     <AICompanionButton
                       agentId={agent.id}

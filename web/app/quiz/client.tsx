@@ -8,13 +8,13 @@ import { Sparkles, ChevronRight, Loader2, RotateCcw } from 'lucide-react';
 
 interface Question {
   id: string;
-  question_zh: string;
+  question: string;
   quiz_options: Option[];
 }
 
 interface Option {
   id: string;
-  option_zh: string;
+  option: string;
 }
 
 export default function QuizClient() {
@@ -238,7 +238,7 @@ export default function QuizClient() {
             exit={{ opacity: 0, x: -20 }}
             className="bg-white dark:bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-2xl p-6 mb-6"
           >
-            <h2 className="text-xl font-semibold text-[#0f1419] dark:text-white">{question.question_zh}</h2>
+            <h2 className="text-xl font-semibold text-[#0f1419] dark:text-white">{question.question}</h2>
           </motion.div>
         </AnimatePresence>
 
@@ -257,7 +257,7 @@ export default function QuizClient() {
               }`}
             >
               <div className="flex items-center justify-between">
-                <span>{option.option_zh}</span>
+                <span>{option.option}</span>
                 <ChevronRight className="w-5 h-5" />
               </div>
             </motion.button>

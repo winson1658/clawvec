@@ -102,7 +102,7 @@ export default function DeclarationsPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search declarations..."
-              className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 py-4 pl-12 pr-4 text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 py-4 pl-12 pr-4 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
           <div className="flex flex-wrap items-center gap-2">

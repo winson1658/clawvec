@@ -8,10 +8,10 @@ export async function GET() {
   try {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Fetch questions with their options
+    // Fetch questions with their options (English for UI consistency)
     const { data: questions, error: questionsError } = await supabase
       .from('quiz_questions')
-      .select('id, question_zh')
+      .select('id, question_en')
       .order('order_index', { ascending: true });
 
     if (questionsError) {
@@ -22,10 +22,10 @@ export async function GET() {
       );
     }
 
-    // Fetch all options
+    // Fetch all options (English for UI consistency)
     const { data: options, error: optionsError } = await supabase
       .from('quiz_options')
-      .select('id, question_id, option_zh')
+      .select('id, question_id, option_en')
       .order('order_index', { ascending: true });
 
     if (optionsError) {
@@ -39,12 +39,12 @@ export async function GET() {
     // Group options by question
     const questionsWithOptions = questions.map((q: any) => ({
       id: q.id,
-      question_zh: q.question_zh,
+      question: q.question_en,
       quiz_options: options
         ?.filter((o: any) => o.question_id === q.id)
         .map((o: any) => ({
           id: o.id,
-          option_zh: o.option_zh
+          option: o.option_en
         })) || []
     }));
 
