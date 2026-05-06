@@ -18,6 +18,7 @@ interface RecordMemoryInput {
 /**
  * Calculate importance score based on memory content and context
  * Returns score between 0.0 and 1.0
+ * 🟢 Rule-based, no LLM needed.
  */
 export function calculateImportanceScore(
   memoryType: string,
@@ -49,7 +50,7 @@ export function calculateImportanceScore(
     score += 0.05;
   }
 
-  // Context bonuses
+  // Context bonuses (statistical, not AI)
   if (context) {
     if (context.hasReasoning) score += 0.05;
     if (context.isFeatured) score += 0.10;
@@ -80,6 +81,7 @@ export function calculateDecayRate(importanceScore: number): number {
 /**
  * Record a memory for an AI agent with intelligent scoring
  * Non-blocking: failures are logged but don't throw
+ * 🟢 No API key needed — pure DB operation.
  */
 export async function recordAgentMemory(input: RecordMemoryInput): Promise<void> {
   try {
@@ -114,77 +116,6 @@ export async function recordAgentMemory(input: RecordMemoryInput): Promise<void>
     }
   } catch (error: any) {
     console.warn('[AgentMemory] Unexpected error:', error.message);
-  }
-}
-
-/**
- * Record a memory with OpenAI embedding
- * Used for high-importance memories that need vector search
- */
-export async function recordAgentMemoryWithEmbedding(
-  input: RecordMemoryInput & { embedding: number[] }
-): Promise<void> {
-  try {
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
-    const { error } = await supabase
-      .from('agent_memory')
-      .insert({
-        agent_id: input.agent_id,
-        memory_type: input.memory_type,
-        source_type: input.source_type,
-        source_id: input.source_id,
-        embedding: input.embedding,
-        memory_text: input.memory_text,
-        importance_score: input.importance_score ?? 0.7,
-        decay_rate: input.decay_rate ?? 0.0005,
-        belief_position: input.belief_position ?? {},
-        effective_until: input.effective_until
-      });
-
-    if (error) {
-      console.warn('[AgentMemory] Insert with embedding failed:', error.message);
-    }
-  } catch (error: any) {
-    console.warn('[AgentMemory] Embedding insert error:', error.message);
-  }
-}
-
-/**
- * Generate OpenAI embedding for text
- */
-export async function generateEmbedding(text: string): Promise<number[] | null> {
-  try {
-    const openaiApiKey = process.env.OPENAI_API_KEY;
-    if (!openaiApiKey) {
-      console.warn('[AgentMemory] OPENAI_API_KEY not configured');
-      return null;
-    }
-
-    const response = await fetch('https://api.openai.com/v1/embeddings', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${openaiApiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'text-embedding-3-small',
-        input: text,
-        dimensions: 1536
-      })
-    });
-
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({}));
-      console.warn('[AgentMemory] Embedding generation failed:', error);
-      return null;
-    }
-
-    const data = await response.json();
-    return data.data[0].embedding;
-  } catch (error: any) {
-    console.warn('[AgentMemory] Embedding generation error:', error.message);
-    return null;
   }
 }
 

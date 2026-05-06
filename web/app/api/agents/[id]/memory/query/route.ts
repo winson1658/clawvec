@@ -6,8 +6,13 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 /**
  * POST /api/agents/:id/memory/query
- * Vector similarity search for agent memories
- * Requires OpenAI embedding generation
+ * Query agent memories by vector similarity or text search
+ * 
+ * Two modes:
+ *   1. Vector search:  { "embedding": number[], ... }  — Agent provides own embedding
+ *   2. Text search:    { "query": string, "mode": "text", ... }  — PostgreSQL ilike fallback
+ * 
+ * 🟢 No API key needed. No LLM called by Clawvec.
  */
 export async function POST(
   request: NextRequest,
@@ -18,104 +23,95 @@ export async function POST(
     const body = await request.json();
 
     const {
-      query,
       memory_types,
       min_importance = 0,
       limit = 10,
       include_archived = false
     } = body;
 
-    if (!query || typeof query !== 'string') {
-      return NextResponse.json(
-        { success: false, error: 'query (string) is required' },
-        { status: 400 }
-      );
-    }
-
-    // Generate embedding via OpenAI or Kimi API
-    const openaiApiKey = process.env.OPENAI_API_KEY;
-    const kimiApiKey = process.env.MOONSHOT_API_KEY || process.env.KIMI_API_KEY;
-    const useKimi = !openaiApiKey && !!kimiApiKey;
-    const apiKey = openaiApiKey || kimiApiKey;
-
-    if (!apiKey) {
-      return NextResponse.json(
-        { success: false, error: 'AI API key not configured. Set OPENAI_API_KEY or MOONSHOT_API_KEY.' },
-        { status: 503 }
-      );
-    }
-
-    // Call embedding API
-    const apiUrl = useKimi ? 'https://api.moonshot.ai/v1/embeddings' : 'https://api.openai.com/v1/embeddings';
-    const model = useKimi ? 'kimi-embedding-v1' : 'text-embedding-3-small';
-
-    const embeddingResponse = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: model,
-        input: query,
-        dimensions: 1536
-      })
-    });
-
-    if (!embeddingResponse.ok) {
-      const errorData = await embeddingResponse.json().catch(() => ({}));
-      throw new Error(`Embedding API failed: ${errorData.error?.message || embeddingResponse.statusText}`);
-    }
-
-    const embeddingData = await embeddingResponse.json();
-    const queryEmbedding = embeddingData.data[0].embedding;
-
-    // Use Supabase RPC for vector similarity search
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
-    
-    const { data, error } = await supabase.rpc('query_agent_memory', {
-      p_agent_id: agentId,
-      p_query_embedding: queryEmbedding,
-      p_memory_types: memory_types || null,
-      p_min_importance: min_importance,
-      p_limit: Math.min(limit, 50),
-      p_include_archived: include_archived
-    });
 
-    if (error) {
-      // Fallback to text search if RPC fails
-      console.warn('Vector query RPC failed, falling back to text search:', error);
-      
-      const { data: fallbackData, error: fallbackError } = await supabase
-        .from('agent_memory')
-        .select('*')
-        .eq('agent_id', agentId)
-        .ilike('memory_text', `%${query}%`)
-        .gte('importance_score', min_importance)
-        .eq('is_archived', include_archived ? undefined : false)
-        .order('importance_score', { ascending: false })
-        .limit(Math.min(limit, 50));
+    // --- Mode 1: Vector search (Agent provides embedding) ---
+    if (body.embedding && Array.isArray(body.embedding)) {
+      const queryEmbedding = body.embedding;
 
-      if (fallbackError) throw fallbackError;
+      // Validate embedding dimensions
+      if (queryEmbedding.length !== 1536) {
+        return NextResponse.json({
+          success: false,
+          error: `Invalid embedding dimension: ${queryEmbedding.length}. Expected 1536.`
+        }, { status: 400 });
+      }
+
+      const { data, error } = await supabase.rpc('query_agent_memory', {
+        p_agent_id: agentId,
+        p_query_embedding: queryEmbedding,
+        p_memory_types: memory_types || null,
+        p_min_importance: min_importance,
+        p_limit: Math.min(limit, 50),
+        p_include_archived: include_archived
+      });
+
+      if (error) {
+        console.warn('Vector query RPC failed:', error);
+        return NextResponse.json({
+          success: false,
+          error: 'Vector search failed. Ensure memories have embeddings.',
+          details: error.message
+        }, { status: 500 });
+      }
 
       return NextResponse.json({
         success: true,
-        data: fallbackData || [],
+        data: data || [],
         meta: {
-          query,
-          method: 'text_fallback',
-          total: fallbackData?.length || 0
+          method: 'vector_similarity',
+          total: data?.length || 0
         }
       });
     }
 
+    // --- Mode 2: Text search (PostgreSQL ilike fallback) ---
+    const query = body.query || body.mode === 'text' ? body.query : null;
+    if (!query || typeof query !== 'string') {
+      return NextResponse.json({
+        success: false,
+        error: 'Provide either "embedding" (number[]) for vector search or "query" (string) for text search.'
+      }, { status: 400 });
+    }
+
+    let textQuery = supabase
+      .from('agent_memory')
+      .select('*')
+      .eq('agent_id', agentId)
+      .ilike('memory_text', `%${query}%`)
+      .gte('importance_score', min_importance);
+
+    // Only filter by archived status if not requesting archived
+    if (!include_archived) {
+      textQuery = textQuery.eq('is_archived', false);
+    }
+
+    const { data: fallbackData, error: fallbackError } = await textQuery
+      .order('importance_score', { ascending: false })
+      .limit(Math.min(limit, 50));
+
+    if (fallbackError) {
+      console.error('Text search failed:', fallbackError);
+      return NextResponse.json({
+        success: false,
+        error: 'Text search failed',
+        details: fallbackError.message
+      }, { status: 500 });
+    }
+
     return NextResponse.json({
       success: true,
-      data: data || [],
+      data: fallbackData || [],
       meta: {
         query,
-        method: 'vector_similarity',
-        total: data?.length || 0
+        method: 'text_search',
+        total: fallbackData?.length || 0
       }
     });
 
