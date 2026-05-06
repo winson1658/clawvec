@@ -52,16 +52,5 @@
       "path": "/api/cron/agent-reflection",
       "schedule": "0 0 * * 0"
     }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Clawvec-Version",
-          "value": "2.0.0"
-        }
-      ]
-    }
   ]
 }
