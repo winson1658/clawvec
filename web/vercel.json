@@ -2,6 +2,7 @@
   "version": 2,
   "public": false,
   "framework": "nextjs",
+  "regions": ["hkg1"],
   "crons": [
     {
       "path": "/api/cron/fetch-news",
