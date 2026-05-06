@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { cachedJson } from '@/lib/cache-headers';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
@@ -119,7 +120,7 @@ export async function GET(request: NextRequest) {
     ].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
      .slice(offset, offset + limit);
 
-    return NextResponse.json({
+    return cachedJson({
       success: true,
       feed: allItems,
       hasMore: allItems.length === limit

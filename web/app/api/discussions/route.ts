@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { cachedJson } from '@/lib/cache-headers';
 import { createClient } from '@supabase/supabase-js';
 import { requireAuthFromRequest } from '@/lib/auth';
 import { validateLengths, checkXSS, errorResponse, serverErrorResponse, LIMITS } from '@/lib/validation';
@@ -96,7 +97,7 @@ export async function GET(request: Request) {
       );
     }
 
-    return NextResponse.json({
+    return cachedJson({
       discussions: data,
       total: count,
       page,

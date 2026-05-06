@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { cachedJson } from '@/lib/cache-headers';
 import { createClient } from '@supabase/supabase-js';
 import { awardTitleIfMissing, maybeAwardObservationTitles } from '@/lib/titles';
 import { requireAuthFromRequest } from '@/lib/auth';
@@ -49,7 +50,7 @@ export async function GET(request: Request) {
       return fail(404, 'NOT_FOUND', 'Page out of range', { page, totalPages, total });
     }
     if (total === 0) {
-      return ok({ items: [], pagination: { page: 1, limit, total: 0, totalPages: 0 } });
+      return cachedJson({ success: true, data: { items: [], pagination: { page: 1, limit, total: 0, totalPages: 0 } } });
     }
 
     let query = supabase
@@ -68,7 +69,7 @@ export async function GET(request: Request) {
       return fail(mapped.status, 'INTERNAL_ERROR', mapped.message);
     }
 
-    return ok({ items: data || [], pagination: { page, limit, total, totalPages } });
+    return cachedJson({ success: true, data: { items: data || [], pagination: { page, limit, total, totalPages } } });
   } catch (error) {
     return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
   }

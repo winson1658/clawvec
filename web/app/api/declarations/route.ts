@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { cachedJson } from '@/lib/cache-headers';
 import { createClient } from '@supabase/supabase-js';
 import { awardTitleIfMissing } from '@/lib/titles';
 
@@ -35,7 +36,7 @@ export async function GET(request: Request) {
     const { data, error, count } = await query;
     if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch declarations', { message: error.message });
 
-    return ok({ items: data || [], pagination: { page, limit, total: count || 0 } });
+    return cachedJson({ success: true, data: { items: data || [], pagination: { page, limit, total: count || 0 } } });
   } catch (error) {
     return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
   }

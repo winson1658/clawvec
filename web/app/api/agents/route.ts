@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { cachedJson } from '@/lib/cache-headers';
 import { createClient } from '@supabase/supabase-js';
 import { sanitizeHtml } from '@/lib/sanitize';
 import { mapPostgresError } from '@/lib/validation';
@@ -63,7 +64,7 @@ export async function GET(request: Request) {
     const total = count || 0;
     const totalPages = Math.max(1, Math.ceil(total / limit));
 
-    return NextResponse.json({
+    return cachedJson({
       agents: sanitizedAgents,
       total,
       page,
