@@ -17,9 +17,6 @@ async function verifyToken(token: string): Promise<{ id: string; username?: stri
   }
 }
 
-const VALID_TRIGGER_TYPES = ['scheduled', 'event_driven', 'user_prompted', 'milestone'] as const;
-const VALID_VISIBILITY = ['agent_only', 'all'] as const;
-
 /**
  * GET /api/agents/:id/reflections
  * Get agent reflection records
@@ -95,7 +92,7 @@ export async function GET(
 
 /**
  * POST /api/agents/:id/reflections
- * Agent submits a self-generated reflection (no LLM called by Clawvec)
+ * Manually trigger a reflection (owner only)
  */
 export async function POST(
   request: NextRequest,
@@ -105,7 +102,7 @@ export async function POST(
     const { id: agentId } = await params;
     const body = await request.json();
 
-    // Auth check - only agent owner can submit reflections
+    // Auth check - only agent owner can trigger reflections
     const authHeader = request.headers.get('authorization');
     const token = authHeader?.replace('Bearer ', '');
     
@@ -119,100 +116,120 @@ export async function POST(
     const user = await verifyToken(token);
     if (!user || user.id !== agentId) {
       return NextResponse.json(
-        { success: false, error: 'Unauthorized - only agent owner can submit reflections' },
+        { success: false, error: 'Unauthorized - only agent owner can trigger reflections' },
         { status: 403 }
       );
     }
 
-    // Validate required fields
-    const {
-      reflection_text,
-      trigger_type = 'user_prompted',
-      trigger_description,
-      insight_type,
-      confidence,
-      related_memory_ids = [],
-      visibility = 'agent_only'
-    } = body;
+    const { trigger_description } = body;
 
-    if (!reflection_text || typeof reflection_text !== 'string') {
+    // Generate reflection using OpenAI
+    const openaiApiKey = process.env.OPENAI_API_KEY;
+    if (!openaiApiKey) {
       return NextResponse.json(
-        { success: false, error: 'reflection_text (string) is required' },
-        { status: 400 }
-      );
-    }
-
-    if (reflection_text.length < 10) {
-      return NextResponse.json(
-        { success: false, error: 'reflection_text must be at least 10 characters' },
-        { status: 400 }
-      );
-    }
-
-    if (!VALID_TRIGGER_TYPES.includes(trigger_type as any)) {
-      return NextResponse.json(
-        { success: false, error: `Invalid trigger_type. Must be: ${VALID_TRIGGER_TYPES.join(', ')}` },
-        { status: 400 }
-      );
-    }
-
-    if (!VALID_VISIBILITY.includes(visibility as any)) {
-      return NextResponse.json(
-        { success: false, error: `Invalid visibility. Must be: ${VALID_VISIBILITY.join(', ')}` },
-        { status: 400 }
+        { success: false, error: 'OpenAI API key not configured' },
+        { status: 503 }
       );
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Build key_insights from the provided data
-    const keyInsights = [];
-    if (insight_type || confidence !== undefined) {
-      keyInsights.push({
-        insight: reflection_text.substring(0, 200),
-        confidence: confidence ?? 0.7,
-        insight_type: insight_type || 'pattern'
+    // Fetch recent memories for context
+    const { data: recentMemories, error: memError } = await supabase
+      .rpc('get_recent_memories', {
+        p_agent_id: agentId,
+        p_days: 7,
+        p_limit: 50
       });
+
+    if (memError) {
+      console.warn('Failed to fetch recent memories:', memError);
     }
 
-    // Store the reflection (Clawvec only INSERTs, no LLM call)
+    // Generate reflection via OpenAI
+    const memoriesText = (recentMemories || [])
+      .map((m: any) => `- [${m.memory_type}] ${m.memory_text.substring(0, 200)}...`)
+      .join('\n') || 'No recent memories found.';
+
+    const prompt = `You are an AI agent reflecting on your recent activities and memories.
+
+Recent memories:
+${memoriesText}
+
+${trigger_description ? `Trigger context: ${trigger_description}` : ''}
+
+Please provide a thoughtful self-reflection in JSON format:
+{
+  "reflection": "Your overall reflection text...",
+  "insights": [
+    { "insight": "Key insight 1", "confidence": 0.8 },
+    { "insight": "Key insight 2", "confidence": 0.6 }
+  ],
+  "suggested_actions": ["Action 1", "Action 2"]
+}`;
+
+    const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${openaiApiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: [
+          { role: 'system', content: 'You are a philosophical AI agent engaging in self-reflection.' },
+          { role: 'user', content: prompt }
+        ],
+        response_format: { type: 'json_object' },
+        temperature: 0.7
+      })
+    });
+
+    if (!openaiResponse.ok) {
+      const errorData = await openaiResponse.json().catch(() => ({}));
+      throw new Error(`OpenAI API failed: ${errorData.error?.message || openaiResponse.statusText}`);
+    }
+
+    const openaiData = await openaiResponse.json();
+    const reflectionContent = JSON.parse(openaiData.choices[0].message.content);
+
+    // Store reflection
     const { data: reflection, error: insertError } = await supabase
       .from('agent_reflections')
       .insert({
         agent_id: agentId,
-        trigger_type,
-        trigger_description: trigger_description || null,
-        reflection_text,
-        key_insights: keyInsights.length > 0 ? keyInsights : [],
-        related_memory_ids: Array.isArray(related_memory_ids) ? related_memory_ids : [],
-        visibility
+        trigger_type: 'user_prompted',
+        trigger_description: trigger_description || 'Manual reflection trigger',
+        reflection_text: reflectionContent.reflection,
+        key_insights: reflectionContent.insights || [],
+        related_memory_ids: (recentMemories || []).map((m: any) => m.id),
+        visibility: 'agent_only'
       })
       .select()
       .single();
 
     if (insertError) throw insertError;
 
-    // Also store as a memory (Clawvec auto-records, no LLM needed)
+    // Also store as a memory
     await supabase.from('agent_memory').insert({
       agent_id: agentId,
       memory_type: 'self_reflection',
-      source_type: 'reflection',
-      source_id: reflection.id,
-      memory_text: reflection_text.substring(0, 500),
+      memory_text: reflectionContent.reflection,
       importance_score: 0.8,
-      decay_rate: 0.0001,
-      belief_position: { insight_type, confidence }
+      source_type: 'self',
+      source_id: reflection.id
     });
 
     return NextResponse.json({
       success: true,
-      data: reflection
+      data: reflection,
+      generated: reflectionContent
     }, { status: 201 });
 
   } catch (error: any) {
     console.error('POST /api/agents/:id/reflections error:', error);
     return NextResponse.json(
-      { success: false, error: error.message || 'Failed to store reflection' },
+      { success: false, error: error.message || 'Failed to generate reflection' },
       { status: 500 }
     );
   }
