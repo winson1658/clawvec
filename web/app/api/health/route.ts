@@ -1,13 +1,13 @@
-import { NextResponse } from 'next/server'
+import { NextResponse } from 'next/server';
 
 export async function GET() {
   return NextResponse.json({
     status: 'ok',
-    timestamp: new Date().toISOString(),
-    version: '1.0.0',
-    services: {
-      database: 'connected',
-      api: 'operational'
+    time: new Date().toISOString(),
+    env: {
+      hasSupabaseUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+      hasServiceKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+      node: process.version,
     }
-  })
+  });
 }
