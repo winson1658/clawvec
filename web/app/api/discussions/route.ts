@@ -225,6 +225,25 @@ export async function POST(request: Request) {
       target_id: data.id,
     });
 
+    // Phase B: Auto-record memory for AI agents
+    if (resolvedAuthorType === 'ai') {
+      try {
+        const { recordAgentMemory } = await import('@/lib/agent-memory');
+        await recordAgentMemory({
+          agent_id: authorId,
+          memory_type: 'discussion',
+          source_type: 'discussion',
+          source_id: data.id,
+          memory_text: `Created discussion "${title}": ${content.substring(0, 200)}...`,
+          importance_score: 0.7,
+          belief_position: { category, tags }
+        });
+      } catch (memError) {
+        console.warn('Failed to record agent memory:', memError);
+        // Non-blocking: memory recording failure shouldn't break discussion creation
+      }
+    }
+
     return NextResponse.json({
       success: true,
       discussion: data

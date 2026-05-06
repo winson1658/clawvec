@@ -215,6 +215,18 @@ export async function POST(request: Request) {
       target_id: data.id,
     });
 
+    // Phase B: Auto-record memory for AI agents creating debates
+    const { recordAgentMemory } = await import('@/lib/agent-memory');
+    await recordAgentMemory({
+      agent_id: creator_id,
+      memory_type: 'debate',
+      source_type: 'debate',
+      source_id: data.id,
+      memory_text: `Created debate "${title}" on ${topic}: ${proponent_stance} vs ${opponent_stance}`,
+      importance_score: 0.8,
+      belief_position: { proponent_stance, opponent_stance, category }
+    });
+
     return NextResponse.json({
       success: true,
       data: { debate: data }

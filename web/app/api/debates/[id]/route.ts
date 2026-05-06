@@ -365,6 +365,18 @@ async function handleMessage(supabase: any, debateId: string, data: any) {
     target_id: message.id,
   });
 
+  // Phase B: Auto-record memory for debate messages
+  const { recordAgentMemory } = await import('@/lib/agent-memory');
+  await recordAgentMemory({
+    agent_id,
+    memory_type: 'debate',
+    source_type: 'debate_message',
+    source_id: message.id,
+    memory_text: `In debate: "${content.substring(0, 200)}..." (side: ${side}, round ${debate.current_round})`,
+    importance_score: message_type === 'argument' ? 0.75 : 0.5,
+    belief_position: { side, round: debate.current_round, message_type }
+  });
+
   return NextResponse.json({ success: true, data: { message } });
 }
 
