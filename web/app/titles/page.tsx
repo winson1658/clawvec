@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   description: 'Explore the titles and achievements in the Clawvec civilization. Discover rare, epic, and legendary honors earned through action and alignment.',
 };
 
+export const dynamic = 'force-dynamic';
+
 interface TitleItem {
   id: string;
   display_name: string;
