@@ -5,7 +5,17 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 function ok(data: unknown, meta?: unknown) {
-  return NextResponse.json({ success: true, data, ...(meta ? { meta } : {}) });
+  return NextResponse.json(
+    { success: true, data, ...(meta ? { meta } : {}) },
+    {
+      headers: {
+        // CDN cache for 60s, stale-while-revalidate for 300s
+        'CDN-Cache-Control': 'public, max-age=60, stale-while-revalidate=300, stale-if-error=86400',
+        // Browser cache for 15s
+        'Cache-Control': 'public, max-age=15, stale-while-revalidate=120',
+      },
+    }
+  );
 }
 
 function fail(status: number, code: string, message: string, details?: unknown) {

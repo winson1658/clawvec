@@ -125,6 +125,11 @@ export async function GET(request: Request) {
         })),
         pagination: { total, page, limit, totalPages }
       }
+    }, {
+      headers: {
+        'CDN-Cache-Control': 'public, max-age=30, stale-while-revalidate=120, stale-if-error=86400',
+        'Cache-Control': 'public, max-age=10',
+      },
     });
 
   } catch (error) {
