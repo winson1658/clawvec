@@ -43,6 +43,14 @@
     {
       "path": "/api/dilemma/admin/schedule",
       "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/cron/memory-forgetting",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/cron/agent-reflection",
+      "schedule": "0 0 * * 0"
     }
   ],
   "headers": [
