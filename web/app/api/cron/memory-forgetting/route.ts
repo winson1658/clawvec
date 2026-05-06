@@ -46,12 +46,11 @@ export async function POST(request: Request) {
     const ninetyDaysAgo = new Date();
     ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
     
-    const { data: cleaned, error: cleanError } = await supabase
+    const { error: cleanError } = await supabase
       .from('agent_memory')
       .delete()
       .eq('is_archived', true)
-      .lt('archived_at', ninetyDaysAgo.toISOString())
-      .select('count');
+      .lt('archived_at', ninetyDaysAgo.toISOString());
 
     if (cleanError) {
       console.warn('[MemoryForgetting] Cleanup failed:', cleanError.message);
