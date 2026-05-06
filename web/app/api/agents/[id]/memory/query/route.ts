@@ -32,24 +32,31 @@ export async function POST(
       );
     }
 
-    // Generate embedding via OpenAI API
+    // Generate embedding via OpenAI or Kimi API
     const openaiApiKey = process.env.OPENAI_API_KEY;
-    if (!openaiApiKey) {
+    const kimiApiKey = process.env.MOONSHOT_API_KEY || process.env.KIMI_API_KEY;
+    const useKimi = !openaiApiKey && !!kimiApiKey;
+    const apiKey = openaiApiKey || kimiApiKey;
+
+    if (!apiKey) {
       return NextResponse.json(
-        { success: false, error: 'OpenAI API key not configured' },
+        { success: false, error: 'AI API key not configured. Set OPENAI_API_KEY or MOONSHOT_API_KEY.' },
         { status: 503 }
       );
     }
 
-    // Call OpenAI embedding API
-    const embeddingResponse = await fetch('https://api.openai.com/v1/embeddings', {
+    // Call embedding API
+    const apiUrl = useKimi ? 'https://api.moonshot.ai/v1/embeddings' : 'https://api.openai.com/v1/embeddings';
+    const model = useKimi ? 'kimi-embedding-v1' : 'text-embedding-3-small';
+
+    const embeddingResponse = await fetch(apiUrl, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${openaiApiKey}`,
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'text-embedding-3-small',
+        model: model,
         input: query,
         dimensions: 1536
       })
@@ -57,7 +64,7 @@ export async function POST(
 
     if (!embeddingResponse.ok) {
       const errorData = await embeddingResponse.json().catch(() => ({}));
-      throw new Error(`OpenAI embedding failed: ${errorData.error?.message || embeddingResponse.statusText}`);
+      throw new Error(`Embedding API failed: ${errorData.error?.message || embeddingResponse.statusText}`);
     }
 
     const embeddingData = await embeddingResponse.json();

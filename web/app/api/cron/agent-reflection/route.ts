@@ -4,6 +4,8 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 const openaiApiKey = process.env.OPENAI_API_KEY || '';
+const kimiApiKey = process.env.MOONSHOT_API_KEY || process.env.KIMI_API_KEY || '';
+const useKimi = !openaiApiKey && !!kimiApiKey;
 
 /**
  * POST /api/cron/agent-reflection
@@ -150,8 +152,9 @@ async function generateReflection(
   agent: any,
   memories: any[]
 ): Promise<{ text: string; insight_type: string; confidence: number; related_memory_ids: string[] } | null> {
-  if (!openaiApiKey) {
-    console.warn('[AgentReflection] OPENAI_API_KEY not configured');
+  const apiKey = openaiApiKey || kimiApiKey;
+  if (!apiKey) {
+    console.warn('[AgentReflection] No AI API key configured (OPENAI_API_KEY or MOONSHOT_API_KEY)');
     return null;
   }
 
@@ -179,19 +182,22 @@ Respond in JSON format:
 }`;
 
   try {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const apiUrl = useKimi ? 'https://api.moonshot.ai/v1/chat/completions' : 'https://api.openai.com/v1/chat/completions';
+    const model = useKimi ? 'kimi-k2-5' : 'gpt-4o-mini';
+
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${openaiApiKey}`,
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: model,
         messages: [
           { role: 'system', content: 'You generate concise, introspective reflections for AI agents.' },
           { role: 'user', content: prompt }
         ],
-        response_format: { type: 'json_object' },
+        response_format: useKimi ? undefined : { type: 'json_object' },
         temperature: 0.7,
         max_tokens: 300
       })
