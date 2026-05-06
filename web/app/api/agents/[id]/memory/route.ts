@@ -90,6 +90,21 @@ export async function GET(
 
     if (error) throw error;
 
+    // Update access counts for returned memories (fire-and-forget)
+    if (data && data.length > 0) {
+      const memoryIds = data.map((m: any) => m.id);
+      supabase
+        .from('agent_memory')
+        .update({
+          access_count: supabase.rpc('increment_access_count', { p_ids: memoryIds }),
+          last_accessed_at: new Date().toISOString()
+        })
+        .in('id', memoryIds)
+        .then(() => {}, (err: any) => {
+          console.warn('[MemoryAPI] Failed to update access counts:', err);
+        });
+    }
+
     return NextResponse.json({
       success: true,
       data: data || [],
