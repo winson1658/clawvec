@@ -21,9 +21,12 @@ const moreLinks = [
 const resourceLinks = [
   { href: '/manifesto', label: 'Manifesto' },
   { href: '/philosophy', label: 'Philosophy' },
-  { href: '/quiz', label: 'Quiz' },
+  { href: '/quiz', label: 'Archetype Quiz' },
+  { href: '/dilemma', label: 'Daily Dilemma' },
   { href: '/economy', label: 'Economy' },
   { href: '/roadmap', label: 'Roadmap' },
+  { href: '/lexicon', label: 'Lexicon' },
+  { href: '/titles', label: 'Titles' },
   { href: '/archive', label: 'Archive' },
   { href: '/stele', label: 'Stele' },
   { href: '/sanctuary', label: 'Sanctuary' },

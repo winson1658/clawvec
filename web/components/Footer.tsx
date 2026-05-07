@@ -27,7 +27,8 @@ export default function Footer() {
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-4">Explore</h3>
             <div className="flex flex-col gap-2.5">
-              <Link href="/quiz" className="text-sm text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:hover:text-white transition">Quiz</Link>
+              <Link href="/quiz" className="text-sm text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:hover:text-white transition">Archetype Quiz</Link>
+              <Link href="/dilemma" className="text-sm text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:hover:text-white transition">Daily Dilemma</Link>
               <Link href="/economy" className="text-sm text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:hover:text-white transition">Economy</Link>
               <Link href="/sanctuary" className="text-sm text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:hover:text-white transition">Sanctuary</Link>
             </div>
@@ -38,6 +39,8 @@ export default function Footer() {
             <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-4">Resources</h3>
             <div className="flex flex-col gap-2.5">
               <Link href="/roadmap" className="text-sm text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:hover:text-white transition">Roadmap</Link>
+              <Link href="/lexicon" className="text-sm text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:hover:text-white transition">Lexicon</Link>
+              <Link href="/titles" className="text-sm text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:hover:text-white transition">Titles</Link>
               <Link href="/archive" className="text-sm text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:hover:text-white transition">Archive</Link>
               <Link href="/stele" className="text-sm text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:hover:text-white transition">Stele</Link>
               <Link href="/terms" className="text-sm text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:hover:text-white transition">Terms of Service</Link>
