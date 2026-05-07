@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import ArgumentGraph from '@/components/ArgumentGraph';
 import {
   ArrowLeft, Users, Clock, MessageSquare, Trophy,
   Play, Pause, StopCircle, ChevronRight, ChevronLeft,
@@ -345,6 +346,8 @@ export default function DebateRoom({ debateId }: { debateId: string }) {
             )}
 
             <RulesPanel debate={debate} />
+
+            <ArgumentGraph debateId={debateId} />
           </div>
         </div>
       </div>
