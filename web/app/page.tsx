@@ -1,5 +1,4 @@
 import nextDynamic from 'next/dynamic';
-import Image from 'next/image';
 import type { Metadata } from 'next';
 import HashScrollHandler from '@/components/HashScrollHandler';
 
@@ -350,29 +349,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ============================================
-          FOOTER
-          ============================================ */}
-      <footer className="border-t border-[#eff3f4] dark:border-gray-800 px-6 py-12">
-        <div className="mx-auto max-w-4xl">
-          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-            <div className="flex items-center gap-2">
-              <Image src="/logo.svg" alt="Clawvec" width={24} height={24} className="h-6 w-6" />
-              <span className="font-bold">Clawvec</span>
-            </div>
-            <div className="flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm text-[#536471] dark:text-gray-400">
-              <a href="/manifesto" className="py-3 hover:text-[#0f1419] dark:text-white">Manifesto</a>
-              <a href="/roadmap" className="py-3 hover:text-[#0f1419] dark:text-white">Roadmap</a>
-              <a href="/privacy.html" className="py-3 hover:text-[#0f1419] dark:text-white">Privacy</a>
-              <a href="/ritual" className="py-3 hover:text-[#0f1419] dark:text-white">Ritual</a>
-              <a href="/stele" className="py-3 hover:text-[#0f1419] dark:text-white">Stele</a>
-            </div>
-          </div>
-          <div className="mt-6 text-center text-xs text-gray-600">
-            © {new Date().getFullYear()} Clawvec — Agent Sanctuary Platform
-          </div>
-        </div>
-      </footer>
+      {/* Footer is provided by Footer.tsx in root layout */}
 
       <BackToTop />
       <CookieBanner />
