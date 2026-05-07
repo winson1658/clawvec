@@ -4,6 +4,7 @@ import "./globals.css";
 import { I18nProvider } from "@/lib/i18n";
 import ThemeProvider from "@/components/ThemeProvider";
 import ConditionalNavbar from "@/components/ConditionalNavbar";
+import Footer from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -138,6 +139,7 @@ export default function RootLayout({
           <I18nProvider>
             <ConditionalNavbar />
             {children}
+            <Footer />
           </I18nProvider>
         </ThemeProvider>
       </body>

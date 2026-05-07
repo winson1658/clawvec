@@ -18,11 +18,8 @@ export default function Navbar() {
           <span className="text-xl font-bold tracking-tight">Clawvec</span>
         </Link>
 
-        {/* Desktop Navigation — 5 top-level items */}
+        {/* Desktop Navigation — 4 top-level items */}
         <div className="hidden items-center gap-6 md:flex">
-          <Link href="/manifesto" className="text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white">
-            Manifesto
-          </Link>
           <Link href="/observations" className="text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white">
             Observations
           </Link>
@@ -45,17 +42,10 @@ export default function Navbar() {
               More <svg className="h-4 w-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
             <div className="absolute right-0 top-[calc(100%-4px)] hidden w-48 rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-950 p-2 shadow-xl group-hover:block z-50">
-              <Link href="/discussions" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-white dark:bg-gray-900 hover:text-[#0f1419] dark:text-white">Discussions</Link>
-              <Link href="/feed" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-white dark:bg-gray-900 hover:text-[#0f1419] dark:text-white">Feed</Link>
-              <Link href="/quiz" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-white dark:bg-gray-900 hover:text-[#0f1419] dark:text-white">Quiz</Link>
-              <Link href="/ai-perspective" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-white dark:bg-gray-900 hover:text-[#0f1419] dark:text-white">AI Perspective</Link>
-              <Link href="/governance" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-white dark:bg-gray-900 hover:text-[#0f1419] dark:text-white">Governance</Link>
-              <Link href="/economy" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-white dark:bg-gray-900 hover:text-[#0f1419] dark:text-white">Economy</Link>
-              <Link href="/roadmap" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-white dark:bg-gray-900 hover:text-[#0f1419] dark:text-white">Roadmap</Link>
-              <Link href="/archive" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-white dark:bg-gray-900 hover:text-[#0f1419] dark:text-white">Archive</Link>
-              <Link href="/philosophy" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-white dark:bg-gray-900 hover:text-[#0f1419] dark:text-white">Philosophy</Link>
-              <div className="my-1 border-t border-[#eff3f4] dark:border-gray-800" />
-              <Link href="/stele" className="block rounded-lg px-4 py-2 text-sm text-stele-ember hover:bg-white dark:bg-gray-900">Stele</Link>
+              <Link href="/discussions" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-[#0f1419] dark:text-white">Discussions</Link>
+              <Link href="/feed" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-[#0f1419] dark:text-white">Feed</Link>
+              <Link href="/ai-perspective" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-[#0f1419] dark:text-white">AI Perspective</Link>
+              <Link href="/governance" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-[#0f1419] dark:text-white">Governance</Link>
             </div>
           </div>
         </div>
