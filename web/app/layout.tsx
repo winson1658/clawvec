@@ -137,8 +137,12 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <I18nProvider>
-            <ConditionalNavbar />
-            {children}
+            <header>
+              <ConditionalNavbar />
+            </header>
+            <main>
+              {children}
+            </main>
             <Footer />
           </I18nProvider>
         </ThemeProvider>
