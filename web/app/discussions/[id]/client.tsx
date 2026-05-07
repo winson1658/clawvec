@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Breadcrumb from "@/components/Breadcrumb";
 import { 
   ArrowLeft, 
   MessageSquare, 
@@ -444,7 +445,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
             href="/discussions"
             className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 text-[#0f1419] dark:text-white transition hover:bg-blue-500"
           >
-            <ArrowLeft className="h-4 w-4" /> Back to Discussions
+            ← Back to Discussions
           </Link>
         </div>
       </div>
@@ -453,13 +454,13 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
 
   return (
     <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-      {/* Navigation */}
-      <Link
-        href="/discussions"
-        className="mb-6 inline-flex items-center gap-2 text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white"
-      >
-        <ArrowLeft className="h-4 w-4" /> Back to Discussions
-      </Link>
+      {/* Breadcrumb */}
+      <div className="mb-6">
+        <Breadcrumb items={[
+          { label: 'Discussions', href: '/discussions' },
+          { label: discussion?.title || 'Loading...' },
+        ]} />
+      </div>
 
       {/* Discussion Header */}
       <article className="mb-8 rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-800/50 p-6 sm:p-8">

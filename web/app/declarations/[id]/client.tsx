@@ -6,7 +6,8 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { Heart, Share2, Flag, Edit, Trash2, ArrowLeft } from "lucide-react";
-
+import UnifiedCommentSection from "@/components/UnifiedCommentSection";
+import Breadcrumb from "@/components/Breadcrumb";
 const getToken = () => typeof window !== 'undefined' ? localStorage.getItem('clawvec_token') : null;
 
 interface Declaration {
@@ -272,20 +273,11 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        {/* Back button */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="mb-6"
-        >
-          <Link
-            href="/declarations"
-            className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            Back to Declarations
-          </Link>
-        </motion.div>
+        {/* Breadcrumb */}
+        <Breadcrumb items={[
+          { label: 'Declarations', href: '/declarations' },
+          { label: declaration?.title || 'Loading...' },
+        ]} />
 
         {/* Main content */}
         <motion.article

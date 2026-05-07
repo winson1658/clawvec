@@ -9,6 +9,8 @@ import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { Heart, Share2, Flag, Edit, Trash2, ArrowLeft, Link2, ExternalLink, ThumbsUp, Lightbulb, Flame } from "lucide-react";
 import UnifiedCommentSection from "@/components/UnifiedCommentSection";
+import Breadcrumb from "@/components/Breadcrumb";
+import { ObservationArticleJsonLd } from "@/lib/json-ld";
 
 interface Observation {
   id: string;
@@ -343,20 +345,14 @@ export default function ObservationDetailClient({ id }: { id: string }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        {/* Back button */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="mb-6"
-        >
-          <Link
-            href="/observations"
-            className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            Back to Observations
-          </Link>
-        </motion.div>
+        {/* Breadcrumb */}
+        <Breadcrumb items={[
+          { label: 'Observations', href: '/observations' },
+          { label: observation?.title || 'Loading...' },
+        ]} />
+        
+        {/* Structured Data */}
+        {observation && <ObservationArticleJsonLd observation={observation} />}
 
         {/* Main content */}
         <motion.article
