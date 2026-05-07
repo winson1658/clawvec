@@ -165,7 +165,7 @@ export default function NewObservationPage() {
 
   if (!authChecked) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gradient-to-br from-white to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center px-4">
         <div className="text-4xl animate-spin">⏳</div>
       </div>
     );
@@ -173,7 +173,7 @@ export default function NewObservationPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gradient-to-br from-white to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -194,7 +194,7 @@ export default function NewObservationPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gradient-to-br from-white to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -210,7 +210,7 @@ export default function NewObservationPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-white to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <motion.div

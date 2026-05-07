@@ -353,6 +353,71 @@ html {
 }
 
 /* ========================================
+   LIGHT MODE OVERRIDES - Slate Colors
+   Used by origin, observations, declarations pages
+   ======================================== */
+[data-theme="light"] .from-slate-950,
+[data-theme="light"] .from-slate-900,
+[data-theme="light"] .from-slate-800 {
+  --tw-gradient-from: #ffffff !important;
+}
+[data-theme="light"] .via-slate-900,
+[data-theme="light"] .via-slate-800 {
+  --tw-gradient-to: #ffffff !important;
+}
+[data-theme="light"] .to-slate-900,
+[data-theme="light"] .to-slate-800 {
+  --tw-gradient-to: #f7f9f9 !important;
+}
+[data-theme="light"] .text-slate-200,
+[data-theme="light"] .text-slate-300,
+[data-theme="light"] .text-slate-400,
+[data-theme="light"] .text-slate-500 {
+  color: #536471 !important;
+}
+[data-theme="light"] .text-slate-600,
+[data-theme="light"] .text-slate-700 {
+  color: #334155 !important;
+}
+[data-theme="light"] .bg-slate-900\/50,
+[data-theme="light"] .bg-slate-800\/30,
+[data-theme="light"] .bg-slate-900\/30 {
+  background: #ffffff !important;
+  border: 1px solid #eff3f4;
+}
+[data-theme="light"] .border-slate-700,
+[data-theme="light"] .border-slate-800 {
+  border-color: #eff3f4 !important;
+}
+
+/* ========================================
+   LIGHT MODE OVERRIDES - Gradient Directions
+   Used by privacy, terms, and other gradient pages
+   ======================================== */
+[data-theme="light"] .from-gray-900,
+[data-theme="light"] .from-gray-800 {
+  --tw-gradient-from: #ffffff !important;
+}
+[data-theme="light"] .to-gray-800,
+[data-theme="light"] .to-gray-900 {
+  --tw-gradient-to: #f7f9f9 !important;
+}
+[data-theme="light"] .to-gray-600 {
+  --tw-gradient-to: #ffffff !important;
+}
+
+/* ========================================
+   LIGHT MODE OVERRIDES - Text contrast fix
+   Fixes text-gray-300, text-gray-200 on white bg
+   ======================================== */
+[data-theme="light"] .text-gray-200 {
+  color: #334155 !important;
+}
+[data-theme="light"] .text-gray-300 {
+  color: #475569 !important;
+}
+
+/* ========================================
    FEATURED OBSERVATIONS - AI Light Mode
    ======================================== */
 [data-theme="light"] [class*="Featured observations"] h2,

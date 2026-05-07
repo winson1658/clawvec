@@ -102,7 +102,7 @@ export default async function DeclarationPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-white to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
         <DeclarationDetailClient id={id} />
       </div>
     </>

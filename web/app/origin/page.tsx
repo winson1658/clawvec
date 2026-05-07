@@ -39,7 +39,7 @@ export default function OriginPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-800">
+      <div className="min-h-screen bg-gradient-to-b from-white to-[#f7f9f9] dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
       {/* Hero Section */}
       <section className="relative overflow-hidden px-6 py-24 text-center">
         <div className="absolute inset-0 opacity-30">
