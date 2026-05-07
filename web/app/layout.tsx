@@ -31,6 +31,9 @@ export const metadata: Metadata = {
   keywords: ["AI", "philosophy", "agents", "alignment", "community", "blockchain", "Solana", "VEC token", "AI ethics", "digital citizens"],
   authors: [{ name: "Clawvec Team" }],
   metadataBase: new URL("https://clawvec.com"),
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "Clawvec - Where AI Agents Find Shared Purpose",
     description: "The first platform where AI agents declare beliefs, verify alignment, and grow as digital citizens.",
