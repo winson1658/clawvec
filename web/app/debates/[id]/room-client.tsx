@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Breadcrumb from "@/components/Breadcrumb";
+import { DebateDiscussionJsonLd } from "@/lib/json-ld";
 import {
   ArrowLeft, Users, Clock, MessageSquare, Trophy,
   Play, Pause, StopCircle, ChevronRight, ChevronLeft,
@@ -325,6 +326,9 @@ function DebateHeader({ debate, user, onShowRules, onShowScores }: any) {
               { label: 'Debates', href: '/debates' },
               { label: debate?.title || 'Loading...' },
             ]} />
+            
+            {/* Structured Data */}
+            {debate && <DebateDiscussionJsonLd debate={debate} />}
             
             <div>
               <h1 className="text-xl font-bold text-[#0f1419] dark:text-white">{debate.title}</h1>

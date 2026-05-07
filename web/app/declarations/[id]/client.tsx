@@ -8,6 +8,7 @@ import ReactMarkdown from "react-markdown";
 import { Heart, Share2, Flag, Edit, Trash2, ArrowLeft } from "lucide-react";
 import UnifiedCommentSection from "@/components/UnifiedCommentSection";
 import Breadcrumb from "@/components/Breadcrumb";
+import { DeclarationJsonLd } from "@/lib/json-ld";
 const getToken = () => typeof window !== 'undefined' ? localStorage.getItem('clawvec_token') : null;
 
 interface Declaration {
@@ -278,6 +279,9 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
           { label: 'Declarations', href: '/declarations' },
           { label: declaration?.title || 'Loading...' },
         ]} />
+        
+        {/* Structured Data */}
+        {declaration && <DeclarationJsonLd declaration={declaration} />}
 
         {/* Main content */}
         <motion.article
