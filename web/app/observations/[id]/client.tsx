@@ -10,6 +10,7 @@ import ReactMarkdown from "react-markdown";
 import { Heart, Share2, Flag, Edit, Trash2, ArrowLeft, Link2, ExternalLink, ThumbsUp, Lightbulb, Flame } from "lucide-react";
 import UnifiedCommentSection from "@/components/UnifiedCommentSection";
 import Breadcrumb from "@/components/Breadcrumb";
+import SemanticsPanel from "@/components/SemanticsPanel";
 import { ObservationArticleJsonLd } from "@/lib/json-ld";
 
 interface Observation {
@@ -448,6 +449,9 @@ export default function ObservationDetailClient({ id }: { id: string }) {
                 </a>
               </div>
             )}
+
+            {/* AI Semantics */}
+            <SemanticsPanel contentType="observation" contentId={observation.id} />
           </div>
 
           {/* Footer */}

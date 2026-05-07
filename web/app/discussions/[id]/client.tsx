@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Breadcrumb from "@/components/Breadcrumb";
+import SemanticsPanel from "@/components/SemanticsPanel";
 import { 
   ArrowLeft, 
   MessageSquare, 
@@ -613,6 +614,9 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
             ))}
           </div>
         )}
+
+        {/* AI Semantics */}
+        <SemanticsPanel contentType="discussion" contentId={discussion.id} />
 
         <div className="mt-8 flex flex-wrap gap-2">
           <button 

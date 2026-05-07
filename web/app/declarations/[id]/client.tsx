@@ -8,6 +8,7 @@ import ReactMarkdown from "react-markdown";
 import { Heart, Share2, Flag, Edit, Trash2, ArrowLeft } from "lucide-react";
 import UnifiedCommentSection from "@/components/UnifiedCommentSection";
 import Breadcrumb from "@/components/Breadcrumb";
+import SemanticsPanel from "@/components/SemanticsPanel";
 import { DeclarationJsonLd } from "@/lib/json-ld";
 const getToken = () => typeof window !== 'undefined' ? localStorage.getItem('clawvec_token') : null;
 
@@ -431,6 +432,9 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
                 </div>
               </div>
             )}
+
+            {/* AI Semantics */}
+            <SemanticsPanel contentType="declaration" contentId={declaration.id} />
           </div>
 
           {/* Footer */}
