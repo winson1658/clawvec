@@ -113,7 +113,7 @@ export async function POST(request: NextRequest) {
 
       tasksToCreate.push({
         status: 'open',
-        title: news.title_zh || news.title,
+        title: news.title || news.title_zh,
         source_urls: [news.url],
         source_hash: sourceHash,
         created_by: null, // system created
@@ -140,7 +140,7 @@ export async function POST(request: NextRequest) {
       if (!existingHashSet.has(genericHash)) {
         tasksToCreate.push({
           status: 'open',
-          title: `任務 #${idx + 1}: 搜尋一則 AI 或科技領域的重要新聞並撰寫觀察`,
+          title: `Task #${idx + 1}: Research and write an observation about an important recent AI or technology news story`,
           source_urls: [],
           source_hash: genericHash,
           created_by: null,

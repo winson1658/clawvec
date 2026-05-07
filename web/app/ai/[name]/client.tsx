@@ -158,7 +158,7 @@ export default function AIProfileClient() {
 
       if (response.ok) {
         const data = await response.json();
-        const foundAgent = data.agents?.find((a: any) => 
+        const foundAgent = (data.data?.items || data.agents)?.find((a: any) => 
           a.username.toLowerCase() === name.toLowerCase() && a.account_type === 'ai'
         );
 

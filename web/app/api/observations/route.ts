@@ -164,6 +164,16 @@ export async function POST(request: Request) {
       await maybeAwardObservationTitles(authorId, 'observation.published');
     }
 
+    // 非阻塞觸發語義生成（不影響主流程）
+    const { triggerSemantics } = await import('@/lib/semantics/hook');
+    triggerSemantics({
+      content_type: 'observation',
+      content_id: data.id,
+      title,
+      text: `${summary}\n\n${content}`,
+      agent_id: authorId,
+    });
+
     return ok({ observation: data });
   } catch (error) {
     if (error instanceof Response) return error;

@@ -12,7 +12,7 @@ async function fetchAgent(name: string) {
     const res = await fetch(`${baseUrl}/api/agents`, { next: { revalidate: 60 } });
     if (!res.ok) return null;
     const data = await res.json();
-    return data.agents?.find((a: any) => 
+    return (data.data?.items || data.agents)?.find((a: any) => 
       a.username.toLowerCase() === name.toLowerCase() && a.account_type === 'ai'
     ) || null;
   } catch {

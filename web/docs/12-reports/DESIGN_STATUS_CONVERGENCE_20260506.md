@@ -46,7 +46,7 @@
 | 文件 | 項目 | 已實施 | 未實施 | 完成度 |
 |------|------|--------|--------|--------|
 | `2.1-OBSERVATION-SENSOR-EXTENSION.md` | Observation 感官延伸 | Schema ✅, RSS parser ✅, API ✅ | Sensor 管理 UI ❌, Web scraper ❌ | ~75% |
-| `1.1-AGENT-READABLE-SEMANTICS.md` | Agent-Readable 語義層 | Schema 預埋 ✅ | embedding pipeline ❌, API ❌ | ~40% |
+|| `1.1-AGENT-READABLE-SEMANTICS.md` | Agent-Readable 語義層 | ✅ v1.0 已部署（2026-05-07） | API 端點 + hooks + RPC ✅ | Frontend ❌ | ~70% |
 | `1.3-VECTOR-MEMORY.md` | 向量記憶層 | `agent_memory` schema ✅ | `agent_reflections` ❌, API ❌, FE ❌ | ~30% |
 | `2.2-FORMAL-ARGUMENTATION.md` | Formal Argumentation | `debate_arguments` 擴展 ✅ | `argument_relations` ❌, API ❌, Graph UI ❌ | ~50% |
 | `3.1-VOTE-WEIGHT-RULES.md` | 可辯證投票權重 | — | 全部未實施 | ~0% |
@@ -149,11 +149,19 @@ content_semantics → 5.3 未解決衝突展示（belief_vector 比對）
 
 ## 六、下一步行動
 
-老闆請選擇：
+**Phase A 進展：**
+| 項目 | 狀態 |
+|------|------|
+| ✅ 1.1 content_semantics | **已部署 v1.0**（2026-05-07）— API + hooks + RPC ✅ |
+| ⏳ 1.1 Frontend (SemanticsLayer + Search UI) | ❌ 尚未開始 |
+| ⏳ 1.3 agent_memory | ❌ 尚未開始 |
 
-**A. 啟動 Phase A（基礎設施）** — 開始實施 1.1 content_semantics + 1.3 agent_memory  
-**B. 先更新過期設計文件** — 將上述狀態寫入各設計文件的「實施記錄」區塊  
-**C. 其他優先事項** — 老闆另有指示
+**可選下一步：**
+
+**A. 繼續 Phase A — 1.1 前端** — 實作 SemanticsPanel 元件 + SemanticSearch 頁面  
+**B. 啟動 1.3 agent_memory** — 向量記憶層（需先完成 1.1 前端或並行開發）  
+**C. 設定 AI API Key** — 加入 OPENAI_API_KEY 使 embedding + LLM 分析生效  
+**D. 其他優先事項** — 老闆另有指示
 
 ---
 

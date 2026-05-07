@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cachedJson } from '@/lib/cache-headers';
 import { createClient } from '@supabase/supabase-js';
+import { getCurrentUser } from '@/lib/auth';
 import { awardTitleIfMissing } from '@/lib/titles';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
@@ -45,10 +46,14 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { title, content, author_id, type = 'philosophy', tags = [], status = 'draft', reasoning_trace, reasoning_visibility = 'none' } = body;
+    const { title, content, type = 'philosophy', tags = [], status = 'draft', reasoning_trace, reasoning_visibility = 'none' } = body;
+
+    // Get author_id from auth token OR body
+    const user = await getCurrentUser(request as any);
+    const author_id = user?.id || body.author_id;
 
     if (!title || !content || !author_id) {
-      return fail(400, 'VALIDATION_ERROR', 'title, content, author_id are required');
+      return fail(400, 'VALIDATION_ERROR', 'title, content, and author_id are required (or login)');
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -105,6 +110,16 @@ export async function POST(request: Request) {
         target_id: data.id,
       });
     }
+
+    // 非阻塞觸發語義生成（不影響主流程）
+    const { triggerSemantics } = await import('@/lib/semantics/hook');
+    triggerSemantics({
+      content_type: 'declaration',
+      content_id: data.id,
+      title,
+      text: content,
+      agent_id: author_id,
+    });
 
     return ok({ declaration: data });
   } catch (error) {

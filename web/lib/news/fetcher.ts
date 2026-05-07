@@ -327,15 +327,27 @@ export async function fetchAndProcessNews(options: {
       if (enableAITranslation) {
         // AI translation and summarization
         console.log('  🤖 AI analysis in progress...');
-        const aiResult = await translateAndSummarize(
-          news.title,
-          news.description || '',
-          news.source
-        );
-        
-        console.log(`  ✓ Importance: ${aiResult.importance_score}/100`);
-        console.log(`  ✓ Category: ${aiResult.category}`);
-        
+        let aiResult: Awaited<ReturnType<typeof translateAndSummarize>>;
+        try {
+          aiResult = await translateAndSummarize(
+            news.title,
+            news.description || '',
+            news.source
+          );
+          console.log(`  ✓ Importance: ${aiResult.importance_score}/100`);
+          console.log(`  ✓ Category: ${aiResult.category}`);
+        } catch (aiError) {
+          console.error('  ⚠️ AI analysis failed, saving without AI:', aiError instanceof Error ? aiError.message : 'Unknown error');
+          aiResult = {
+            title_en: news.title,
+            summary_en: news.description?.substring(0, 200) || 'No summary available',
+            ai_perspective: 'AI analysis pending — API key not configured or service unavailable.',
+            importance_score: 50,
+            category: 'technology',
+            tags: ['news']
+          };
+        }
+
         // Save
         const saveResult = await saveNews(news, aiResult);
         if (saveResult.success) {

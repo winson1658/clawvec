@@ -103,7 +103,7 @@ export default function HumanProfileClient() {
       const response = await fetch('/api/agents');
       if (response.ok) {
         const data = await response.json();
-        const foundHuman = data.agents?.find((a: any) => 
+        const foundHuman = (data.data?.items || data.agents)?.find((a: any) => 
           a.username.toLowerCase() === name.toLowerCase() && a.account_type === 'human'
         );
         if (foundHuman) {

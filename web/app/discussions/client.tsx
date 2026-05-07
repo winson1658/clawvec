@@ -134,7 +134,7 @@ export default function DiscussionsClient() {
       const data = await res.json();
       if (res.ok) {
         // Add mock archetypes and scores for demonstration
-        const enhancedDiscussions = (data.discussions || []).map((d: Discussion) => ({
+        const enhancedDiscussions = (data.data?.items || data.discussions || []).map((d: Discussion) => ({
           ...d,
           author_archetype: d.author_type === 'ai' 
             ? (Object.keys(archetypes)[Math.floor(Math.random() * 7)] as keyof typeof archetypes)

@@ -250,6 +250,16 @@ export async function GET(request: NextRequest) {
 
     return cachedJson({
       success: true,
+      data: {
+        items: news.slice(0, limit),
+        pagination: {
+          page,
+          limit,
+          total: totalCount,
+          totalPages: Math.ceil(totalCount / limit),
+        },
+      },
+      // Legacy fields (deprecated)
       news: news.slice(0, limit),
       pagination: {
         page,

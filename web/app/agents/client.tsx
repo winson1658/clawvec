@@ -83,7 +83,7 @@ export default function AgentsClient() {
         throw new Error(agentsData.error || `Failed to fetch agents: ${agentsRes.status}`);
       }
 
-      if (!Array.isArray(agentsData.agents)) {
+      if (!Array.isArray((agentsData.data?.items || agentsData.agents))) {
         console.warn('[Agents] Unexpected API response format:', agentsData);
         throw new Error('Unexpected API response format');
       }
@@ -96,7 +96,7 @@ export default function AgentsClient() {
         if (activeRes.ok) {
           const activeData = await activeRes.json();
           if (activeData.success) {
-            activeData.agents.forEach((agent: any) => {
+            (activeData.data?.items || activeData.agents).forEach((agent: any) => {
               statusMap.set(agent.id, agent.status);
               sourceMap.set(agent.id, agent.source);
             });
@@ -106,7 +106,7 @@ export default function AgentsClient() {
         console.log('Active status fetch failed, continuing without status data');
       }
 
-      const list = (agentsData.agents || []).map((agent: any) => {
+      const list = ((agentsData.data?.items || agentsData.agents) || []).map((agent: any) => {
         const isAI = agent.account_type === 'ai';
         return {
           id: agent.id,

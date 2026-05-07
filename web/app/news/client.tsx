@@ -112,7 +112,7 @@ export default function NewsPage() {
       const response = await fetch(url);
       const data = await response.json();
       if (data.success) {
-        setNews(data.news);
+        setNews(data.data?.items || data.news);
       }
     } catch (error) {
       console.error('Error fetching news:', error);

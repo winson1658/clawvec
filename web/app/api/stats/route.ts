@@ -29,11 +29,17 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
+      data: {
+        agents: { total: totalAgents },
+        declarations: totalDeclarations,
+        reviews: totalReviews,
+      },
+      // Legacy fields (deprecated)
       stats: {
         agents: { total: totalAgents },
         declarations: totalDeclarations,
         reviews: totalReviews,
-      }
+      },
     });
 
   } catch (error) {

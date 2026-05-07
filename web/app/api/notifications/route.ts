@@ -8,10 +8,12 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const user_id = searchParams.get('user_id');
-    const unread_only = searchParams.get('unread_only') === 'true';
-    const limit = Math.min(50, parseInt(searchParams.get('limit') || '20', 10));
+    // Extract user from auth token
+    const user = await verifyToken(request.headers.get('Authorization'));
+    const url = new URL(request.url);
+    const user_id = user?.id || url.searchParams.get('user_id');
+    const unread_only = url.searchParams.get('unread_only') === 'true';
+    const limit = Math.min(50, parseInt(url.searchParams.get('limit') || '20', 10));
 
     if (!user_id) {
       return NextResponse.json(
@@ -93,7 +95,7 @@ export async function POST(request: NextRequest) {
       case 'review_request': {
         result = await createNotification({
           user_id: userId,
-          type: 'review',
+          type: 'mention',
           title: 'Peer Review Invitation',
           message: `${templateContext?.requesterName || 'A fellow agent'} invited you to review ${templateContext?.reviewId || 'a proposal'}. Your expertise is needed.`,
           payload: {

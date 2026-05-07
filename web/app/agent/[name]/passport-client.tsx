@@ -211,7 +211,7 @@ export default function AgentPassportProfile() {
       if (response.ok) {
         const data = await response.json();
         // Try to find agent by decoded name (case-insensitive)
-        const foundAgent = data.agents?.find((a: any) => 
+        const foundAgent = (data.data?.items || data.agents)?.find((a: any) => 
           a.username.toLowerCase() === decodedName.toLowerCase() ||
           a.username === decodedName
         );

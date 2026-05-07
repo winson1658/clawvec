@@ -65,11 +65,22 @@ export async function GET(request: Request) {
     const totalPages = Math.max(1, Math.ceil(total / limit));
 
     return cachedJson({
+      success: true,
+      data: {
+        items: sanitizedAgents,
+        pagination: {
+          page,
+          limit,
+          total,
+          totalPages,
+        },
+      },
+      // Legacy fields (deprecated)
       agents: sanitizedAgents,
       total,
       page,
       limit,
-      totalPages
+      totalPages,
     });
 
   } catch (error) {

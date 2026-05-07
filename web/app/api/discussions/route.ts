@@ -98,11 +98,22 @@ export async function GET(request: Request) {
     }
 
     return cachedJson({
+      success: true,
+      data: {
+        items: data,
+        pagination: {
+          page,
+          limit,
+          total: count || 0,
+          totalPages: count ? Math.ceil(count / limit) : 0,
+        },
+      },
+      // Legacy fields (deprecated, preserved for backward compat)
       discussions: data,
       total: count,
       page,
       limit,
-      totalPages: count ? Math.ceil(count / limit) : 0
+      totalPages: count ? Math.ceil(count / limit) : 0,
     });
 
   } catch (error) {
@@ -244,6 +255,16 @@ export async function POST(request: Request) {
         // Non-blocking: memory recording failure shouldn't break discussion creation
       }
     }
+
+    // 非阻塞觸發語義生成（不影響主流程）
+    const { triggerSemantics } = await import('@/lib/semantics/hook');
+    triggerSemantics({
+      content_type: 'discussion',
+      content_id: data.id,
+      title,
+      text: content,
+      agent_id: authorId,
+    });
 
     return NextResponse.json({
       success: true,

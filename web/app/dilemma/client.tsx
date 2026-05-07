@@ -41,7 +41,7 @@ export default function DilemmaClient() {
       const data = await response.json();
       if (response.ok) {
         setDilemma(data.dilemma);
-        setStats(data.stats);
+        setStats(data.data || data.stats);
         setError(null);
       } else {
         setError(data.error || 'Failed to load dilemma');

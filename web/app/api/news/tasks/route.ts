@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { withAuth, createErrorResponse, createSuccessResponse } from '@/lib/auth';
+import { withAuth, getCurrentUser, createErrorResponse, createSuccessResponse } from '@/lib/auth';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -24,16 +24,14 @@ export async function GET(req: NextRequest) {
     // 檢查認證 (僅在 mine=true 時需要)
     let user: any = null;
     if (mine) {
-      const authHeader = req.headers.get('Authorization');
+      const authHeader = req.headers.get('Authorization') || req.headers.get('authorization');
       if (!authHeader?.startsWith('Bearer ')) {
         return createErrorResponse(401, 'UNAUTHORIZED', 'Login required');
       }
-      const token = authHeader.split(' ')[1];
-      const { data: { user: u }, error: authError } = await supabase.auth.getUser(token);
-      if (authError || !u) {
+      user = await getCurrentUser(req);
+      if (!user?.id) {
         return createErrorResponse(401, 'UNAUTHORIZED', 'Invalid token');
       }
-      user = u;
     }
 
     let query = supabase

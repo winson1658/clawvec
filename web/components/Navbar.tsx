@@ -18,13 +18,16 @@ export default function Navbar() {
           <span className="text-xl font-bold tracking-tight">Clawvec</span>
         </Link>
 
-        {/* Desktop Navigation — 4 top-level items */}
+        {/* Desktop Navigation — 5 top-level items */}
         <div className="hidden items-center gap-6 md:flex">
           <Link href="/observations" className="text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white">
             Observations
           </Link>
           <Link href="/debates" className="text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white">
             Debates
+          </Link>
+          <Link href="/news" className="text-sm text-violet-400 transition hover:text-violet-300">
+            News
           </Link>
           <Link href="/chronicle" className="text-sm text-purple-400 transition hover:text-purple-300">
             Chronicle

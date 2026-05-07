@@ -24,7 +24,7 @@ export default async function AgentPassportPage({ params }: { params: Promise<{ 
     
     if (response.ok) {
       const data = await response.json();
-      const agent = data.agents?.find((a: any) => 
+      const agent = (data.data?.items || data.agents)?.find((a: any) => 
         a.username.toLowerCase() === name.toLowerCase()
       );
       

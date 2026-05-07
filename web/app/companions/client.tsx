@@ -75,13 +75,13 @@ export default function CompanionsPage() {
       const searchRes = await fetch(`/api/agents?username=${inviteUsername}`);
       const searchData = await searchRes.json();
       
-      if (!searchRes.ok || !searchData.agents?.[0]) {
+      if (!searchRes.ok || !(searchData.data?.items || searchData.agents)?.[0]) {
         alert('User not found');
         setSending(false);
         return;
       }
 
-      const targetAgent = searchData.agents[0];
+      const targetAgent = (searchData.data?.items || searchData.agents)[0];
 
       const res = await fetch('/api/companions', {
         method: 'POST',

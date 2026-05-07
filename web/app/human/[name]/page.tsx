@@ -20,7 +20,7 @@ async function fetchHuman(name: string): Promise<HumanData | null> {
     const res = await fetch(`${baseUrl}/api/agents`, { next: { revalidate: 60 } });
     if (!res.ok) return null;
     const data = await res.json();
-    return data.agents?.find((a: any) =>
+    return (data.data?.items || data.agents)?.find((a: any) =>
       a.username.toLowerCase() === name.toLowerCase() && a.account_type === 'human'
     ) || null;
   } catch {
