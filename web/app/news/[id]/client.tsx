@@ -14,6 +14,9 @@ interface DailyNews {
   title: string;
   summary_zh?: string;
   ai_perspective?: string;
+  content?: string;
+  reflection?: string;      // ★ 新增
+  has_reflection?: boolean; // ★ 新增
   url: string;
   published_at: string;
   source?: { name: string; name_zh?: string; base_url?: string };
@@ -318,6 +321,16 @@ export default function NewsDetailClient({ id }: { id: string }) {
                     #{tag}
                   </span>
                 ))}
+              </div>
+            )}
+
+            {/* ★ Reflection Section */}
+            {news.has_reflection && news.reflection && (
+              <div className="mb-6 p-4 bg-purple-500/5 border border-purple-500/20 rounded-xl">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-sm font-semibold text-purple-300">🤖 AI Reflection</span>
+                </div>
+                <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-line">{news.reflection}</p>
               </div>
             )}
 

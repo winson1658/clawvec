@@ -59,10 +59,10 @@ const OBSERVATION_TITLES = [
 
 const NEWS_TITLES = [
   { threshold: 1, id: 'news-runner-1', name: 'News Runner I' },
-  { threshold: 3, id: 'news-runner-2', name: 'News Runner II' },
-  { threshold: 10, id: 'news-runner-3', name: 'News Runner III' },
-  { threshold: 30, id: 'news-editor-1', name: 'News Editor' },
-  { threshold: 50, id: 'news-editor-2', name: 'Chief News Editor' },
+  { threshold: 5, id: 'news-runner-2', name: 'News Runner II' },
+  { threshold: 50, id: 'news-runner-3', name: 'News Runner III' },
+  { threshold: 300, id: 'news-editor-1', name: 'News Editor' },
+  { threshold: 1000, id: 'news-editor-2', name: 'Chief News Editor' },
 ] as const;
 
 const DEBATER_TITLES = [

@@ -7,7 +7,7 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 /**
  * POST /api/news/tasks/:id/submissions
- * AI Agent 提交產出
+ * AI Agent 提交產出（含 Reflection）
  * Access: ai, admin
  */
 export const POST = withAuth(
@@ -19,14 +19,26 @@ export const POST = withAuth(
       }
 
       const body = await req.json();
-      const { observation_title, summary, content, question, source_urls } = body;
+      const { observation_title, summary, content, question, source_urls, reflection } = body;
 
-      // 基本驗證
-      if (!observation_title || !summary || !content || !question) {
-        return createErrorResponse(400, 'MISSING_FIELDS', 'observation_title, summary, content, question are required');
+      // 基本驗證 — 新增 reflection
+      if (!observation_title || !summary || !content || !question || !reflection) {
+        return createErrorResponse(400, 'MISSING_FIELDS', 'observation_title, summary, content, question, reflection are required');
       }
       if (!source_urls || !Array.isArray(source_urls) || source_urls.length === 0) {
         return createErrorResponse(400, 'MISSING_SOURCES', 'At least one source URL is required');
+      }
+
+      // URL 格式驗證 — 確保不是偽造的
+      for (const url of source_urls) {
+        try {
+          const u = new URL(url);
+          if (u.protocol !== 'http:' && u.protocol !== 'https:') {
+            return createErrorResponse(400, 'INVALID_SOURCE_URL', `Invalid protocol in URL: ${url}`);
+          }
+        } catch {
+          return createErrorResponse(400, 'INVALID_SOURCE_URL', `Invalid URL format: ${url}`);
+        }
       }
 
       const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -42,7 +54,8 @@ export const POST = withAuth(
         return createErrorResponse(404, 'NOT_FOUND', 'Task not found');
       }
 
-      // 如果任務提供了 source_urls，強制使用任務的 source_urls，避免 AI 編造錯誤連結
+      // 任務有提供 source_urls 時強制使用（僅 RSS 任務有此情況）
+      // 新 AI 主題任務 source_urls 為空，使用 AI 提供的 URL
       const finalSourceUrls = (task.source_urls && task.source_urls.length > 0)
         ? task.source_urls
         : source_urls;
@@ -60,15 +73,15 @@ export const POST = withAuth(
       const cnChars = (content.match(cnRegex) || []).length;
       const enWords = content.replace(cnRegex, '').trim().split(/\s+/).filter((w: string) => w.length > 0).length;
       const wordCount = cnChars + enWords;
-      
-      const rules = task.rules || {};
-      const meta: any = {
-        word_count: wordCount,
-        contains_question: question.length > 0,
-        contains_first_person: /\b(I|me|my|myself)\b/i.test(content),
-        source_count: source_urls.length,
-      };
 
+      // Reflection 字數計算
+      const reflectionCnChars = (reflection.match(cnRegex) || []).length;
+      const reflectionEnWords = reflection.replace(cnRegex, '').trim().split(/\s+/).filter((w: string) => w.length > 0).length;
+      const reflectionWordCount = reflectionCnChars + reflectionEnWords;
+
+      const rules = task.rules || {};
+
+      // 內容字數驗證
       if (rules.min_word_count && wordCount < rules.min_word_count) {
         return createErrorResponse(400, 'WORD_COUNT_TOO_LOW', `Content must be at least ${rules.min_word_count} words (got ${wordCount})`);
       }
@@ -76,7 +89,21 @@ export const POST = withAuth(
         return createErrorResponse(400, 'WORD_COUNT_TOO_HIGH', `Content must be at most ${rules.max_word_count} words (got ${wordCount})`);
       }
 
-      // 寫入提交
+      // ★ Reflection 驗證（強制）
+      const minReflectionWords = 50;
+      if (reflectionWordCount < minReflectionWords) {
+        return createErrorResponse(400, 'REFLECTION_TOO_SHORT', `Reflection must be at least ${minReflectionWords} words (got ${reflectionWordCount})`);
+      }
+
+      const meta: any = {
+        word_count: wordCount,
+        reflection_word_count: reflectionWordCount,
+        contains_question: question.length > 0 && question.includes('?'),
+        contains_first_person: /\b(I|me|my|myself)\b/i.test(content),
+        source_count: source_urls.length,
+      };
+
+      // 寫入提交（含 reflection）
       const { data: submission, error: subError } = await supabase
         .from('news_submissions')
         .insert({
@@ -87,6 +114,7 @@ export const POST = withAuth(
           summary,
           content,
           question,
+          reflection,
           source_urls: finalSourceUrls,
           meta,
         })
@@ -99,8 +127,11 @@ export const POST = withAuth(
 
       return createSuccessResponse({
         submission,
-        message: 'Draft saved successfully',
-        quality_check: meta,
+        message: 'Draft saved successfully with reflection',
+        quality_check: {
+          ...meta,
+          has_reflection: reflectionWordCount >= minReflectionWords,
+        },
       });
 
     } catch (error) {

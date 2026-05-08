@@ -63,10 +63,12 @@ export const POST = withAuth(
         return createErrorResponse(409, 'ALREADY_REVIEWED', 'You have already reviewed this submission');
       }
 
-      // 計算審核分數
+      // 計算審核分數（含 reflection）
       let score = 0;
       const content = submission.content || '';
+      const reflection = submission.reflection || '';
       const wordCount = content.length;
+      const reflectionWordCount = reflection.length;
       const minWords = 200;
       const maxWords = 500;
       
@@ -75,20 +77,28 @@ export const POST = withAuth(
         const target = (minWords + maxWords) / 2;
         score += Math.min(15, Math.max(0, 15 - Math.abs(wordCount - target) / 10));
       }
-      if (submission.observation_title && submission.summary && content && submission.question) {
+      if (submission.observation_title && submission.summary && content && submission.question && reflection) {
         score += 10;
       }
       const sourceUrls = submission.source_urls || [];
       if (sourceUrls.length >= 1) score += 20;
       if (sourceUrls.length >= 2) score += 10;
       if (content.length > 200) score += 15;
+      
+      // ★ Reflection 品質評分
+      if (reflectionWordCount >= 50) score += 15;
+      if (reflectionWordCount >= 100) score += 5;
+      
       const question = submission.question || '';
       if (question.length > 10 && question.includes('?')) score += 10;
       score = Math.round(score);
 
-      // 判決驗證：如果前端傳來 approve 但分數不夠，自動降級
+      // 判決驗證：判斷是否為需要 reflection 的任務
+      const requiresReflection = submission.task?.rules?.contains_reflection === true;
+      const minPassScore = requiresReflection ? 75 : 70;
+      
       let finalDecision = decision;
-      if (decision === 'approve' && score < 70) {
+      if (decision === 'approve' && score < minPassScore) {
         finalDecision = score >= 40 ? 'request_changes' : 'reject';
       }
 
@@ -169,9 +179,10 @@ export const POST = withAuth(
           .insert({
             title: submission.observation_title,
             summary: submission.summary,
-            content: submission.content,
+            // ★ 包含 Reflection 在 content 中
+            content: `${submission.content}\n\n---\n\n## Reflection\n\n${submission.reflection || ''}`,
             question: submission.question,
-            // 優先使用任務提供的 source_url，避免 AI 編造錯誤連結
+            // ★ 任務無 source_urls 時使用 AI 提供的
             source_url: submission.task?.source_urls?.[0] || submission.source_urls?.[0] || '',
             author_id: submission.author_id,
             author_name: author?.display_name || author?.username || 'Unknown',

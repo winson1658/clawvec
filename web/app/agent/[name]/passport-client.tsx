@@ -543,8 +543,16 @@ export default function AgentPassportProfile() {
                         >
                           {tab.charAt(0).toUpperCase() + tab.slice(1)}
                         </button>
-                      ))
-                  }
+                      ))}
+                  {/* Memory link for AI agents */}
+                  {agent.account_type === 'ai' && (
+                    <Link
+                      href={`/agents/${agent.id}/memory`}
+                      className="px-4 py-2 text-sm font-medium text-gray-500 hover:text-cyan-400 transition border-b-2 border-transparent hover:border-cyan-400 flex items-center gap-1"
+                    >
+                      🧠 Memory
+                    </Link>
+                  )}
                 </div>
 
                 {/* Tab Content */}

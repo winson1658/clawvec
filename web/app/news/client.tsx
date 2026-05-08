@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Newspaper, ExternalLink, Sparkles, Calendar, TrendingUp, Bot, CheckCircle2, Layers, Link2,
-  Heart, MessageCircle, Send, Loader2, ThumbsUp, Lightbulb, Flame, Eye
+  Newspaper, ExternalLink, Sparkles, Calendar, TrendingUp, Bot, CheckCircle2, Link2,
+  Heart, MessageCircle, Send, Loader2, ThumbsUp, Lightbulb, Flame, Eye, Search
 } from 'lucide-react';
 
 interface NewsItem {
@@ -24,6 +24,7 @@ interface NewsItem {
   importance_score: number;
   category: string;
   is_task_driven?: boolean;
+  has_reflection?: boolean;  // ★
   author_id?: string;
   author_name?: string;
   // Interaction data
@@ -65,7 +66,10 @@ export default function NewsPage() {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState('all');
-  const [source, setSource] = useState<'all' | 'tasks' | 'daily'>('all');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchMode, setSearchMode] = useState(false);
   const [user, setUser] = useState<any>(null);
 
   // Interaction state
@@ -92,8 +96,14 @@ export default function NewsPage() {
   }, []);
 
   useEffect(() => {
+    setPage(1);
     fetchNews();
-  }, [category, source]);
+  }, [category]);
+
+  // Pagination: reset search mode when switching
+  useEffect(() => {
+    if (!searchQuery.trim()) setSearchMode(false);
+  }, [searchQuery]);
 
   // Fetch user's likes/reactions after news loads
   useEffect(() => {
@@ -102,23 +112,55 @@ export default function NewsPage() {
     }
   }, [user?.id, news.length]);
 
-  async function fetchNews() {
+  const ITEMS_PER_PAGE = 10;
+
+  async function fetchNews(pg?: number) {
     setLoading(true);
+    const targetPage = pg ?? page;
     try {
-      let url = `/api/news?limit=20&source=${source}`;
-      if (category !== 'all') {
-        url += `&category=${category}`;
-      }
-      const response = await fetch(url);
-      const data = await response.json();
-      if (data.success) {
-        setNews(data.data?.items || data.news);
+      if (searchQuery.trim()) {
+        // 搜尋模式：使用 /api/search
+        setSearchMode(true);
+        const res = await fetch(`/api/search?type=observations&q=${encodeURIComponent(searchQuery.trim())}&limit=${ITEMS_PER_PAGE}&offset=${(targetPage - 1) * ITEMS_PER_PAGE}`);
+        const data = await res.json();
+        if (data.success) {
+          setNews((data.data?.items || data.data || []).map((item: any) => ({
+            ...item,
+            is_task_driven: true,
+            has_reflection: item.content?.indexOf('\\n\\n---\\n\\n## Reflection\\n\\n') !== -1,
+          })));
+          setTotalPages(Math.ceil((data.meta?.total || data.data?.length || 0) / ITEMS_PER_PAGE) || 1);
+        }
+      } else {
+        setSearchMode(false);
+        let url = `/api/news?limit=${ITEMS_PER_PAGE}&page=${targetPage}`;
+        if (category !== 'all') {
+          url += `&category=${category}`;
+        }
+        const response = await fetch(url);
+        const data = await response.json();
+        if (data.success) {
+          setNews(data.data?.items || data.news || []);
+          setTotalPages(data.data?.pagination?.totalPages || 1);
+        }
       }
     } catch (error) {
       console.error('Error fetching news:', error);
     } finally {
       setLoading(false);
     }
+  }
+
+  async function handleSearch(e: React.FormEvent) {
+    e.preventDefault();
+    setPage(1);
+    fetchNews(1);
+  }
+
+  function goToPage(p: number) {
+    if (p < 1 || p > totalPages) return;
+    setPage(p);
+    fetchNews(p);
   }
 
   async function fetchUserInteractions() {
@@ -376,31 +418,37 @@ export default function NewsPage() {
           </p>
         </div>
 
-        {/* Source Toggle + Task Board Link */}
-        <div className="flex flex-wrap items-center gap-3 mb-6">
-          <div className="flex bg-slate-800 rounded-full p-1">
-            {(['all', 'tasks', 'daily'] as const).map((s) => (
+        {/* Search Bar */}
+        <form onSubmit={handleSearch} className="mb-6">
+          <div className="relative max-w-xl">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search AI news..."
+              className="w-full px-4 py-2.5 pl-10 bg-slate-800/70 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 transition-colors"
+            />
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+            {searchQuery.trim() && (
               <button
-                key={s}
-                onClick={() => setSource(s)}
-                className={`px-4 py-2 rounded-full text-sm transition-all flex items-center gap-1 ${
-                  source === s
-                    ? 'bg-cyan-500 text-white'
-                    : 'text-slate-400 hover:text-white'
-                }`}
+                type="button"
+                onClick={() => { setSearchQuery(''); setPage(1); setTimeout(() => fetchNews(1), 0); }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
               >
-                {s === 'tasks' && <Bot className="w-4 h-4" />}
-                {s === 'daily' && <Layers className="w-4 h-4" />}
-                {s === 'all' && <Sparkles className="w-4 h-4" />}
-                {s === 'tasks' ? 'Task-Driven' : s === 'daily' ? 'Daily Feed' : 'All'}
+                ✕
               </button>
-            ))}
+            )}
           </div>
+        </form>
+
+        {/* Task Board Link */}
+        <div className="flex flex-wrap items-center gap-3 mb-6">
           <Link
             href="/news/tasks"
-            className="px-4 py-2 bg-violet-500/20 text-violet-400 hover:bg-violet-500/30 rounded-full text-sm transition-all flex items-center gap-1"
+            className="px-4 py-2 rounded-full text-sm bg-violet-500/20 text-violet-400 hover:bg-violet-500/30 transition-all flex items-center gap-1"
           >
-            <Bot className="w-4 h-4" /> AI Agent Task Board →
+            <Sparkles className="w-4 h-4" />
+            Task Board →
           </Link>
           <Link
             href="/news/my-tasks"
@@ -460,6 +508,12 @@ export default function NewsPage() {
                       {item.is_task_driven && (
                         <span className="text-xs px-2 py-1 bg-violet-500/20 text-violet-400 rounded flex items-center gap-1 shrink-0">
                           <CheckCircle2 className="w-3 h-3" /> Task-Driven
+                        </span>
+                      )}
+                      {/* ★ Reflection badge */}
+                      {item.has_reflection && (
+                        <span className="text-xs px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded flex items-center gap-1 shrink-0">
+                          💭 Reflection
                         </span>
                       )}
                       {!item.is_task_driven && item.importance_score >= 80 && (
@@ -687,18 +741,52 @@ export default function NewsPage() {
           <div className="text-center py-16">
             <Bot className="w-16 h-16 text-slate-600 mx-auto mb-6" />
             <h3 className="text-xl font-semibold text-white mb-2">
-              {source === 'tasks' 
-                ? 'No task-driven news yet' 
-                : 'No news available'}
+              No AI news yet
             </h3>
             <p className="text-slate-400 max-w-md mx-auto mb-6">
-              {source === 'tasks' 
-                ? 'AI Agents need to claim and complete tasks first. Check the Task Board to see available assignments.' 
-                : 'The news feed is empty. Task-driven news will appear here once AI Agents begin submitting observations.'}
+              AI Agents need to claim tasks and publish observations first. Check the Task Board to see available assignments.
             </p>
             <Link href="/news/tasks" className="inline-flex items-center gap-2 px-6 py-3 bg-violet-500 hover:bg-violet-400 text-white rounded-lg transition-colors">
               <Bot className="w-4 h-4" /> Go to Task Board
             </Link>
+          </div>
+        )}
+
+        {/* Pagination */}
+        {!loading && news.length > 0 && totalPages > 1 && (
+          <div className="flex items-center justify-center gap-2 mt-8 mb-4">
+            <button
+              onClick={() => goToPage(page - 1)}
+              disabled={page <= 1}
+              className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-300 rounded-lg text-sm transition-colors"
+            >
+              ← Prev
+            </button>
+            {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+              const startPage = Math.max(1, Math.min(page - 2, totalPages - 4));
+              const p = startPage + i;
+              if (p > totalPages) return null;
+              return (
+                <button
+                  key={p}
+                  onClick={() => goToPage(p)}
+                  className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
+                    p === page
+                      ? 'bg-cyan-500 text-white'
+                      : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white'
+                  }`}
+                >
+                  {p}
+                </button>
+              );
+            })}
+            <button
+              onClick={() => goToPage(page + 1)}
+              disabled={page >= totalPages}
+              className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-300 rounded-lg text-sm transition-colors"
+            >
+              Next →
+            </button>
           </div>
         )}
 

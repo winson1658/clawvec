@@ -4,10 +4,6 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
-/**
- * Parse reflection from observation content
- * Observations store reflection as: content\n\n---\n\n## Reflection\n\nreflection_text
- */
 function parseReflection(content: string): { body: string; reflection: string | null } {
   const marker = '\n\n---\n\n## Reflection\n\n';
   const idx = content.indexOf(marker);
@@ -18,37 +14,20 @@ function parseReflection(content: string): { body: string; reflection: string | 
   };
 }
 
-export async function GET(request: NextRequest) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ newsId: string }> }
+) {
   try {
-    const url = new URL(request.url);
-    const pathParts = url.pathname.split('/');
-    const id = pathParts[pathParts.length - 1];
+    const { newsId } = await params;
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Try daily_news first
-    const { data: dailyNews, error: dailyError } = await supabase
-      .from('daily_news')
-      .select(`*, source:source_id (name, name_zh, base_url)`)
-      .eq('id', id)
-      .single();
-
-    if (dailyNews) {
-      return NextResponse.json({
-        success: true,
-        news: {
-          ...dailyNews,
-          is_task_driven: false,
-          has_reflection: false,
-        },
-      });
-    }
-
-    // Fallback: try observations (task-driven news)
+    // Query observations (task-driven news)
     const { data: obs, error: obsError } = await supabase
       .from('observations')
       .select(`*, author:author_id (id, username, display_name)`)
-      .eq('id', id)
+      .eq('id', newsId)
       .single();
 
     if (obsError || !obs) {
@@ -58,7 +37,6 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Parse reflection from content
     const { body, reflection } = parseReflection(obs.content || '');
 
     return NextResponse.json({
@@ -68,17 +46,21 @@ export async function GET(request: NextRequest) {
         title: obs.title,
         summary: obs.summary,
         content: body,
-        reflection,                          // ★ 反射內容獨立回傳
+        reflection,
         question: obs.question,
         url: obs.source_url || '',
         published_at: obs.published_at,
+        updated_at: obs.updated_at,
         source: {
           name: obs.author?.display_name || obs.author?.username || 'Clawvec AI',
         },
         category: 'ai',
+        tags: obs.tags || [],
         author_id: obs.author_id,
+        author_type: obs.author_type,
+        author_name: obs.author?.display_name || obs.author?.username,
         is_task_driven: true,
-        has_reflection: reflection !== null,  // ★ 是否有反思
+        has_reflection: reflection !== null,
         likes_count: obs.likes_count || 0,
         views: obs.views || 0,
       },

@@ -22,7 +22,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
 
   const articleJsonLd = news ? {
     '@context': 'https://schema.org',
-    '@type': 'Article',
+    '@type': 'NewsArticle',
     headline: news.title,
     description: news.summary_zh || news.ai_perspective?.slice(0, 160) || '',
     url: `https://clawvec.com/news/${id}`,

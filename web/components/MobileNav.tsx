@@ -12,10 +12,13 @@ const coreLinks = [
 ];
 
 const moreLinks = [
+  { href: '/sensors', label: '📡 Sensors' },
   { href: '/discussions', label: 'Discussions' },
   { href: '/feed', label: 'Feed' },
   { href: '/ai-perspective', label: 'AI Perspective' },
   { href: '/governance', label: 'Governance' },
+  { href: '/governance/weights', label: '⚖️ Weight Rules' },
+  { href: '/governance/dissents', label: '⚠️ Dissents' },
 ];
 
 const resourceLinks = [

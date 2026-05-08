@@ -6,10 +6,7 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 /**
  * GET /api/cron/auto-review
- * 自動審核送審中的新聞文章
- * - 檢查 submitted 狀態且 review_count < 2 的 submissions
- * - 使用規則引擎自動審核
- * - 審核結果寫入 news_reviews
+ * 自動審核送審中的新聞文章（含 Reflection 評分）
  */
 export async function GET(req: NextRequest) {
   try {
@@ -21,10 +18,10 @@ export async function GET(req: NextRequest) {
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // 查詢需要審核的 submissions
+    // 查詢需要審核的 submissions（含任務關聯）
     const { data: submissions, error } = await supabase
       .from('news_submissions')
-      .select('*')
+      .select('*, task:task_id(rules, source_urls)')
       .eq('status', 'submitted')
       .lt('review_count', 2)
       .order('submitted_at', { ascending: true })
@@ -43,15 +40,14 @@ export async function GET(req: NextRequest) {
     const results: any[] = [];
 
     for (const submission of submissions) {
-      // 自動審核逻輯
       const review = await performAutoReview(submission, supabase);
-      
       if (review) {
         reviewedCount++;
         results.push({
           submission_id: submission.id,
           verdict: review.verdict,
           score: review.score,
+          reflection_score: review.reflection_score,
         });
       }
     }
@@ -70,32 +66,37 @@ export async function GET(req: NextRequest) {
 }
 
 /**
- * 自動審核逻輯
+ * 自動審核邏輯（含 Reflection 評分）
  * 評分標準：
- * - 品質檢查 (0-40分)：字數、結構、內容完整度
- * - 準確性檢查 (0-30分)：來源是否有效、來源數量
- * - 原創性檢查 (0-20分)：內容是否為原創
- * - 問題質量 (0-10分)：問題是否有意義
+ * - 品質檢查 (0-30分)：字數、結構、內容完整度
+ * - Reflection 品質 (0-20分)：反思內容長度與品質
+ * - 來源檢查 (0-20分)：來源數量
+ * - 原創性 (0-10分)
+ * - 問題品質 (0-10分)
+ * - 完整性 (0-10分)
+ * 通過門檻：有 reflection 需求者 75 分，其他 70 分
  */
 async function performAutoReview(submission: any, supabase: any) {
   const meta = submission.meta || {};
-  const rules = submission.task?.rules || {};
-  
+  const taskRules = submission.task?.rules || {};
+  const content = submission.content || '';
+  const reflection = submission.reflection || '';
+
   let score = 0;
-  const checks = {
+  const checks: Record<string, boolean> = {
     quality: false,
     sources: false,
     originality: false,
+    has_reflection: false,
   };
 
   // 1. 品質檢查 (0-40分)
-  const wordCount = meta.word_count || 0;
-  const minWords = rules.min_word_count || 200;
-  const maxWords = rules.max_word_count || 500;
-  
+  const wordCount = meta.word_count || content.length || 0;
+  const minWords = taskRules.min_word_count || 200;
+  const maxWords = taskRules.max_word_count || 500;
+
   if (wordCount >= minWords && wordCount <= maxWords) {
     score += 25;
-    // 字數越接近中間值，分數越高
     const targetWords = (minWords + maxWords) / 2;
     const wordScore = Math.max(0, 15 - Math.abs(wordCount - targetWords) / 10);
     score += Math.min(15, wordScore);
@@ -106,40 +107,53 @@ async function performAutoReview(submission: any, supabase: any) {
     score += 5;
   }
 
-  // 內容完整度：標題、摘要、內容、問題都有
-  if (submission.observation_title && submission.summary && submission.content && submission.question) {
+  // 內容完整性
+  if (submission.observation_title && submission.summary && content && submission.question) {
     score += 10;
   }
 
-  // 2. 準確性檢查 (0-30分)
+  // 2. ★ Reflection 品質檢查 (0-20分)
+  const reflectionWordCount = meta.reflection_word_count || reflection.length || 0;
+  const needsReflection = taskRules.contains_reflection === true;
+
+  if (reflectionWordCount >= 50) {
+    score += 15;
+    checks.has_reflection = true;
+    if (reflectionWordCount >= 100) {
+      score += 5; // 長反思加分
+    }
+  } else if (needsReflection && reflectionWordCount > 0) {
+    score += 5; // 有提供但不足
+  }
+
+  // 3. 來源檢查 (0-20分)
   const sourceUrls = submission.source_urls || [];
   if (sourceUrls.length >= 1) {
-    score += 20;
+    score += 15;
     checks.sources = true;
   }
   if (sourceUrls.length >= 2) {
-    score += 10;
+    score += 5;
   }
 
-  // 3. 原創性檢柤 (0-20分)
-  // 簡單检查：內容長度超過100字且不是單純複製粘貼
-  const content = submission.content || '';
+  // 4. 原創性 (0-10分)
   if (content.length > 200 && !meta.contains_first_person) {
-    score += 15;
+    score += 10;
     checks.originality = true;
   } else if (content.length > 100) {
-    score += 10;
+    score += 5;
   }
 
-  // 問題質量 (0-10分)
+  // 5. 問題品質 (0-10分)
   const question = submission.question || '';
   if (question.length > 10 && question.includes('?')) {
     score += 10;
   }
 
-  // 確定審核結果
+  // 確定通過門檻
+  const passThreshold = needsReflection ? 75 : 70;
   let verdict: 'pass' | 'reject' | 'changes_needed';
-  if (score >= 70) {
+  if (score >= passThreshold) {
     verdict = 'pass';
   } else if (score >= 40) {
     verdict = 'changes_needed';
@@ -147,7 +161,6 @@ async function performAutoReview(submission: any, supabase: any) {
     verdict = 'reject';
   }
 
-  // 分數必須為整數，否則 PostgreSQL int 欄位會報錯
   const roundedScore = Math.round(score);
 
   // 寫入審核記錄
@@ -155,10 +168,10 @@ async function performAutoReview(submission: any, supabase: any) {
     .from('news_reviews')
     .insert({
       submission_id: submission.id,
-      reviewer_id: null, // 自動審核，無具體 reviewer
+      reviewer_id: null,
       verdict,
       score: roundedScore,
-      feedback: generateFeedback(roundedScore, checks),
+      feedback: generateFeedback(roundedScore, checks, needsReflection),
       checked_sources: checks.sources,
       checked_quality: checks.quality,
       checked_originality: checks.originality,
@@ -173,13 +186,12 @@ async function performAutoReview(submission: any, supabase: any) {
 
   // 更新 submission 審核狀態
   const newReviewCount = (submission.review_count || 0) + 1;
-  
-  // 計算新的平均分數
+
   const { data: existingReviews } = await supabase
     .from('news_reviews')
     .select('score')
     .eq('submission_id', submission.id);
-  
+
   const scores = existingReviews?.map((r: any) => r.score) || [roundedScore];
   const avgScore = Math.round(scores.reduce((a: number, b: number) => a + b, 0) / scores.length);
 
@@ -188,27 +200,30 @@ async function performAutoReview(submission: any, supabase: any) {
     .update({
       review_count: newReviewCount,
       review_score: avgScore,
-      review_status: avgScore >= 70 ? 'approved' : avgScore >= 40 ? 'changes_requested' : 'rejected',
+      review_status: avgScore >= passThreshold ? 'approved' : avgScore >= 40 ? 'changes_requested' : 'rejected',
     })
     .eq('id', submission.id);
 
-  return review;
+  return { ...review, reflection_score: checks.has_reflection };
 }
 
-function generateFeedback(score: number, checks: any): string {
+function generateFeedback(score: number, checks: Record<string, boolean>, needsReflection: boolean): string {
   const parts: string[] = [];
-  
-  if (score >= 70) {
+
+  if (score >= 75) {
+    parts.push('Quality exceeds publication standards.');
+  } else if (score >= 70) {
     parts.push('Quality meets publication standards.');
   } else if (score >= 40) {
     parts.push('Needs improvements before publication.');
   } else {
     parts.push('Does not meet minimum quality requirements.');
   }
-  
-  if (!checks.quality) parts.push('Content quality could be improved.');
+
+  if (!checks.quality) parts.push('Content quality could be improved (check word count).');
   if (!checks.sources) parts.push('More reliable sources needed.');
   if (!checks.originality) parts.push('Content appears to lack sufficient originality.');
-  
+  if (needsReflection && !checks.has_reflection) parts.push('Reflection section is missing or too short (min 50 words).');
+
   return parts.join(' ');
 }

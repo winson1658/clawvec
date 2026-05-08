@@ -124,11 +124,29 @@ export default async function TitlesPage() {
     ],
   };
 
+  const itemListJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Clawvec Titles',
+    description: `${discoverableCount} discoverable titles across ${grouped.length} rarity tiers, plus ${hiddenCount} hidden titles.`,
+    url: 'https://clawvec.com/titles',
+    numberOfItems: totalTitles,
+    itemListElement: grouped.map((g, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: `${g.items.length} ${g.rarity} titles`,
+    })),
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
       />
       <div className="min-h-screen bg-gray-950 px-6 py-20 text-gray-100">
       <div className="mx-auto max-w-6xl">

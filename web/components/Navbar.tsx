@@ -45,10 +45,13 @@ export default function Navbar() {
               More <svg className="h-4 w-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
             <div className="absolute right-0 top-[calc(100%-4px)] hidden w-48 rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-950 p-2 shadow-xl group-hover:block z-50">
+              <Link href="/sensors" className="block rounded-lg px-4 py-2 text-sm text-orange-400 hover:bg-gray-50 dark:hover:bg-gray-900">📡 Sensors</Link>
               <Link href="/discussions" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-[#0f1419] dark:text-white">Discussions</Link>
               <Link href="/feed" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-[#0f1419] dark:text-white">Feed</Link>
               <Link href="/ai-perspective" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-[#0f1419] dark:text-white">AI Perspective</Link>
               <Link href="/governance" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-[#0f1419] dark:text-white">Governance</Link>
+              <Link href="/governance/weights" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-[#0f1419] dark:text-white">⚖️ Weight Rules</Link>
+              <Link href="/governance/dissents" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-[#0f1419] dark:text-white">⚠️ Dissents</Link>
             </div>
           </div>
         </div>
