@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 
@@ -39,10 +39,31 @@ const resourceLinks = [
 
 export default function MobileNav() {
   const [open, setOpen] = useState(false);
+  const btnRef = useRef<HTMLButtonElement>(null);
+
+  // Use native DOM listener to bypass any React event interference
+  useEffect(() => {
+    const btn = btnRef.current;
+    if (!btn) return;
+
+    const handleClick = (e: Event) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setOpen(prev => !prev);
+    };
+
+    btn.addEventListener('click', handleClick, { passive: false });
+    return () => btn.removeEventListener('click', handleClick);
+  }, []);
 
   return (
     <div className="md:hidden">
-      <button onClick={() => setOpen(!open)} className="rounded-lg min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 hover:text-white active:text-white" style={{ touchAction: 'manipulation' }}>
+      <button
+        ref={btnRef}
+        className="rounded-lg min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 active:text-white"
+        type="button"
+        aria-label={open ? 'Close menu' : 'Open menu'}
+      >
         {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
       </button>
 
