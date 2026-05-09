@@ -42,12 +42,12 @@ export default function MobileNav() {
 
   return (
     <div className="md:hidden">
-      <button onClick={() => setOpen(!open)} className="rounded-lg min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 hover:text-white">
+      <button onClick={() => setOpen(!open)} className="rounded-lg min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 hover:text-white active:text-white" style={{ touchAction: 'manipulation' }}>
         {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
       </button>
 
       {open && (
-        <div className="fixed left-0 right-0 top-[73px] bottom-0 z-50 overflow-y-auto border-b border-gray-800 bg-gray-950/95 backdrop-blur-lg">
+        <div className="fixed left-0 right-0 top-[73px] bottom-0 z-50 overflow-y-auto bg-gray-950 border-t border-gray-800">
           <div className="flex flex-col px-6 py-4">
             {/* Core Section */}
             <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500 px-1">Core</div>

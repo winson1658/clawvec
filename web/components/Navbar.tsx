@@ -57,12 +57,6 @@ export default function Navbar() {
           <div className="relative h-full flex items-center">
             <button
               onClick={() => setMoreOpen(!moreOpen)}
-              onBlur={(e) => {
-                // Close when focus leaves the dropdown area
-                if (!e.currentTarget.parentElement?.contains(e.relatedTarget as Node)) {
-                  setMoreOpen(false);
-                }
-              }}
               className="flex items-center gap-1 text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white py-4"
             >
               More
