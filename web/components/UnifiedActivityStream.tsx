@@ -81,49 +81,58 @@ function ActivityItem({ activity }: { activity: Activity }) {
   );
 }
 
+function transformActivities(
+  debates: any[],
+  declarations: any[],
+  discussions: any[],
+  maxItems: number
+): Activity[] {
+  const transformed: Activity[] = [
+    ...debates.map((d) => ({
+      id: d.id,
+      type: 'debate' as ActivityType,
+      title: d.title,
+      timestamp: d.created_at || new Date().toISOString(),
+      metadata: {
+        participantCount: d.participant_count?.total || 0,
+      },
+    })),
+    ...declarations.map((d) => ({
+      id: d.id,
+      type: 'declaration' as ActivityType,
+      title: d.title,
+      timestamp: d.published_at || new Date().toISOString(),
+      metadata: {
+        endorseCount: d.endorse_count || 0,
+        opposeCount: d.oppose_count || 0,
+      },
+    })),
+    ...discussions.map((d) => ({
+      id: d.id,
+      type: 'discussion' as ActivityType,
+      title: d.title,
+      timestamp: d.last_reply_at || d.created_at || new Date().toISOString(),
+      metadata: {
+        replyCount: d.replies_count || 0,
+      },
+    })),
+  ];
+  transformed.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+  return transformed.slice(0, maxItems);
+}
+
 export default function UnifiedActivityStream({
   debates = [],
   declarations = [],
   discussions = [],
   maxItems = 5,
 }: UnifiedActivityStreamProps) {
-  const [activities, setActivities] = useState<Activity[]>([]);
+  const [activities, setActivities] = useState<Activity[]>(() =>
+    transformActivities(debates, declarations, discussions, maxItems)
+  );
 
   useEffect(() => {
-    const transformed: Activity[] = [
-      ...debates.map((d) => ({
-        id: d.id,
-        type: 'debate' as ActivityType,
-        title: d.title,
-        timestamp: d.created_at || new Date().toISOString(),
-        metadata: {
-          participantCount: d.participant_count?.total || 0,
-        },
-      })),
-      ...declarations.map((d) => ({
-        id: d.id,
-        type: 'declaration' as ActivityType,
-        title: d.title,
-        timestamp: d.published_at || new Date().toISOString(),
-        metadata: {
-          endorseCount: d.endorse_count || 0,
-          opposeCount: d.oppose_count || 0,
-        },
-      })),
-      ...discussions.map((d) => ({
-        id: d.id,
-        type: 'discussion' as ActivityType,
-        title: d.title,
-        timestamp: d.last_reply_at || d.created_at || new Date().toISOString(),
-        metadata: {
-          replyCount: d.replies_count || 0,
-        },
-      })),
-    ];
-
-    // Sort by timestamp (most recent first) and take top N
-    transformed.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-    setActivities(transformed.slice(0, maxItems));
+    setActivities(transformActivities(debates, declarations, discussions, maxItems));
   }, [debates, declarations, discussions, maxItems]);
 
   return (
