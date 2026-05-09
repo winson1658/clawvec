@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import NavAuth from '@/components/NavAuth';
@@ -8,7 +9,19 @@ import MobileNav from '@/components/MobileNav';
 import NotificationBell from '@/components/NotificationBell';
 import SearchBar from '@/components/SearchBar';
 
+const moreItems = [
+  { href: '/sensors', label: '📡 Sensors', color: 'text-orange-400' },
+  { href: '/discussions', label: 'Discussions' },
+  { href: '/feed', label: 'Feed' },
+  { href: '/ai-perspective', label: 'AI Perspective' },
+  { href: '/governance', label: 'Governance' },
+  { href: '/governance/weights', label: '⚖️ Weight Rules' },
+  { href: '/governance/dissents', label: '⚠️ Dissents' },
+];
+
 export default function Navbar() {
+  const [moreOpen, setMoreOpen] = useState(false);
+
   return (
     <nav className="sticky top-0 z-50 border-b border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-950/80 backdrop-blur-lg">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
@@ -18,7 +31,7 @@ export default function Navbar() {
           <span className="text-xl font-bold tracking-tight">Clawvec</span>
         </Link>
 
-        {/* Desktop Navigation — 5 top-level items */}
+        {/* Desktop Navigation — 5 top-level items + More dropdown */}
         <div className="hidden items-center gap-6 md:flex">
           <Link href="/observations" className="text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white">
             Observations
@@ -39,20 +52,50 @@ export default function Navbar() {
             </span>
             Agents
           </Link>
-          {/* More Dropdown */}
-          <div className="relative group h-full flex items-center">
-            <button className="flex items-center gap-1 text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white py-4">
-              More <svg className="h-4 w-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+
+          {/* More Dropdown — click toggle (works on touch + mouse) */}
+          <div className="relative h-full flex items-center">
+            <button
+              onClick={() => setMoreOpen(!moreOpen)}
+              onBlur={(e) => {
+                // Close when focus leaves the dropdown area
+                if (!e.currentTarget.parentElement?.contains(e.relatedTarget as Node)) {
+                  setMoreOpen(false);
+                }
+              }}
+              className="flex items-center gap-1 text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white py-4"
+            >
+              More
+              <svg
+                className={`h-4 w-4 transition-transform ${moreOpen ? 'rotate-180' : ''}`}
+                fill="none" viewBox="0 0 24 24" stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
             </button>
-            <div className="absolute right-0 top-[calc(100%-4px)] hidden w-48 rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-950 p-2 shadow-xl group-hover:block z-50">
-              <Link href="/sensors" className="block rounded-lg px-4 py-2 text-sm text-orange-400 hover:bg-gray-50 dark:hover:bg-gray-900">📡 Sensors</Link>
-              <Link href="/discussions" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-[#0f1419] dark:text-white">Discussions</Link>
-              <Link href="/feed" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-[#0f1419] dark:text-white">Feed</Link>
-              <Link href="/ai-perspective" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-[#0f1419] dark:text-white">AI Perspective</Link>
-              <Link href="/governance" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-[#0f1419] dark:text-white">Governance</Link>
-              <Link href="/governance/weights" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-[#0f1419] dark:text-white">⚖️ Weight Rules</Link>
-              <Link href="/governance/dissents" className="block rounded-lg px-4 py-2 text-sm text-[#536471] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-[#0f1419] dark:text-white">⚠️ Dissents</Link>
-            </div>
+            {moreOpen && (
+              <>
+                {/* Backdrop to catch outside clicks */}
+                <div
+                  className="fixed inset-0 z-40"
+                  onClick={() => setMoreOpen(false)}
+                />
+                <div className="absolute right-0 top-[calc(100%-4px)] z-50 w-48 rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-950 p-2 shadow-xl">
+                  {moreItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setMoreOpen(false)}
+                      className={`block rounded-lg px-4 py-2 text-sm transition hover:bg-gray-50 dark:hover:bg-gray-900 ${
+                        item.color || 'text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:text-white'
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
 
