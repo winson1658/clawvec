@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="dot-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="#0F0A03"/>
+  <!-- 3 dots forming abstract C -->
+  <circle cx="180" cy="160" r="40" fill="url(#dot-gold)" opacity="0.9"/>
+  <circle cx="180" cy="160" r="18" fill="#FEF3C7"/>
+  <circle cx="340" cy="256" r="56" fill="url(#dot-gold)"/>
+  <circle cx="340" cy="256" r="24" fill="#FEF3C7"/>
+  <circle cx="180" cy="352" r="40" fill="url(#dot-gold)" opacity="0.9"/>
+  <circle cx="180" cy="352" r="18" fill="#FEF3C7"/>
+  <!-- Connection curves -->
+  <path d="M 180 160 Q 280 160 340 256" stroke="#F59E0B" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.5"/>
+  <path d="M 340 256 Q 280 352 180 352" stroke="#F59E0B" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.5"/>
+</svg>

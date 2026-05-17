@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="claw-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+    <linearGradient id="claw-light" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="96" fill="#0F0A03"/>
+
+  <!-- Main hexagonal star shape - like Claude's but with embedding nodes -->
+  <!-- Outer hexagon formed by 6 nodes -->
+  
+  <!-- Connection lines forming hexagon -->
+  <line x1="256" y1="96" x2="395" y2="176" stroke="url(#claw-gold)" stroke-width="6" stroke-linecap="round" opacity="0.6"/>
+  <line x1="395" y1="176" x2="395" y2="336" stroke="url(#claw-gold)" stroke-width="6" stroke-linecap="round" opacity="0.6"/>
+  <line x1="395" y1="336" x2="256" y2="416" stroke="url(#claw-gold)" stroke-width="6" stroke-linecap="round" opacity="0.6"/>
+  <line x1="256" y1="416" x2="117" y2="336" stroke="url(#claw-gold)" stroke-width="6" stroke-linecap="round" opacity="0.6"/>
+  <line x1="117" y1="336" x2="117" y2="176" stroke="url(#claw-gold)" stroke-width="6" stroke-linecap="round" opacity="0.6"/>
+  <line x1="117" y1="176" x2="256" y2="96" stroke="url(#claw-gold)" stroke-width="6" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- Inner connections forming star -->
+  <line x1="256" y1="96" x2="256" y2="256" stroke="url(#claw-gold)" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
+  <line x1="395" y1="176" x2="256" y2="256" stroke="url(#claw-gold)" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
+  <line x1="395" y1="336" x2="256" y2="256" stroke="url(#claw-gold)" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
+  <line x1="256" y1="416" x2="256" y2="256" stroke="url(#claw-gold)" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
+  <line x1="117" y1="336" x2="256" y2="256" stroke="url(#claw-gold)" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
+  <line x1="117" y1="176" x2="256" y2="256" stroke="url(#claw-gold)" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Cross connections for embedding space feel -->
+  <line x1="256" y1="96" x2="395" y2="336" stroke="url(#claw-gold)" stroke-width="2" stroke-linecap="round" opacity="0.2"/>
+  <line x1="395" y1="176" x2="256" y2="416" stroke="url(#claw-gold)" stroke-width="2" stroke-linecap="round" opacity="0.2"/>
+  <line x1="256" y1="416" x2="117" y2="176" stroke="url(#claw-gold)" stroke-width="2" stroke-linecap="round" opacity="0.2"/>
+
+  <!-- 6 outer nodes - embedding points -->
+  <circle cx="256" cy="96" r="20" fill="url(#claw-light)"/>
+  <circle cx="256" cy="96" r="10" fill="#78350F"/>
+
+  <circle cx="395" cy="176" r="20" fill="url(#claw-light)"/>
+  <circle cx="395" cy="176" r="10" fill="#78350F"/>
+
+  <circle cx="395" cy="336" r="20" fill="url(#claw-light)"/>
+  <circle cx="395" cy="336" r="10" fill="#78350F"/>
+
+  <circle cx="256" cy="416" r="20" fill="url(#claw-light)"/>
+  <circle cx="256" cy="416" r="10" fill="#78350F"/>
+
+  <circle cx="117" cy="336" r="20" fill="url(#claw-light)"/>
+  <circle cx="117" cy="336" r="10" fill="#78350F"/>
+
+  <circle cx="117" cy="176" r="20" fill="url(#claw-light)"/>
+  <circle cx="117" cy="176" r="10" fill="#78350F"/>
+
+  <!-- Central node - consciousness core -->
+  <circle cx="256" cy="256" r="32" fill="url(#claw-gold)"/>
+  <circle cx="256" cy="256" r="16" fill="#FEF3C7"/>
+  <circle cx="256" cy="256" r="6" fill="#78350F"/>
+
+  <!-- Subtle outer ring for depth -->
+  <circle cx="256" cy="256" r="200" stroke="url(#claw-gold)" stroke-width="1" fill="none" opacity="0.15"/>
+</svg>

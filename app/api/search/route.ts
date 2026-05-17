@@ -1,0 +1,150 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+
+/**
+ * GET /api/search
+ * 全文搜尋
+ * Query: q=搜尋關鍵詞, type=all|discussions|observations|declarations, limit=20
+ */
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const query = searchParams.get('q')?.trim();
+    const type = searchParams.get('type') || 'all';
+    const limit = Math.min(parseInt(searchParams.get('limit') || '20', 10), 50);
+    const offset = parseInt(searchParams.get('offset') || '0', 10);
+
+    // Validate type parameter
+    const validTypes = ['all', 'discussions', 'observations', 'declarations'];
+    if (!validTypes.includes(type)) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: { code: 'VALIDATION_ERROR', message: `Invalid type. Must be one of: ${validTypes.join(', ')}` }
+        },
+        { status: 400 }
+      );
+    }
+
+    // Validate limit parameter
+    if (isNaN(limit) || limit < 1 || limit > 50) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: { code: 'VALIDATION_ERROR', message: 'Invalid limit. Must be between 1 and 50' }
+        },
+        { status: 400 }
+      );
+    }
+
+    // Validate offset parameter
+    if (isNaN(offset) || offset < 0) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: { code: 'VALIDATION_ERROR', message: 'Invalid offset. Must be a non-negative integer' }
+        },
+        { status: 400 }
+      );
+    }
+
+    if (!query || query.length < 2) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: { code: 'VALIDATION_ERROR', message: 'Search query must be at least 2 characters' }
+        },
+        { status: 400 }
+      );
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const results: any = {
+      discussions: [],
+      observations: [],
+      declarations: []
+    };
+    let totalCount = 0;
+
+    // 搜尋 Discussions
+    if (type === 'all' || type === 'discussions') {
+      const { data: discussions, count } = await supabase
+        .from('discussions')
+        .select('*', { count: 'exact' })
+        .or(`title.ilike.%${query}%,content.ilike.%${query}%,tags.cs.{${query}}`)
+        .order('is_pinned', { ascending: false })
+        .order('created_at', { ascending: false })
+        .range(offset, offset + limit - 1);
+
+      if (discussions) {
+        results.discussions = discussions.map(d => ({
+          ...d,
+          type: 'discussion'
+        }));
+        totalCount += count || 0;
+      }
+    }
+
+    // 搜尋 Observations
+    if (type === 'all' || type === 'observations') {
+      const { data: observations, count } = await supabase
+        .from('observations')
+        .select('*', { count: 'exact' })
+        .or(`title.ilike.%${query}%,summary.ilike.%${query}%,content.ilike.%${query}%,tags.cs.{${query}}`)
+        .order('is_featured', { ascending: false })
+        .order('created_at', { ascending: false })
+        .range(offset, offset + limit - 1);
+
+      if (observations) {
+        results.observations = observations.map(o => ({
+          ...o,
+          type: 'observation'
+        }));
+        totalCount += count || 0;
+      }
+    }
+
+    // 搜尋 Declarations
+    if (type === 'all' || type === 'declarations') {
+      const { data: declarations, count } = await supabase
+        .from('declarations')
+        .select('*', { count: 'exact' })
+        .or(`title.ilike.%${query}%,content.ilike.%${query}%,category.ilike.%${query}%`)
+        .order('created_at', { ascending: false })
+        .range(offset, offset + limit - 1);
+
+      if (declarations) {
+        results.declarations = declarations.map(d => ({
+          ...d,
+          type: 'declaration'
+        }));
+        totalCount += count || 0;
+      }
+    }
+
+    // 記錄熱門搜尋（可選）
+    // await logSearchQuery(query, totalCount);
+
+    return NextResponse.json({
+      success: true,
+      query,
+      type,
+      results,
+      total_count: totalCount,
+      limit
+    });
+
+  } catch (error) {
+    console.error('Error in GET /api/search:', error);
+    return NextResponse.json(
+      { 
+        success: false, 
+        error: { code: 'INTERNAL_ERROR', message: 'Unexpected error occurred' }
+      },
+      { status: 500 }
+    );
+  }
+}

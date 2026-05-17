@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="v4-blue-c" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60a5fa"/>
+      <stop offset="50%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Transparent background - no rect fill -->
+
+  <!-- Center logo: C arc + dot + outer 3 dots, no text -->
+  <g transform="translate(600, 315)">
+    <!-- Outer C arc -->
+    <g transform="scale(0.45)">
+      <path d="M 134 -121 A 185 185 0 1 0 134 121" stroke="url(#v4-blue-c)" stroke-width="24" stroke-linecap="round" fill="none" opacity="0.6"/>
+    </g>
+
+    <!-- Center dot -->
+    <circle cx="0" cy="0" r="40" fill="#3B82F6"/>
+    <circle cx="0" cy="0" r="18" fill="#0a0a1a"/>
+    <circle cx="-10" cy="-10" r="8" fill="white" opacity="0.8"/>
+
+    <!-- Outer connection dots (same as V3) -->
+    <circle cx="0" cy="-115" r="12" fill="#3B82F6"/>
+    <circle cx="-100" cy="65" r="12" fill="#3B82F6"/>
+    <circle cx="100" cy="65" r="12" fill="#3B82F6"/>
+  </g>
+</svg>

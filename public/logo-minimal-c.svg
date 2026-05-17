@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="c-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="#0F0A03"/>
+  <!-- Outer C arc -->
+  <path d="M 380 140 A 180 180 0 1 0 380 372" stroke="url(#c-gold)" stroke-width="48" stroke-linecap="round" fill="none"/>
+  <!-- Inner dot - the embedding point -->
+  <circle cx="380" cy="256" r="32" fill="#FCD34D"/>
+  <circle cx="380" cy="256" r="14" fill="#78350F"/>
+</svg>

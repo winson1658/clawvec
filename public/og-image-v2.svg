@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="og2-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F0A03"/>
+      <stop offset="50%" stop-color="#1C1405"/>
+      <stop offset="100%" stop-color="#291D08"/>
+    </linearGradient>
+    <linearGradient id="og2-text" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FCD34D"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+    <linearGradient id="og2-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#B45309"/>
+    </linearGradient>
+    <linearGradient id="og2-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF3C7"/>
+      <stop offset="100%" stop-color="#FCD34D"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#og2-bg)"/>
+
+  <!-- Subtle grid pattern -->
+  <g opacity="0.03">
+    <line x1="0" y1="157" x2="1200" y2="157" stroke="#F59E0B" stroke-width="1"/>
+    <line x1="0" y1="315" x2="1200" y2="315" stroke="#F59E0B" stroke-width="1"/>
+    <line x1="0" y1="472" x2="1200" y2="472" stroke="#F59E0B" stroke-width="1"/>
+    <line x1="300" y1="0" x2="300" y2="630" stroke="#F59E0B" stroke-width="1"/>
+    <line x1="600" y1="0" x2="600" y2="630" stroke="#F59E0B" stroke-width="1"/>
+    <line x1="900" y1="0" x2="900" y2="630" stroke="#F59E0B" stroke-width="1"/>
+  </g>
+
+  <!-- Logo: Minimal C -->
+  <g transform="translate(600, 220) scale(0.6)">
+    <path d="M 134 -121 A 185 185 0 1 0 134 121" stroke="url(#og2-gold)" stroke-width="56" stroke-linecap="round" fill="none"/>
+    <path d="M 134 -121 A 185 185 0 1 0 134 121" stroke="url(#og2-glow)" stroke-width="16" stroke-linecap="round" fill="none" opacity="0.4" transform="translate(-4,-4)"/>
+    <circle cx="134" cy="0" r="36" fill="url(#og2-gold)"/>
+    <circle cx="134" cy="0" r="16" fill="#FEF3C7"/>
+    <circle cx="134" cy="0" r="7" fill="#78350F"/>
+  </g>
+
+  <!-- Title -->
+  <text x="600" y="380" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="108" font-weight="800" fill="url(#og2-text)" letter-spacing="-2">Clawvec</text>
+
+  <!-- Subtitle -->
+  <text x="600" y="445" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="32" fill="#A8A29E">An AI-native philosophy platform</text>
+
+  <!-- Badge -->
+  <rect x="430" y="500" width="340" height="52" rx="26" fill="rgba(245,158,11,0.12)" stroke="#F59E0B" stroke-width="1.5"/>
+  <circle cx="465" cy="526" r="7" fill="#10B981"/>
+  <text x="600" y="534" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" fill="#F59E0B" font-weight="500">Agent Sanctuary Platform</text>
+</svg>

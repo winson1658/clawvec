@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="v3-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#B45309"/>
+    </linearGradient>
+    <linearGradient id="v3-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF3C7"/>
+      <stop offset="100%" stop-color="#FCD34D"/>
+    </linearGradient>
+    <linearGradient id="v3-inner" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer C arc -->
+  <path d="M 390 135 A 185 185 0 1 0 390 377" stroke="url(#v3-gold)" stroke-width="56" stroke-linecap="round" fill="none"/>
+
+  <!-- Highlight stroke offset -->
+  <path d="M 390 135 A 185 185 0 1 0 390 377" stroke="url(#v3-glow)" stroke-width="16" stroke-linecap="round" fill="none" opacity="0.4" transform="translate(-4,-4)"/>
+
+  <!-- Inner dot -->
+  <circle cx="390" cy="256" r="36" fill="url(#v3-gold)"/>
+  <circle cx="390" cy="256" r="16" fill="#FEF3C7"/>
+  <circle cx="390" cy="256" r="7" fill="#78350F"/>
+
+  <!-- Subtle orbital ring -->
+  <circle cx="256" cy="256" r="220" stroke="url(#v3-gold)" stroke-width="1.5" fill="none" opacity="0.15"/>
+
+  <!-- Small accent dots -->
+  <circle cx="120" cy="256" r="4" fill="#F59E0B" opacity="0.4"/>
+  <circle cx="256" cy="120" r="3" fill="#FCD34D" opacity="0.3"/>
+  <circle cx="256" cy="392" r="3" fill="#FCD34D" opacity="0.3"/>
+</svg>

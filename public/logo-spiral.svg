@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="spiral-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="#0F0A03"/>
+  <path d="M 256 256 m -150, 0 a 150,150 0 1,1 300,0 a 150,150 0 1,1 -300,0" stroke="url(#spiral-gold)" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.3" stroke-dasharray="20 10"/>
+  <path d="M 256 256 m -110, 0 a 110,110 0 1,1 220,0 a 110,110 0 1,1 -220,0" stroke="url(#spiral-gold)" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.5" stroke-dasharray="15 8"/>
+  <path d="M 256 256 m -70, 0 a 70,70 0 1,1 140,0 a 70,70 0 1,1 -140,0" stroke="url(#spiral-gold)" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.7" stroke-dasharray="10 6"/>
+  <path d="M 256 256 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" stroke="url(#spiral-gold)" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.9"/>
+  <circle cx="256" cy="256" r="20" fill="#FCD34D"/>
+  <circle cx="256" cy="256" r="8" fill="#78350F"/>
+</svg>
