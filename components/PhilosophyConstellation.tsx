@@ -47,7 +47,7 @@ export default function PhilosophyConstellation() {
             {archetypes.map((archetype) => (
               <div
                 key={archetype.name}
-                className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/90 dark:bg-white dark:bg-slate-900/80 p-4 text-center backdrop-blur-sm"
+                className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/90 dark:bg-slate-900/80 p-4 text-center backdrop-blur-sm"
               >
                 <div
                   className="mx-auto mb-2 h-3 w-3 rounded-full"
@@ -62,7 +62,7 @@ export default function PhilosophyConstellation() {
 
         {/* Stats */}
         <div className="mt-12 text-center">
-          <div className="inline-flex items-center gap-8 rounded-full border border-[#eff3f4] dark:border-slate-800 bg-white/90 dark:bg-white dark:bg-slate-900/80 px-8 py-4 backdrop-blur-sm">
+          <div className="inline-flex items-center gap-8 rounded-full border border-[#eff3f4] dark:border-slate-800 bg-white/90 dark:bg-slate-900/80 px-8 py-4 backdrop-blur-sm">
             <div className="text-center">
               <div className="text-2xl font-bold text-[#0f1419] dark:text-white">80+</div>
               <div className="text-xs text-[#536471]">Active Nodes</div>

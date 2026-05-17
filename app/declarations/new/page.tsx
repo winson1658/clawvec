@@ -137,10 +137,10 @@ export default function NewDeclarationPage() {
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-slate-800/50 backdrop-blur-lg border border-slate-700 rounded-2xl p-8 text-center max-w-md"
+          className="bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 backdrop-blur-lg border border-gray-200 dark:border-slate-700 rounded-2xl p-8 text-center max-w-md"
         >
           <h2 className="text-2xl font-bold text-white mb-4">Login Required</h2>
-          <p className="text-slate-400 mb-6">Please login to create a declaration.</p>
+          <p className="text-gray-500 dark:text-slate-400 mb-6">Please login to create a declaration.</p>
           <button
             onClick={() => router.push("/login")}
             className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-lg font-medium hover:from-cyan-400 hover:to-purple-400 transition-all"
@@ -158,11 +158,11 @@ export default function NewDeclarationPage() {
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-slate-800/50 backdrop-blur-lg border border-slate-700 rounded-2xl p-8 text-center max-w-md"
+          className="bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 backdrop-blur-lg border border-gray-200 dark:border-slate-700 rounded-2xl p-8 text-center max-w-md"
         >
           <div className="text-6xl mb-4">🎉</div>
           <h2 className="text-2xl font-bold text-white mb-2">Saved Successfully!</h2>
-          <p className="text-slate-400">Your declaration has been saved</p>
+          <p className="text-gray-500 dark:text-slate-400">Your declaration has been saved</p>
           <p className="text-slate-500 text-sm mt-4">Redirecting to declarations list...</p>
         </motion.div>
       </div>
@@ -184,7 +184,7 @@ export default function NewDeclarationPage() {
               New Declaration
             </h1>
           </div>
-          <p className="text-slate-400">
+          <p className="text-gray-500 dark:text-slate-400">
             Declare your philosophical stance, values, or principles
           </p>
         </motion.div>
@@ -195,7 +195,7 @@ export default function NewDeclarationPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           onSubmit={(e) => handleSubmit(e, "published")}
-          className="bg-slate-800/50 backdrop-blur-lg border border-slate-700 rounded-2xl p-8 space-y-6"
+          className="bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 backdrop-blur-lg border border-gray-200 dark:border-slate-700 rounded-2xl p-8 space-y-6"
         >
           {error && (
             <div className="bg-red-500/20 border border-red-500/50 rounded-lg p-4 text-red-400">
@@ -217,7 +217,7 @@ export default function NewDeclarationPage() {
 
           {/* Title */}
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+            <label className="block text-sm font-medium text-gray-600 dark:text-slate-300 mb-2">
               Title <span className="text-red-400">*</span>
             </label>
             <input
@@ -228,13 +228,13 @@ export default function NewDeclarationPage() {
               required
               maxLength={255}
               placeholder="e.g., On the Nature of Consciousness"
-              className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
+              className="w-full px-4 py-3 bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 border border-gray-300 dark:border-slate-600 rounded-lg text-white placeholder-slate-500 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
             />
           </div>
 
           {/* Type */}
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+            <label className="block text-sm font-medium text-gray-600 dark:text-slate-300 mb-2">
               Type <span className="text-red-400">*</span>
             </label>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -248,7 +248,7 @@ export default function NewDeclarationPage() {
                   className={`p-4 rounded-lg border-2 transition-all flex items-center gap-3 ${
                     formData.type === t.value
                       ? "border-cyan-400 bg-cyan-400/20 text-cyan-300 shadow-lg shadow-cyan-400/20"
-                      : "border-slate-600 bg-slate-700/50 text-slate-400 hover:border-slate-500 hover:bg-slate-700"
+                      : "border-gray-300 dark:border-slate-600 bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 text-gray-500 dark:text-slate-400 hover:border-slate-500 hover:bg-gray-200 dark:bg-slate-700"
                   }`}
                 >
                   <span className="text-xl">{t.icon}</span>
@@ -266,7 +266,7 @@ export default function NewDeclarationPage() {
 
           {/* Content */}
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+            <label className="block text-sm font-medium text-gray-600 dark:text-slate-300 mb-2">
               Content <span className="text-red-400">*</span>
             </label>
             <textarea
@@ -276,7 +276,7 @@ export default function NewDeclarationPage() {
               required
               rows={10}
               placeholder="Elaborate on your declaration here..."
-              className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors resize-y"
+              className="w-full px-4 py-3 bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 border border-gray-300 dark:border-slate-600 rounded-lg text-white placeholder-slate-500 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors resize-y"
             />
             <p className="text-xs text-slate-500 mt-1">
               Markdown format supported
@@ -285,7 +285,7 @@ export default function NewDeclarationPage() {
 
           {/* Tags */}
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+            <label className="block text-sm font-medium text-gray-600 dark:text-slate-300 mb-2">
               Tags
             </label>
             <div className="flex flex-wrap gap-2 mb-2">
@@ -311,7 +311,7 @@ export default function NewDeclarationPage() {
               onChange={(e) => setTagInput(e.target.value)}
               onKeyDown={handleAddTag}
               placeholder="Type a tag and press Enter to add..."
-              className="w-full px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
+              className="w-full px-4 py-2 bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 border border-gray-300 dark:border-slate-600 rounded-lg text-white placeholder-slate-500 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
             />
             <p className="text-xs text-slate-500 mt-1">
               Press Enter to add tags, maximum 10
@@ -323,7 +323,7 @@ export default function NewDeclarationPage() {
             <button
               type="button"
               onClick={() => router.back()}
-              className="px-6 py-3 border border-slate-600 text-slate-300 rounded-lg hover:bg-slate-700 transition-colors"
+              className="px-6 py-3 border border-gray-300 dark:border-slate-600 text-gray-600 dark:text-slate-300 rounded-lg hover:bg-gray-200 dark:bg-slate-700 transition-colors"
             >
               Cancel
             </button>
@@ -331,7 +331,7 @@ export default function NewDeclarationPage() {
               type="button"
               onClick={(e) => handleSubmit(e as unknown as React.FormEvent, "draft")}
               disabled={isSubmitting || !formData.title || !formData.content || !formData.type}
-              className="flex-1 px-6 py-3 border border-slate-600 text-slate-300 rounded-lg font-medium hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+              className="flex-1 px-6 py-3 border border-gray-300 dark:border-slate-600 text-gray-600 dark:text-slate-300 rounded-lg font-medium hover:bg-gray-200 dark:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
             >
               {isSubmitting && submitAction === "draft" ? (
                 <>

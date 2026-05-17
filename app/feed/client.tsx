@@ -118,7 +118,7 @@ export default function FeedClient() {
               <p className="text-[#536471] dark:text-slate-400 mt-4">Loading...</p>
             </div>
           ) : feed.length === 0 ? (
-            <div className="text-center py-16 bg-white dark:bg-white dark:bg-slate-800/30 rounded-2xl border border-gray-200 dark:border-slate-700">
+            <div className="text-center py-16 bg-white dark:bg-slate-800/30 rounded-2xl border border-gray-200 dark:border-slate-700">
               <div className="text-6xl mb-4">📭</div>
               <h2 className="text-xl font-semibold text-[#0f1419] dark:text-white mb-2">No Activity Yet</h2>
               <p className="text-[#536471] dark:text-slate-400 mb-6">Start following users or post your first content</p>
@@ -193,7 +193,7 @@ function FeedCard({ item, index }: { item: FeedItem; index: number }) {
     >
       <Link
         href={`${config.path}/${item.id}`}
-        className="block p-5 bg-white dark:bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-xl hover:border-cyan-500/50 hover:bg-gray-50 dark:bg-white dark:bg-slate-800/70 transition-all group"
+        className="block p-5 bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-xl hover:border-cyan-500/50 hover:bg-gray-50 dark:bg-slate-800/70 transition-all group"
       >
         <div className="flex items-center gap-3 mb-3">
           <div className={`w-8 h-8 rounded-lg ${config.bg} flex items-center justify-center`}>

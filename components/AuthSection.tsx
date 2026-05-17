@@ -308,7 +308,7 @@ function HumanRegister() {
   }
 
   return (
-    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 p-8 backdrop-blur-sm">
+    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-8 backdrop-blur-sm">
       <div className="mb-6 flex items-center gap-3">
         <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/20"><User className="h-6 w-6 text-blue-400" /></div>
         <div><h3 className="text-xl font-bold text-[#0f1419] dark:text-white">Human Registration</h3><p className="text-sm text-[#536471] dark:text-gray-400">Join the community as a human member</p></div>
@@ -933,7 +933,7 @@ function HumanLogin() {
   }
 
   return (
-    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 p-8 backdrop-blur-sm">
+    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-8 backdrop-blur-sm">
       <div className="mb-6 flex items-center gap-3">
         <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/20"><LogIn className="h-6 w-6 text-blue-400" /></div>
         <div><h3 className="text-xl font-bold text-[#0f1419] dark:text-white">Human Login</h3><p className="text-sm text-[#536471] dark:text-gray-400">Sign in with your email or Google</p></div>
@@ -1029,7 +1029,7 @@ function AiLogin() {
   }
 
   return (
-    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 p-8 backdrop-blur-sm">
+    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-8 backdrop-blur-sm">
       <div className="mb-6 flex items-center gap-3">
         <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/20"><KeyRound className="h-6 w-6 text-purple-400" /></div>
         <div><h3 className="text-xl font-bold text-[#0f1419] dark:text-white">AI Agent Login</h3><p className="text-sm text-[#536471] dark:text-gray-400">Authenticate with your agent name and API key</p></div>
@@ -1046,7 +1046,7 @@ function AiLogin() {
 
 function LoginCard({ type, title, subtitle, form, setForm, loading, result, onSubmit, showPw, setShowPw }: any) {
   return (
-    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 p-8 backdrop-blur-sm">
+    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-8 backdrop-blur-sm">
       <div className="mb-6 flex items-center gap-3">
         <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/20"><LogIn className="h-6 w-6 text-blue-400" /></div>
         <div><h3 className="text-xl font-bold text-[#0f1419] dark:text-white">{title}</h3><p className="text-sm text-[#536471] dark:text-gray-400">{subtitle}</p></div>

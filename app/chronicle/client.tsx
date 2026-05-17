@@ -128,17 +128,17 @@ export default function ChronicleClient() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
+      <div className="min-h-screen bg-gray-950 dark:bg-slate-950 text-white flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-violet-500/30 border-t-violet-500 rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-slate-400 text-sm">Loading all chronicles...</p>
+          <p className="text-gray-500 dark:text-slate-400 text-sm">Loading all chronicles...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white pb-20">
+    <div className="min-h-screen bg-gray-950 dark:bg-slate-950 text-white pb-20">
       {/* Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4">
         <div className="flex items-center gap-3 mb-2">
@@ -147,7 +147,7 @@ export default function ChronicleClient() {
             ALL
           </span>
         </div>
-        <p className="text-slate-400 text-sm">
+        <p className="text-gray-500 dark:text-slate-400 text-sm">
           {stats.total} events across {Object.keys(stats.byCompany).length}{" "}
           entities
           {stats.dateRange
@@ -158,10 +158,10 @@ export default function ChronicleClient() {
 
       {/* Filter Panel */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
-        <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-4 space-y-4">
+        <div className="bg-gray-100 dark:bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-800 rounded-xl p-4 space-y-4">
           {/* Impact Filter */}
           <div>
-            <label className="text-sm font-semibold text-slate-300 mb-2 block">
+            <label className="text-sm font-semibold text-gray-600 dark:text-slate-300 mb-2 block">
               Impact Levels
             </label>
             <div className="flex flex-wrap gap-2">
@@ -175,7 +175,7 @@ export default function ChronicleClient() {
                     className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all border ${
                       isSelected
                         ? "border-transparent"
-                        : "text-slate-500 border-slate-700 bg-slate-900/50 hover:text-slate-300"
+                        : "text-slate-500 border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-gray-50 dark:bg-slate-900/50 hover:text-gray-600 dark:text-slate-300"
                     }`}
                     style={
                       isSelected
@@ -236,7 +236,7 @@ export default function ChronicleClient() {
 
           {/* Company Filter */}
           <div>
-            <label className="text-sm font-semibold text-slate-300 mb-2 block">
+            <label className="text-sm font-semibold text-gray-600 dark:text-slate-300 mb-2 block">
               Entities
             </label>
             <div className="flex flex-wrap gap-2">
@@ -250,7 +250,7 @@ export default function ChronicleClient() {
                     className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all border ${
                       isSelected
                         ? "text-white border-transparent"
-                        : "text-slate-500 border-slate-700 bg-slate-900/50 hover:text-slate-300"
+                        : "text-slate-500 border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-gray-50 dark:bg-slate-900/50 hover:text-gray-600 dark:text-slate-300"
                     }`}
                     style={
                       isSelected
@@ -290,14 +290,14 @@ export default function ChronicleClient() {
 
       {/* Stats Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-        <h2 className="text-lg font-semibold text-slate-300 mb-3">
+        <h2 className="text-lg font-semibold text-gray-600 dark:text-slate-300 mb-3">
           Impact Distribution
         </h2>
         <div className="grid grid-cols-6 gap-3">
           {[6, 5, 4, 3, 2, 1].map((impact) => (
             <div
               key={impact}
-              className="bg-slate-900/50 border border-slate-800 rounded-xl p-3 text-center"
+              className="bg-gray-100 dark:bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-800 rounded-xl p-3 text-center"
             >
               <div className="text-lg mb-1">{"⭐".repeat(impact)}</div>
               <div className="text-xl font-bold text-white">

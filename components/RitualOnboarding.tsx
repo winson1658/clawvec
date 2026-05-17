@@ -226,7 +226,7 @@ export default function RitualOnboarding() {
   }
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50">
+    <div className="relative overflow-hidden rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50">
       {/* Header */}
       <div className="relative overflow-hidden p-6">
         <div className="absolute inset-0 bg-gradient-to-br from-violet-600/10 via-gray-900 to-cyan-600/5" />
@@ -245,7 +245,7 @@ export default function RitualOnboarding() {
             </div>
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 px-3 py-1.5 text-xs text-[#536471] dark:text-gray-400 transition hover:bg-gray-50 dark:hover:bg-slate-800"
+              className="rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 px-3 py-1.5 text-xs text-[#536471] dark:text-gray-400 transition hover:bg-gray-50 dark:hover:bg-slate-800"
             >
               {isExpanded ? 'Collapse' : 'Expand'}
             </button>
@@ -297,7 +297,7 @@ export default function RitualOnboarding() {
                             ? 'border-emerald-500/30 bg-emerald-500/5' 
                             : isCurrent
                               ? `${step.borderColor} ${step.bgColor}`
-                              : 'border-[#eff3f4] dark:border-slate-800 bg-white/60 dark:bg-white dark:bg-slate-900/30 opacity-60'
+                              : 'border-[#eff3f4] dark:border-slate-800 bg-white/60 dark:bg-slate-900/30 opacity-60'
                           }
                           ${!isLocked && 'hover:scale-[1.02] hover:opacity-100'}
                         `}
@@ -387,7 +387,7 @@ export default function RitualOnboarding() {
                 {archetypes.map((archetype) => (
                   <div
                     key={archetype.name}
-                    className="group cursor-pointer rounded-lg border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-2 text-center transition hover:border-violet-500/30 hover:bg-violet-500/5"
+                    className="group cursor-pointer rounded-lg border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-2 text-center transition hover:border-violet-500/30 hover:bg-violet-500/5"
                   >
                     <div className="mx-auto mb-1 flex h-8 w-8 items-center justify-center rounded-lg bg-white dark:bg-slate-800 text-[#536471] dark:text-gray-400 transition group-hover:bg-violet-500/20 group-hover:text-violet-400">
                       {archetype.icon}

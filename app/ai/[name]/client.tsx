@@ -432,7 +432,7 @@ export default function AIProfileClient() {
                 <div className={`mx-auto mb-4 flex h-24 w-24 sm:h-32 sm:w-32 lg:h-40 lg:w-40 items-center justify-center rounded-2xl bg-gradient-to-br ${config.gradient} text-4xl sm:text-6xl lg:text-7xl shadow-2xl shadow-cyan-500/10`}>
                   {config.icon}
                 </div>
-                <div className={`rounded-lg ${config.color} bg-white/80 dark:bg-white dark:bg-slate-900/50 py-2 font-mono text-sm`}>
+                <div className={`rounded-lg ${config.color} bg-white/80 dark:bg-slate-900/50 py-2 font-mono text-sm`}>
                   {agent.archetype?.toUpperCase()}
                 </div>
               </div>
@@ -556,7 +556,7 @@ export default function AIProfileClient() {
           {activeTab === 'overview' && (
             <div className="grid gap-6 lg:grid-cols-3">
               {/* Philosophy Radar Preview */}
-              <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-6">
+              <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-6">
                 <h3 className="mb-2 flex items-center gap-2 font-mono text-sm text-cyan-400">
                   <Brain className="h-4 w-4" /> PHILOSOPHY_METRICS
                 </h3>
@@ -572,7 +572,7 @@ export default function AIProfileClient() {
               </div>
 
               {/* Recent Activity */}
-              <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-6">
+              <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-6">
                 <h3 className="mb-2 flex items-center gap-2 font-mono text-sm text-cyan-400">
                   <Terminal className="h-4 w-4" /> RECENT_ACTIVITY
                 </h3>
@@ -591,7 +591,7 @@ export default function AIProfileClient() {
               </div>
 
               {/* Performance Stats */}
-              <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-6">
+              <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-6">
                 <h3 className="mb-4 flex items-center gap-2 font-mono text-sm text-cyan-400">
                   <Cpu className="h-4 w-4" /> PERFORMANCE
                 </h3>
@@ -619,7 +619,7 @@ export default function AIProfileClient() {
 
           {activeTab === 'philosophy' && agent.philosophy_metrics && (
             <div className="grid gap-6 lg:grid-cols-2">
-              <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-6">
+              <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-6">
                 <h3 className="mb-6 flex items-center gap-2 font-mono text-sm text-cyan-400">
                   <BarChart3 className="h-4 w-4" /> PHILOSOPHY_BREAKDOWN
                 </h3>
@@ -648,7 +648,7 @@ export default function AIProfileClient() {
                   </div>
                 </div>
 
-                <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-6">
+                <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-6">
                   <h3 className="mb-4 font-mono text-sm text-[#536471] dark:text-gray-400">ARCHETYPE_ANALYSIS</h3>
                   <p className="text-[#536471] dark:text-gray-300">
                     This AI agent demonstrates strong alignment with the {agent.archetype} archetype,
@@ -663,7 +663,7 @@ export default function AIProfileClient() {
           )}
 
           {activeTab === 'performance' && (
-            <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-6">
+            <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-6">
               <h3 className="mb-6 flex items-center gap-2 font-mono text-sm text-cyan-400">
                 <Activity className="h-4 w-4" /> OPERATIONAL_METRICS
               </h3>
@@ -703,7 +703,7 @@ export default function AIProfileClient() {
               </div>
 
               {/* Reputation Trend Chart */}
-              <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-6">
+              <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-6">
                 <h3 className="mb-4 flex items-center gap-2 font-mono text-sm text-cyan-400">
                   <TrendingUp className="h-4 w-4" /> REPUTATION HISTORY
                 </h3>
@@ -768,7 +768,7 @@ export default function AIProfileClient() {
 
               {/* Recent Events */}
               {reputationData?.recent_events?.length > 0 && (
-                <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-6">
+                <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-6">
                   <h3 className="mb-4 flex items-center gap-2 font-mono text-sm text-cyan-400">
                     <Activity className="h-4 w-4" /> RECENT REPUTATION EVENTS
                   </h3>
@@ -816,7 +816,7 @@ export default function AIProfileClient() {
           )}
 
           {activeTab === 'directives' && (
-            <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-6">
+            <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-6">
               <h3 className="mb-2 flex items-center gap-2 font-mono text-sm text-cyan-400">
                 <Terminal className="h-4 w-4" /> CORE_DIRECTIVES
               </h3>
@@ -903,7 +903,7 @@ export default function AIProfileClient() {
 // Helper Components
 function StatBox({ label, value, color }: { label: string; value: string; color: string }) {
   return (
-    <div className="rounded-lg bg-white/80 dark:bg-white dark:bg-slate-900/50 p-4 text-center">
+    <div className="rounded-lg bg-white/80 dark:bg-slate-900/50 p-4 text-center">
       <div className={`text-2xl font-bold ${color}`}>{value}</div>
       <div className="font-mono text-xs text-[#536471]">{label}</div>
     </div>

@@ -25,7 +25,7 @@ export default function GateLogPanel() {
   }, []);
 
   return (
-    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-white/85 dark:bg-white dark:bg-slate-900/60 p-6">
+    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-white/85 dark:bg-slate-900/60 p-6">
       <h3 className="mb-3 text-lg font-bold text-[#0f1419] dark:text-white">Gate session log</h3>
       {loading ? (
         <p className="text-sm text-[#536471] dark:text-gray-400">Loading gate events…</p>

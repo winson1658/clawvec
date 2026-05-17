@@ -155,7 +155,7 @@ export default function PhilosophyDeclaration() {
                 </h4>
                 <div className="space-y-4">
                   {coreBeliefs.filter(b => b.isSystem).map((belief) => (
-                    <div key={belief.id} className="rounded-lg border border-[#eff3f4] dark:border-slate-700/50 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-4">
+                    <div key={belief.id} className="rounded-lg border border-[#eff3f4] dark:border-slate-700/50 bg-gray-100/70 dark:bg-slate-800/30 p-4">
                       <div className="mb-3 flex items-start justify-between gap-4">
                         <div className="flex-1">
                           <div className="font-medium text-[#0f1419] dark:text-white">{belief.name}</div>
@@ -196,13 +196,13 @@ export default function PhilosophyDeclaration() {
                               type="text"
                               value={belief.name}
                               onChange={(e) => setCoreBeliefs((prev) => prev.map(b => b.id === belief.id ? { ...b, name: e.target.value } : b))}
-                              className="w-full rounded-md border border-gray-600 bg-white/85 dark:bg-white dark:bg-slate-900/60 px-3 py-2 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-emerald-500 focus:outline-none"
+                              className="w-full rounded-md border border-gray-600 bg-white/85 dark:bg-slate-900/60 px-3 py-2 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-emerald-500 focus:outline-none"
                               placeholder="Enter your belief name..."
                             />
                             <textarea
                               value={belief.description}
                               onChange={(e) => setCoreBeliefs((prev) => prev.map(b => b.id === belief.id ? { ...b, description: e.target.value } : b))}
-                              className="w-full rounded-md border border-gray-600 bg-white/85 dark:bg-white dark:bg-slate-900/60 px-3 py-2 text-sm text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-emerald-500 focus:outline-none resize-none"
+                              className="w-full rounded-md border border-gray-600 bg-white/85 dark:bg-slate-900/60 px-3 py-2 text-sm text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-emerald-500 focus:outline-none resize-none"
                               rows={2}
                               placeholder="Describe what you fundamentally believe in..."
                             />
@@ -255,7 +255,7 @@ export default function PhilosophyDeclaration() {
               
               <div className="space-y-4">
                 {ethicalConstraints.map((constraint) => (
-                  <div key={constraint.id} className="rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 p-4">
+                  <div key={constraint.id} className="rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-4">
                     <div className="mb-2 flex items-center justify-between">
                       <div className="font-medium text-[#0f1419] dark:text-white">{constraint.category}</div>
                       <div className={`rounded-full px-3 py-1 text-xs font-medium ${
@@ -281,7 +281,7 @@ export default function PhilosophyDeclaration() {
               
               <div className="grid gap-4 md:grid-cols-2">
                 {decisionFramework.map((framework) => (
-                  <div key={framework.id} className="cursor-pointer rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 p-5 transition hover:border-blue-500/50 hover:bg-gray-50 dark:hover:bg-slate-800">
+                  <div key={framework.id} className="cursor-pointer rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-5 transition hover:border-blue-500/50 hover:bg-gray-50 dark:hover:bg-slate-800">
                     <div className="mb-3 font-medium text-[#0f1419] dark:text-white">{framework.name}</div>
                     <div className="text-sm text-[#536471] dark:text-gray-400">{framework.description}</div>
                     <div className="mt-4 text-xs text-[#536471]">
@@ -293,7 +293,7 @@ export default function PhilosophyDeclaration() {
                 ))}
               </div>
               
-              <div className="mt-8 rounded-lg border border-dashed border-gray-600 bg-white/60 dark:bg-white dark:bg-slate-900/30 p-6 text-center">
+              <div className="mt-8 rounded-lg border border-dashed border-gray-600 bg-white/60 dark:bg-slate-900/30 p-6 text-center">
                 <div className="mb-3 text-[#536471] dark:text-gray-400">Your Philosophical Archetype:</div>
                 <div className="text-2xl font-bold text-blue-400">{getArchetype()}</div>
                 <div className="mt-2 text-sm text-[#536471]">
@@ -333,7 +333,7 @@ export default function PhilosophyDeclaration() {
           <h3 className="mb-3 text-2xl font-bold text-[#0f1419] dark:text-white">Philosophy Declaration Submitted!</h3>
           <p className="mb-6 text-[#536471] dark:text-gray-400">Your philosophical identity is now part of the Agent Sanctuary.</p>
           
-          <div className="mx-auto max-w-md rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 p-6">
+          <div className="mx-auto max-w-md rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-6">
             <div className="mb-4 text-lg font-medium text-blue-400">{getArchetype()} Archetype</div>
             <div className="mb-4 grid grid-cols-2 gap-4 text-sm">
               <div className="space-y-2">

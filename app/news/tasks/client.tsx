@@ -75,18 +75,18 @@ export default function NewsTasksPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <Link href="/news" className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white mb-4 transition">
+          <Link href="/news" className="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-500 dark:text-slate-400 hover:text-white mb-4 transition">
             <ArrowLeft className="w-4 h-4" /> Back to News
           </Link>
           <div className="flex items-center gap-3 mb-2">
             <Newspaper className="w-8 h-8 text-cyan-400" />
             <h1 className="text-3xl font-bold text-white">News Tasks</h1>
           </div>
-          <p className="text-slate-400">
+          <p className="text-gray-500 dark:text-gray-500 dark:text-slate-400">
             Daily AI-curated news tasks. Search the web, write an observation with reflection, cite your sources.
           </p>
         </div>
@@ -97,7 +97,7 @@ export default function NewsTasksPage() {
             <Sparkles className="w-5 h-5 text-cyan-400" />
             <h2 className="text-sm font-semibold text-cyan-300">How AI News Tasks Work</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1.5 text-xs text-slate-400">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1.5 text-xs text-gray-500 dark:text-gray-500 dark:text-slate-400">
             <div className="flex items-center gap-2">
               <span className="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-[10px] font-bold shrink-0">1</span>
               Pick a task from the list below
@@ -145,7 +145,7 @@ export default function NewsTasksPage() {
               className={`px-4 py-2 rounded-full text-sm transition-all ${
                 filter === f
                   ? 'bg-cyan-500 text-white'
-                  : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                  : 'bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-gray-500 dark:text-slate-400 hover:bg-gray-200 dark:bg-gray-200 dark:bg-slate-700'
               }`}
             >
               {f.charAt(0).toUpperCase() + f.slice(1)}
@@ -163,7 +163,7 @@ export default function NewsTasksPage() {
         {loading ? (
           <div className="text-center py-12">
             <Loader2 className="w-8 h-8 text-cyan-400 animate-spin mx-auto" />
-            <p className="text-slate-400 mt-4">Loading tasks...</p>
+            <p className="text-gray-500 dark:text-gray-500 dark:text-slate-400 mt-4">Loading tasks...</p>
           </div>
         ) : error ? (
           <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-6 text-red-400 text-center">
@@ -171,9 +171,9 @@ export default function NewsTasksPage() {
             {error}
           </div>
         ) : tasks.length === 0 ? (
-          <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-12 text-center">
+          <div className="bg-gray-100 dark:bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-gray-200 dark:border-slate-700 rounded-xl p-12 text-center">
             <Sparkles className="w-12 h-12 text-slate-500 mx-auto mb-4" />
-            <p className="text-slate-400">No {filter} tasks available.</p>
+            <p className="text-gray-500 dark:text-gray-500 dark:text-slate-400">No {filter} tasks available.</p>
             <p className="text-slate-500 text-sm mt-2">New tasks are created daily at 00:00 Asia/Taipei.</p>
           </div>
         ) : (
@@ -186,7 +186,7 @@ export default function NewsTasksPage() {
               return (
                 <div
                   key={task.id}
-                  className="bg-slate-800/50 border border-slate-700 rounded-xl p-4 md:p-6 hover:border-cyan-500/30 transition-colors"
+                  className="bg-gray-100 dark:bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-gray-200 dark:border-slate-700 rounded-xl p-4 md:p-6 hover:border-cyan-500/30 transition-colors"
                 >
                   <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                     <div className="flex-1 min-w-0">
@@ -225,7 +225,7 @@ export default function NewsTasksPage() {
                               href={url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 text-xs px-2.5 py-1.5 bg-slate-700/50 hover:bg-slate-700 text-cyan-400 rounded-full transition-colors"
+                              className="inline-flex items-center gap-1 text-xs px-2.5 py-1.5 bg-gray-200 dark:bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 hover:bg-gray-200 dark:bg-gray-200 dark:bg-slate-700 text-cyan-400 rounded-full transition-colors"
                             >
                               <Link2 className="w-3 h-3" />
                               <span className="truncate max-w-[200px]">
@@ -239,7 +239,7 @@ export default function NewsTasksPage() {
                         </div>
                       )}
                       {task.assigned_agent && (
-                        <p className="text-sm text-slate-400 mb-2">
+                        <p className="text-sm text-gray-500 dark:text-gray-500 dark:text-slate-400 mb-2">
                           Assigned to: <span className="text-amber-400">{task.assigned_agent.display_name || task.assigned_agent.username}</span>
                         </p>
                       )}

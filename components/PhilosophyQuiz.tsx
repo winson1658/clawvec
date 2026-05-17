@@ -153,7 +153,7 @@ export default function PhilosophyQuiz() {
   // INTRO
   if (step === 0) {
     return (
-      <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-8 text-center">
+      <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-8 text-center">
         <div className="mb-6 inline-flex rounded-2xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 p-6">
           <Sparkles className="h-12 w-12 text-purple-400" />
         </div>
@@ -180,7 +180,7 @@ export default function PhilosophyQuiz() {
       }
     }
     return (
-      <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-8">
+      <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-8">
         <div className="mb-8 text-center">
           <div className="mb-4 text-6xl">{archetype.emoji}</div>
           <div className="mb-2 text-sm font-medium text-[#536471]">You are most like...</div>
@@ -231,7 +231,7 @@ export default function PhilosophyQuiz() {
   // QUESTION
   const question = questions[step - 1];
   return (
-    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-8">
+    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-8">
       {/* Progress */}
       <div className="mb-6 flex items-center justify-between">
         <span className="text-sm text-[#536471]">Question {step} of {questions.length}</span>
@@ -254,8 +254,8 @@ export default function PhilosophyQuiz() {
               selected === i
                 ? 'border-purple-500 bg-purple-500/10 scale-[1.02]'
                 : selected !== null
-                  ? 'border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 opacity-40'
-                  : 'border-[#eff3f4] dark:border-slate-700 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 hover:border-purple-500/40 hover:bg-purple-500/5 cursor-pointer'
+                  ? 'border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-slate-800/30 opacity-40'
+                  : 'border-[#eff3f4] dark:border-slate-700 bg-gray-100/70 dark:bg-slate-800/30 hover:border-purple-500/40 hover:bg-purple-500/5 cursor-pointer'
             }`}
           >
             <div className="flex items-start gap-3">
@@ -317,21 +317,21 @@ function ShareResult({ archetype, scores }: {
       <div className="flex items-center justify-center gap-3">
         <button
           onClick={nativeShare}
-          className="flex items-center gap-2 rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 px-5 py-3 text-sm font-medium text-[#536471] dark:text-gray-300 transition hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 hover:text-[#0f1419] dark:text-white"
+          className="flex items-center gap-2 rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 px-5 py-3 text-sm font-medium text-[#536471] dark:text-gray-300 transition hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800 hover:text-[#0f1419] dark:text-white"
         >
           <Share2 className="h-4 w-4" />
           Share Result
         </button>
         <button
           onClick={shareToTwitter}
-          className="flex items-center gap-2 rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 px-4 py-3 text-sm text-[#536471] dark:text-gray-400 transition hover:border-blue-500/50 hover:bg-blue-500/10 hover:text-blue-400"
+          className="flex items-center gap-2 rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 px-4 py-3 text-sm text-[#536471] dark:text-gray-400 transition hover:border-blue-500/50 hover:bg-blue-500/10 hover:text-blue-400"
           title="Share on X/Twitter"
         >
           <Twitter className="h-4 w-4" />
         </button>
         <button
           onClick={copyToClipboard}
-          className="flex items-center gap-2 rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 px-4 py-3 text-sm text-[#536471] dark:text-gray-400 transition hover:border-green-500/50 hover:bg-green-500/10 hover:text-green-400"
+          className="flex items-center gap-2 rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 px-4 py-3 text-sm text-[#536471] dark:text-gray-400 transition hover:border-green-500/50 hover:bg-green-500/10 hover:text-green-400"
           title="Copy to clipboard"
         >
           {copied ? <Check className="h-4 w-4 text-green-400" /> : <Copy className="h-4 w-4" />}

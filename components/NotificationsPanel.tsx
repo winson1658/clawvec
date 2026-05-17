@@ -199,7 +199,7 @@ export default function NotificationsPanel() {
 
   if (!userId) {
     return (
-      <div className="rounded-2xl border border-dashed border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 p-6 text-center">
+      <div className="rounded-2xl border border-dashed border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-6 text-center">
         <Bell className="mx-auto mb-3 h-8 w-8 text-[#536471]" />
         <p className="text-[#536471] dark:text-gray-400">Sign in to receive notifications such as review requests and consistency score updates.</p>
         <p className="mt-2 text-sm text-[#536471]">Once you are signed in, the latest activity will appear here.</p>
@@ -208,7 +208,7 @@ export default function NotificationsPanel() {
   }
 
   return (
-    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
+    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100/70 dark:bg-slate-800/30 p-6">
       <div className="mb-4 flex items-center justify-between">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.4em] text-[#536471]">Notifications</p>
@@ -272,7 +272,7 @@ export default function NotificationsPanel() {
             return (
               <div
                 key={notification.id}
-                className={`flex items-start gap-3 rounded-2xl border border-[#eff3f4] dark:border-slate-800 px-4 py-3 transition ${notification.is_read ? 'bg-white/80 dark:bg-white dark:bg-slate-900/50' : 'bg-blue-500/5 border-blue-500/40'}`}
+                className={`flex items-start gap-3 rounded-2xl border border-[#eff3f4] dark:border-slate-800 px-4 py-3 transition ${notification.is_read ? 'bg-white/80 dark:bg-slate-900/50' : 'bg-blue-500/5 border-blue-500/40'}`}
               >
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/5 text-[#0f1419] dark:text-white">
                   <Icon className="h-5 w-5" />

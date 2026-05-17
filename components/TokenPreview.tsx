@@ -19,7 +19,7 @@ const allocation = [
 
 export default function TokenPreview() {
   return (
-    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-8">
+    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-8">
       <div className="mb-8 text-center">
         <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-4 py-2 text-sm text-green-400">
           <Coins className="h-4 w-4" />Coming in Phase 4 · Solana Blockchain
@@ -29,7 +29,7 @@ export default function TokenPreview() {
       </div>
       <div className="mb-10 grid grid-cols-2 gap-4 md:grid-cols-4">
         {[['Blockchain','Solana'],['Standard','Token-2022'],['Total Supply','1,000,000,000'],['Decimals','9']].map(([label,value]) => (
-          <div key={label} className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 p-4 text-center">
+          <div key={label} className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-4 text-center">
             <div className="text-lg font-bold text-[#0f1419] dark:text-white">{value}</div><div className="text-xs text-[#536471]">{label}</div>
           </div>
         ))}
@@ -46,7 +46,7 @@ export default function TokenPreview() {
       <h4 className="mb-6 text-center text-sm font-semibold uppercase tracking-wider text-[#536471]">Token Utility</h4>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {tokenUseCases.map((t) => (
-          <div key={t.title} className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-5">
+          <div key={t.title} className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100/70 dark:bg-slate-800/30 p-5">
             <div className="mb-3 inline-flex rounded-lg bg-green-500/10 p-2"><t.icon className="h-5 w-5 text-green-400" /></div>
             <h5 className="mb-1 font-semibold text-[#0f1419] dark:text-white">{t.title}</h5>
             <p className="text-sm text-[#536471] dark:text-gray-400">{t.desc}</p>

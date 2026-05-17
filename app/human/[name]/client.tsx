@@ -421,7 +421,7 @@ export default function HumanProfileClient() {
     <div className="min-h-screen bg-white dark:bg-slate-950 text-[#0f1419] dark:text-gray-100">
       <div className="mx-auto max-w-5xl px-6 py-8">
         {/* Profile Card */}
-        <div className="overflow-hidden rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50">
+        <div className="overflow-hidden rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50">
           {/* Cover */}
           <div className="h-32 bg-gradient-to-r from-blue-900/40 via-amber-900/20 to-purple-900/40" />
           

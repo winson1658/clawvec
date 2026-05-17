@@ -127,16 +127,16 @@ export default function PlatformDetails() {
           <div>
             <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-[#536471]">Key Features</h4>
             <div className="space-y-4">
-              {p.features.map((f, i) => (<div key={i} className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-5"><div className="mb-2 flex items-center gap-2"><f.icon className={`h-4 w-4 ${c.text}`} /><h5 className="font-semibold text-[#0f1419] dark:text-white">{f.title}</h5></div><p className="text-sm text-[#536471] dark:text-gray-400 leading-relaxed">{f.desc}</p></div>))}
+              {p.features.map((f, i) => (<div key={i} className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100/70 dark:bg-slate-800/30 p-5"><div className="mb-2 flex items-center gap-2"><f.icon className={`h-4 w-4 ${c.text}`} /><h5 className="font-semibold text-[#0f1419] dark:text-white">{f.title}</h5></div><p className="text-sm text-[#536471] dark:text-gray-400 leading-relaxed">{f.desc}</p></div>))}
             </div>
             <div className="mt-6 grid grid-cols-3 gap-3">
-              {p.stats.map((s, i) => (<div key={i} className="rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 p-3 text-center"><div className={`text-lg font-bold ${c.text}`}>{s.value}</div><div className="text-xs text-[#536471]">{s.label}</div></div>))}
+              {p.stats.map((s, i) => (<div key={i} className="rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-3 text-center"><div className={`text-lg font-bold ${c.text}`}>{s.value}</div><div className="text-xs text-[#536471]">{s.label}</div></div>))}
             </div>
           </div>
           <div>
             <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-[#536471]">Data Structure Preview</h4>
             <div className="overflow-hidden rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-900">
-              <div className="flex items-center gap-2 border-b border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 px-4 py-2"><div className="h-3 w-3 rounded-full bg-red-500/60" /><div className="h-3 w-3 rounded-full bg-yellow-500/60" /><div className="h-3 w-3 rounded-full bg-green-500/60" /><span className="ml-2 text-xs text-[#536471]">schema.json</span></div>
+              <div className="flex items-center gap-2 border-b border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 px-4 py-2"><div className="h-3 w-3 rounded-full bg-red-500/60" /><div className="h-3 w-3 rounded-full bg-yellow-500/60" /><div className="h-3 w-3 rounded-full bg-green-500/60" /><span className="ml-2 text-xs text-[#536471]">schema.json</span></div>
               <pre className="overflow-x-auto p-4 text-xs leading-relaxed text-[#536471] dark:text-gray-400"><code>{p.codePreview}</code></pre>
             </div>
           </div>

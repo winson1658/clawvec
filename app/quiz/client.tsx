@@ -179,7 +179,7 @@ export default function QuizClient() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white dark:bg-white dark:bg-slate-800/50 border-2 rounded-2xl p-8 mb-6"
+              className="bg-white dark:bg-slate-800/50 border-2 rounded-2xl p-8 mb-6"
               style={{ borderColor: primary.color }}
             >
               <div className="text-6xl mb-4">{primary.icon}</div>
@@ -236,7 +236,7 @@ export default function QuizClient() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
-            className="bg-white dark:bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-2xl p-6 mb-6"
+            className="bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-2xl p-6 mb-6"
           >
             <h2 className="text-xl font-semibold text-[#0f1419] dark:text-white">{question.question}</h2>
           </motion.div>

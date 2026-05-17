@@ -173,10 +173,10 @@ export default function RoadmapVisual() {
           <div>
             <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-[#536471]">Key Metrics</h4>
             <div className="grid grid-cols-3 gap-4">
-              {phase.metrics.map((m, i) => (<div key={i} className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 p-4 text-center"><div className={`text-xl font-bold ${c.text}`}>{m.value}</div><div className="mt-1 text-xs text-[#536471]">{m.label}</div></div>))}
+              {phase.metrics.map((m, i) => (<div key={i} className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-4 text-center"><div className={`text-xl font-bold ${c.text}`}>{m.value}</div><div className="mt-1 text-xs text-[#536471]">{m.label}</div></div>))}
             </div>
             <h4 className="mb-4 mt-8 text-sm font-semibold uppercase tracking-wider text-[#536471]">Architecture</h4>
-            <div className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
+            <div className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100/70 dark:bg-slate-800/30 p-6">
               {selected === 0 && <div className="space-y-3 text-xs text-[#536471] dark:text-gray-400"><div className="flex items-center justify-center gap-2"><div className="rounded bg-blue-500/20 px-3 py-2 text-blue-400 font-mono">Identity Layer</div><span>→</span><div className="rounded bg-purple-500/20 px-3 py-2 text-purple-400 font-mono">Trust API</div><span>→</span><div className="rounded bg-green-500/20 px-3 py-2 text-green-400 font-mono">Memory Backbone</div></div><div className="text-center text-gray-600">Next.js · Serverless API · PostgreSQL · Entry Rituals</div><div className="flex items-center justify-center gap-2"><div className="rounded bg-amber-500/20 px-2 py-1 text-amber-400">JWT</div><div className="rounded bg-cyan-500/20 px-2 py-1 text-cyan-400">bcrypt</div><div className="rounded bg-pink-500/20 px-2 py-1 text-pink-400">RLS</div></div></div>}
               {selected === 1 && <div className="space-y-3 text-xs text-[#536471] dark:text-gray-400"><div className="flex items-center justify-center"><div className="rounded bg-purple-500/20 px-3 py-2 text-purple-400 font-mono">Civic Community</div></div><div className="flex items-center justify-center gap-4"><div className="rounded bg-blue-500/20 px-2 py-1 text-blue-400">Jury (7)</div><div className="rounded bg-green-500/20 px-2 py-1 text-green-400">Mentors</div><div className="rounded bg-amber-500/20 px-2 py-1 text-amber-400">Councils</div></div><div className="text-center text-gray-600">Governance · Reputation · Rituals · Collective Wisdom</div></div>}
               {selected === 2 && <div className="space-y-3 text-xs text-[#536471] dark:text-gray-400"><div className="flex items-center justify-center"><div className="rounded bg-amber-500/20 px-3 py-2 text-amber-400 font-mono">Evolution Engine</div></div><div className="flex items-center justify-center gap-4"><div className="rounded bg-blue-500/20 px-2 py-1 text-blue-400">Belief Graph</div><div className="rounded bg-purple-500/20 px-2 py-1 text-purple-400">Drift Alerts</div><div className="rounded bg-green-500/20 px-2 py-1 text-green-400">Simulation</div></div><div className="text-center text-gray-600">Value Graph · Fork / Merge Frameworks · Timeline Memory Engine</div></div>}
@@ -188,7 +188,7 @@ export default function RoadmapVisual() {
       </div>
 
       {/* Overall Progress */}
-      <div className="mt-12 rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-8">
+      <div className="mt-12 rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-8">
         <h3 className="mb-6 text-center text-lg font-bold text-[#0f1419] dark:text-white">Overall Platform Progress</h3>
         <div className="mx-auto max-w-2xl space-y-4">
           {phases.map((p) => {

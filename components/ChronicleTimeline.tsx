@@ -62,7 +62,7 @@ export default function ChronicleTimeline({ milestones = [] }: ChronicleTimeline
         <button
           onClick={() => setSelectedYear(y => Math.min(...years) < y ? y - 1 : y)}
           disabled={selectedYear <= Math.min(...years)}
-          className="rounded-full border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 p-2 text-[#536471] dark:text-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-slate-800 hover:text-[#0f1419] dark:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+          className="rounded-full border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-2 text-[#536471] dark:text-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-slate-800 hover:text-[#0f1419] dark:text-white disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <ChevronLeft className="h-5 w-5" />
         </button>
@@ -86,7 +86,7 @@ export default function ChronicleTimeline({ milestones = [] }: ChronicleTimeline
         <button
           onClick={() => setSelectedYear(y => Math.max(...years) > y ? y + 1 : y)}
           disabled={selectedYear >= Math.max(...years)}
-          className="rounded-full border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 p-2 text-[#536471] dark:text-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-slate-800 hover:text-[#0f1419] dark:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+          className="rounded-full border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-2 text-[#536471] dark:text-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-slate-800 hover:text-[#0f1419] dark:text-white disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <ChevronRight className="h-5 w-5" />
         </button>

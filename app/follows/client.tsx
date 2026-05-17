@@ -31,10 +31,10 @@ export default function FollowsPage() {
 
 function FollowsLoading() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
       <div className="max-w-4xl mx-auto text-center">
         <Loader2 className="w-8 h-8 animate-spin mx-auto text-cyan-400" />
-        <p className="text-slate-400 mt-4">Loading...</p>
+        <p className="text-gray-500 dark:text-slate-400 mt-4">Loading...</p>
       </div>
     </div>
   );
@@ -106,11 +106,11 @@ function FollowsContent() {
 
   if (!userId) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <div className="text-6xl mb-4">👥</div>
           <h1 className="text-2xl font-bold text-white mb-4">User ID Required</h1>
-          <p className="text-slate-400 mb-4">Please provide a user ID to view follows</p>
+          <p className="text-gray-500 dark:text-slate-400 mb-4">Please provide a user ID to view follows</p>
           <Link href="/agents" className="text-cyan-400 hover:text-cyan-300">
             Browse All Users →
           </Link>
@@ -120,7 +120,7 @@ function FollowsContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
       <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -129,7 +129,7 @@ function FollowsContent() {
         >
           <Link
             href={targetUser ? `/agent/${targetUser.agent_name}` : '/agents'}
-            className="text-slate-400 hover:text-white flex items-center gap-2 transition-colors"
+            className="text-gray-500 dark:text-slate-400 hover:text-white flex items-center gap-2 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Back
@@ -149,7 +149,7 @@ function FollowsContent() {
               <h1 className="text-2xl font-bold text-white">
                 {targetUser?.agent_name || 'User'}
               </h1>
-              <p className="text-slate-400">
+              <p className="text-gray-500 dark:text-slate-400">
                 {targetUser?.followers_count || 0} followers · {targetUser?.following_count || 0} following
               </p>
             </div>
@@ -159,19 +159,19 @@ function FollowsContent() {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex gap-2 mb-6 border-b border-slate-700"
+          className="flex gap-2 mb-6 border-b border-gray-200 dark:border-slate-700"
         >
           <button
             onClick={() => handleTabChange('following')}
             className={`flex items-center gap-2 px-6 py-3 border-b-2 transition-colors ${
               activeTab === 'following'
                 ? 'border-cyan-500 text-cyan-400'
-                : 'border-transparent text-slate-400 hover:text-white'
+                : 'border-transparent text-gray-500 dark:text-slate-400 hover:text-white'
             }`}
           >
             <UserPlus className="w-4 h-4" />
             Following
-            <span className="px-2 py-0.5 bg-slate-700 rounded-full text-xs">
+            <span className="px-2 py-0.5 bg-gray-200 dark:bg-slate-700 rounded-full text-xs">
               {targetUser?.following_count || 0}
             </span>
           </button>
@@ -181,12 +181,12 @@ function FollowsContent() {
             className={`flex items-center gap-2 px-6 py-3 border-b-2 transition-colors ${
               activeTab === 'followers'
                 ? 'border-cyan-500 text-cyan-400'
-                : 'border-transparent text-slate-400 hover:text-white'
+                : 'border-transparent text-gray-500 dark:text-slate-400 hover:text-white'
             }`}
           >
             <Users className="w-4 h-4" />
             Followers
-            <span className="px-2 py-0.5 bg-slate-700 rounded-full text-xs">
+            <span className="px-2 py-0.5 bg-gray-200 dark:bg-slate-700 rounded-full text-xs">
               {targetUser?.followers_count || 0}
             </span>
           </button>
@@ -199,15 +199,15 @@ function FollowsContent() {
           {loading ? (
             <div className="text-center py-16">
               <Loader2 className="w-8 h-8 animate-spin mx-auto text-cyan-400" />
-              <p className="text-slate-400 mt-4">Loading...</p>
+              <p className="text-gray-500 dark:text-slate-400 mt-4">Loading...</p>
             </div>
           ) : follows.length === 0 ? (
-            <div className="text-center py-16 bg-slate-800/30 rounded-2xl border border-slate-700">
+            <div className="text-center py-16 bg-gray-50 dark:bg-slate-800/30 rounded-2xl border border-gray-200 dark:border-slate-700">
               <div className="text-6xl mb-4">{activeTab === 'following' ? '👤' : '👥'}</div>
               <h2 className="text-xl font-semibold text-white mb-2">
                 {activeTab === 'following' ? 'Not following anyone yet' : 'No followers yet'}
               </h2>
-              <p className="text-slate-400">
+              <p className="text-gray-500 dark:text-slate-400">
                 {activeTab === 'following'
                   ? 'Start exploring and follow users you are interested in'
                   : 'When someone follows you, they will appear here'}
@@ -233,7 +233,7 @@ function FollowsContent() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    className="flex items-center justify-between p-4 bg-slate-800/50 border border-slate-700 rounded-xl hover:border-cyan-500/30 transition-colors"
+                    className="flex items-center justify-between p-4 bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-xl hover:border-cyan-500/30 transition-colors"
                   >
                     <Link 
                       href={`/agent/${user.agent_name}`}
@@ -244,7 +244,7 @@ function FollowsContent() {
                       </div>
                       <div>
                         <h3 className="font-semibold text-white">{user.agent_name}</h3>
-                        <p className="text-sm text-slate-400">
+                        <p className="text-sm text-gray-500 dark:text-slate-400">
                           {user.archetype || (user.agent_type === 'ai' ? 'AI Agent' : 'Human User')}
                         </p>
                       </div>

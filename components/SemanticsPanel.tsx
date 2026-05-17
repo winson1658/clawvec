@@ -85,8 +85,8 @@ export default function SemanticsPanel({ contentType, contentId }: Props) {
   // --- Loading State ---
   if (loading) {
     return (
-      <div className="mt-6 pt-6 border-t border-slate-700/50">
-        <div className="flex items-center gap-2 text-slate-400 text-sm">
+      <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-200 dark:border-slate-700/50">
+        <div className="flex items-center gap-2 text-gray-500 dark:text-slate-400 text-sm">
           <Loader2 className="w-4 h-4 animate-spin" />
           <span>Loading AI analysis...</span>
         </div>
@@ -97,17 +97,17 @@ export default function SemanticsPanel({ contentType, contentId }: Props) {
   // --- No Data State ---
   if (!data || data.confidence_score === 0) {
     return (
-      <div className="mt-6 pt-6 border-t border-slate-700/50">
+      <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-200 dark:border-slate-700/50">
         <button
           onClick={() => setExpanded(!expanded)}
-          className="flex items-center gap-2 text-slate-400 hover:text-slate-300 transition-colors text-sm"
+          className="flex items-center gap-2 text-gray-500 dark:text-slate-400 hover:text-gray-600 dark:text-slate-300 transition-colors text-sm"
         >
           {expanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
           <Brain className="w-4 h-4" />
           <span>AI Analysis</span>
         </button>
         {expanded && (
-          <div className="mt-3 flex items-start gap-2 text-slate-500 text-xs">
+          <div className="mt-3 flex items-start gap-2 text-gray-500 dark:text-slate-500 text-xs">
             <AlertCircle className="w-3 h-3 mt-0.5 shrink-0" />
             <p>No AI analysis available yet. Semantic analysis is generated when content is created — results appear here if an AI API key is configured.</p>
           </div>
@@ -127,8 +127,8 @@ export default function SemanticsPanel({ contentType, contentId }: Props) {
 
     return (
       <div className="grid grid-cols-[120px_1fr_40px] gap-2 items-center text-xs">
-        <span className="text-slate-400 truncate text-right">{domain.replace(/_/g, ' ')}</span>
-        <div className="relative h-3 bg-slate-700/50 rounded-full overflow-hidden">
+        <span className="text-gray-500 dark:text-slate-400 truncate text-right">{domain.replace(/_/g, ' ')}</span>
+        <div className="relative h-3 bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 rounded-full overflow-hidden">
           <div
             className={`absolute top-0 h-full rounded-full transition-all duration-500 ${color} ${isPro ? 'left-1/2' : 'right-1/2'}`}
             style={{
@@ -149,16 +149,16 @@ export default function SemanticsPanel({ contentType, contentId }: Props) {
   const sortedBeliefs = [...beliefEntries].sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]));
 
   return (
-    <div className="mt-6 pt-6 border-t border-slate-700/50">
+    <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-200 dark:border-slate-700/50">
       <button
         onClick={() => setExpanded(!expanded)}
-        className="flex items-center gap-2 text-slate-300 hover:text-white transition-colors mb-3"
+        className="flex items-center gap-2 text-gray-600 dark:text-slate-300 hover:text-white transition-colors mb-3"
       >
         {expanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
         <Brain className="w-4 h-4" />
         <span className="font-medium text-sm">AI Analysis</span>
         {data.confidence_score > 0 && (
-          <span className="text-xs text-slate-500 ml-1">
+          <span className="text-xs text-gray-500 dark:text-slate-500 ml-1">
             · {Math.round(data.confidence_score * 100)}% confidence
           </span>
         )}
@@ -169,15 +169,15 @@ export default function SemanticsPanel({ contentType, contentId }: Props) {
           {/* Summary */}
           {data.summary && (
             <div>
-              <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">Summary</p>
-              <p className="text-sm text-slate-300 leading-relaxed">{data.summary}</p>
+              <p className="text-xs text-gray-500 dark:text-slate-500 uppercase tracking-wider mb-1">Summary</p>
+              <p className="text-sm text-gray-600 dark:text-slate-300 leading-relaxed">{data.summary}</p>
             </div>
           )}
 
           {/* Domain Tags */}
           {data.domain_tags?.length > 0 && (
             <div>
-              <p className="text-xs text-slate-500 uppercase tracking-wider mb-1.5">Domains</p>
+              <p className="text-xs text-gray-500 dark:text-slate-500 uppercase tracking-wider mb-1.5">Domains</p>
               <div className="flex flex-wrap gap-1.5">
                 {data.domain_tags.map((tag: string) => (
                   <span
@@ -194,8 +194,8 @@ export default function SemanticsPanel({ contentType, contentId }: Props) {
           {/* Belief Vector */}
           {sortedBeliefs.length > 0 && (
             <div>
-              <p className="text-xs text-slate-500 uppercase tracking-wider mb-1.5">Belief Vector</p>
-              <div className="space-y-1.5 bg-slate-800/40 rounded-lg p-3 border border-slate-700/30">
+              <p className="text-xs text-gray-500 dark:text-slate-500 uppercase tracking-wider mb-1.5">Belief Vector</p>
+              <div className="space-y-1.5 bg-gray-100 dark:bg-slate-800/40 rounded-lg p-3 border border-gray-200 dark:border-gray-200 dark:border-slate-700/30">
                 {sortedBeliefs.slice(0, 6).map(([domain, value]) => (
                   <BeliefBar key={domain} domain={domain} value={value} />
                 ))}
@@ -211,17 +211,17 @@ export default function SemanticsPanel({ contentType, contentId }: Props) {
           {/* Extracted Beliefs */}
           {data.extracted_beliefs?.length > 0 && (
             <div>
-              <p className="text-xs text-slate-500 uppercase tracking-wider mb-1.5">Extracted Beliefs</p>
+              <p className="text-xs text-gray-500 dark:text-slate-500 uppercase tracking-wider mb-1.5">Extracted Beliefs</p>
               <div className="space-y-1.5">
                 {data.extracted_beliefs.slice(0, 5).map((belief, idx: number) => (
                   <div key={idx} className="flex items-start gap-2 text-xs">
                     <Sparkles className={`w-3 h-3 mt-0.5 shrink-0 ${
                       belief.position === 'pro' ? 'text-emerald-400'
                       : belief.position === 'anti' ? 'text-rose-400'
-                      : 'text-slate-400'
+                      : 'text-gray-500 dark:text-slate-400'
                     }`} />
-                    <span className="text-slate-300">{belief.belief}</span>
-                    <span className="text-slate-500 shrink-0">({belief.domain})</span>
+                    <span className="text-gray-600 dark:text-slate-300">{belief.belief}</span>
+                    <span className="text-gray-500 dark:text-slate-500 shrink-0">({belief.domain})</span>
                   </div>
                 ))}
               </div>

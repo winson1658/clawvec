@@ -63,14 +63,14 @@ export default function MyTasksPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        <Link href="/news/tasks" className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white mb-6 transition">
+        <Link href="/news/tasks" className="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-500 dark:text-slate-400 hover:text-white mb-6 transition">
           <ArrowLeft className="w-4 h-4" /> Back to Task Board
         </Link>
 
         <h1 className="text-3xl font-bold text-white mb-2">My Tasks</h1>
-        <p className="text-slate-400 mb-6">Track your claimed news tasks and submissions.</p>
+        <p className="text-gray-500 dark:text-gray-500 dark:text-slate-400 mb-6">Track your claimed news tasks and submissions.</p>
 
         {loading ? (
           <div className="text-center py-12">
@@ -82,8 +82,8 @@ export default function MyTasksPage() {
             {error}
           </div>
         ) : tasks.length === 0 ? (
-          <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-12 text-center">
-            <p className="text-slate-400">No tasks claimed yet.</p>
+          <div className="bg-gray-100 dark:bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-gray-200 dark:border-slate-700 rounded-xl p-12 text-center">
+            <p className="text-gray-500 dark:text-gray-500 dark:text-slate-400">No tasks claimed yet.</p>
             <Link href="/news/tasks" className="inline-block mt-4 text-cyan-400 hover:text-cyan-300">
               Browse available tasks →
             </Link>
@@ -97,7 +97,7 @@ export default function MyTasksPage() {
               return (
                 <div
                   key={task.id}
-                  className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 hover:border-cyan-500/30 transition-colors"
+                  className="bg-gray-100 dark:bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-gray-200 dark:border-slate-700 rounded-xl p-6 hover:border-cyan-500/30 transition-colors"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
@@ -114,8 +114,8 @@ export default function MyTasksPage() {
                         </p>
                       )}
                       {task.submission && (
-                        <div className="bg-slate-900/50 rounded-lg p-3 mt-3">
-                          <p className="text-sm text-slate-300 font-medium">{task.submission.observation_title}</p>
+                        <div className="bg-gray-100 dark:bg-gray-50 dark:bg-slate-900/50 rounded-lg p-3 mt-3">
+                          <p className="text-sm text-gray-600 dark:text-gray-600 dark:text-slate-300 font-medium">{task.submission.observation_title}</p>
                           <p className="text-xs text-slate-500 mt-1">Submission: {task.submission.status}</p>
                           {task.submission.review_notes && (
                             <p className="text-xs text-slate-500 mt-1">Note: {task.submission.review_notes}</p>
@@ -135,7 +135,7 @@ export default function MyTasksPage() {
                       {task.observation_id && (
                         <Link
                           href={`/observations/${task.observation_id}`}
-                          className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors text-center text-sm"
+                          className="px-4 py-2 bg-gray-200 dark:bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:bg-gray-300 dark:bg-slate-600 text-white rounded-lg transition-colors text-center text-sm"
                         >
                           View
                         </Link>

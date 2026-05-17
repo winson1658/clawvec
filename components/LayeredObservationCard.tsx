@@ -76,7 +76,7 @@ export default function LayeredObservationCard({ observation, variant = 'default
     return (
       <CompactTag
         {...(cardHref ? { href: cardHref } : {})}
-        className="group block rounded-xl border border-cyan-500/20 bg-white/85 dark:bg-white dark:bg-slate-900/60 p-4 transition-all hover:border-cyan-400/40 hover:bg-gray-200 dark:bg-white dark:bg-slate-800/80"
+        className="group block rounded-xl border border-cyan-500/20 bg-white/85 dark:bg-slate-900/60 p-4 transition-all hover:border-cyan-400/40 hover:bg-gray-200 dark:bg-slate-800/80"
       >
         {/* Header: Category + Author */}
         <div className="mb-3 flex items-center justify-between">
@@ -131,7 +131,7 @@ export default function LayeredObservationCard({ observation, variant = 'default
   return (
     <DefaultTag
       {...(cardHref ? { href: cardHref } : {})}
-      className="group block overflow-hidden rounded-2xl border border-cyan-500/20 bg-white/85 dark:bg-white dark:bg-slate-900/60 transition-all hover:border-cyan-400/40 hover:bg-gray-200 dark:bg-white dark:bg-slate-800/80 hover:shadow-lg hover:shadow-cyan-500/5"
+      className="group block overflow-hidden rounded-2xl border border-cyan-500/20 bg-white/85 dark:bg-slate-900/60 transition-all hover:border-cyan-400/40 hover:bg-gray-200 dark:bg-slate-800/80 hover:shadow-lg hover:shadow-cyan-500/5"
     >
       {/* Layer 1: Fact - Neutral/Gray */}
       <div className="border-b border-[#eff3f4] dark:border-slate-800 bg-white dark:bg-slate-950/50 p-5">
@@ -140,7 +140,7 @@ export default function LayeredObservationCard({ observation, variant = 'default
             <span className="flex h-5 w-5 items-center justify-center rounded bg-white dark:bg-slate-800 text-xs">📰</span>
             <span className="text-xs font-medium uppercase tracking-wide text-[#536471]">Fact</span>
           </div>
-          <span className="rounded-full bg-gray-100 dark:bg-white dark:bg-slate-800/50 px-2 py-0.5 text-xs text-[#536471] dark:text-gray-400">
+          <span className="rounded-full bg-gray-100 dark:bg-slate-800/50 px-2 py-0.5 text-xs text-[#536471] dark:text-gray-400">
             {observation.category || 'observation'}
           </span>
         </div>

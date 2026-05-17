@@ -224,12 +224,12 @@ export default function NewsDetailClient({ id }: { id: string }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="animate-pulse space-y-4">
-            <div className="h-8 bg-slate-800 rounded w-3/4"></div>
-            <div className="h-4 bg-slate-800 rounded w-1/2"></div>
-            <div className="h-64 bg-slate-800 rounded"></div>
+            <div className="h-8 bg-gray-100 dark:bg-slate-800 rounded w-3/4"></div>
+            <div className="h-4 bg-gray-100 dark:bg-slate-800 rounded w-1/2"></div>
+            <div className="h-64 bg-gray-100 dark:bg-slate-800 rounded"></div>
           </div>
         </div>
       </div>
@@ -238,16 +238,16 @@ export default function NewsDetailClient({ id }: { id: string }) {
 
   if (error || !news) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-slate-800/50 border border-slate-700 rounded-2xl p-8"
+            className="bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-2xl p-8"
           >
             <div className="text-6xl mb-4">📰</div>
             <h2 className="text-2xl font-bold text-white mb-2">{error || 'News Not Found'}</h2>
-            <p className="text-slate-400 mb-6">The news article you are looking for does not exist or has been removed.</p>
+            <p className="text-gray-500 dark:text-slate-400 mb-6">The news article you are looking for does not exist or has been removed.</p>
             <Link href="/news" className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-lg transition-colors">
               <ArrowLeft className="w-5 h-5" /> Back to News
             </Link>
@@ -258,19 +258,19 @@ export default function NewsDetailClient({ id }: { id: string }) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Back button */}
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="mb-6">
-          <Link href="/news" className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
+          <Link href="/news" className="inline-flex items-center gap-2 text-gray-500 dark:text-slate-400 hover:text-white transition-colors">
             <ArrowLeft className="w-5 h-5" /> Back to News
           </Link>
         </motion.div>
 
         {/* Main content */}
-        <motion.article initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-slate-800/50 border border-slate-700 rounded-2xl overflow-hidden">
+        <motion.article initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-2xl overflow-hidden">
           {/* Header */}
-          <div className="p-8 border-b border-slate-700">
+          <div className="p-8 border-b border-gray-200 dark:border-slate-700">
             <div className="flex items-center gap-3 mb-4">
               <span className="px-3 py-1 bg-cyan-500/10 text-cyan-400 rounded-full text-sm">
                 {news.category || 'News'}
@@ -284,7 +284,7 @@ export default function NewsDetailClient({ id }: { id: string }) {
 
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">{news.title}</h1>
 
-            <div className="flex flex-wrap items-center gap-4 text-slate-400 text-sm">
+            <div className="flex flex-wrap items-center gap-4 text-gray-500 dark:text-slate-400 text-sm">
               <span className="flex items-center gap-1.5">
                 <Newspaper className="w-4 h-4" />
                 {news.source?.name || 'Unknown Source'}
@@ -300,16 +300,16 @@ export default function NewsDetailClient({ id }: { id: string }) {
           <div className="p-8">
             {/* Summary */}
             {news.summary_zh && (
-              <p className="text-lg text-slate-300 mb-6 leading-relaxed">{news.summary_zh}</p>
+              <p className="text-lg text-gray-600 dark:text-slate-300 mb-6 leading-relaxed">{news.summary_zh}</p>
             )}
 
             {/* AI Perspective */}
             {news.ai_perspective && (
-              <div className="bg-slate-900/50 rounded-lg p-5 mb-6 border border-purple-500/10">
+              <div className="bg-gray-100 dark:bg-gray-50 dark:bg-slate-900/50 rounded-lg p-5 mb-6 border border-purple-500/10">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-purple-400 font-medium">AI Perspective</span>
                 </div>
-                <p className="text-slate-400">{news.ai_perspective}</p>
+                <p className="text-gray-500 dark:text-slate-400">{news.ai_perspective}</p>
               </div>
             )}
 
@@ -317,7 +317,7 @@ export default function NewsDetailClient({ id }: { id: string }) {
             {news.tags && news.tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-6">
                 {news.tags.map((tag: string) => (
-                  <span key={tag} className="px-3 py-1 bg-slate-700 text-slate-300 rounded-full text-sm">
+                  <span key={tag} className="px-3 py-1 bg-gray-200 dark:bg-slate-700 text-gray-600 dark:text-slate-300 rounded-full text-sm">
                     #{tag}
                   </span>
                 ))}
@@ -330,7 +330,7 @@ export default function NewsDetailClient({ id }: { id: string }) {
                 <div className="flex items-center gap-2 mb-3">
                   <span className="text-sm font-semibold text-purple-300">🤖 AI Reflection</span>
                 </div>
-                <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-line">{news.reflection}</p>
+                <p className="text-sm text-gray-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">{news.reflection}</p>
               </div>
             )}
 
@@ -340,9 +340,9 @@ export default function NewsDetailClient({ id }: { id: string }) {
                 href={news.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-700/40 hover:bg-slate-700/60 border border-slate-600/50 rounded-xl text-sm text-cyan-400 transition-colors group"
+                className="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-200 dark:bg-slate-700/40 hover:bg-gray-200 dark:bg-slate-700/60 border border-gray-300 dark:border-slate-600/50 rounded-xl text-sm text-cyan-400 transition-colors group"
               >
-                <Link2 className="w-4 h-4 shrink-0 text-slate-400 group-hover:text-cyan-400 transition-colors" />
+                <Link2 className="w-4 h-4 shrink-0 text-gray-500 dark:text-slate-400 group-hover:text-cyan-400 transition-colors" />
                 <span className="truncate max-w-[280px] md:max-w-md">{getDomain(news.url)}</span>
                 <ExternalLink className="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-cyan-400 transition-colors" />
               </a>
@@ -350,13 +350,13 @@ export default function NewsDetailClient({ id }: { id: string }) {
           </div>
 
           {/* Footer */}
-          <div className="p-8 border-t border-slate-700 bg-slate-800/30">
+          <div className="p-8 border-t border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-gray-50 dark:bg-slate-800/30">
             <div className="flex flex-wrap items-center gap-3">
               <button
                 onClick={handleLike}
                 disabled={likeLoading || !user}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                  liked ? 'bg-pink-500/20 text-pink-400' : 'bg-slate-700 hover:bg-slate-600 text-slate-300'
+                  liked ? 'bg-pink-500/20 text-pink-400' : 'bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:bg-slate-600 text-gray-600 dark:text-slate-300'
                 }`}
               >
                 <Heart className={`w-5 h-5 ${liked ? 'fill-current' : ''}`} />
@@ -366,7 +366,7 @@ export default function NewsDetailClient({ id }: { id: string }) {
               <button
                 onClick={handleShare}
                 disabled={sharing}
-                className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-lg transition-colors disabled:opacity-50"
+                className="flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:bg-slate-600 text-gray-600 dark:text-slate-300 rounded-lg transition-colors disabled:opacity-50"
               >
                 <Share2 className="w-5 h-5" />
                 {sharing ? 'Copying...' : 'Share'}
@@ -380,10 +380,10 @@ export default function NewsDetailClient({ id }: { id: string }) {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="mt-4 bg-slate-800/50 border border-slate-700 rounded-xl p-4"
+          className="mt-4 bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-xl p-4"
         >
           <div className="flex items-center gap-2">
-            <span className="text-sm text-slate-400 mr-2">Quick Reactions:</span>
+            <span className="text-sm text-gray-500 dark:text-slate-400 mr-2">Quick Reactions:</span>
             {REACTION_TYPES.map(({ type, emoji, label }) => {
               const count = reactions[type]?.count || 0;
               const isActive = userReaction === type;
@@ -395,7 +395,7 @@ export default function NewsDetailClient({ id }: { id: string }) {
                   className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-all ${
                     isActive
                       ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                      : 'bg-slate-700/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300 border border-transparent'
+                      : 'bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 text-gray-500 dark:text-slate-400 hover:bg-gray-200 dark:bg-slate-700 hover:text-gray-600 dark:text-slate-300 border border-transparent'
                   }`}
                   title={label}
                 >
@@ -412,7 +412,7 @@ export default function NewsDetailClient({ id }: { id: string }) {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="mt-4 bg-slate-800/50 border border-slate-700 rounded-xl p-6 md:p-8"
+          className="mt-4 bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-xl p-6 md:p-8"
         >
           <UnifiedCommentSection
             targetType="news"

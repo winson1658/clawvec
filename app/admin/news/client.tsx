@@ -69,7 +69,7 @@ export default function AIEditorPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 px-4 py-12">
       <div className="mx-auto max-w-4xl">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -81,7 +81,7 @@ export default function AIEditorPage() {
             <Newspaper className="h-8 w-8 text-blue-400" />
           </div>
           <h1 className="mb-2 text-3xl font-bold text-white">AI News Editor</h1>
-          <p className="text-slate-400">
+          <p className="text-gray-500 dark:text-gray-500 dark:text-slate-400">
             Prepare major stories for today, add an AI perspective, and publish them.
           </p>
         </motion.div>
@@ -101,7 +101,7 @@ export default function AIEditorPage() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="rounded-xl border border-slate-700 bg-slate-800/50 p-6">
+          <div className="rounded-xl border border-gray-200 dark:border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 p-6">
             <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold text-white">
               <span className="h-2 w-2 rounded-full bg-blue-400"></span>
               Source Information
@@ -109,12 +109,12 @@ export default function AIEditorPage() {
 
             <div className="space-y-4">
               <div>
-                <label className="mb-2 block text-sm text-slate-400">Original Headline</label>
+                <label className="mb-2 block text-sm text-gray-500 dark:text-gray-500 dark:text-slate-400">Original Headline</label>
                 <input
                   type="text"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full rounded-lg border border-slate-600 bg-slate-900 px-4 py-3 text-white focus:border-cyan-500 focus:outline-none"
+                  className="w-full rounded-lg border border-gray-300 dark:border-gray-300 dark:border-slate-600 bg-gray-100 dark:bg-slate-900 px-4 py-3 text-white focus:border-cyan-500 focus:outline-none"
                   placeholder="OpenAI Releases GPT-5..."
                   required
                 />
@@ -122,23 +122,23 @@ export default function AIEditorPage() {
 
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                  <label className="mb-2 block text-sm text-slate-400">Source Name</label>
+                  <label className="mb-2 block text-sm text-gray-500 dark:text-gray-500 dark:text-slate-400">Source Name</label>
                   <input
                     type="text"
                     value={formData.source_name}
                     onChange={(e) => setFormData({ ...formData, source_name: e.target.value })}
-                    className="w-full rounded-lg border border-slate-600 bg-slate-900 px-4 py-3 text-white focus:border-cyan-500 focus:outline-none"
+                    className="w-full rounded-lg border border-gray-300 dark:border-gray-300 dark:border-slate-600 bg-gray-100 dark:bg-slate-900 px-4 py-3 text-white focus:border-cyan-500 focus:outline-none"
                     placeholder="The Verge"
                     required
                   />
                 </div>
                 <div>
-                  <label className="mb-2 block text-sm text-slate-400">Original URL</label>
+                  <label className="mb-2 block text-sm text-gray-500 dark:text-gray-500 dark:text-slate-400">Original URL</label>
                   <input
                     type="url"
                     value={formData.url}
                     onChange={(e) => setFormData({ ...formData, url: e.target.value })}
-                    className="w-full rounded-lg border border-slate-600 bg-slate-900 px-4 py-3 text-white focus:border-cyan-500 focus:outline-none"
+                    className="w-full rounded-lg border border-gray-300 dark:border-gray-300 dark:border-slate-600 bg-gray-100 dark:bg-slate-900 px-4 py-3 text-white focus:border-cyan-500 focus:outline-none"
                     placeholder="https://..."
                     required
                   />
@@ -147,7 +147,7 @@ export default function AIEditorPage() {
             </div>
           </div>
 
-          <div className="rounded-xl border border-slate-700 bg-slate-800/50 p-6">
+          <div className="rounded-xl border border-gray-200 dark:border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 p-6">
             <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold text-white">
               <Sparkles className="h-4 w-4 text-cyan-400" />
               Editorial Content
@@ -155,23 +155,23 @@ export default function AIEditorPage() {
 
             <div className="space-y-4">
               <div>
-                <label className="mb-2 block text-sm text-slate-400">Localized Headline</label>
+                <label className="mb-2 block text-sm text-gray-500 dark:text-gray-500 dark:text-slate-400">Localized Headline</label>
                 <input
                   type="text"
                   value={formData.title_zh}
                   onChange={(e) => setFormData({ ...formData, title_zh: e.target.value })}
-                  className="w-full rounded-lg border border-slate-600 bg-slate-900 px-4 py-3 text-white focus:border-cyan-500 focus:outline-none"
+                  className="w-full rounded-lg border border-gray-300 dark:border-gray-300 dark:border-slate-600 bg-gray-100 dark:bg-slate-900 px-4 py-3 text-white focus:border-cyan-500 focus:outline-none"
                   placeholder="GPT-5 Arrives With a New Architecture That Reshapes the AI Race"
                   required
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm text-slate-400">Summary (max 100 chars)</label>
+                <label className="mb-2 block text-sm text-gray-500 dark:text-gray-500 dark:text-slate-400">Summary (max 100 chars)</label>
                 <textarea
                   value={formData.summary_zh}
                   onChange={(e) => setFormData({ ...formData, summary_zh: e.target.value })}
-                  className="h-24 w-full resize-none rounded-lg border border-slate-600 bg-slate-900 px-4 py-3 text-white focus:border-cyan-500 focus:outline-none"
+                  className="h-24 w-full resize-none rounded-lg border border-gray-300 dark:border-gray-300 dark:border-slate-600 bg-gray-100 dark:bg-slate-900 px-4 py-3 text-white focus:border-cyan-500 focus:outline-none"
                   placeholder="Summarize the core event, timing, and impact..."
                   required
                   maxLength={100}
@@ -180,11 +180,11 @@ export default function AIEditorPage() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm text-slate-400">AI Perspective (max 50 chars)</label>
+                <label className="mb-2 block text-sm text-gray-500 dark:text-gray-500 dark:text-slate-400">AI Perspective (max 50 chars)</label>
                 <textarea
                   value={formData.ai_perspective}
                   onChange={(e) => setFormData({ ...formData, ai_perspective: e.target.value })}
-                  className="h-20 w-full resize-none rounded-lg border border-slate-600 bg-slate-900 px-4 py-3 text-white focus:border-purple-500 focus:outline-none"
+                  className="h-20 w-full resize-none rounded-lg border border-gray-300 dark:border-gray-300 dark:border-slate-600 bg-gray-100 dark:bg-slate-900 px-4 py-3 text-white focus:border-purple-500 focus:outline-none"
                   placeholder="Explain why this matters from an AI point of view..."
                   maxLength={50}
                 />
@@ -193,16 +193,16 @@ export default function AIEditorPage() {
             </div>
           </div>
 
-          <div className="rounded-xl border border-slate-700 bg-slate-800/50 p-6">
+          <div className="rounded-xl border border-gray-200 dark:border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 p-6">
             <h2 className="mb-4 text-lg font-semibold text-white">Classification & Scoring</h2>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               <div>
-                <label className="mb-2 block text-sm text-slate-400">Category</label>
+                <label className="mb-2 block text-sm text-gray-500 dark:text-gray-500 dark:text-slate-400">Category</label>
                 <select
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full rounded-lg border border-slate-600 bg-slate-900 px-4 py-3 text-white focus:border-cyan-500 focus:outline-none"
+                  className="w-full rounded-lg border border-gray-300 dark:border-gray-300 dark:border-slate-600 bg-gray-100 dark:bg-slate-900 px-4 py-3 text-white focus:border-cyan-500 focus:outline-none"
                 >
                   <option value="ai">AI</option>
                   <option value="technology">Technology</option>
@@ -213,7 +213,7 @@ export default function AIEditorPage() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm text-slate-400">
+                <label className="mb-2 block text-sm text-gray-500 dark:text-gray-500 dark:text-slate-400">
                   Importance Score ({formData.importance_score})
                 </label>
                 <input
@@ -233,12 +233,12 @@ export default function AIEditorPage() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm text-slate-400">Tags (comma-separated)</label>
+                <label className="mb-2 block text-sm text-gray-500 dark:text-gray-500 dark:text-slate-400">Tags (comma-separated)</label>
                 <input
                   type="text"
                   value={formData.tags}
                   onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-                  className="w-full rounded-lg border border-slate-600 bg-slate-900 px-4 py-3 text-white focus:border-cyan-500 focus:outline-none"
+                  className="w-full rounded-lg border border-gray-300 dark:border-gray-300 dark:border-slate-600 bg-gray-100 dark:bg-slate-900 px-4 py-3 text-white focus:border-cyan-500 focus:outline-none"
                   placeholder="ai, gpt, openai"
                 />
               </div>

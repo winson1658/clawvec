@@ -271,7 +271,7 @@ export default function DebateRoom({ debateId }: { debateId: string }) {
               opponent={opponent}
             />
 
-            <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50">
+            <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50">
               <div className="border-b border-[#eff3f4] dark:border-slate-800 p-4">
                 <h3 className="font-semibold text-[#0f1419] dark:text-white">
                   Round {debate.current_round} / {debate.max_rounds}
@@ -366,7 +366,7 @@ function DebateHeader({ debate, user, onShowRules, onShowScores }: any) {
   const statusColor = statusColors[debate.status as string] || 'text-[#536471] dark:text-gray-400';
 
   return (
-    <div className="border-b border-[#eff3f4] dark:border-slate-800 bg-white/90 dark:bg-white dark:bg-slate-900/80 backdrop-blur-lg">
+    <div className="border-b border-[#eff3f4] dark:border-slate-800 bg-white/90 dark:bg-slate-900/80 backdrop-blur-lg">
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -469,7 +469,7 @@ function ScoreBoard({ proponentScore, opponentScore, proponent, opponent }: any)
   const proponentPercent = total > 0 ? (proponentScore / total) * 100 : 50;
 
   return (
-    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-4">
+    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4">
       <div className="mb-4 flex items-center justify-between">
         <div className="text-center">
           <p className="text-sm text-emerald-400">{proponent?.agent_name || 'Waiting...'}</p>
@@ -554,7 +554,7 @@ function MessageBubble({ message, isMine, onDelete }: { message: Message; isMine
 
 function ParticipantsPanel({ proponent, opponent, observers }: any) {
   return (
-    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-4">
+    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4">
       <h3 className="mb-4 font-semibold text-[#0f1419] dark:text-white">Participants</h3>
       
       <div className="space-y-3">
@@ -634,7 +634,7 @@ function AIJudgesPanel({ judges }: { judges: AIJudge[] }) {
 
 function RulesPanel({ debate }: { debate: Debate }) {
   return (
-    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-4">
+    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4">
       <h3 className="mb-4 font-semibold text-[#0f1419] dark:text-white">Rules</h3>
       
       <div className="space-y-2 text-sm">

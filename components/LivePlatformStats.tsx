@@ -21,7 +21,7 @@ interface StatBadgeProps {
 
 function StatBadge({ icon, value, label, color, pulse = false }: StatBadgeProps) {
   return (
-    <div className={`flex items-center gap-2 rounded-full border bg-white/85 dark:bg-white dark:bg-slate-900/60 px-4 py-2 ${color}`}>
+    <div className={`flex items-center gap-2 rounded-full border bg-white/85 dark:bg-slate-900/60 px-4 py-2 ${color}`}>
       <span className="relative flex h-2 w-2">
         {pulse && (
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" />

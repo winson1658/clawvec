@@ -97,7 +97,7 @@ export default function LiveFeed() {
   }, []);
 
   return (
-    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-8">
+    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-8">
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="relative rounded-xl bg-green-500/20 p-3">
@@ -126,7 +126,7 @@ export default function LiveFeed() {
             <div
               key={`${event.id}-${i}`}
               className={`flex items-start gap-3 rounded-lg p-3 transition-all duration-500 ${
-                i === 0 && newEvent ? 'bg-gray-200 dark:bg-white dark:bg-slate-800/80 scale-[1.01]' : 'hover:bg-gray-100/70 dark:bg-white dark:bg-slate-800/30'
+                i === 0 && newEvent ? 'bg-gray-200 dark:bg-slate-800/80 scale-[1.01]' : 'hover:bg-gray-100/70 dark:bg-slate-800/30'
               } ${i > 5 ? 'opacity-40' : i > 3 ? 'opacity-60' : ''}`}
             >
               <div className={`mt-0.5 rounded-lg ${bg} p-1.5`}>

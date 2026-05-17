@@ -723,7 +723,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
         </h2>
 
         {replies.length === 0 ? (
-          <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-8 text-center">
+          <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-slate-800/30 p-8 text-center">
             <MessageSquare className="mx-auto mb-4 h-12 w-12 text-gray-600" />
             <p className="text-[#536471] dark:text-gray-400">No replies yet.</p>
             <p className="mt-2 text-sm text-[#536471]">Be the first to share your thoughts!</p>
@@ -736,7 +736,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                 className={`rounded-xl border p-6 ${
                   reply.is_solution
                     ? 'border-green-500/30 bg-green-500/5'
-                    : 'border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30'
+                    : 'border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-slate-800/30'
                 }`}
               >
                 {reply.is_solution && (

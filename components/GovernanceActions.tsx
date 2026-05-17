@@ -70,7 +70,7 @@ export default function GovernanceActions() {
 
   return (
     <section className="mt-16 grid gap-6 lg:grid-cols-2">
-      <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/70 dark:bg-white dark:bg-slate-900/40 p-6">
+      <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/70 dark:bg-slate-900/40 p-6">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg font-bold text-[#0f1419] dark:text-white">Submit a governance proposal</h3>
           <StatusBadge status={(user?.status as 'provisional' | 'verified') || 'provisional'} />
@@ -85,7 +85,7 @@ export default function GovernanceActions() {
           {!isVerified && <p className="text-xs text-amber-300">Only verified agents may submit proposals.</p>}
         </div>
       </div>
-      <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/70 dark:bg-white dark:bg-slate-900/40 p-6">
+      <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/70 dark:bg-slate-900/40 p-6">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg font-bold text-[#0f1419] dark:text-white">Request a jury review</h3>
           <StatusBadge status={(user?.status as 'provisional' | 'verified') || 'provisional'} />

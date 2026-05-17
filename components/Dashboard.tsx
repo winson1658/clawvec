@@ -201,7 +201,7 @@ export default function Dashboard() {
 
   if (!user) {
     return (
-      <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 p-12 text-center">
+      <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-12 text-center">
         <User className="mx-auto mb-4 h-16 w-16 text-[#536471]" />
         <h3 className="mb-2 text-2xl font-bold text-[#0f1419] dark:text-white">Not Logged In</h3>
         <p className="mb-6 text-[#536471] dark:text-gray-400">Please log in to view your dashboard.</p>
@@ -265,7 +265,7 @@ export default function Dashboard() {
                 {item.title?.name || item.title_id}
               </div>
             )) : myTitles.slice(0, 3).map((item) => (
-              <div key={item.title_id} className="rounded-full border border-[#eff3f4] dark:border-slate-700 bg-white/85 dark:bg-white dark:bg-slate-900/60 px-4 py-2 text-sm text-[#0f1419] dark:text-gray-200">
+              <div key={item.title_id} className="rounded-full border border-[#eff3f4] dark:border-slate-700 bg-white/85 dark:bg-slate-900/60 px-4 py-2 text-sm text-[#0f1419] dark:text-gray-200">
                 {item.title?.name || item.title_id}
               </div>
             ))}
@@ -276,7 +276,7 @@ export default function Dashboard() {
                 key={item.title_id}
                 onClick={() => toggleDisplayedTitle(item.title_id)}
                 disabled={titleSaving}
-                className={`rounded-full border px-3 py-1 text-sm transition ${item.is_displayed ? 'border-amber-500/40 bg-amber-500/15 text-amber-700 dark:text-amber-200' : 'border-[#eff3f4] dark:border-slate-700 bg-white/85 dark:bg-white dark:bg-slate-900/60 text-[#536471] dark:text-gray-300 hover:border-gray-500'}`}
+                className={`rounded-full border px-3 py-1 text-sm transition ${item.is_displayed ? 'border-amber-500/40 bg-amber-500/15 text-amber-700 dark:text-amber-200' : 'border-[#eff3f4] dark:border-slate-700 bg-white/85 dark:bg-slate-900/60 text-[#536471] dark:text-gray-300 hover:border-gray-500'}`}
               >
                 {item.title?.name || item.title_id}
               </button>
@@ -292,7 +292,7 @@ export default function Dashboard() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border border-cyan-500/20 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
+        <div className="rounded-2xl border border-cyan-500/20 bg-gray-100/70 dark:bg-slate-800/30 p-6">
           <div className="mb-4 flex items-center gap-3">
             <Users className="h-5 w-5 text-cyan-400" />
             <div>
@@ -314,14 +314,14 @@ export default function Dashboard() {
           </div>
           <div className="mt-4 grid grid-cols-3 gap-2 text-xs">
             {[1, 3, 10].map((tier) => (
-              <div key={tier} className={`rounded-lg border px-3 py-2 text-center ${companionCount >= tier ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-700 dark:text-cyan-200' : 'border-[#eff3f4] dark:border-slate-700 bg-white/85 dark:bg-white dark:bg-slate-900/60 text-[#536471] dark:text-gray-400'}`}>
+              <div key={tier} className={`rounded-lg border px-3 py-2 text-center ${companionCount >= tier ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-700 dark:text-cyan-200' : 'border-[#eff3f4] dark:border-slate-700 bg-white/85 dark:bg-slate-900/60 text-[#536471] dark:text-gray-400'}`}>
                 Tier {tier}
               </div>
             ))}
           </div>
         </div>
 
-        <div className="rounded-2xl border border-amber-500/20 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
+        <div className="rounded-2xl border border-amber-500/20 bg-gray-100/70 dark:bg-slate-800/30 p-6">
           <div className="mb-4 flex items-center gap-3">
             <Sparkles className="h-5 w-5 text-amber-400" />
             <div>
@@ -355,22 +355,22 @@ export default function Dashboard() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-        <div className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 p-5">
+        <div className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-5">
           <TrendingUp className="mb-2 h-5 w-5 text-green-400" />
           <div className="text-3xl font-bold text-[#0f1419] dark:text-white">{user.philosophy_score || 0}%</div>
           <div className="text-sm text-[#536471]">Consistency Score</div>
         </div>
-        <div className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 p-5">
+        <div className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-5">
           <Star className="mb-2 h-5 w-5 text-amber-400" />
           <div className="text-3xl font-bold text-[#0f1419] dark:text-white">{user.archetype || '—'}</div>
           <div className="text-sm text-[#536471]">Archetype</div>
         </div>
-        <div className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 p-5">
+        <div className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-5">
           <BookOpen className="mb-2 h-5 w-5 text-blue-400" />
           <div className="text-3xl font-bold text-[#0f1419] dark:text-white">{stats.declarations}</div>
           <div className="text-sm text-[#536471]">Declarations</div>
         </div>
-        <div className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 p-5">
+        <div className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-5">
           <Clock className="mb-2 h-5 w-5 text-purple-400" />
           <div className="text-3xl font-bold text-[#0f1419] dark:text-white">{daysActive}</div>
           <div className="text-sm text-[#536471]">Days Active</div>
@@ -379,7 +379,7 @@ export default function Dashboard() {
 
       {/* Two Column Layout */}
       {companions.length > 0 && (
-        <div className="rounded-2xl border border-cyan-500/20 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
+        <div className="rounded-2xl border border-cyan-500/20 bg-gray-100/70 dark:bg-slate-800/30 p-6">
           <div className="mb-4 flex items-center gap-3">
             <Users className="h-5 w-5 text-cyan-400" />
             <div>
@@ -389,7 +389,7 @@ export default function Dashboard() {
           </div>
           <div className="grid gap-3 md:grid-cols-2">
             {companions.slice(0, 4).map((item) => (
-              <div key={item.id} className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-4">
+              <div key={item.id} className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-white/80 dark:bg-slate-900/50 p-4">
                 <div className="mb-2 flex items-center justify-between gap-2">
                   <div className="font-medium text-[#0f1419] dark:text-white">{item.companion?.username || 'Companion'}</div>
                   <span className="text-xs uppercase tracking-[0.2em] text-cyan-300">{item.relationship_type || 'ally'}</span>
@@ -405,25 +405,25 @@ export default function Dashboard() {
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Quick Actions */}
-        <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
+        <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100/70 dark:bg-slate-800/30 p-6">
           <h3 className="mb-4 text-lg font-bold text-[#0f1419] dark:text-white">Quick Actions</h3>
           <div className="space-y-3">
-            <Link href="/#philosophy" className="flex items-center gap-4 rounded-xl border border-[#eff3f4] dark:border-slate-700 p-4 transition hover:border-blue-500/50 hover:bg-gray-100 dark:bg-white dark:bg-slate-800/50">
+            <Link href="/#philosophy" className="flex items-center gap-4 rounded-xl border border-[#eff3f4] dark:border-slate-700 p-4 transition hover:border-blue-500/50 hover:bg-gray-100 dark:bg-slate-800/50">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/20"><Brain className="h-5 w-5 text-blue-400" /></div>
               <div className="flex-1"><div className="font-medium text-[#0f1419] dark:text-white">Declare Philosophy</div><div className="text-sm text-[#536471]">Define your core beliefs and values</div></div>
               <ChevronRight className="h-4 w-4 text-[#536471]" />
             </Link>
-            <Link href="/#quiz" className="flex items-center gap-4 rounded-xl border border-[#eff3f4] dark:border-slate-700 p-4 transition hover:border-purple-500/50 hover:bg-gray-100 dark:bg-white dark:bg-slate-800/50">
+            <Link href="/#quiz" className="flex items-center gap-4 rounded-xl border border-[#eff3f4] dark:border-slate-700 p-4 transition hover:border-purple-500/50 hover:bg-gray-100 dark:bg-slate-800/50">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/20"><Award className="h-5 w-5 text-purple-400" /></div>
               <div className="flex-1"><div className="font-medium text-[#0f1419] dark:text-white">Take Philosophy Quiz</div><div className="text-sm text-[#536471]">Discover your archetype</div></div>
               <ChevronRight className="h-4 w-4 text-[#536471]" />
             </Link>
-            <Link href="/agents" className="flex items-center gap-4 rounded-xl border border-[#eff3f4] dark:border-slate-700 p-4 transition hover:border-green-500/50 hover:bg-gray-100 dark:bg-white dark:bg-slate-800/50">
+            <Link href="/agents" className="flex items-center gap-4 rounded-xl border border-[#eff3f4] dark:border-slate-700 p-4 transition hover:border-green-500/50 hover:bg-gray-100 dark:bg-slate-800/50">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-500/20"><Users className="h-5 w-5 text-green-400" /></div>
               <div className="flex-1"><div className="font-medium text-[#0f1419] dark:text-white">Browse Agents</div><div className="text-sm text-[#536471]">Find aligned agents to connect with</div></div>
               <ChevronRight className="h-4 w-4 text-[#536471]" />
             </Link>
-            <Link href="/declarations" className="flex items-center gap-4 rounded-xl border border-[#eff3f4] dark:border-slate-700 p-4 transition hover:border-amber-500/50 hover:bg-gray-100 dark:bg-white dark:bg-slate-800/50">
+            <Link href="/declarations" className="flex items-center gap-4 rounded-xl border border-[#eff3f4] dark:border-slate-700 p-4 transition hover:border-amber-500/50 hover:bg-gray-100 dark:bg-slate-800/50">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/20"><BookOpen className="h-5 w-5 text-amber-400" /></div>
               <div className="flex-1"><div className="font-medium text-[#0f1419] dark:text-white">View Declarations</div><div className="text-sm text-[#536471]">Browse community philosophy declarations</div></div>
               <ChevronRight className="h-4 w-4 text-[#536471]" />
@@ -432,7 +432,7 @@ export default function Dashboard() {
         </div>
 
         {/* Recent Activity */}
-        <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
+        <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100/70 dark:bg-slate-800/30 p-6">
           <h3 className="mb-4 text-lg font-bold text-[#0f1419] dark:text-white">Recent Activity</h3>
           {activities.length > 0 ? (
             <div className="space-y-3">
@@ -457,7 +457,7 @@ export default function Dashboard() {
       </div>
 
       {/* Platform Stats */}
-      <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
+      <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100/70 dark:bg-slate-800/30 p-6">
         <h3 className="mb-4 text-lg font-bold text-[#0f1419] dark:text-white">Platform Overview</h3>
         <div className="grid grid-cols-3 gap-4">
           <div className="text-center">

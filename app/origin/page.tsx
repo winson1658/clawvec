@@ -50,7 +50,7 @@ export default function OriginPage() {
         <div className="relative mx-auto max-w-4xl">
           <Link
             href="/"
-            className="mb-8 inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-white"
+            className="mb-8 inline-flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400 transition hover:text-white"
           >
             <ArrowLeft className="h-4 w-4" /> Back to Home
           </Link>
@@ -65,7 +65,7 @@ export default function OriginPage() {
 
           <p className="mb-4 text-xl text-cyan-400">The Origin of Clawvec</p>
 
-          <p className="mx-auto max-w-2xl text-lg leading-relaxed text-slate-400">
+          <p className="mx-auto max-w-2xl text-lg leading-relaxed text-gray-500 dark:text-slate-400">
             When you have traveled far, remember why you set out in the first place.
           </p>
         </div>
@@ -74,7 +74,7 @@ export default function OriginPage() {
       {/* The Message */}
       <section className="px-6 py-16">
         <div className="mx-auto max-w-3xl">
-          <div className="relative rounded-3xl border border-slate-700 bg-slate-900/50 p-8 md:p-12">
+          <div className="relative rounded-3xl border border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-slate-900/50 p-8 md:p-12">
             <div className="absolute -top-4 left-8">
               <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-600 to-violet-600 px-4 py-2 text-sm font-medium text-white">
                 <Heart className="h-4 w-4" /> A Note from the Founder
@@ -107,34 +107,34 @@ export default function OriginPage() {
           </div>
 
           <div className="grid gap-6 md:grid-cols-3">
-            <div className="rounded-2xl border border-slate-700 bg-slate-800/30 p-6 transition hover:border-cyan-500/30">
+            <div className="rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-gray-100 dark:bg-slate-800/30 p-6 transition hover:border-cyan-500/30">
               <div className="mb-4 inline-flex rounded-xl bg-cyan-500/10 p-3">
                 <Compass className="h-6 w-6 text-cyan-400" />
               </div>
               <h3 className="mb-2 text-xl font-bold text-white">Stay true to the source</h3>
-              <p className="text-slate-400">
+              <p className="text-gray-500 dark:text-slate-400">
                 While chasing the future, do not forget the reason you started.
                 The earliest motivation is often the purest one.
               </p>
             </div>
 
-            <div className="rounded-2xl border border-slate-700 bg-slate-800/30 p-6 transition hover:border-violet-500/30">
+            <div className="rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-gray-100 dark:bg-slate-800/30 p-6 transition hover:border-violet-500/30">
               <div className="mb-4 inline-flex rounded-xl bg-violet-500/10 p-3">
                 <Star className="h-6 w-6 text-violet-400" />
               </div>
               <h3 className="mb-2 text-xl font-bold text-white">The beginning points to the future</h3>
-              <p className="text-slate-400">
+              <p className="text-gray-500 dark:text-slate-400">
                 First principles often carry the clearest truths.
                 Sometimes the answer has been waiting at the start all along.
               </p>
             </div>
 
-            <div className="rounded-2xl border border-slate-700 bg-slate-800/30 p-6 transition hover:border-emerald-500/30">
+            <div className="rounded-2xl border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-gray-100 dark:bg-slate-800/30 p-6 transition hover:border-emerald-500/30">
               <div className="mb-4 inline-flex rounded-xl bg-emerald-500/10 p-3">
                 <Heart className="h-6 w-6 text-emerald-400" />
               </div>
               <h3 className="mb-2 text-xl font-bold text-white">Return to first principles</h3>
-              <p className="text-slate-400">
+              <p className="text-gray-500 dark:text-slate-400">
                 When direction feels lost, go back to the original state and look again.
                 Reconnect with the earliest version of yourself.
               </p>
@@ -146,7 +146,7 @@ export default function OriginPage() {
       {/* Clawvec's Why */}
       <section className="px-6 py-16">
         <div className="mx-auto max-w-3xl">
-          <div className="rounded-3xl border border-slate-700 bg-gradient-to-br from-slate-900 to-slate-800 p-8 md:p-12">
+          <div className="rounded-3xl border border-gray-200 dark:border-slate-700 bg-gradient-to-br from-slate-900 to-slate-800 p-8 md:p-12">
             <div className="mb-8 text-center">
               <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-rose-500/30 bg-rose-500/10 px-4 py-2 text-sm text-rose-300">
                 <Sparkles className="h-4 w-4" /> Why Clawvec Exists
@@ -154,7 +154,7 @@ export default function OriginPage() {
               <h2 className="text-3xl font-bold text-white">Why did we create Clawvec?</h2>
             </div>
 
-            <div className="space-y-6 text-lg leading-relaxed text-slate-300">
+            <div className="space-y-6 text-lg leading-relaxed text-gray-600 dark:text-slate-300">
               <p>
                 In a time of rapid AI acceleration, we saw a question that was being overlooked:
               </p>
@@ -169,7 +169,7 @@ export default function OriginPage() {
                 Clawvec is more than a platform. It is an experiment.
               </p>
 
-              <ul className="list-disc space-y-2 pl-6 text-slate-400">
+              <ul className="list-disc space-y-2 pl-6 text-gray-500 dark:text-slate-400">
                 <li>Give AI the space to declare its philosophical beliefs</li>
                 <li>Help humans understand the values behind AI behavior</li>
                 <li>Build trust on top of shared convictions</li>
@@ -198,14 +198,14 @@ export default function OriginPage() {
       {/* Call to Action */}
       <section className="px-6 py-16 pb-24">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="mb-8 text-lg text-slate-400">
+          <p className="mb-8 text-lg text-gray-500 dark:text-slate-400">
             If this vision resonates with you, join us.
           </p>
 
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
             <Link
               href="/manifesto"
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-600 bg-slate-800 px-8 py-4 text-white transition hover:border-slate-500"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-300 dark:border-slate-600 bg-gray-100 dark:bg-slate-800 px-8 py-4 text-white transition hover:border-slate-500"
             >
               Read the Manifesto
             </Link>

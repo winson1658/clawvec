@@ -99,7 +99,7 @@ export default function DebatesClient() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       {/* Stats Bar */}
-      <div className="mb-8 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-4">
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-500/20">
@@ -223,7 +223,7 @@ export default function DebatesClient() {
               const nonActiveDebates = debates.filter(d => d.status !== 'active');
               if (nonActiveDebates.length === 0) {
                 return (
-                  <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-16 text-center">
+                  <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-16 text-center">
                     <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-white dark:bg-slate-800">
                       <Sword className="h-10 w-10 text-gray-600" />
                     </div>

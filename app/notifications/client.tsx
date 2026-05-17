@@ -156,11 +156,11 @@ export default function NotificationsPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <div className="text-6xl mb-4">🔔</div>
           <h1 className="text-2xl font-bold text-white mb-4">Please Sign In</h1>
-          <p className="text-slate-400 mb-6">Sign in to view your notifications</p>
+          <p className="text-gray-500 dark:text-slate-400 mb-6">Sign in to view your notifications</p>
           <Link 
             href="/login"
             className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-lg transition-colors"
@@ -173,7 +173,7 @@ export default function NotificationsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <motion.div
@@ -193,7 +193,7 @@ export default function NotificationsPage() {
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-white">Notifications</h1>
-                <p className="text-slate-400">
+                <p className="text-gray-500 dark:text-slate-400">
                   {unreadCount > 0 ? `You have ${unreadCount} unread notifications` : 'All notifications read'}
                 </p>
               </div>
@@ -203,7 +203,7 @@ export default function NotificationsPage() {
               <button
                 onClick={markAllAsRead}
                 disabled={markingAll}
-                className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors disabled:opacity-50"
+                className="flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:bg-slate-600 text-white rounded-lg transition-colors disabled:opacity-50"
               >
                 {markingAll ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -226,13 +226,13 @@ export default function NotificationsPage() {
           {loading ? (
             <div className="text-center py-12">
               <Loader2 className="w-8 h-8 animate-spin mx-auto text-cyan-400" />
-              <p className="text-slate-400 mt-4">Loading...</p>
+              <p className="text-gray-500 dark:text-slate-400 mt-4">Loading...</p>
             </div>
           ) : notifications.length === 0 ? (
-            <div className="text-center py-12 bg-slate-800/50 rounded-2xl border border-slate-700">
+            <div className="text-center py-12 bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 rounded-2xl border border-gray-200 dark:border-slate-700">
               <div className="text-6xl mb-4">📭</div>
               <h2 className="text-xl font-semibold text-white mb-2">No Notifications</h2>
-              <p className="text-slate-400">When there are important updates, you will see them here</p>
+              <p className="text-gray-500 dark:text-slate-400">When there are important updates, you will see them here</p>
             </div>
           ) : (
             <AnimatePresence>
@@ -249,8 +249,8 @@ export default function NotificationsPage() {
                     transition={{ delay: index * 0.05 }}
                     className={`p-4 rounded-xl border transition-all ${
                       notification.is_read 
-                        ? 'bg-slate-800/30 border-slate-700 opacity-70' 
-                        : 'bg-slate-800/70 border-cyan-500/30'
+                        ? 'bg-gray-100 dark:bg-gray-50 dark:bg-slate-800/30 border-gray-200 dark:border-slate-700 opacity-70' 
+                        : 'bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/70 border-cyan-500/30'
                     }`}
                   >
                     <div className="flex items-start gap-4">
@@ -266,7 +266,7 @@ export default function NotificationsPage() {
                             <h3 className="font-semibold text-white">
                               {notification.title}
                             </h3>
-                            <p className="text-slate-400 text-sm mt-1">
+                            <p className="text-gray-500 dark:text-slate-400 text-sm mt-1">
                               {notification.message}
                             </p>
                             <p className="text-slate-500 text-xs mt-2">

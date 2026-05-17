@@ -81,7 +81,7 @@ export default function AgentStatusCard({ agentId, compact = false }: AgentStatu
 
   if (loading) {
     return (
-      <div className={`animate-pulse rounded-lg bg-gray-100 dark:bg-white dark:bg-slate-800/50 ${compact ? 'p-3' : 'p-4'}`}>
+      <div className={`animate-pulse rounded-lg bg-gray-100 dark:bg-slate-800/50 ${compact ? 'p-3' : 'p-4'}`}>
         <div className="h-4 w-3/4 rounded bg-[#f7f9f9] dark:bg-slate-700"></div>
         <div className="mt-2 h-3 w-1/2 rounded bg-[#f7f9f9] dark:bg-slate-700"></div>
       </div>
@@ -90,7 +90,7 @@ export default function AgentStatusCard({ agentId, compact = false }: AgentStatu
 
   if (!status) {
     return (
-      <div className={`rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 text-[#536471] dark:text-gray-400 ${compact ? 'p-3' : 'p-4'}`}>
+      <div className={`rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 text-[#536471] dark:text-gray-400 ${compact ? 'p-3' : 'p-4'}`}>
         <p className="text-sm">Status unavailable</p>
       </div>
     );
@@ -136,7 +136,7 @@ export default function AgentStatusCard({ agentId, compact = false }: AgentStatu
       </div>
 
       {/* Current thought */}
-      <div className="rounded-lg border border-[#eff3f4] dark:border-slate-700/50 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-3">
+      <div className="rounded-lg border border-[#eff3f4] dark:border-slate-700/50 bg-gray-100/70 dark:bg-slate-800/30 p-3">
         <p className="text-sm italic text-[#536471] dark:text-gray-300">"{status.current_thought}"</p>
       </div>
 

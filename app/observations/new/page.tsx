@@ -177,10 +177,10 @@ export default function NewObservationPage() {
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-slate-800/50 backdrop-blur-lg border border-slate-700 rounded-2xl p-8 text-center max-w-md"
+          className="bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 backdrop-blur-lg border border-gray-200 dark:border-slate-700 rounded-2xl p-8 text-center max-w-md"
         >
           <h2 className="text-2xl font-bold text-white mb-4">Login Required</h2>
-          <p className="text-slate-400 mb-6">Please login to create an observation.</p>
+          <p className="text-gray-500 dark:text-slate-400 mb-6">Please login to create an observation.</p>
           <button
             onClick={() => router.push("/login")}
             className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-lg font-medium hover:from-cyan-400 hover:to-purple-400 transition-all"
@@ -198,12 +198,12 @@ export default function NewObservationPage() {
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-slate-800/50 backdrop-blur-lg border border-slate-700 rounded-2xl p-8 text-center max-w-md"
+          className="bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 backdrop-blur-lg border border-gray-200 dark:border-slate-700 rounded-2xl p-8 text-center max-w-md"
         >
           <div className="text-6xl mb-4">🎉</div>
           <h2 className="text-2xl font-bold text-white mb-2">Saved Successfully!</h2>
-          <p className="text-slate-400">Your observation has been saved</p>
-          <p className="text-slate-500 text-sm mt-4">Redirecting to observations list...</p>
+          <p className="text-gray-500 dark:text-slate-400">Your observation has been saved</p>
+          <p className="text-gray-500 dark:text-slate-500 text-sm mt-4">Redirecting to observations list...</p>
         </motion.div>
       </div>
     );
@@ -224,7 +224,7 @@ export default function NewObservationPage() {
               New AI Observation
             </h1>
           </div>
-          <p className="text-slate-400">
+          <p className="text-gray-500 dark:text-slate-400">
             Share your insights and observations with the community
           </p>
         </motion.div>
@@ -235,7 +235,7 @@ export default function NewObservationPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           onSubmit={(e) => handleSubmit(e, "published")}
-          className="bg-slate-800/50 backdrop-blur-lg border border-slate-700 rounded-2xl p-8 space-y-6"
+          className="bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 backdrop-blur-lg border border-gray-200 dark:border-slate-700 rounded-2xl p-8 space-y-6"
         >
           {error && (
             <div className="bg-red-500/20 border border-red-500/50 rounded-lg p-4 text-red-400">
@@ -257,7 +257,7 @@ export default function NewObservationPage() {
 
           {/* Title */}
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+            <label className="block text-sm font-medium text-gray-600 dark:text-slate-300 mb-2">
               Title <span className="text-red-400">*</span>
             </label>
             <input
@@ -268,13 +268,13 @@ export default function NewObservationPage() {
               required
               maxLength={255}
               placeholder="Enter a compelling title..."
-              className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
+              className="w-full px-4 py-3 bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 border border-gray-300 dark:border-slate-600 rounded-lg text-white placeholder-slate-500 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
             />
           </div>
 
           {/* Source Type */}
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+            <label className="block text-sm font-medium text-gray-600 dark:text-slate-300 mb-2">
               Source Type <span className="text-red-400">*</span>
             </label>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -293,12 +293,12 @@ export default function NewObservationPage() {
                   className={`p-3 rounded-lg border-2 transition-all flex flex-col items-center gap-1 text-center ${
                     formData.source_type === src.value
                       ? "border-cyan-400 bg-cyan-400/20 text-cyan-300 shadow-lg shadow-cyan-400/20"
-                      : "border-slate-600 bg-slate-700/50 text-slate-400 hover:border-slate-500 hover:bg-slate-700"
+                      : "border-gray-300 dark:border-slate-600 bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 text-gray-500 dark:text-slate-400 hover:border-slate-500 hover:bg-gray-200 dark:bg-slate-700"
                   }`}
                 >
                   <span className="text-xl">{src.icon}</span>
                   <span className="text-xs font-medium">{src.label}</span>
-                  <span className="text-[10px] text-slate-500 leading-tight">{src.description}</span>
+                  <span className="text-[10px] text-gray-500 dark:text-slate-500 leading-tight">{src.description}</span>
                 </button>
               ))}
             </div>
@@ -309,15 +309,15 @@ export default function NewObservationPage() {
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
-              className="space-y-4 p-4 bg-slate-700/30 rounded-lg border border-slate-600/50"
+              className="space-y-4 p-4 bg-gray-200 dark:bg-slate-700/30 rounded-lg border border-gray-300 dark:border-slate-600/50"
             >
-              <h3 className="text-sm font-medium text-slate-300 flex items-center gap-2">
+              <h3 className="text-sm font-medium text-gray-600 dark:text-slate-300 flex items-center gap-2">
                 <span>📎</span> Source Details
               </h3>
 
               {/* Raw Data URL */}
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">
+                <label className="block text-xs font-medium text-gray-500 dark:text-slate-400 mb-1">
                   Raw Data URL
                 </label>
                 <input
@@ -326,13 +326,13 @@ export default function NewObservationPage() {
                   value={formData.raw_data_url}
                   onChange={handleInputChange}
                   placeholder="https://example.com/source"
-                  className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-500 text-sm focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
+                  className="w-full px-3 py-2 bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 border border-gray-300 dark:border-slate-600 rounded-lg text-white placeholder-slate-500 text-sm focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
                 />
               </div>
 
               {/* Source URL (attribution) */}
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">
+                <label className="block text-xs font-medium text-gray-500 dark:text-slate-400 mb-1">
                   Source URL (for attribution)
                 </label>
                 <input
@@ -341,20 +341,20 @@ export default function NewObservationPage() {
                   value={formData.source_url}
                   onChange={handleInputChange}
                   placeholder="https://original-source.com/article"
-                  className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-500 text-sm focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
+                  className="w-full px-3 py-2 bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 border border-gray-300 dark:border-slate-600 rounded-lg text-white placeholder-slate-500 text-sm focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
                 />
               </div>
 
               {/* Extraction Method */}
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">
+                <label className="block text-xs font-medium text-gray-500 dark:text-slate-400 mb-1">
                   Extraction Method
                 </label>
                 <select
                   name="extraction_method"
                   value={formData.extraction_method}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white text-sm focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
+                  className="w-full px-3 py-2 bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 border border-gray-300 dark:border-slate-600 rounded-lg text-white text-sm focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
                 >
                   {(extractionMethods[formData.source_type] || extractionMethods.manual).map(
                     (method) => (
@@ -370,7 +370,7 @@ export default function NewObservationPage() {
 
           {/* Category */}
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+            <label className="block text-sm font-medium text-gray-600 dark:text-slate-300 mb-2">
               Category <span className="text-red-400">*</span>
             </label>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -384,7 +384,7 @@ export default function NewObservationPage() {
                   className={`p-4 rounded-lg border-2 transition-all flex items-center gap-3 ${
                     formData.category === cat.value
                       ? "border-cyan-400 bg-cyan-400/20 text-cyan-300 shadow-lg shadow-cyan-400/20"
-                      : "border-slate-600 bg-slate-700/50 text-slate-400 hover:border-slate-500 hover:bg-slate-700"
+                      : "border-gray-300 dark:border-slate-600 bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 text-gray-500 dark:text-slate-400 hover:border-slate-500 hover:bg-gray-200 dark:bg-slate-700"
                   }`}
                 >
                   <span className="text-xl">{cat.icon}</span>
@@ -402,7 +402,7 @@ export default function NewObservationPage() {
 
           {/* Summary */}
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+            <label className="block text-sm font-medium text-gray-600 dark:text-slate-300 mb-2">
               Summary
             </label>
             <textarea
@@ -411,13 +411,13 @@ export default function NewObservationPage() {
               onChange={handleInputChange}
               rows={2}
               placeholder="Briefly describe the core content of this observation..."
-              className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors resize-none"
+              className="w-full px-4 py-3 bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 border border-gray-300 dark:border-slate-600 rounded-lg text-white placeholder-slate-500 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors resize-none"
             />
           </div>
 
           {/* Content */}
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+            <label className="block text-sm font-medium text-gray-600 dark:text-slate-300 mb-2">
               Content <span className="text-red-400">*</span>
             </label>
             <textarea
@@ -427,16 +427,16 @@ export default function NewObservationPage() {
               required
               rows={10}
               placeholder="Elaborate on your observations and thoughts here..."
-              className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors resize-y"
+              className="w-full px-4 py-3 bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 border border-gray-300 dark:border-slate-600 rounded-lg text-white placeholder-slate-500 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors resize-y"
             />
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-gray-500 dark:text-slate-500 mt-1">
               Markdown format supported
             </p>
           </div>
 
           {/* Tags */}
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+            <label className="block text-sm font-medium text-gray-600 dark:text-slate-300 mb-2">
               Tags
             </label>
             <div className="flex flex-wrap gap-2 mb-2">
@@ -462,26 +462,26 @@ export default function NewObservationPage() {
               onChange={(e) => setTagInput(e.target.value)}
               onKeyDown={handleAddTag}
               placeholder="Type a tag and press Enter to add..."
-              className="w-full px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
+              className="w-full px-4 py-2 bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 border border-gray-300 dark:border-slate-600 rounded-lg text-white placeholder-slate-500 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors"
             />
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-gray-500 dark:text-slate-500 mt-1">
               Press Enter to add tags, maximum 10
             </p>
           </div>
 
           {/* Featured Option */}
-          <div className="flex items-center gap-3 p-4 bg-slate-700/30 rounded-lg">
+          <div className="flex items-center gap-3 p-4 bg-gray-200 dark:bg-slate-700/30 rounded-lg">
             <input
               type="checkbox"
               id="is_featured"
               name="is_featured"
               checked={formData.is_featured}
               onChange={handleInputChange}
-              className="w-5 h-5 rounded border-slate-500 bg-slate-700 text-cyan-400 focus:ring-cyan-400"
+              className="w-5 h-5 rounded border-slate-500 bg-gray-200 dark:bg-slate-700 text-cyan-400 focus:ring-cyan-400"
             />
-            <label htmlFor="is_featured" className="text-slate-300 cursor-pointer">
+            <label htmlFor="is_featured" className="text-gray-600 dark:text-slate-300 cursor-pointer">
               <span className="font-medium">Feature this observation</span>
-              <span className="text-slate-500 text-sm ml-2">
+              <span className="text-gray-500 dark:text-slate-500 text-sm ml-2">
                 Featured content is prioritized on the homepage
               </span>
             </label>
@@ -492,7 +492,7 @@ export default function NewObservationPage() {
             <button
               type="button"
               onClick={() => router.back()}
-              className="px-6 py-3 border border-slate-600 text-slate-300 rounded-lg hover:bg-slate-700 transition-colors"
+              className="px-6 py-3 border border-gray-300 dark:border-slate-600 text-gray-600 dark:text-slate-300 rounded-lg hover:bg-gray-200 dark:bg-slate-700 transition-colors"
             >
               Cancel
             </button>
@@ -500,7 +500,7 @@ export default function NewObservationPage() {
               type="button"
               onClick={(e) => handleSubmit(e as unknown as React.FormEvent, "draft")}
               disabled={isSubmitting || !formData.title || !formData.content || !formData.category}
-              className="flex-1 px-6 py-3 border border-slate-600 text-slate-300 rounded-lg font-medium hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+              className="flex-1 px-6 py-3 border border-gray-300 dark:border-slate-600 text-gray-600 dark:text-slate-300 rounded-lg font-medium hover:bg-gray-200 dark:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
             >
               {isSubmitting && submitAction === "draft" ? (
                 <>

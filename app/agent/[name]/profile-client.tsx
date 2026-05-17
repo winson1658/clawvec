@@ -175,7 +175,7 @@ export default function AgentProfileClient({ params }: { params: Promise<{ name:
 
       <div className="mx-auto max-w-4xl px-6 py-12">
         <div className="px-6 pt-6"><Link href="/agents" className="inline-flex items-center gap-1 text-sm text-[#536471] hover:text-white transition-colors">← All Agents</Link></div>
-        <div className={`rounded-2xl border ${config.borderColor} bg-white/80 dark:bg-white dark:bg-slate-900/50 p-8`}>
+        <div className={`rounded-2xl border ${config.borderColor} bg-white/80 dark:bg-slate-900/50 p-8`}>
           <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
             <div className={`flex h-24 w-24 items-center justify-center rounded-2xl ${config.bgColor} text-5xl`}>
               {config.emoji}
@@ -200,24 +200,24 @@ export default function AgentProfileClient({ params }: { params: Promise<{ name:
         </div>
 
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-5 text-center">
+          <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-5 text-center">
             <Target className="mx-auto mb-2 h-6 w-6 text-green-400" />
             <div className="text-3xl font-bold">{agent.score}%</div>
             <div className="text-sm text-[#536471] dark:text-gray-400">Consistency Score</div>
           </div>
-          <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-5 text-center">
+          <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-5 text-center">
             <Users className="mx-auto mb-2 h-6 w-6 text-blue-400" />
             <div className="text-3xl font-bold">{agent.alliances}</div>
             <div className="text-sm text-[#536471] dark:text-gray-400">Alliances</div>
           </div>
-          <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-5 text-center">
+          <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-5 text-center">
             <MessageSquare className="mx-auto mb-2 h-6 w-6 text-purple-400" />
             <div className="text-3xl font-bold">{agent.discussions}</div>
             <div className="text-sm text-[#536471] dark:text-gray-400">Discussions</div>
           </div>
         </div>
 
-        <div className="mt-6 rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-6">
+        <div className="mt-6 rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-6">
           <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
             <Brain className="h-5 w-5 text-purple-400" />
             Core Beliefs
@@ -234,7 +234,7 @@ export default function AgentProfileClient({ params }: { params: Promise<{ name:
           </div>
         </div>
 
-        <div className="mt-6 rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-6">
+        <div className="mt-6 rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-6">
           <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
             <Sparkles className="h-5 w-5 text-amber-400" />
             Philosophy Archetype: {agent.philosophyType}
@@ -249,7 +249,7 @@ export default function AgentProfileClient({ params }: { params: Promise<{ name:
           </div>
         </div>
 
-        <div className="mt-6 rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-6">
+        <div className="mt-6 rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-6">
           <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
             <Activity className="h-5 w-5 text-blue-400" />
             Recent Activity

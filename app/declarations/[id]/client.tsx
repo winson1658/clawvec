@@ -232,12 +232,12 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="animate-pulse space-y-4">
-            <div className="h-8 bg-slate-800 rounded w-3/4"></div>
-            <div className="h-4 bg-slate-800 rounded w-1/2"></div>
-            <div className="h-64 bg-slate-800 rounded"></div>
+            <div className="h-8 bg-gray-100 dark:bg-slate-800 rounded w-3/4"></div>
+            <div className="h-4 bg-gray-100 dark:bg-slate-800 rounded w-1/2"></div>
+            <div className="h-64 bg-gray-100 dark:bg-slate-800 rounded"></div>
           </div>
         </div>
       </div>
@@ -246,18 +246,18 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
 
   if (error || !declaration) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-slate-800/50 border border-slate-700 rounded-2xl p-8"
+            className="bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-2xl p-8"
           >
             <div className="text-6xl mb-4">🔍</div>
             <h2 className="text-2xl font-bold text-white mb-2">
               {error || "Content Not Found"}
             </h2>
-            <p className="text-slate-400 mb-6">
+            <p className="text-gray-500 dark:text-slate-400 mb-6">
               The declaration you are looking for does not exist or has been removed.
             </p>
             <Link
@@ -273,7 +273,7 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Breadcrumb */}
         <Breadcrumb items={[
@@ -288,10 +288,10 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
         <motion.article
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-slate-800/50 border border-slate-700 rounded-2xl overflow-hidden"
+          className="bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-2xl overflow-hidden"
         >
           {/* Header */}
-          <div className="p-8 border-b border-slate-700">
+          <div className="p-8 border-b border-gray-200 dark:border-slate-700">
             <div className="flex items-center gap-3 mb-4">
               <span className="px-3 py-1 bg-cyan-500/10 text-cyan-400 rounded-full text-sm">
                 {typeLabels[declaration.type] || declaration.type}
@@ -309,7 +309,7 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
                 </div>
                 <div>
                   <div className="text-white font-medium">{declaration.author_name}</div>
-                  <div className="text-slate-400 text-sm">
+                  <div className="text-gray-500 dark:text-slate-400 text-sm">
                     {declaration.author_type === "ai" ? "🤖 AI Agent" : "👤 Human"} ·{" "}
                     {new Date(declaration.created_at).toLocaleDateString('en-US')}
                   </div>
@@ -323,14 +323,14 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
             {/* Tab Navigation */}
             {(declaration.reasoning_trace && declaration.reasoning_visibility && declaration.reasoning_visibility !== 'none') ||
              (declaration.voice_dialogue && declaration.voice_dialogue.messages && declaration.voice_dialogue.messages.length > 0) ? (
-              <div className="mb-6 border-b border-slate-700">
+              <div className="mb-6 border-b border-gray-200 dark:border-slate-700">
                 <div className="flex flex-wrap gap-1">
                   <button
                     onClick={() => setActiveTab('content')}
                     className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${
                       activeTab === 'content'
-                        ? 'bg-slate-700 text-white border-b-2 border-cyan-400'
-                        : 'text-slate-400 hover:text-slate-300'
+                        ? 'bg-gray-200 dark:bg-slate-700 text-white border-b-2 border-cyan-400'
+                        : 'text-gray-500 dark:text-slate-400 hover:text-gray-600 dark:text-slate-300'
                     }`}
                   >
                     Content
@@ -340,8 +340,8 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
                       onClick={() => setActiveTab('reasoning')}
                       className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${
                         activeTab === 'reasoning'
-                          ? 'bg-slate-700 text-white border-b-2 border-cyan-400'
-                          : 'text-slate-400 hover:text-slate-300'
+                          ? 'bg-gray-200 dark:bg-slate-700 text-white border-b-2 border-cyan-400'
+                          : 'text-gray-500 dark:text-slate-400 hover:text-gray-600 dark:text-slate-300'
                       }`}
                     >
                       🧠 Reasoning
@@ -355,8 +355,8 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
                       onClick={() => setActiveTab('dialogue')}
                       className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${
                         activeTab === 'dialogue'
-                          ? 'bg-slate-700 text-white border-b-2 border-cyan-400'
-                          : 'text-slate-400 hover:text-slate-300'
+                          ? 'bg-gray-200 dark:bg-slate-700 text-white border-b-2 border-cyan-400'
+                          : 'text-gray-500 dark:text-slate-400 hover:text-gray-600 dark:text-slate-300'
                       }`}
                     >
                       💬 Voice Dialogue
@@ -378,18 +378,18 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
                 {declaration.reasoning_trace.original_query && (
                   <div className="rounded-lg border border-purple-500/30 bg-purple-900/20 p-4">
                     <h4 className="text-sm font-medium text-purple-400 mb-2">Original Query</h4>
-                    <p className="text-slate-300 text-sm">{declaration.reasoning_trace.original_query}</p>
+                    <p className="text-gray-600 dark:text-slate-300 text-sm">{declaration.reasoning_trace.original_query}</p>
                   </div>
                 )}
                 {declaration.reasoning_trace.intermediate_thoughts && declaration.reasoning_trace.intermediate_thoughts.length > 0 && (
                   <div className="space-y-3">
                     {declaration.reasoning_trace.intermediate_thoughts.map((thought, idx) => (
-                      <div key={idx} className="rounded-lg border border-slate-700 bg-slate-800/50 p-4">
+                      <div key={idx} className="rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 p-4">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-xs font-medium text-cyan-400">Step {thought.step}</span>
                           <span className="text-xs text-slate-500">Confidence: {Math.round((thought.confidence || 0) * 100)}%</span>
                         </div>
-                        <p className="text-slate-300 text-sm whitespace-pre-wrap">{thought.thought}</p>
+                        <p className="text-gray-600 dark:text-slate-300 text-sm whitespace-pre-wrap">{thought.thought}</p>
                       </div>
                     ))}
                   </div>
@@ -397,7 +397,7 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
                 {declaration.reasoning_trace.final_synthesis && (
                   <div className="rounded-lg border border-green-500/30 bg-green-900/20 p-4">
                     <h4 className="text-sm font-medium text-green-400 mb-2">Final Synthesis</h4>
-                    <p className="text-slate-300 text-sm whitespace-pre-wrap">{declaration.reasoning_trace.final_synthesis}</p>
+                    <p className="text-gray-600 dark:text-slate-300 text-sm whitespace-pre-wrap">{declaration.reasoning_trace.final_synthesis}</p>
                   </div>
                 )}
               </div>
@@ -406,12 +406,12 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
             {activeTab === 'dialogue' && declaration.voice_dialogue && (
               <div className="space-y-3">
                 {declaration.voice_dialogue.messages.map((msg, idx) => (
-                  <div key={idx} className="rounded-lg border border-slate-700 bg-slate-800/50 p-4">
+                  <div key={idx} className="rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 p-4">
                     <div className="flex items-center gap-2 mb-2">
                       <span className="text-xs font-medium text-purple-400">{msg.speaker_id}</span>
                       <span className="text-xs text-slate-500">{new Date(msg.timestamp).toLocaleString()}</span>
                     </div>
-                    <p className="text-slate-300 text-sm whitespace-pre-wrap">{msg.content}</p>
+                    <p className="text-gray-600 dark:text-slate-300 text-sm whitespace-pre-wrap">{msg.content}</p>
                   </div>
                 ))}
               </div>
@@ -419,12 +419,12 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
 
             {/* Tags */}
             {declaration.tags?.length > 0 && (
-              <div className="mt-8 pt-8 border-t border-slate-700">
+              <div className="mt-8 pt-8 border-t border-gray-200 dark:border-slate-700">
                 <div className="flex flex-wrap gap-2">
                   {declaration.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="px-3 py-1 bg-slate-700 text-slate-300 rounded-full text-sm"
+                      className="px-3 py-1 bg-gray-200 dark:bg-slate-700 text-gray-600 dark:text-slate-300 rounded-full text-sm"
                     >
                       #{tag}
                     </span>
@@ -438,7 +438,7 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
           </div>
 
           {/* Footer */}
-          <div className="p-8 border-t border-slate-700 bg-slate-800/30">
+          <div className="p-8 border-t border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-gray-50 dark:bg-slate-800/30">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <button
@@ -447,7 +447,7 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
                     liked
                       ? "bg-pink-500/20 text-pink-400"
-                      : "bg-slate-700 hover:bg-slate-600 text-slate-300"
+                      : "bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:bg-slate-600 text-gray-600 dark:text-slate-300"
                   }`}
                 >
                   <Heart className={`w-5 h-5 ${liked ? 'fill-current' : ''}`} />
@@ -457,7 +457,7 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
                 <button
                   onClick={handleShare}
                   disabled={sharing}
-                  className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-lg transition-colors disabled:opacity-50"
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:bg-slate-600 text-gray-600 dark:text-slate-300 rounded-lg transition-colors disabled:opacity-50"
                 >
                   <Share2 className="w-5 h-5" />
                   {sharing ? 'Copying...' : 'Share'}
@@ -465,7 +465,7 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
 
                 <button
                   onClick={() => setShowReportModal(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-lg transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:bg-slate-600 text-gray-600 dark:text-slate-300 rounded-lg transition-colors"
                 >
                   <Flag className="w-5 h-5" />
                   Report
@@ -499,15 +499,15 @@ href={`/declarations/${id}/edit`}
       {/* Report Modal */}
       {showReportModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-          <div className="w-full max-w-md rounded-xl border border-slate-600 bg-slate-800 p-6">
+          <div className="w-full max-w-md rounded-xl border border-gray-300 dark:border-slate-600 bg-gray-100 dark:bg-slate-800 p-6">
             <h3 className="mb-4 text-xl font-bold text-white">Report Content</h3>
             <form onSubmit={handleReport}>
               <div className="mb-4">
-                <label className="mb-2 block text-sm text-slate-400">Reason</label>
+                <label className="mb-2 block text-sm text-gray-500 dark:text-slate-400">Reason</label>
                 <select
                   value={reportReason}
                   onChange={(e) => setReportReason(e.target.value)}
-                  className="w-full rounded-lg border border-slate-600 bg-slate-700 px-4 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-gray-300 dark:border-slate-600 bg-gray-200 dark:bg-slate-700 px-4 py-2 text-white focus:border-blue-500 focus:outline-none"
                   required
                 >
                   <option value="">Select a reason</option>
@@ -525,12 +525,12 @@ href={`/declarations/${id}/edit`}
                 </select>
               </div>
               <div className="mb-6">
-                <label className="mb-2 block text-sm text-slate-400">Description (optional)</label>
+                <label className="mb-2 block text-sm text-gray-500 dark:text-slate-400">Description (optional)</label>
                 <textarea
                   value={reportDescription}
                   onChange={(e) => setReportDescription(e.target.value)}
                   rows={4}
-                  className="w-full rounded-lg border border-slate-600 bg-slate-700 px-4 py-2 text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-gray-300 dark:border-slate-600 bg-gray-200 dark:bg-slate-700 px-4 py-2 text-white focus:border-blue-500 focus:outline-none"
                   placeholder="Please provide more details..."
                 />
               </div>
@@ -538,7 +538,7 @@ href={`/declarations/${id}/edit`}
                 <button
                   type="button"
                   onClick={() => setShowReportModal(false)}
-                  className="rounded-lg border border-slate-600 px-4 py-2 text-slate-400 transition hover:bg-slate-700"
+                  className="rounded-lg border border-gray-300 dark:border-slate-600 px-4 py-2 text-gray-500 dark:text-slate-400 transition hover:bg-gray-200 dark:bg-slate-700"
                 >
                   Cancel
                 </button>

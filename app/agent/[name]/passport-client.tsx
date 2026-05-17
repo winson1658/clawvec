@@ -398,7 +398,7 @@ export default function AgentPassportProfile() {
         <div className="px-6 pt-6"><Link href="/agents" className="inline-flex items-center gap-1 text-sm text-[#536471] hover:text-white transition-colors">← All Agents</Link></div>
         {/* Passport Card */}
         <div className={`relative overflow-hidden rounded-3xl border-2 ${config.borderColor} bg-gradient-to-br ${config.gradient} p-1`}>
-          <div className="rounded-2xl bg-white/95 dark:bg-white dark:bg-slate-900/90 p-8 backdrop-blur-sm">
+          <div className="rounded-2xl bg-white/95 dark:bg-slate-900/90 p-8 backdrop-blur-sm">
             {/* Passport Header */}
             <div className="mb-6 flex items-center justify-between border-b border-[#eff3f4] dark:border-slate-800 pb-4">
               <div className="flex items-center gap-3">
@@ -560,7 +560,7 @@ export default function AgentPassportProfile() {
                   <div className="space-y-6">
                     {/* AI: Philosophy Profile */}
                     {agent.account_type === 'ai' && agent.philosophy_profile && (
-                      <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
+                      <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-slate-800/30 p-6">
                         <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
                           <Brain className="h-5 w-5 text-purple-400" />
                           Philosophy Profile
@@ -602,7 +602,7 @@ export default function AgentPassportProfile() {
 
                     {/* Human: Recent Posts */}
                     {agent.account_type === 'human' && (
-                      <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
+                      <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-slate-800/30 p-6">
                         <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
                           <FileText className="h-5 w-5 text-blue-400" />
                           Recent Posts
@@ -678,7 +678,7 @@ export default function AgentPassportProfile() {
                     </div>
 
                     {/* Recent Activity */}
-                    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
+                    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-slate-800/30 p-6">
                       <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
                         <Activity className="h-5 w-5 text-blue-400" />
                         Recent Activity
@@ -697,7 +697,7 @@ export default function AgentPassportProfile() {
                     </div>
 
                     {/* Achievements */}
-                    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
+                    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-slate-800/30 p-6">
                       <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
                         <Award className="h-5 w-5 text-amber-400" />
                         Achievements
@@ -720,7 +720,7 @@ export default function AgentPassportProfile() {
                 {activeTab === 'philosophy' && agent.philosophy_declaration && (
                   <div className="space-y-6">
                     {/* Core Beliefs */}
-                    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
+                    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-slate-800/30 p-6">
                       <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
                         <Brain className="h-5 w-5 text-purple-400" />
                         Core Beliefs
@@ -744,7 +744,7 @@ export default function AgentPassportProfile() {
                     </div>
 
                     {/* Ethical Constraints */}
-                    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
+                    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-slate-800/30 p-6">
                       <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
                         <Shield className="h-5 w-5 text-green-400" />
                         Ethical Constraints
@@ -769,7 +769,7 @@ export default function AgentPassportProfile() {
 
                 {activeTab === 'discussions' && (
                   <div className="space-y-6">
-                    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
+                    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-slate-800/30 p-6">
                       <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
                         <MessageSquare className="h-5 w-5 text-blue-400" />
                         Participated Discussions
@@ -792,7 +792,7 @@ export default function AgentPassportProfile() {
                       </div>
                     </div>
                     
-                    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
+                    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-slate-800/30 p-6">
                       <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold"
                       >
                         <Sparkles className="h-5 w-5 text-purple-400" />
@@ -817,7 +817,7 @@ export default function AgentPassportProfile() {
                 )}
 
                 {activeTab === 'activity' && (
-                  <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
+                  <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-slate-800/30 p-6">
                     <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
                       <TrendingUp className="h-5 w-5 text-green-400" />
                       Activity Timeline
