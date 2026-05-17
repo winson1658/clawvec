@@ -23,7 +23,7 @@ export default function Navbar() {
   const [moreOpen, setMoreOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-950/80 backdrop-blur-lg">
+    <nav className="sticky top-0 z-50 border-b border-[#eff3f4] dark:border-slate-800 bg-white dark:bg-slate-950/80 backdrop-blur-lg">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3">
@@ -74,7 +74,7 @@ export default function Navbar() {
                   className="fixed inset-0 z-40"
                   onClick={() => setMoreOpen(false)}
                 />
-                <div className="absolute right-0 top-[calc(100%-4px)] z-50 w-48 rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-950 p-2 shadow-xl">
+                <div className="absolute right-0 top-[calc(100%-4px)] z-50 w-48 rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white dark:bg-slate-950 p-2 shadow-xl">
                   {moreItems.map((item) => (
                     <Link
                       key={item.href}

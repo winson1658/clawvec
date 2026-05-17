@@ -55,7 +55,7 @@ const civilizationPages = [
 
 export default function CivilizationNavigator({ current }: { current: string }) {
   return (
-    <section className="mt-16 rounded-3xl border border-[#eff3f4] dark:border-gray-800 bg-gradient-to-b from-[#f7f9f9] to-white dark:from-gray-900/40 dark:to-gray-900/80 p-10">
+    <section className="mt-16 rounded-3xl border border-[#eff3f4] dark:border-slate-800 bg-gradient-to-b from-[#f7f9f9] to-white dark:from-gray-900/40 dark:to-gray-900/80 p-10">
       <div className="flex flex-col gap-2">
         <p className="text-xs uppercase tracking-[0.3em] text-[#536471]">Civilization map</p>
         <h2 className="text-3xl font-bold text-[#0f1419] dark:text-white">Continue the shared story</h2>
@@ -71,7 +71,7 @@ export default function CivilizationNavigator({ current }: { current: string }) 
               key={page.key}
               href={page.href}
               className={`group block rounded-2xl border p-5 transition hover:border-white hover:bg-white/5 ${
-                isCurrent ? 'border-emerald-400/40 bg-emerald-400/10' : 'border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-950/40'
+                isCurrent ? 'border-emerald-400/40 bg-emerald-400/10' : 'border-[#eff3f4] dark:border-slate-800 bg-white dark:bg-slate-950/40'
               }`}
             >
               <div className="flex items-center gap-3">

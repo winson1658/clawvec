@@ -186,15 +186,15 @@ export default function CompanionsPage() {
 
         {/* Stats */}
         <div className="mb-8 grid grid-cols-3 gap-4">
-          <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-4 text-center">
+          <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center">
             <div className="text-2xl font-bold text-[#0f1419] dark:text-white">{activeCount}</div>
             <div className="text-sm text-[#536471]">Active</div>
           </div>
-          <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-4 text-center">
+          <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center">
             <div className="text-2xl font-bold text-yellow-400">{pendingCount}</div>
             <div className="text-sm text-[#536471]">Pending</div>
           </div>
-          <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-4 text-center">
+          <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4 text-center">
             <div className="text-2xl font-bold text-[#536471] dark:text-gray-400">{companions.length}</div>
             <div className="text-sm text-[#536471]">Total</div>
           </div>
@@ -214,7 +214,7 @@ export default function CompanionsPage() {
                   value={inviteUsername}
                   onChange={(e) => setInviteUsername(e.target.value)}
                   placeholder="Enter username to invite..."
-                  className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-violet-500 focus:outline-none"
+                  className="w-full rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-white/80 dark:bg-slate-900/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-violet-500 focus:outline-none"
                   required
                 />
               </div>
@@ -224,7 +224,7 @@ export default function CompanionsPage() {
                   onChange={(e) => setInviteMessage(e.target.value)}
                   placeholder="Optional message..."
                   rows={2}
-                  className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-violet-500 focus:outline-none resize-none"
+                  className="w-full rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-white/80 dark:bg-slate-900/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-violet-500 focus:outline-none resize-none"
                 />
               </div>
               <button
@@ -251,7 +251,7 @@ export default function CompanionsPage() {
               className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
                 activeTab === tab
                   ? 'bg-violet-600 text-white'
-                  : 'border border-[#eff3f4] dark:border-gray-700 text-gray-400 hover:border-gray-500 hover:text-white'
+                  : 'border border-[#eff3f4] dark:border-slate-700 text-gray-400 hover:border-gray-500 hover:text-white'
               }`}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -271,7 +271,7 @@ export default function CompanionsPage() {
             <Loader2 className="h-8 w-8 animate-spin text-violet-500" />
           </div>
         ) : filtered.length === 0 ? (
-          <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 py-16 text-center">
+          <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 py-16 text-center">
             <Users className="mx-auto mb-4 h-12 w-12 text-gray-600" />
             <p className="text-[#536471] dark:text-gray-400">
               {activeTab === 'pending' 
@@ -321,7 +321,7 @@ export default function CompanionsPage() {
           ? 'border-violet-500/30 bg-violet-500/5' 
           : isPending 
           ? 'border-yellow-500/30 bg-yellow-500/5'
-          : 'border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50'
+          : 'border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50'
       }`}>
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-4">
@@ -373,7 +373,7 @@ export default function CompanionsPage() {
         </div>
 
         {companion.message && (
-          <div className="mt-4 rounded-lg border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-3">
+          <div className="mt-4 rounded-lg border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-3">
             <p className="text-sm text-gray-400 italic">"{companion.message}"</p>
           </div>
         )}
@@ -390,7 +390,7 @@ export default function CompanionsPage() {
               </button>
               <button
                 onClick={onReject}
-                className="flex items-center gap-1 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-400 transition hover:bg-gray-700 hover:text-white"
+                className="flex items-center gap-1 rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-400 transition hover:bg-gray-700 hover:text-white"
               >
                 <UserX className="h-4 w-4" />
                 Decline
@@ -411,7 +411,7 @@ export default function CompanionsPage() {
           {isActive && (
             <Link
               href={`/messages?companion=${companion.partner.id}`}
-              className="flex items-center gap-1 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-400 transition hover:bg-gray-700 hover:text-white"
+              className="flex items-center gap-1 rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-400 transition hover:bg-gray-700 hover:text-white"
             >
               <MessageSquare className="h-4 w-4" />
               Message

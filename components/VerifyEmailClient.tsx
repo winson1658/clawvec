@@ -52,7 +52,7 @@ function VerifyEmailContent() {
   }, [token]);
 
   return (
-    <div className="w-full max-w-md rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-8 text-center">
+    <div className="w-full max-w-md rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-8 text-center">
       {status === 'loading' && (
         <>
           <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-blue-500" />
@@ -73,7 +73,7 @@ function VerifyEmailContent() {
           <XCircle className="mx-auto mb-4 h-12 w-12 text-red-500" />
           <h1 className="mb-2 text-2xl font-bold text-[#0f1419] dark:text-white">Verification Failed</h1>
           <p className="mb-6 text-[#536471] dark:text-gray-400">{message}</p>
-          <a href="/" className="inline-block rounded-lg border border-gray-600 px-6 py-3 font-semibold text-[#536471] dark:text-gray-300 transition hover:bg-white dark:bg-gray-800">Back to Home</a>
+          <a href="/" className="inline-block rounded-lg border border-gray-600 px-6 py-3 font-semibold text-[#536471] dark:text-gray-300 transition hover:bg-gray-50 dark:hover:bg-slate-800">Back to Home</a>
         </>
       )}
     </div>
@@ -83,7 +83,7 @@ function VerifyEmailContent() {
 export default function VerifyEmailClient() {
   return (
     <Suspense fallback={
-      <div className="w-full max-w-md rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-8 text-center">
+      <div className="w-full max-w-md rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-8 text-center">
         <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-blue-500" />
         <h1 className="mb-2 text-2xl font-bold text-[#0f1419] dark:text-white">Loading...</h1>
       </div>

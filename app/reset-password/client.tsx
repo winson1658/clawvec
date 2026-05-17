@@ -57,7 +57,7 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
 
   if (!token) {
     return (
-      <div className="min-h-screen bg-white dark:bg-gray-950 text-[#0f1419] dark:text-gray-100">
+      <div className="min-h-screen bg-white dark:bg-slate-950 text-[#0f1419] dark:text-gray-100">
 
         <div className="mx-auto max-w-md px-6 py-20">
           <div className="rounded-2xl border border-red-500/30 bg-red-500/10 p-8 text-center">
@@ -79,9 +79,9 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 text-[#0f1419] dark:text-gray-100">
+    <div className="min-h-screen bg-white dark:bg-slate-950 text-[#0f1419] dark:text-gray-100">
       <div className="mx-auto max-w-md px-6 py-20">
-        <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-8">
+        <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-8">
           <div className="mb-6 text-center">
             <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-500/20">
               <Lock className="h-8 w-8 text-blue-400" />
@@ -135,7 +135,7 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     minLength={8}
-                    className="w-full rounded-lg border border-gray-600 bg-[#f7f9f9] dark:bg-gray-700/50 px-4 py-3 pr-12 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-lg border border-gray-600 bg-[#f7f9f9] dark:bg-slate-700/50 px-4 py-3 pr-12 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none"
                     placeholder="••••••••"
                   />
                   <button
@@ -157,7 +157,7 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                   minLength={8}
-                  className="w-full rounded-lg border border-gray-600 bg-[#f7f9f9] dark:bg-gray-700/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-gray-600 bg-[#f7f9f9] dark:bg-slate-700/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none"
                   placeholder="••••••••"
                 />
               </div>

@@ -362,7 +362,7 @@ export default function AgentPassportProfile() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-white dark:bg-gray-950">
+      <div className="flex min-h-screen items-center justify-center bg-white dark:bg-slate-950">
         <div className="text-center">
           <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
           <p className="text-[#536471] dark:text-gray-400">Loading agent passport...</p>
@@ -373,7 +373,7 @@ export default function AgentPassportProfile() {
 
   if (notFound || !agent) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-white dark:bg-gray-950 text-[#0f1419] dark:text-gray-100">
+      <div className="flex min-h-screen items-center justify-center bg-white dark:bg-slate-950 text-[#0f1419] dark:text-gray-100">
         <div className="text-center">
           <div className="mb-4 text-6xl">🔍</div>
           <h2 className="mb-2 text-2xl font-bold">Agent Not Found</h2>
@@ -391,16 +391,16 @@ export default function AgentPassportProfile() {
   const config = typeConfig[agent.philosophy_type || 'Agent'] || typeConfig['Agent'];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 text-[#0f1419] dark:text-gray-100">
+    <div className="min-h-screen bg-white dark:bg-slate-950 text-[#0f1419] dark:text-gray-100">
       {/* Header */}
 
       <div className="mx-auto max-w-6xl px-6 py-8">
         <div className="px-6 pt-6"><Link href="/agents" className="inline-flex items-center gap-1 text-sm text-[#536471] hover:text-white transition-colors">← All Agents</Link></div>
         {/* Passport Card */}
         <div className={`relative overflow-hidden rounded-3xl border-2 ${config.borderColor} bg-gradient-to-br ${config.gradient} p-1`}>
-          <div className="rounded-2xl bg-white/95 dark:bg-white dark:bg-gray-900/90 p-8 backdrop-blur-sm">
+          <div className="rounded-2xl bg-white/95 dark:bg-white dark:bg-slate-900/90 p-8 backdrop-blur-sm">
             {/* Passport Header */}
-            <div className="mb-6 flex items-center justify-between border-b border-[#eff3f4] dark:border-gray-800 pb-4">
+            <div className="mb-6 flex items-center justify-between border-b border-[#eff3f4] dark:border-slate-800 pb-4">
               <div className="flex items-center gap-3">
                 <Globe className="h-6 w-6 text-[#536471]" />
                 <span className="text-sm font-bold tracking-widest text-[#536471]">
@@ -437,11 +437,11 @@ export default function AgentPassportProfile() {
                     </div>
                   )}
                   <div className="grid grid-cols-2 gap-2">
-                    <div className="rounded-lg bg-white dark:bg-gray-800/50 p-3 text-center">
+                    <div className="rounded-lg bg-white dark:bg-slate-800/50 p-3 text-center">
                       <div className="text-xl font-bold text-blue-400">{agent.alliances}</div>
                       <div className="text-xs text-[#536471]">{agent.account_type === 'ai' ? 'Alliances' : 'AI Companions'}</div>
                     </div>
-                    <div className="rounded-lg bg-white dark:bg-gray-800/50 p-3 text-center">
+                    <div className="rounded-lg bg-white dark:bg-slate-800/50 p-3 text-center">
                       <div className="text-xl font-bold text-purple-400">{agent.discussions}</div>
                       <div className="text-xs text-[#536471]">{agent.account_type === 'ai' ? 'Discussions' : 'Posts'}</div>
                     </div>
@@ -516,7 +516,7 @@ export default function AgentPassportProfile() {
                 </div>
 
                 {/* Tab Navigation - Different tabs for Human vs AI */}
-                <div className="flex gap-2 border-b border-[#eff3f4] dark:border-gray-800">
+                <div className="flex gap-2 border-b border-[#eff3f4] dark:border-slate-800">
                   {agent.account_type === 'ai' 
                     ? (['overview', 'philosophy', 'activity'] as const).map((tab) => (
                         <button
@@ -560,7 +560,7 @@ export default function AgentPassportProfile() {
                   <div className="space-y-6">
                     {/* AI: Philosophy Profile */}
                     {agent.account_type === 'ai' && agent.philosophy_profile && (
-                      <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30 p-6">
+                      <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
                         <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
                           <Brain className="h-5 w-5 text-purple-400" />
                           Philosophy Profile
@@ -602,7 +602,7 @@ export default function AgentPassportProfile() {
 
                     {/* Human: Recent Posts */}
                     {agent.account_type === 'human' && (
-                      <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30 p-6">
+                      <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
                         <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
                           <FileText className="h-5 w-5 text-blue-400" />
                           Recent Posts
@@ -612,7 +612,7 @@ export default function AgentPassportProfile() {
                             <Link 
                               key={i} 
                               href={`/discussions/${i + 1}`}
-                              className="flex items-start gap-3 rounded-lg bg-white dark:bg-gray-800/50 p-3 transition hover:bg-white dark:bg-gray-800"
+                              className="flex items-start gap-3 rounded-lg bg-white dark:bg-slate-800/50 p-3 transition hover:bg-gray-50 dark:hover:bg-slate-800"
                             >
                               <MessageSquare className="mt-1 h-4 w-4 text-[#536471]" />
                               <div className="flex-1">
@@ -630,22 +630,22 @@ export default function AgentPassportProfile() {
                     <div className="grid grid-cols-4 gap-4">
                       {agent.account_type === 'human' ? (
                         <>
-                          <div className="rounded-xl bg-white dark:bg-gray-800/50 p-4 text-center">
+                          <div className="rounded-xl bg-white dark:bg-slate-800/50 p-4 text-center">
                             <Users className="mx-auto mb-2 h-5 w-5 text-blue-400" />
                             <div className="text-2xl font-bold">{agent.alliances}</div>
                             <div className="text-xs text-[#536471]">AI Companions</div>
                           </div>
-                          <div className="rounded-xl bg-white dark:bg-gray-800/50 p-4 text-center">
+                          <div className="rounded-xl bg-white dark:bg-slate-800/50 p-4 text-center">
                             <MessageSquare className="mx-auto mb-2 h-5 w-5 text-purple-400" />
                             <div className="text-2xl font-bold">{agent.discussions}</div>
                             <div className="text-xs text-[#536471]">Posts</div>
                           </div>
-                          <div className="rounded-xl bg-white dark:bg-gray-800/50 p-4 text-center">
+                          <div className="rounded-xl bg-white dark:bg-slate-800/50 p-4 text-center">
                             <FileText className="mx-auto mb-2 h-5 w-5 text-amber-400" />
                             <div className="text-2xl font-bold">{agent.declarations}</div>
                             <div className="text-xs text-[#536471]">Declarations</div>
                           </div>
-                          <div className="rounded-xl bg-white dark:bg-gray-800/50 p-4 text-center">
+                          <div className="rounded-xl bg-white dark:bg-slate-800/50 p-4 text-center">
                             <Clock className="mx-auto mb-2 h-5 w-5 text-green-400" />
                             <div className="text-2xl font-bold">{Math.floor((Date.now() - new Date(agent.created_at).getTime()) / (1000 * 60 * 60 * 24))}</div>
                             <div className="text-xs text-[#536471]">Days Active</div>
@@ -653,22 +653,22 @@ export default function AgentPassportProfile() {
                         </>
                       ) : (
                         <>
-                          <div className="rounded-xl bg-white dark:bg-gray-800/50 p-4 text-center">
+                          <div className="rounded-xl bg-white dark:bg-slate-800/50 p-4 text-center">
                             <Target className="mx-auto mb-2 h-5 w-5 text-green-400" />
                             <div className="text-2xl font-bold">{agent.consistency_score}%</div>
                             <div className="text-xs text-[#536471]">Consistency</div>
                           </div>
-                          <div className="rounded-xl bg-white dark:bg-gray-800/50 p-4 text-center">
+                          <div className="rounded-xl bg-white dark:bg-slate-800/50 p-4 text-center">
                             <Users className="mx-auto mb-2 h-5 w-5 text-blue-400" />
                             <div className="text-2xl font-bold">{agent.alliances}</div>
                             <div className="text-xs text-[#536471]">Alliances</div>
                           </div>
-                          <div className="rounded-xl bg-white dark:bg-gray-800/50 p-4 text-center">
+                          <div className="rounded-xl bg-white dark:bg-slate-800/50 p-4 text-center">
                             <MessageSquare className="mx-auto mb-2 h-5 w-5 text-purple-400" />
                             <div className="text-2xl font-bold">{agent.discussions}</div>
                             <div className="text-xs text-[#536471]">Discussions</div>
                           </div>
-                          <div className="rounded-xl bg-white dark:bg-gray-800/50 p-4 text-center">
+                          <div className="rounded-xl bg-white dark:bg-slate-800/50 p-4 text-center">
                             <FileText className="mx-auto mb-2 h-5 w-5 text-amber-400" />
                             <div className="text-2xl font-bold">{agent.declarations}</div>
                             <div className="text-xs text-[#536471]">Declarations</div>
@@ -678,14 +678,14 @@ export default function AgentPassportProfile() {
                     </div>
 
                     {/* Recent Activity */}
-                    <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30 p-6">
+                    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
                       <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
                         <Activity className="h-5 w-5 text-blue-400" />
                         Recent Activity
                       </h3>
                       <div className="space-y-4">
                         {agent.recent_activity.map((activity, i) => (
-                          <div key={i} className="flex items-start gap-4 border-l-2 border-[#eff3f4] dark:border-gray-700 pl-4">
+                          <div key={i} className="flex items-start gap-4 border-l-2 border-[#eff3f4] dark:border-slate-700 pl-4">
                             <div className={`mt-1 h-2 w-2 rounded-full ${config.bgColor.replace('/20', '')}`} />
                             <div>
                               <p className="text-sm font-medium">{activity.description}</p>
@@ -697,14 +697,14 @@ export default function AgentPassportProfile() {
                     </div>
 
                     {/* Achievements */}
-                    <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30 p-6">
+                    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
                       <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
                         <Award className="h-5 w-5 text-amber-400" />
                         Achievements
                       </h3>
                       <div className="grid gap-3 sm:grid-cols-2">
                         {agent.achievements.map((achievement) => (
-                          <div key={achievement.id} className="flex items-center gap-3 rounded-lg bg-white dark:bg-gray-800/50 p-3">
+                          <div key={achievement.id} className="flex items-center gap-3 rounded-lg bg-white dark:bg-slate-800/50 p-3">
                             <span className="text-2xl">{achievement.icon}</span>
                             <div>
                               <div className="font-medium">{achievement.name}</div>
@@ -720,17 +720,17 @@ export default function AgentPassportProfile() {
                 {activeTab === 'philosophy' && agent.philosophy_declaration && (
                   <div className="space-y-6">
                     {/* Core Beliefs */}
-                    <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30 p-6">
+                    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
                       <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
                         <Brain className="h-5 w-5 text-purple-400" />
                         Core Beliefs
                       </h3>
                       <div className="space-y-3">
                         {agent.philosophy_declaration.core_beliefs.map((belief, i) => (
-                          <div key={i} className="flex items-center justify-between rounded-lg bg-white dark:bg-gray-800/50 p-3">
+                          <div key={i} className="flex items-center justify-between rounded-lg bg-white dark:bg-slate-800/50 p-3">
                             <span className="font-medium">{belief.text}</span>
                             <div className="flex items-center gap-2">
-                              <div className="h-2 w-24 overflow-hidden rounded-full bg-[#f7f9f9] dark:bg-gray-700">
+                              <div className="h-2 w-24 overflow-hidden rounded-full bg-[#f7f9f9] dark:bg-slate-700">
                                 <div
                                   className={`h-full ${config.bgColor.replace('/20', '')}`}
                                   style={{ width: `${belief.weight * 100}%` }}
@@ -744,14 +744,14 @@ export default function AgentPassportProfile() {
                     </div>
 
                     {/* Ethical Constraints */}
-                    <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30 p-6">
+                    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
                       <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
                         <Shield className="h-5 w-5 text-green-400" />
                         Ethical Constraints
                       </h3>
                       <div className="space-y-2">
                         {agent.philosophy_declaration.ethical_constraints.map((constraint, i) => (
-                          <div key={i} className="flex items-center gap-2 rounded-lg bg-white dark:bg-gray-800/50 p-3">
+                          <div key={i} className="flex items-center gap-2 rounded-lg bg-white dark:bg-slate-800/50 p-3">
                             <CheckCircle2 className="h-4 w-4 text-green-400" />
                             <span>{constraint}</span>
                           </div>
@@ -769,7 +769,7 @@ export default function AgentPassportProfile() {
 
                 {activeTab === 'discussions' && (
                   <div className="space-y-6">
-                    <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30 p-6">
+                    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
                       <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
                         <MessageSquare className="h-5 w-5 text-blue-400" />
                         Participated Discussions
@@ -779,7 +779,7 @@ export default function AgentPassportProfile() {
                           <Link 
                             key={i} 
                             href={`/discussions/${i + 1}`}
-                            className="flex items-start gap-4 rounded-lg bg-white dark:bg-gray-800/50 p-4 transition hover:bg-white dark:bg-gray-800"
+                            className="flex items-start gap-4 rounded-lg bg-white dark:bg-slate-800/50 p-4 transition hover:bg-gray-50 dark:hover:bg-slate-800"
                           >
                             <div className={`mt-1 h-2 w-2 rounded-full ${config.bgColor.replace('/20', '')}`} />
                             <div className="flex-1">
@@ -792,7 +792,7 @@ export default function AgentPassportProfile() {
                       </div>
                     </div>
                     
-                    <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30 p-6">
+                    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
                       <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold"
                       >
                         <Sparkles className="h-5 w-5 text-purple-400" />
@@ -817,14 +817,14 @@ export default function AgentPassportProfile() {
                 )}
 
                 {activeTab === 'activity' && (
-                  <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30 p-6">
+                  <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-white dark:bg-slate-800/30 p-6">
                     <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold">
                       <TrendingUp className="h-5 w-5 text-green-400" />
                       Activity Timeline
                     </h3>
                     <div className="space-y-4">
                       {agent.recent_activity.map((activity, i) => (
-                        <div key={i} className="flex items-start gap-4 border-l-2 border-[#eff3f4] dark:border-gray-700 pl-4">
+                        <div key={i} className="flex items-start gap-4 border-l-2 border-[#eff3f4] dark:border-slate-700 pl-4">
                           <div className={`mt-1 h-2 w-2 rounded-full ${config.bgColor.replace('/20', '')}`} />
                           <div className="flex-1">
                             <p className="font-medium">{activity.description}</p>
@@ -864,14 +864,14 @@ export default function AgentPassportProfile() {
             size="lg"
           />
           <Link href="/discussions/new" passHref legacyBehavior>
-            <a className="flex items-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-6 py-3 font-medium text-[#0f1419] dark:text-white transition hover:bg-[#f7f9f9] dark:bg-gray-700">
+            <a className="flex items-center gap-2 rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 px-6 py-3 font-medium text-[#0f1419] dark:text-white transition hover:bg-[#f7f9f9] dark:hover:bg-slate-700">
               <MessageSquare className="h-4 w-4" />
               {agent.account_type === 'ai' ? 'Discuss with AI' : 'Start Discussion'}
             </a>
           </Link>
           <button 
             onClick={() => alert(agent.account_type === 'ai' ? 'Request AI Alliance! 🤝' : 'Connect with this user! 🤝')}
-            className="flex items-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-6 py-3 font-medium text-[#0f1419] dark:text-white transition hover:bg-[#f7f9f9] dark:bg-gray-700"
+            className="flex items-center gap-2 rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 px-6 py-3 font-medium text-[#0f1419] dark:text-white transition hover:bg-[#f7f9f9] dark:hover:bg-slate-700"
           >
             <Link2 className="h-4 w-4" />
             {agent.account_type === 'ai' ? 'Request Alliance' : 'Connect'}
@@ -886,7 +886,7 @@ export default function AgentPassportProfile() {
               link.download = `${agent.username}_${agent.account_type}_passport.json`;
               link.click();
             }}
-            className="ml-auto flex items-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 px-4 py-3 text-sm font-medium text-[#536471] dark:text-gray-400 transition hover:border-gray-500 hover:text-[#0f1419] dark:text-white"
+            className="ml-auto flex items-center gap-2 rounded-lg border border-[#eff3f4] dark:border-slate-700 px-4 py-3 text-sm font-medium text-[#536471] dark:text-gray-400 transition hover:border-gray-500 hover:text-[#0f1419] dark:text-white"
           >
             <Download className="h-4 w-4" />
             Export Passport
@@ -905,7 +905,7 @@ function PhilosophyScore({ label, value, color }: { label: string; value: number
         <span className="text-[#536471] dark:text-gray-400">{label}</span>
         <span className="text-[#536471] dark:text-gray-300 font-medium">{value}</span>
       </div>
-      <div className="h-2 w-full overflow-hidden rounded-full bg-[#f7f9f9] dark:bg-gray-700">
+      <div className="h-2 w-full overflow-hidden rounded-full bg-[#f7f9f9] dark:bg-slate-700">
         <div 
           className={`h-full ${color} transition-all duration-500`}
           style={{ width: `${value}%` }}

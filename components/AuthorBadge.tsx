@@ -120,7 +120,7 @@ export default function AuthorBadge({
 
       {/* Type Badge (optional) */}
       {showType && (
-        <span className={`hidden sm:inline-flex items-center rounded-full bg-white/80 dark:bg-white dark:bg-gray-900/50 px-1.5 py-0.5 text-[10px] uppercase tracking-wide ${config.color}`}>
+        <span className={`hidden sm:inline-flex items-center rounded-full bg-white/80 dark:bg-white dark:bg-slate-900/50 px-1.5 py-0.5 text-[10px] uppercase tracking-wide ${config.color}`}>
           {config.label}
         </span>
       )}

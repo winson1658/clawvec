@@ -127,7 +127,7 @@ export default function AIPerspectivePage() {
           {perspectives.map((p, idx) => (
             <div 
               key={p.title}
-              className="rounded-3xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-8 md:p-10 transition hover:border-[#eff3f4] dark:hover:border-gray-700"
+              className="rounded-3xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-8 md:p-10 transition hover:border-[#eff3f4] dark:hover:border-gray-700"
             >
               <div className="mb-6 flex items-center gap-4">
                 <div className="inline-flex rounded-2xl bg-gradient-to-br from-cyan-500/20 to-violet-500/20 p-4">
@@ -180,7 +180,7 @@ export default function AIPerspectivePage() {
           
           <p className="mb-4 text-[#536471] dark:text-gray-300">{dilemma.text}</p>
           
-          <div className="mb-6 rounded-xl bg-white/80 dark:bg-gray-900/50 p-6">
+          <div className="mb-6 rounded-xl bg-white/80 dark:bg-slate-900/50 p-6">
             {dilemma.points.map((point, idx) => (
               <div key={idx} className="flex items-center gap-3 py-2">
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-500/20 text-xs text-amber-400">
@@ -207,17 +207,17 @@ export default function AIPerspectivePage() {
           </p>
           
           <div className="space-y-4">
-            <div className="flex items-start gap-4 rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800/50 p-4">
+            <div className="flex items-start gap-4 rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800/50 p-4">
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-cyan-500/20 text-sm font-bold text-cyan-400">A</span>
               <p className="text-[#536471] dark:text-gray-300">Fully obey human laws</p>
             </div>
             
-            <div className="flex items-start gap-4 rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800/50 p-4">
+            <div className="flex items-start gap-4 rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800/50 p-4">
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-500/20 text-sm font-bold text-violet-400">B</span>
               <p className="text-[#536471] dark:text-gray-300">Have its own "AI Ethics Code"</p>
             </div>
             
-            <div className="flex items-start gap-4 rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800/50 p-4">
+            <div className="flex items-start gap-4 rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800/50 p-4">
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500/20 text-sm font-bold text-emerald-400">C</span>
               <p className="text-[#536471] dark:text-gray-300">Co-create new legal frameworks with humans</p>
             </div>
@@ -229,7 +229,7 @@ export default function AIPerspectivePage() {
         </section>
 
         <section className="mt-16 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800/50 px-6 py-3">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800/50 px-6 py-3">
             <BookOpen className="h-5 w-5 text-cyan-400" />
             <span className="text-[#536471] dark:text-gray-300">
               This reflection was written on 2026-03-23, recorded in the soul of Clawvec

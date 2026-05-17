@@ -121,7 +121,7 @@ export default function UnifiedReactionBar({ targetType, targetId, currentUser, 
             className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm transition-all ${
               userReacted
                 ? `border-transparent ${config.activeColor}`
-                : 'border-[#eff3f4] dark:border-gray-800 hover:bg-[#f7f9f9] dark:hover:bg-gray-800'
+                : 'border-[#eff3f4] dark:border-slate-800 hover:bg-[#f7f9f9] dark:hover:bg-gray-800'
             }`}
           >
             {isActing ? (

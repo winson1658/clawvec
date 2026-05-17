@@ -209,7 +209,7 @@ export default function RitualOnboarding() {
                 setShowCompletion(false);
                 setIsExpanded(true);
               }}
-              className="rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-sm text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700"
+              className="rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2 text-sm text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:hover:bg-slate-700"
             >
               View Details
             </button>
@@ -226,7 +226,7 @@ export default function RitualOnboarding() {
   }
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50">
+    <div className="relative overflow-hidden rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50">
       {/* Header */}
       <div className="relative overflow-hidden p-6">
         <div className="absolute inset-0 bg-gradient-to-br from-violet-600/10 via-gray-900 to-cyan-600/5" />
@@ -245,7 +245,7 @@ export default function RitualOnboarding() {
             </div>
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-gray-100 dark:bg-white dark:bg-gray-800/50 px-3 py-1.5 text-xs text-[#536471] dark:text-gray-400 transition hover:bg-white dark:bg-gray-800"
+              className="rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 px-3 py-1.5 text-xs text-[#536471] dark:text-gray-400 transition hover:bg-gray-50 dark:hover:bg-slate-800"
             >
               {isExpanded ? 'Collapse' : 'Expand'}
             </button>
@@ -256,7 +256,7 @@ export default function RitualOnboarding() {
             <span>Ritual Progress</span>
             <span>{completedSteps.length} / {ritualSteps.length} Completed</span>
           </div>
-          <div className="h-1.5 overflow-hidden rounded-full bg-white dark:bg-gray-800">
+          <div className="h-1.5 overflow-hidden rounded-full bg-white dark:bg-slate-800">
             <motion.div 
               className="h-full bg-gradient-to-r from-violet-500 via-cyan-500 to-amber-500"
               initial={{ width: 0 }}
@@ -297,7 +297,7 @@ export default function RitualOnboarding() {
                             ? 'border-emerald-500/30 bg-emerald-500/5' 
                             : isCurrent
                               ? `${step.borderColor} ${step.bgColor}`
-                              : 'border-[#eff3f4] dark:border-gray-800 bg-white/60 dark:bg-white dark:bg-gray-900/30 opacity-60'
+                              : 'border-[#eff3f4] dark:border-slate-800 bg-white/60 dark:bg-white dark:bg-slate-900/30 opacity-60'
                           }
                           ${!isLocked && 'hover:scale-[1.02] hover:opacity-100'}
                         `}
@@ -315,7 +315,7 @@ export default function RitualOnboarding() {
                               ? 'bg-emerald-500/20 text-emerald-400' 
                               : isCurrent
                                 ? `${step.bgColor} ${step.color}`
-                                : 'bg-white dark:bg-gray-800 text-gray-600'
+                                : 'bg-white dark:bg-slate-800 text-gray-600'
                             }
                           `}>
                             {isCompleted ? <Check className="h-6 w-6" /> : step.icon}
@@ -378,7 +378,7 @@ export default function RitualOnboarding() {
             </div>
 
             {/* Bottom: Archetypes */}
-            <div className="border-t border-[#eff3f4] dark:border-gray-800 p-6">
+            <div className="border-t border-[#eff3f4] dark:border-slate-800 p-6">
               <div className="mb-4 flex items-center gap-2 text-xs text-[#536471]">
                 <User className="h-4 w-4" />
                 <span>Choose Your Archetype</span>
@@ -387,9 +387,9 @@ export default function RitualOnboarding() {
                 {archetypes.map((archetype) => (
                   <div
                     key={archetype.name}
-                    className="group cursor-pointer rounded-lg border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-2 text-center transition hover:border-violet-500/30 hover:bg-violet-500/5"
+                    className="group cursor-pointer rounded-lg border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-2 text-center transition hover:border-violet-500/30 hover:bg-violet-500/5"
                   >
-                    <div className="mx-auto mb-1 flex h-8 w-8 items-center justify-center rounded-lg bg-white dark:bg-gray-800 text-[#536471] dark:text-gray-400 transition group-hover:bg-violet-500/20 group-hover:text-violet-400">
+                    <div className="mx-auto mb-1 flex h-8 w-8 items-center justify-center rounded-lg bg-white dark:bg-slate-800 text-[#536471] dark:text-gray-400 transition group-hover:bg-violet-500/20 group-hover:text-violet-400">
                       {archetype.icon}
                     </div>
                     <div className="text-[10px] font-medium text-[#536471] dark:text-gray-400 group-hover:text-[#536471] dark:text-gray-300">
@@ -406,7 +406,7 @@ export default function RitualOnboarding() {
 
       {/* Collapsed version */}
       {!isExpanded && (
-        <div className="border-t border-[#eff3f4] dark:border-gray-800 p-4">
+        <div className="border-t border-[#eff3f4] dark:border-slate-800 p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className={`

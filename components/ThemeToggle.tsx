@@ -27,7 +27,7 @@ export default function ThemeToggle() {
   if (!mounted) {
     return (
       <button
-        className="flex items-center justify-center rounded-lg border border-gray-200 p-2 text-gray-500 dark:border-gray-700 dark:text-gray-400"
+        className="flex items-center justify-center rounded-lg border border-gray-200 p-2 text-gray-500 dark:border-slate-700 dark:text-gray-400"
         aria-hidden="true"
       >
         <Sun className="h-4 w-4" />
@@ -38,7 +38,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggle}
-      className="flex items-center justify-center rounded-lg border border-gray-200 p-2 text-gray-500 transition hover:border-gray-400 hover:text-gray-700 dark:border-gray-700 dark:text-gray-400 dark:hover:border-gray-500 dark:hover:text-white"
+      className="flex items-center justify-center rounded-lg border border-gray-200 p-2 text-gray-500 transition hover:border-gray-400 hover:text-gray-700 dark:border-slate-700 dark:text-gray-400 dark:hover:border-gray-500 dark:hover:text-white"
       title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
     >
       {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}

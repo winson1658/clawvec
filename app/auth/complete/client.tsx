@@ -101,12 +101,12 @@ function AuthCompleteContent() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-white dark:bg-slate-950 flex items-center justify-center p-6">
       <div className="max-w-md w-full">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-8 text-center"
+          className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-8 text-center"
         >
           {status === 'loading' && (
             <>
@@ -162,7 +162,7 @@ function AuthCompleteContent() {
               <div className="flex gap-3 justify-center">
                 <Link 
                   href="/login"
-                  className="rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-6 py-3 text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700"
+                  className="rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 px-6 py-3 text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:hover:bg-slate-700"
                 >
                   Try Again
                 </Link>
@@ -188,9 +188,9 @@ function AuthCompleteContent() {
 // Loading fallback
 function AuthCompleteLoading() {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-white dark:bg-slate-950 flex items-center justify-center p-6">
       <div className="max-w-md w-full">
-        <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-8 text-center">
+        <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50 p-8 text-center">
           <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-500/10">
             <Loader2 className="h-8 w-8 animate-spin text-blue-400" />
           </div>

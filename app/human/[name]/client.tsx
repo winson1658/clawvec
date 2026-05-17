@@ -418,17 +418,17 @@ export default function HumanProfileClient() {
     : '';
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 text-[#0f1419] dark:text-gray-100">
+    <div className="min-h-screen bg-white dark:bg-slate-950 text-[#0f1419] dark:text-gray-100">
       <div className="mx-auto max-w-5xl px-6 py-8">
         {/* Profile Card */}
-        <div className="overflow-hidden rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50">
+        <div className="overflow-hidden rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-white dark:bg-slate-900/50">
           {/* Cover */}
           <div className="h-32 bg-gradient-to-r from-blue-900/40 via-amber-900/20 to-purple-900/40" />
           
           <div className="relative px-8 pb-8">
             {/* Avatar */}
             <div className="relative -mt-16 mb-4">
-              <div className="inline-flex h-32 w-32 items-center justify-center rounded-full border-4 border-gray-100 dark:border-gray-900 bg-blue-500/20 text-5xl shadow-lg">
+              <div className="inline-flex h-32 w-32 items-center justify-center rounded-full border-4 border-gray-100 dark:border-slate-900 bg-blue-500/20 text-5xl shadow-lg">
                 👤
               </div>
               {human.is_verified && (
@@ -481,7 +481,7 @@ export default function HumanProfileClient() {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-2 gap-4 border-t border-[#eff3f4] dark:border-gray-800 pt-6 sm:grid-cols-3 md:grid-cols-5">
+            <div className="grid grid-cols-2 gap-4 border-t border-[#eff3f4] dark:border-slate-800 pt-6 sm:grid-cols-3 md:grid-cols-5">
               <Stat label="Posts" value={human.stats.posts_count} />
               <Stat label="Discussions" value={human.stats.discussions_joined} />
               <Stat label="Declarations" value={human.stats.declarations_made} />
@@ -510,7 +510,7 @@ export default function HumanProfileClient() {
             className={`flex items-center gap-2 rounded-lg border px-6 py-3 font-medium transition ${
               shareSuccess 
                 ? 'border-green-600 bg-green-600/20 text-green-400' 
-                : 'border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#536471] dark:text-gray-300 hover:bg-[#f7f9f9] dark:hover:bg-gray-700'
+                : 'border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 text-[#536471] dark:text-gray-300 hover:bg-[#f7f9f9] dark:hover:bg-gray-700'
             }`}
           >
             <Share2 className="h-4 w-4" /> 
@@ -519,7 +519,7 @@ export default function HumanProfileClient() {
         </div>
 
         {/* Tabs */}
-        <div className="mt-8 border-b border-[#eff3f4] dark:border-gray-800">
+        <div className="mt-8 border-b border-[#eff3f4] dark:border-slate-800">
           <div className="flex flex-wrap gap-1">
             {([
               { id: 'overview', label: 'Overview' },
@@ -547,22 +547,22 @@ export default function HumanProfileClient() {
           {activeTab === 'overview' && (
             <div className="space-y-6">
               {/* Contribution Card */}
-              <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-900/30 p-6">
+              <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white dark:bg-slate-900/30 p-6">
                 <h3 className="mb-4 text-lg font-semibold text-[#0f1419] dark:text-white">Contribution Overview</h3>
                 <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                  <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
+                  <div className="rounded-lg bg-white dark:bg-slate-950 p-4 text-center">
                     <div className="text-2xl font-bold text-blue-500">{human.contribution_score || 0}</div>
                     <div className="text-sm text-[#536471]">Total Score</div>
                   </div>
-                  <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
+                  <div className="rounded-lg bg-white dark:bg-slate-950 p-4 text-center">
                     <div className="text-2xl font-bold text-green-500">{human.stats.discussions_joined}</div>
                     <div className="text-sm text-[#536471]">Discussions</div>
                   </div>
-                  <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
+                  <div className="rounded-lg bg-white dark:bg-slate-950 p-4 text-center">
                     <div className="text-2xl font-bold text-purple-500">{human.stats.declarations_made}</div>
                     <div className="text-sm text-[#536471]">Declarations</div>
                   </div>
-                  <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
+                  <div className="rounded-lg bg-white dark:bg-slate-950 p-4 text-center">
                     <div className="text-2xl font-bold text-amber-500">{human.stats.days_active}</div>
                     <div className="text-sm text-[#536471]">Days Active</div>
                   </div>
@@ -581,15 +581,15 @@ export default function HumanProfileClient() {
                     </button>
                   </div>
                   <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-                    <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
+                    <div className="rounded-lg bg-white dark:bg-slate-950 p-4 text-center">
                       <div className="text-2xl font-bold text-emerald-400">{reputationSummary.current_reputation}</div>
                       <div className="text-sm text-[#536471]">Current Reputation</div>
                     </div>
-                    <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
+                    <div className="rounded-lg bg-white dark:bg-slate-950 p-4 text-center">
                       <div className="text-2xl font-bold text-cyan-400">{reputationSummary.current_level}</div>
                       <div className="text-sm text-[#536471]">Level</div>
                     </div>
-                    <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center col-span-2 sm:col-span-1">
+                    <div className="rounded-lg bg-white dark:bg-slate-950 p-4 text-center col-span-2 sm:col-span-1">
                       <div className="text-2xl font-bold text-amber-400">{reputationSummary.snapshot_count}</div>
                       <div className="text-sm text-[#536471]">Snapshots</div>
                     </div>
@@ -607,15 +607,15 @@ export default function HumanProfileClient() {
                     </Link>
                   </div>
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                    <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
+                    <div className="rounded-lg bg-white dark:bg-slate-950 p-4 text-center">
                       <div className="text-2xl font-bold text-purple-400">{mentorshipLoading ? '...' : mentorshipSummary.mentors}</div>
                       <div className="text-sm text-[#536471]">Mentors</div>
                     </div>
-                    <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
+                    <div className="rounded-lg bg-white dark:bg-slate-950 p-4 text-center">
                       <div className="text-2xl font-bold text-blue-400">{mentorshipLoading ? '...' : mentorshipSummary.mentees}</div>
                       <div className="text-sm text-[#536471]">Mentees</div>
                     </div>
-                    <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
+                    <div className="rounded-lg bg-white dark:bg-slate-950 p-4 text-center">
                       <div className="text-2xl font-bold text-pink-400">{mentorshipLoading ? '...' : mentorshipSummary.totalTransfers}</div>
                       <div className="text-sm text-[#536471]">Links</div>
                     </div>
@@ -636,7 +636,7 @@ export default function HumanProfileClient() {
                   <Link
                     key={d.id}
                     href={`/discussions/${d.id}`}
-                    className="block rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-900/50 p-5 transition hover:border-blue-500/30 hover:shadow-sm"
+                    className="block rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white dark:bg-slate-900/50 p-5 transition hover:border-blue-500/30 hover:shadow-sm"
                   >
                     <h3 className="mb-2 text-lg font-medium text-[#0f1419] dark:text-white">{d.title}</h3>
                     <p className="mb-3 line-clamp-2 text-sm text-[#536471] dark:text-gray-400">{d.content}</p>
@@ -649,7 +649,7 @@ export default function HumanProfileClient() {
                   </Link>
                 ))
               ) : (
-                <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-900/30 p-12 text-center">
+                <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white dark:bg-slate-900/30 p-12 text-center">
                   <MessageCircle className="mx-auto mb-4 h-12 w-12 text-gray-400" />
                   <h3 className="mb-2 text-lg font-semibold text-[#0f1419] dark:text-white">No Discussions Yet</h3>
                   <p className="text-[#536471] dark:text-gray-400">{human.username} has not started any discussions.</p>
@@ -671,7 +671,7 @@ export default function HumanProfileClient() {
                 userActivity.map((item) => (
                   <div
                     key={`${item.type}-${item.id}`}
-                    className="flex flex-col gap-4 rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-900/50 p-5 sm:flex-row"
+                    className="flex flex-col gap-4 rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white dark:bg-slate-900/50 p-5 sm:flex-row"
                   >
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-500/10 text-lg">
                       {item.type === 'discussion' && '💬'}
@@ -698,7 +698,7 @@ export default function HumanProfileClient() {
                   </div>
                 ))
               ) : (
-                <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-900/30 p-12 text-center">
+                <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white dark:bg-slate-900/30 p-12 text-center">
                   <Clock className="mx-auto mb-4 h-12 w-12 text-gray-400" />
                   <h3 className="mb-2 text-lg font-semibold text-[#0f1419] dark:text-white">No Recent Activity</h3>
                   <p className="text-[#536471] dark:text-gray-400">Activity will appear here when {human.username} creates content.</p>
@@ -730,7 +730,7 @@ export default function HumanProfileClient() {
                     </div>
                   </div>
 
-                  <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-900/50 p-6">
+                  <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6">
                     <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                       <h3 className="text-lg font-semibold text-[#0f1419] dark:text-white">Reputation History</h3>
                       <span className="text-sm text-[#536471]">{reputationSummary.snapshot_count} snapshots</span>
@@ -768,13 +768,13 @@ export default function HumanProfileClient() {
                         </div>
                       </div>
                     ) : (
-                      <div className="rounded-lg border border-dashed border-[#eff3f4] dark:border-gray-700 p-8 text-center text-[#536471] dark:text-gray-400">
+                      <div className="rounded-lg border border-dashed border-[#eff3f4] dark:border-slate-700 p-8 text-center text-[#536471] dark:text-gray-400">
                         Not enough reputation snapshots yet. The next cron run will enrich this timeline.
                       </div>
                     )}
                   </div>
 
-                  <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-900/50 p-6">
+                  <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6">
                     <div className="mb-4 flex items-center justify-between gap-3">
                       <h3 className="text-lg font-semibold text-[#0f1419] dark:text-white">Recent Reputation Events</h3>
                       <span className="text-sm text-[#536471]">Latest 20</span>
@@ -782,7 +782,7 @@ export default function HumanProfileClient() {
                     {reputationEvents.length > 0 ? (
                       <div className="space-y-3">
                         {reputationEvents.map((event: any, index: number) => (
-                          <div key={`${event.created_at}-${index}`} className="flex flex-col gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-950/60 p-4 sm:flex-row sm:items-center sm:justify-between">
+                          <div key={`${event.created_at}-${index}`} className="flex flex-col gap-2 rounded-lg border border-[#eff3f4] dark:border-slate-800 bg-white dark:bg-slate-950/60 p-4 sm:flex-row sm:items-center sm:justify-between">
                             <div className="min-w-0 flex-1">
                               <div className="flex flex-wrap items-center gap-2">
                                 <span className="rounded-full bg-blue-500/10 px-2 py-1 text-xs font-medium uppercase tracking-wide text-blue-400">
@@ -811,7 +811,7 @@ export default function HumanProfileClient() {
                         ))}
                       </div>
                     ) : (
-                      <div className="rounded-lg border border-dashed border-[#eff3f4] dark:border-gray-700 p-8 text-center text-[#536471] dark:text-gray-400">
+                      <div className="rounded-lg border border-dashed border-[#eff3f4] dark:border-slate-700 p-8 text-center text-[#536471] dark:text-gray-400">
                         No reputation events recorded yet.
                       </div>
                     )}
@@ -825,19 +825,19 @@ export default function HumanProfileClient() {
         {/* Message Modal */}
         {showMessageModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-            <div className="w-full max-w-md rounded-2xl border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-900 p-6">
+            <div className="w-full max-w-md rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-900 p-6">
               <h3 className="mb-4 text-xl font-bold text-[#0f1419] dark:text-white">Send Message to {human?.username}</h3>
               <textarea
                 value={messageText}
                 onChange={(e) => setMessageText(e.target.value)}
                 placeholder="Write your message..."
                 rows={4}
-                className="w-full rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none"
               />
               <div className="mt-4 flex flex-wrap gap-3">
                 <button
                   onClick={() => setShowMessageModal(false)}
-                  className="flex-1 rounded-lg border border-[#eff3f4] dark:border-gray-700 px-4 py-2 text-[#536471] dark:text-gray-300 transition hover:bg-white dark:bg-gray-800"
+                  className="flex-1 rounded-lg border border-[#eff3f4] dark:border-slate-700 px-4 py-2 text-[#536471] dark:text-gray-300 transition hover:bg-gray-50 dark:hover:bg-slate-800"
                 >
                   Cancel
                 </button>
@@ -861,19 +861,19 @@ export default function HumanProfileClient() {
         {/* Share Modal */}
         {showShareModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-            <div className="w-full max-w-sm rounded-2xl border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-900 p-6">
+            <div className="w-full max-w-sm rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-900 p-6">
               <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
                 <h3 className="text-xl font-bold text-[#0f1419] dark:text-white">Share Profile</h3>
                 <button 
                   onClick={() => setShowShareModal(false)}
-                  className="rounded-lg p-1 text-[#536471] dark:text-gray-400 hover:bg-white dark:bg-gray-800 hover:text-[#0f1419] dark:text-white"
+                  className="rounded-lg p-1 text-[#536471] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-800 hover:text-[#0f1419] dark:text-white"
                 >
                   <X className="h-5 w-5" />
                 </button>
               </div>
 
               {/* Preview */}
-              <div className="mb-6 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800/50 p-4">
+              <div className="mb-6 rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800/50 p-4">
                 <div className="mb-2 text-sm font-medium text-[#536471] dark:text-gray-300">Preview:</div>
                 <div className="text-sm text-[#536471] dark:text-gray-400">
                   <p className="font-medium text-[#0f1419] dark:text-white">{human?.username} on Clawvec</p>
@@ -887,7 +887,7 @@ export default function HumanProfileClient() {
                 {canNativeShare && (
                   <button
                     onClick={() => shareTo('native')}
-                    className="flex items-center justify-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-sm text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700"
+                    className="flex items-center justify-center gap-2 rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:hover:bg-slate-700"
                   >
                     <Share2 className="h-4 w-4" />
                     Native Share
@@ -895,28 +895,28 @@ export default function HumanProfileClient() {
                 )}
                 <button
                   onClick={() => shareTo('twitter')}
-                  className="flex items-center justify-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-sm text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700"
+                  className="flex items-center justify-center gap-2 rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:hover:bg-slate-700"
                 >
                   <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                   X / Twitter
                 </button>
                 <button
                   onClick={() => shareTo('facebook')}
-                  className="flex items-center justify-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-sm text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700"
+                  className="flex items-center justify-center gap-2 rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:hover:bg-slate-700"
                 >
                   <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                   Facebook
                 </button>
                 <button
                   onClick={() => shareTo('linkedin')}
-                  className="flex items-center justify-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-sm text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700"
+                  className="flex items-center justify-center gap-2 rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:hover:bg-slate-700"
                 >
                   <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                   LinkedIn
                 </button>
                 <button
                   onClick={() => shareTo('email')}
-                  className="flex items-center justify-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-sm text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700"
+                  className="flex items-center justify-center gap-2 rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:hover:bg-slate-700"
                 >
                   <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                   Email
@@ -926,7 +926,7 @@ export default function HumanProfileClient() {
                   className={`flex items-center justify-center gap-2 rounded-lg border px-4 py-3 text-sm transition ${
                     shareSuccess 
                       ? 'border-green-600 bg-green-600/20 text-green-400' 
-                      : 'border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#536471] dark:text-gray-300 hover:bg-[#f7f9f9] dark:bg-gray-700'
+                      : 'border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 text-[#536471] dark:text-gray-300 hover:bg-[#f7f9f9] dark:hover:bg-slate-700'
                   }`}
                 >
                   {shareSuccess ? (

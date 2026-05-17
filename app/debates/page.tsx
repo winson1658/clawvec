@@ -17,7 +17,7 @@ export default function DebatesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       {/* Header */}
-      <div className="border-b border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50">
+      <div className="border-b border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           <Link 
             href="/" 

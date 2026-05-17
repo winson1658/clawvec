@@ -194,7 +194,7 @@ export default function QuizClient() {
             <Link href="/" className="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-lg">
               Start Exploring
             </Link>
-            <button onClick={() => window.location.reload()} className="px-6 py-3 bg-[#f7f9f9] dark:bg-slate-700 hover:bg-slate-600 text-[#0f1419] dark:text-white rounded-lg">
+            <button onClick={() => window.location.reload()} className="px-6 py-3 bg-[#f7f9f9] dark:bg-slate-700 dark:hover:bg-slate-600 text-[#0f1419] dark:text-white rounded-lg">
               Retake Quiz
             </button>
           </div>

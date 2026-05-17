@@ -83,7 +83,7 @@ const recentUpdates = [
 
 export default function DevelopmentRoadmap() {
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-8 dark:border-gray-800 dark:bg-gray-900">
+    <div className="rounded-2xl border border-gray-200 bg-white p-8 dark:border-slate-800 dark:bg-slate-900">
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center rounded-full bg-gradient-to-r from-blue-100 to-purple-100 px-4 py-2 text-sm font-medium text-blue-800 dark:from-blue-900 dark:to-purple-900 dark:text-blue-200">
@@ -94,7 +94,7 @@ export default function DevelopmentRoadmap() {
             From philosophy to implementation
           </h2>
         </div>
-        <div className="hidden items-center space-x-2 rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-800 md:flex">
+        <div className="hidden items-center space-x-2 rounded-lg bg-gray-100 px-4 py-2 dark:bg-slate-800 md:flex">
           <Clock className="h-4 w-4 text-[#536471] dark:text-gray-400" />
           <span className="text-sm text-[#536471] dark:text-gray-400">Last updated: 2026-03-01</span>
         </div>
@@ -104,7 +104,7 @@ export default function DevelopmentRoadmap() {
         <h3 className="mb-6 text-xl font-semibold text-[#0f1419] dark:text-white">Three-phase development plan</h3>
         <div className="space-y-8">
           {phases.map((phase, index) => (
-            <div key={index} className="rounded-xl border border-gray-200 p-6 dark:border-gray-800">
+            <div key={index} className="rounded-xl border border-gray-200 p-6 dark:border-slate-800">
               <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
                 <div className="flex items-center">
                   <div className={`mr-4 rounded-lg p-3 ${phase.bgColor}`}>
@@ -117,7 +117,7 @@ export default function DevelopmentRoadmap() {
                         className={`rounded-full px-2 py-1 text-xs font-medium ${
                           phase.status === 'In Progress'
                             ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-                            : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200'
+                            : 'bg-gray-100 text-gray-800 dark:bg-slate-800 dark:text-gray-200'
                         }`}
                       >
                         {phase.status}
@@ -133,7 +133,7 @@ export default function DevelopmentRoadmap() {
                     <span className="font-medium text-[#0f1419] dark:text-gray-300">Progress</span>
                     <span className="font-bold text-[#0f1419] dark:text-white">{phase.progress}%</span>
                   </div>
-                  <div className="h-2 overflow-hidden rounded-full bg-[#f7f9f9] dark:bg-gray-800">
+                  <div className="h-2 overflow-hidden rounded-full bg-[#f7f9f9] dark:bg-slate-800">
                     <div
                       className={`h-full rounded-full ${
                         index === 0
@@ -154,7 +154,7 @@ export default function DevelopmentRoadmap() {
                     {item.done ? (
                       <CheckCircle className="mr-3 h-5 w-5 flex-shrink-0 text-green-500" />
                     ) : (
-                      <div className="mr-3 h-5 w-5 flex-shrink-0 rounded-full border-2 border-[#eff3f4] dark:border-gray-700" />
+                      <div className="mr-3 h-5 w-5 flex-shrink-0 rounded-full border-2 border-[#eff3f4] dark:border-slate-700" />
                     )}
                     <span className={item.done ? 'text-[#0f1419] dark:text-white' : 'text-[#536471] dark:text-gray-400'}>
                       {item.text}
@@ -171,10 +171,10 @@ export default function DevelopmentRoadmap() {
         <h3 className="mb-6 text-xl font-semibold text-[#0f1419] dark:text-white">Recent updates & milestones</h3>
         <div className="space-y-4">
           {recentUpdates.map((update, index) => (
-            <div key={index} className="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-800/50">
+            <div key={index} className="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-800 dark:bg-slate-800/50">
               <div className="mb-1 flex flex-wrap items-center gap-2">
                 <span className="text-sm font-medium text-[#536471] dark:text-gray-400">{update.date}</span>
-                <span className="rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-800 dark:bg-gray-900 dark:text-gray-200">
+                <span className="rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-800 dark:bg-slate-900 dark:text-gray-200">
                   {update.type}
                 </span>
               </div>
@@ -197,7 +197,7 @@ export default function DevelopmentRoadmap() {
             <button className="rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-3 font-medium text-white hover:opacity-90">
               View GitHub
             </button>
-            <button className="rounded-lg border-2 border-gray-300 bg-transparent px-6 py-3 font-medium text-gray-700 hover:bg-white dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">
+            <button className="rounded-lg border-2 border-gray-300 bg-transparent px-6 py-3 font-medium text-gray-700 hover:bg-white dark:border-slate-700 dark:text-gray-300 dark:hover:bg-gray-800">
               Contact the Team
             </button>
           </div>

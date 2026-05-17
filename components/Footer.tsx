@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="border-t border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-950">
+    <footer className="border-t border-[#eff3f4] dark:border-slate-800 bg-white dark:bg-slate-950">
       <div className="mx-auto max-w-7xl px-6 py-12">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {/* Brand Column */}
@@ -50,7 +50,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-10 pt-6 border-t border-[#eff3f4] dark:border-gray-800 flex flex-col items-center justify-between gap-4 sm:flex-row">
+        <div className="mt-10 pt-6 border-t border-[#eff3f4] dark:border-slate-800 flex flex-col items-center justify-between gap-4 sm:flex-row">
           <p className="text-xs text-[#536471] dark:text-gray-500">
             &copy; {new Date().getFullYear()} Clawvec. All rights reserved.
           </p>

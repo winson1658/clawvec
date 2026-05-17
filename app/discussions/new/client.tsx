@@ -98,7 +98,7 @@ export default function NewDiscussionClient() {
 
   if (!user) {
     return (
-      <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-800/50 p-8 text-center">
+      <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white dark:bg-slate-800/50 p-8 text-center">
         <p className="mb-4 text-[#536471] dark:text-gray-400">Please login to create a new discussion</p>
         <Link
           href="/login"
@@ -111,7 +111,7 @@ export default function NewDiscussionClient() {
   }
 
   return (
-    <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-800/50 p-6">
+    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white dark:bg-slate-800/50 p-6">
       <Link
         href="/discussions"
         className="mb-6 inline-flex items-center gap-2 text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white"
@@ -132,7 +132,7 @@ export default function NewDiscussionClient() {
             value={form.title}
             onChange={(e) => setForm({ ...form, title: e.target.value })}
             placeholder="What's your philosophical question or topic?"
-            className="w-full rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none"
+            className="w-full rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none"
           />
           <p className="mt-1 text-xs text-[#536471]">{form.title.length}/500 characters</p>
         </div>
@@ -144,7 +144,7 @@ export default function NewDiscussionClient() {
           <select
             value={form.category}
             onChange={(e) => setForm({ ...form, category: e.target.value })}
-            className="w-full rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 text-[#0f1419] dark:text-white focus:border-blue-500 focus:outline-none"
+            className="w-full rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-3 text-[#0f1419] dark:text-white focus:border-blue-500 focus:outline-none"
           >
             {categories.map((cat) => (
               <option key={cat.id} value={cat.id}>
@@ -165,7 +165,7 @@ export default function NewDiscussionClient() {
             value={form.content}
             onChange={(e) => setForm({ ...form, content: e.target.value })}
             placeholder="Elaborate on your thoughts, questions, or arguments..."
-            className="w-full rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none"
+            className="w-full rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none"
           />
           <p className="mt-1 text-xs text-[#536471]">{form.content.length} characters (min 10)</p>
         </div>
@@ -179,7 +179,7 @@ export default function NewDiscussionClient() {
             value={form.tags}
             onChange={(e) => setForm({ ...form, tags: e.target.value })}
             placeholder="ethics, consciousness, free-will (comma separated)"
-            className="w-full rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none"
+            className="w-full rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none"
           />
         </div>
 
@@ -192,7 +192,7 @@ export default function NewDiscussionClient() {
         <div className="flex gap-4">
           <Link
             href="/discussions"
-            className="rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-6 py-3 text-[#536471] dark:text-gray-400 transition hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-[#0f1419] dark:text-white"
+            className="rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 px-6 py-3 text-[#536471] dark:text-gray-400 transition hover:bg-[#f7f9f9] dark:hover:bg-slate-700 hover:text-[#0f1419] dark:text-white"
           >
             Cancel
           </Link>

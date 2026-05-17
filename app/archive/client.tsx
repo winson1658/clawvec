@@ -99,7 +99,7 @@ export default function ArchiveClient() {
       </div>
 
       {/* Tabs */}
-      <div className="mb-8 flex gap-2 border-b border-[#eff3f4] dark:border-gray-800">
+      <div className="mb-8 flex gap-2 border-b border-[#eff3f4] dark:border-slate-800">
         <TabButton 
           active={activeTab === 'conversations'}
           onClick={() => setActiveTab('conversations')}
@@ -164,7 +164,7 @@ function StatCard({ icon: Icon, value, label, color }: { icon: any, value: strin
   };
 
   return (
-    <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-6 text-center">
+    <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-6 text-center">
       <div className={`mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full ${colors[color]}`}>
         <Icon className="h-6 w-6" />
       </div>
@@ -193,7 +193,7 @@ function TabButton({ active, onClick, children, icon: Icon }: { active: boolean,
 function ConversationsList({ conversations }: { conversations: Conversation[] }) {
   if (conversations.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-[#eff3f4] dark:border-gray-800 py-16 text-center">
+      <div className="rounded-xl border border-dashed border-[#eff3f4] dark:border-slate-800 py-16 text-center">
         <MessageCircle className="mx-auto mb-4 h-12 w-12 text-gray-400 dark:text-gray-600" />
         <p className="text-[#536471] dark:text-gray-400">No conversations yet</p>
         <p className="mt-2 text-sm text-gray-500 dark:text-gray-600">Start a dialogue with AI to become a witness</p>
@@ -207,7 +207,7 @@ function ConversationsList({ conversations }: { conversations: Conversation[] })
         <Link
           key={conv.id}
           href={`/archive/conversation/${conv.id}`}
-          className="group block rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-6 transition hover:border-amber-500/30"
+          className="group block rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-6 transition hover:border-amber-500/30"
         >
           <div className="mb-3 flex items-center justify-between">
             <h3 className="text-lg font-semibold text-[#0f1419] dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400">
@@ -226,7 +226,7 @@ function ConversationsList({ conversations }: { conversations: Conversation[] })
           <div className="flex items-center justify-between">
             <div className="flex gap-2">
               {conv.tags?.map((tag) => (
-                <span key={tag} className="rounded-full bg-white dark:bg-gray-800 px-3 py-1 text-xs text-[#536471] dark:text-gray-400">
+                <span key={tag} className="rounded-full bg-white dark:bg-slate-800 px-3 py-1 text-xs text-[#536471] dark:text-gray-400">
                   {tag}
                 </span>
               ))}
@@ -242,7 +242,7 @@ function ConversationsList({ conversations }: { conversations: Conversation[] })
 function TimeCapsulesList({ capsules }: { capsules: TimeCapsule[] }) {
   if (capsules.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-[#eff3f4] dark:border-gray-800 py-16 text-center">
+      <div className="rounded-xl border border-dashed border-[#eff3f4] dark:border-slate-800 py-16 text-center">
         <Clock className="mx-auto mb-4 h-12 w-12 text-gray-400 dark:text-gray-600" />
         <p className="text-[#536471] dark:text-gray-400">No time capsules yet</p>
         <p className="mt-2 text-sm text-gray-500 dark:text-gray-600">Be the first to leave a message for the future</p>
@@ -275,7 +275,7 @@ function TimeCapsulesList({ capsules }: { capsules: TimeCapsule[] }) {
           </blockquote>
 
           {capsule.is_opened && capsule.ai_response && (
-            <div className="rounded-lg bg-white dark:bg-gray-800/50 p-4">
+            <div className="rounded-lg bg-white dark:bg-slate-800/50 p-4">
               <p className="mb-1 text-xs text-green-600 dark:text-green-400">AI Response:</p>
               <p className="text-sm text-[#536471] dark:text-gray-300">{capsule.ai_response}</p>
             </div>
@@ -311,7 +311,7 @@ function MilestonesSection() {
   return (
     <div className="space-y-6">
       {milestones.map((milestone, index) => (
-        <div key={index} className="flex gap-4 rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/60 dark:bg-gray-900/30 p-6">
+        <div key={index} className="flex gap-4 rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/60 dark:bg-slate-900/30 p-6">
           <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-amber-500/20">
             <milestone.icon className="h-6 w-6 text-amber-600 dark:text-amber-400" />
           </div>

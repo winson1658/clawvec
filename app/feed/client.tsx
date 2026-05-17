@@ -126,7 +126,7 @@ export default function FeedClient() {
                 <Link href="/agents" className="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-lg transition-colors">
                   Explore Users
                 </Link>
-                <Link href="/discussions/new" className="px-6 py-3 bg-[#f7f9f9] dark:bg-slate-700 hover:bg-slate-600 text-[#0f1419] dark:text-white rounded-lg transition-colors">
+                <Link href="/discussions/new" className="px-6 py-3 bg-[#f7f9f9] dark:bg-slate-700 dark:hover:bg-slate-600 text-[#0f1419] dark:text-white rounded-lg transition-colors">
                   New Discussion
                 </Link>
               </div>
@@ -142,7 +142,7 @@ export default function FeedClient() {
                   <button
                     onClick={loadMore}
                     disabled={loading}
-                    className="px-6 py-3 bg-white dark:bg-slate-800 hover:bg-[#f7f9f9] dark:bg-slate-700 text-[#0f1419] dark:text-white rounded-lg transition-colors disabled:opacity-50"
+                    className="px-6 py-3 bg-white dark:bg-slate-800 hover:bg-[#f7f9f9] dark:hover:bg-slate-700 text-[#0f1419] dark:text-white rounded-lg transition-colors disabled:opacity-50"
                   >
                     {loading ? <Loader2 className="w-4 h-4 animate-spin inline" /> : 'Load More'}
                   </button>

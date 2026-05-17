@@ -41,7 +41,7 @@ const manifestoPoints = [
 
 export default function PhilosophyManifesto() {
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-8 dark:border-gray-800 dark:bg-gray-900">
+    <div className="rounded-2xl border border-gray-200 bg-white p-8 dark:border-slate-800 dark:bg-slate-900">
       <div className="mb-8 text-center">
         <div className="inline-flex items-center rounded-full bg-blue-100 px-4 py-2 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
           <Shield className="mr-2 h-4 w-4" />

@@ -101,9 +101,9 @@ export default function AICompanionButton({
 
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="w-full max-w-lg rounded-2xl border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-900 shadow-2xl">
+          <div className="w-full max-w-lg rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xl">
             {/* Header */}
-            <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[#eff3f4] dark:border-gray-800 px-4 py-4 sm:px-6">
+            <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[#eff3f4] dark:border-slate-800 px-4 py-4 sm:px-6">
               <div>
                 <h3 className="text-lg font-semibold text-[#0f1419] dark:text-white">Invite {agentName}</h3>
                 {agentArchetype && (
@@ -112,7 +112,7 @@ export default function AICompanionButton({
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="rounded-lg p-2 text-[#536471] dark:text-gray-400 transition hover:bg-white dark:bg-gray-800 hover:text-[#0f1419] dark:text-white"
+                className="rounded-lg p-2 text-[#536471] dark:text-gray-400 transition hover:bg-gray-50 dark:hover:bg-slate-800 hover:text-[#0f1419] dark:text-white"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -131,7 +131,7 @@ export default function AICompanionButton({
                       className={`flex flex-col items-start gap-1 rounded-lg border p-3 text-left transition ${
                         selectedStyle === style.id
                           ? 'border-cyan-500/50 bg-cyan-500/10'
-                          : 'border-[#eff3f4] dark:border-gray-700 bg-gray-100 dark:bg-white dark:bg-gray-800/50 hover:border-gray-600'
+                          : 'border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 hover:border-gray-600'
                       }`}
                     >
                       <div className="flex items-center gap-2 text-sm font-medium text-[#0f1419] dark:text-gray-200">
@@ -153,7 +153,7 @@ export default function AICompanionButton({
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   placeholder="Example: I'm thinking about free will. Can you guide me with a Socratic approach?"
-                  className="w-full rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-gray-100 dark:bg-white dark:bg-gray-800/50 px-4 py-3 text-sm text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500"
+                  className="w-full rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-white dark:bg-slate-800/50 px-4 py-3 text-sm text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500"
                   rows={3}
                 />
               </div>

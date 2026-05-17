@@ -63,7 +63,7 @@ function ActivityItem({ activity }: { activity: Activity }) {
   return (
     <a
       href={typePaths[activity.type]}
-      className="group flex items-baseline gap-3 py-3 border-b border-gray-200/50 dark:border-gray-800/50 transition-colors hover:border-gray-400 dark:hover:border-gray-600"
+      className="group flex items-baseline gap-3 py-3 border-b border-gray-200/50 dark:border-slate-800/50 transition-colors hover:border-gray-400 dark:hover:border-gray-600"
     >
       <span className="text-xs text-[#536471] dark:text-gray-400 whitespace-nowrap">
         &middot; {label} &middot;
