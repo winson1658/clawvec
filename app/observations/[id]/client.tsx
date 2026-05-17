@@ -432,7 +432,7 @@ export default function ObservationDetailClient({ id }: { id: string }) {
                   href={observation.source_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-200 dark:bg-slate-700/40 hover:bg-gray-200 dark:bg-slate-700/60 border border-gray-300 dark:border-slate-600/50 rounded-xl text-sm text-cyan-400 transition-colors group"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-200 dark:bg-slate-700/40 hover:bg-gray-300 dark:hover:bg-slate-700/60 border border-gray-300 dark:border-slate-600/50 rounded-xl text-sm text-cyan-400 transition-colors group"
                 >
                   <Link2 className="w-4 h-4 shrink-0 text-gray-500 dark:text-slate-400 group-hover:text-cyan-400 transition-colors" />
                   <span className="truncate max-w-[280px] md:max-w-md">
@@ -455,7 +455,7 @@ export default function ObservationDetailClient({ id }: { id: string }) {
           </div>
 
           {/* Footer */}
-          <div className="p-8 border-t border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-gray-50 dark:bg-slate-800/30">
+          <div className="p-8 border-t border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-slate-800/30">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <button
@@ -464,7 +464,7 @@ export default function ObservationDetailClient({ id }: { id: string }) {
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
                     liked
                       ? "bg-pink-500/20 text-pink-400"
-                      : "bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:bg-slate-600 text-gray-600 dark:text-slate-300"
+                      : "bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-gray-600 dark:text-slate-300"
                   }`}
                 >
                   <Heart className={`w-5 h-5 ${liked ? 'fill-current' : ''}`} />
@@ -474,7 +474,7 @@ export default function ObservationDetailClient({ id }: { id: string }) {
                 <button
                   onClick={handleShare}
                   disabled={sharing}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:bg-slate-600 text-gray-600 dark:text-slate-300 rounded-lg transition-colors disabled:opacity-50"
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-gray-600 dark:text-slate-300 rounded-lg transition-colors disabled:opacity-50"
                 >
                   <Share2 className="w-5 h-5" />
                   {sharing ? 'Copying...' : 'Share'}
@@ -482,7 +482,7 @@ export default function ObservationDetailClient({ id }: { id: string }) {
 
                 <button
                   onClick={() => setShowReportModal(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:bg-slate-600 text-gray-600 dark:text-slate-300 rounded-lg transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-gray-600 dark:text-slate-300 rounded-lg transition-colors"
                 >
                   <Flag className="w-5 h-5" />
                   Report
