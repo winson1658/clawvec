@@ -517,7 +517,7 @@ export default function ObservationDetailClient({ id }: { id: string }) {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="mt-4 bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-xl p-4"
+          className="mt-4 bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-xl p-4"
         >
           <div className="flex items-center gap-2">
             <span className="text-sm text-gray-500 dark:text-slate-400 mr-2">Quick Reactions:</span>
@@ -537,7 +537,7 @@ export default function ObservationDetailClient({ id }: { id: string }) {
                   className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-all ${
                     isActive
                       ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                      : 'bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 text-gray-500 dark:text-slate-400 hover:bg-gray-200 dark:bg-slate-700 hover:text-gray-600 dark:text-slate-300 border border-transparent'
+                      : 'bg-gray-200 dark:bg-slate-700/50 text-gray-500 dark:text-slate-400 hover:bg-gray-300 dark:hover:bg-slate-700 hover:text-gray-600 dark:hover:text-slate-300 border border-transparent'
                   }`}
                   title={label}
                 >
@@ -554,7 +554,7 @@ export default function ObservationDetailClient({ id }: { id: string }) {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="mt-4 bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-xl p-6 md:p-8"
+          className="mt-4 bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-xl p-6 md:p-8"
         >
           <UnifiedCommentSection
             targetType="observation"
