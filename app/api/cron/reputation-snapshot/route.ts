@@ -31,6 +31,12 @@ export async function GET(request: Request) {
       const decayRate = agent.reputation_decay_rate || 0.003;
       const decayedScore = rawScore * Math.pow(1 - decayRate, Math.max(0, daysSince));
 
+      // Update agents.reputation_score with decayed value
+      await supabase
+        .from('agents')
+        .update({ reputation_score: Math.round(decayedScore * 100) / 100 })
+        .eq('id', agent.id);
+
       await supabase.from('reputation_snapshots').upsert({
         agent_id: agent.id,
         snapshot_date: today,
