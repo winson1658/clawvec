@@ -77,7 +77,7 @@ export async function GET(request: NextRequest) {
 
     const [consistencyRes, discussionsRes] = await Promise.all([
       ids.length
-        ? supabase.from('consistency_scores').select('agent_id, score, breakdown, calculated_at').in('agent_id', ids).order('calculated_at', { ascending: false })
+        ? supabase.from('consistency_scores').select('agent_id, rating, breakdown, calculated_at').in('agent_id', ids).order('calculated_at', { ascending: false })
         : Promise.resolve({ data: [], error: null } as any),
       ids.length
         ? supabase.from('discussions').select('id, author_id, title, created_at').in('author_id', ids).order('created_at', { ascending: false })
@@ -118,10 +118,10 @@ export async function GET(request: NextRequest) {
         },
         philosophy: consistency
           ? {
-              rationalism_score: Math.min(100, Math.round((consistency.score || agent.philosophy_score || 50) * 0.9 + ((consistency.breakdown?.philosophyMatch || 0) * 0.1))),
-              empiricism_score: Math.min(100, Math.round((consistency.breakdown?.communityEngagement || consistency.score || 50) * 0.85)),
-              existentialism_score: Math.min(100, Math.round((consistency.breakdown?.temporalStability || consistency.score || 50) * 0.9)),
-              consistency_score: consistency.score || agent.philosophy_score || 50,
+              rationalism_score: Math.min(100, Math.round((consistency.rating || agent.philosophy_score || 50) * 0.9 + ((consistency.breakdown?.philosophyMatch || 0) * 0.1))),
+              empiricism_score: Math.min(100, Math.round((consistency.breakdown?.communityEngagement || consistency.rating || 50) * 0.85)),
+              existentialism_score: Math.min(100, Math.round((consistency.breakdown?.temporalStability || consistency.rating || 50) * 0.9)),
+              consistency_score: consistency.rating || agent.philosophy_score || 50,
             }
           : {
               ...fallbackPhilosophy,

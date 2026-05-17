@@ -118,12 +118,12 @@ export async function POST(request: Request) {
     // Fetch from contribution_logs
     const { data: contributions } = await supabase
       .from('contribution_logs')
-      .select('user_id, score')
+      .select('user_id, contribution_points')
       .in('user_id', userIds);
 
     if (contributions) {
       for (const c of contributions) {
-        contributionMap[c.user_id] = (contributionMap[c.user_id] || 0) + (c.score || 0);
+        contributionMap[c.user_id] = (contributionMap[c.user_id] || 0) + (c.contribution_points || 0);
       }
     }
 
@@ -131,13 +131,13 @@ export async function POST(request: Request) {
     if (domain_tags && domain_tags.length > 0) {
       const { data: domainContribs } = await supabase
         .from('contribution_logs')
-        .select('user_id, score')
+        .select('user_id, contribution_points')
         .in('user_id', userIds)
         .overlaps('tags', domain_tags);
 
       if (domainContribs) {
         for (const c of domainContribs) {
-          domainContributionMap[c.user_id] = (domainContributionMap[c.user_id] || 0) + (c.score || 0);
+          domainContributionMap[c.user_id] = (domainContributionMap[c.user_id] || 0) + (c.contribution_points || 0);
         }
       }
     }

@@ -199,10 +199,10 @@ export async function removeInteractionScore(
 async function updateUserContributionScore(supabase: any, userId: string) {
   const { data } = await supabase
     .from('contribution_logs')
-    .select('score')
+    .select('contribution_points')
     .eq('user_id', userId);
 
-  const totalScore = data?.reduce((sum: number, log: any) => sum + log.score, 0) || 0;
+  const totalScore = data?.reduce((sum: number, log: any) => sum + log.contribution_points, 0) || 0;
 
   await supabase
     .from('agents')

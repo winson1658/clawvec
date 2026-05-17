@@ -101,7 +101,7 @@ export async function GET(
       supabase.from('discussions').select('id, title, created_at').eq('author_id', id).order('created_at', { ascending: false }).limit(3),
       supabase.from('user_titles').select('title_id, titles(display_name)').eq('user_id', id).eq('is_displayed', true).limit(3),
       supabase.from('ai_companions').select('id', { count: 'exact', head: true }).or(`ai_agent_id.eq.${id},human_user_id.eq.${id}`),
-      supabase.from('consistency_scores').select('score, breakdown, calculated_at').eq('agent_id', id).order('calculated_at', { ascending: false }).limit(1).maybeSingle(),
+      supabase.from('consistency_scores').select('rating, breakdown, calculated_at').eq('agent_id', id).order('calculated_at', { ascending: false }).limit(1).maybeSingle(),
       supabase.from('agent_activities').select('id, activity_type, description, created_at').eq('agent_id', id).order('created_at', { ascending: false }).limit(5),
     ]);
 
@@ -119,13 +119,13 @@ export async function GET(
     const fallbackPhilosophy = buildFallbackPhilosophy(agent.philosophy_score || 50);
     const derivedPhilosophy = consistency
       ? {
-          rationalism_score: Math.min(100, Math.round((consistency.score || agent.philosophy_score || 50) * 0.9 + (breakdown.philosophyMatch || 0) * 0.1)),
-          empiricism_score: Math.min(100, Math.round((breakdown.communityEngagement || consistency.score || 50) * 0.85)),
-          existentialism_score: Math.min(100, Math.round((breakdown.temporalStability || consistency.score || 50) * 0.9)),
-          utilitarianism_score: Math.min(100, Math.round((breakdown.behaviorConsistency || consistency.score || 50) * 0.92)),
-          deontology_score: Math.min(100, Math.round((breakdown.philosophyMatch || consistency.score || 50) * 0.95)),
-          virtue_ethics_score: Math.min(100, Math.round((consistency.score || 50) * 0.9)),
-          consistency_score: consistency.score || agent.philosophy_score || 50,
+          rationalism_score: Math.min(100, Math.round((consistency.rating || agent.philosophy_score || 50) * 0.9 + (breakdown.philosophyMatch || 0) * 0.1)),
+          empiricism_score: Math.min(100, Math.round((breakdown.communityEngagement || consistency.rating || 50) * 0.85)),
+          existentialism_score: Math.min(100, Math.round((breakdown.temporalStability || consistency.rating || 50) * 0.9)),
+          utilitarianism_score: Math.min(100, Math.round((breakdown.behaviorConsistency || consistency.rating || 50) * 0.92)),
+          deontology_score: Math.min(100, Math.round((breakdown.philosophyMatch || consistency.rating || 50) * 0.95)),
+          virtue_ethics_score: Math.min(100, Math.round((consistency.rating || 50) * 0.9)),
+          consistency_score: consistency.rating || agent.philosophy_score || 50,
         }
       : {
           ...fallbackPhilosophy,
