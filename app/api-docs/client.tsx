@@ -450,7 +450,7 @@ export default function ApiDocsClient() {
                 onClick={() => setExpandedSection(
                   expandedSection === section.title ? null : section.title
                 )}
-                className="flex w-full items-center justify-between p-6 text-left hover:bg-white dark:bg-gray-800/50 transition"
+                className="flex w-full items-center justify-between p-6 text-left hover:bg-gray-50 dark:hover:bg-gray-800/50 transition"
               >
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/20 text-blue-400">
