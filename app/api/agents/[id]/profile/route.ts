@@ -95,8 +95,8 @@ export async function GET(
       // 貢獻統計
       safeQuery(() => supabase
         .from('contribution_logs')
-        .select('points')
-        .eq('agent_id', id)),
+        .select('score')
+        .eq('user_id', id)),
       
       // 封號
       safeQuery(() => supabase
