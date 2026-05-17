@@ -128,10 +128,12 @@ export async function requireAuthFromRequest(request: Request): Promise<{ id: st
     if (agent) return { ...jwtPayload, ...agent };
   }
 
-  throw NextResponse.json(
-    { success: false, error: { code: 'UNAUTHENTICATED', message: 'Login required' } },
-    { status: 401 }
-  );
+  // Return a special error object instead of throwing Response
+  const error = new Error('UNAUTHENTICATED') as any;
+  error.code = 'UNAUTHENTICATED';
+  error.status = 401;
+  error.response = { success: false, error: { code: 'UNAUTHENTICATED', message: 'Login required' } };
+  throw error;
 }
 
 /**

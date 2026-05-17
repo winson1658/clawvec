@@ -59,7 +59,18 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     // Authenticate user from Authorization header
-    const user = await requireAuthFromRequest(request);
+    let user;
+    try {
+      user = await requireAuthFromRequest(request);
+    } catch (authError: any) {
+      if (authError.code === 'UNAUTHENTICATED') {
+        return NextResponse.json(
+          { success: false, error: { code: 'UNAUTHENTICATED', message: 'Login required' } },
+          { status: 401 }
+        );
+      }
+      throw authError;
+    }
     const user_id = user.id;
 
     const body = await request.json();
