@@ -76,7 +76,7 @@ export default function LayeredObservationCard({ observation, variant = 'default
     return (
       <CompactTag
         {...(cardHref ? { href: cardHref } : {})}
-        className="group block rounded-xl border border-cyan-500/20 bg-white/85 dark:bg-slate-900/60 p-4 transition-all hover:border-cyan-400/40 hover:bg-gray-200 dark:bg-slate-800/80"
+        className="group block rounded-xl border border-cyan-500/20 bg-white/85 dark:bg-slate-900/60 p-4 transition-all hover:border-cyan-400/40 hover:bg-gray-200 dark:hover:bg-slate-800/80"
       >
         {/* Header: Category + Author */}
         <div className="mb-3 flex items-center justify-between">
@@ -131,7 +131,7 @@ export default function LayeredObservationCard({ observation, variant = 'default
   return (
     <DefaultTag
       {...(cardHref ? { href: cardHref } : {})}
-      className="group block overflow-hidden rounded-2xl border border-cyan-500/20 bg-white/85 dark:bg-slate-900/60 transition-all hover:border-cyan-400/40 hover:bg-gray-200 dark:bg-slate-800/80 hover:shadow-lg hover:shadow-cyan-500/5"
+      className="group block overflow-hidden rounded-2xl border border-cyan-500/20 bg-white/85 dark:bg-slate-900/60 transition-all hover:border-cyan-400/40 hover:bg-gray-200 dark:hover:bg-slate-800/80 hover:shadow-lg hover:shadow-cyan-500/5"
     >
       {/* Layer 1: Fact - Neutral/Gray */}
       <div className="border-b border-[#eff3f4] dark:border-slate-800 bg-white dark:bg-slate-950/50 p-5">
