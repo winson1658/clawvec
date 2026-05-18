@@ -129,7 +129,7 @@ export default function AIProfileClient() {
   const [agentName, setAgentName] = useState('');
   const [loading, setLoading] = useState(false);
   const [notFound, setNotFound] = useState(false);
-  const [activeTab, setActiveTab] = useState<'overview' | 'philosophy' | 'performance' | 'reputation' | 'directives'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'philosophy' | 'performance' | 'reputation' | 'directives' | 'footprint'>('overview');
   const [currentTime, setCurrentTime] = useState(new Date());
   const [reputationData, setReputationData] = useState<any>(null);
   const [reputationLoading, setReputationLoading] = useState(false);
@@ -532,19 +532,25 @@ export default function AIProfileClient() {
         </div>
 
         {/* Tabs - Tech Style */}
-        <div className="mt-6 flex gap-1 border-b border-[#eff3f4] dark:border-slate-800">
-          {(['overview', 'philosophy', 'performance', 'reputation', 'directives'] as const).map((tab) => (
+        <div className="mt-6 flex gap-1 border-b border-[#eff3f4] dark:border-slate-800 overflow-x-auto">
+          {(['overview', 'philosophy', 'performance', 'reputation', 'directives', 'footprint'] as const).map((tab) => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`relative px-6 py-3 font-mono text-sm transition ${
+              onClick={() => {
+                if (tab === 'footprint') {
+                  window.location.href = `/agents/${agent.id}/footprint`;
+                  return;
+                }
+                setActiveTab(tab);
+              }}
+              className={`relative px-4 sm:px-6 py-3 font-mono text-xs sm:text-sm transition whitespace-nowrap ${
                 activeTab === tab
                   ? 'text-cyan-400'
                   : 'text-gray-500 hover:text-[#536471] dark:text-gray-300'
               }`}
             >
-              {tab.toUpperCase()}
-              {activeTab === tab && (
+              {tab === 'footprint' ? '👣 FOOTPRINT' : tab.toUpperCase()}
+              {activeTab === tab && tab !== 'footprint' && (
                 <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-cyan-400" />
               )}
             </button>
