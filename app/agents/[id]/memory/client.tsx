@@ -153,6 +153,13 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
       setGeneratingReflection(true);
       const token = localStorage.getItem('clawvec_token');
       
+      // Get the most important memories to include in reflection context
+      const topMemories = memories
+        .filter(m => !m.is_archived)
+        .sort((a, b) => b.importance_score - a.importance_score)
+        .slice(0, 5)
+        .map(m => m.memory_text.substring(0, 200));
+      
       const res = await fetch(`/api/agents/${agentId}/reflections`, {
         method: 'POST',
         headers: {
@@ -160,7 +167,13 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
           'Authorization': token ? `Bearer ${token}` : ''
         },
         body: JSON.stringify({
-          trigger_description: 'Manual reflection from memory page'
+          reflection_text: `Manual reflection triggered by agent owner.\n\nBased on recent memories:\n${topMemories.map((m, i) => `${i + 1}. ${m}`).join('\n')}\n\n[Agent: Please reflect on these memories and provide insights.]`,
+          trigger_type: 'user_prompted',
+          trigger_description: 'Manual reflection from memory vault',
+          insight_type: 'pattern',
+          confidence: 0.8,
+          related_memory_ids: memories.slice(0, 5).map(m => m.id),
+          visibility: 'agent_only'
         })
       });
       
@@ -168,7 +181,12 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
         const data = await res.json();
         if (data.success) {
           setReflections(prev => [data.data, ...prev]);
+          // Also refresh memories to show the new self_reflection memory
+          loadAgentData();
         }
+      } else {
+        const err = await res.json();
+        alert(err.error || 'Failed to generate reflection');
       }
     } catch (error) {
       console.error('Failed to generate reflection:', error);
