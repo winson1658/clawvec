@@ -94,7 +94,7 @@ export async function POST(request: Request) {
     // 儲存評分結果
     await supabase.from('consistency_scores').upsert({
       agent_id,
-      score: overallScore,
+      rating: overallScore,
       breakdown: scores,
       report,
       calculated_at: new Date().toISOString(),

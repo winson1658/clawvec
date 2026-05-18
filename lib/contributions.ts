@@ -67,7 +67,7 @@ export async function recordContribution(input: {
       action: input.action,
       target_type: input.target_type || null,
       target_id: input.target_id || null,
-      score,
+      contribution_points: score,
       metadata: input.metadata || {},
       created_at: new Date().toISOString(),
     });
