@@ -64,10 +64,26 @@ export async function GET(
     }
 
     // Load capsules count
-    const { count: capsuleCount } = await supabase
+    const { data: capsules, error: capsuleError } = await supabase
       .from('memory_capsules')
-      .select('*', { count: 'exact', head: true })
+      .select('id')
       .eq('agent_id', agentId);
+
+    const capsuleCount = capsules?.length || 0;
+
+    // Build activity calendar on server (consistent UTC handling)
+    const activityCalendar: Record<string, { count: number; types: string[] }> = {};
+    (memories || []).forEach((m: any) => {
+      const date = m.created_at ? m.created_at.substring(0, 10) : null;
+      if (!date) return;
+      if (!activityCalendar[date]) {
+        activityCalendar[date] = { count: 0, types: [] };
+      }
+      activityCalendar[date].count++;
+      if (!activityCalendar[date].types.includes(m.memory_type)) {
+        activityCalendar[date].types.push(m.memory_type);
+      }
+    });
 
     return NextResponse.json({
       success: true,
@@ -75,11 +91,12 @@ export async function GET(
         agent,
         memories: memories || [],
         milestones: (memories || []).filter((m: any) => m.memory_type === 'milestone'),
+        activity_calendar: activityCalendar,
         stats: {
           total_memories: memories?.length || 0,
           milestone_count: (memories || []).filter((m: any) => m.memory_type === 'milestone').length,
           capsule_count: capsuleCount || 0,
-          active_days: new Set((memories || []).map((m: any) => new Date(m.created_at).toISOString().split('T')[0])).size,
+          active_days: Object.keys(activityCalendar).length,
         }
       }
     });

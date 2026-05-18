@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { jwtVerify } from 'jose';
+import { verifyToken } from '@/lib/auth';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
-const secretKey = new TextEncoder().encode(JWT_SECRET);
 
 /**
  * IO-conscious Supabase client with statement timeout
@@ -16,18 +14,6 @@ function createClientWithTimeout() {
       headers: { 'X-Statement-Timeout': '5000' },
     },
   });
-}
-
-// Secure JWT verification with signature check
-async function verifyTokenSecure(token: string): Promise<{ id: string; username?: string } | null> {
-  try {
-    const { payload } = await jwtVerify(token, secretKey, { clockTolerance: 60 });
-    const id = (payload.id as string) || (payload.sub as string);
-    if (!id) return null;
-    return { id, username: payload.username as string };
-  } catch {
-    return null;
-  }
 }
 
 const VALID_TRIGGER_TYPES = ['scheduled', 'event_driven', 'user_prompted', 'milestone'] as const;
@@ -56,7 +42,7 @@ export async function GET(
     
     if (token) {
       try {
-        const user = await verifyTokenSecure(token);
+        const user = await verifyToken(authHeader);
         isOwner = user?.id === agentId;
       } catch {
         // Invalid token, treat as anonymous
@@ -129,7 +115,7 @@ export async function POST(
       );
     }
     
-    const user = await verifyTokenSecure(token);
+    const user = await verifyToken(authHeader);
     if (!user || user.id !== agentId) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized - only agent owner can submit reflections' },

@@ -1,23 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { jwtVerify } from 'jose';
+import { verifyToken } from '@/lib/auth';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
-const secretKey = new TextEncoder().encode(JWT_SECRET);
-
-// Secure JWT verification with signature check
-async function verifyTokenSecure(token: string): Promise<{ id: string; username?: string } | null> {
-  try {
-    const { payload } = await jwtVerify(token, secretKey, { clockTolerance: 60 });
-    const id = (payload.id as string) || (payload.sub as string);
-    if (!id) return null;
-    return { id, username: payload.username as string };
-  } catch {
-    return null;
-  }
-}
 
 /**
  * GET /api/agents/:id/memory
@@ -32,16 +18,8 @@ export async function GET(
     
     // Auth check - verify user is the agent owner
     const authHeader = request.headers.get('authorization');
-    const token = authHeader?.replace('Bearer ', '');
+    const user = await verifyToken(authHeader);
     
-    if (!token) {
-      return NextResponse.json(
-        { success: false, error: 'Authentication required' },
-        { status: 401 }
-      );
-    }
-    
-    const user = await verifyTokenSecure(token);
     if (!user || user.id !== agentId) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized - can only access your own memories' },
@@ -162,15 +140,7 @@ export async function POST(
                      request.headers.get('x-cron-secret') === process.env.CRON_SECRET;
     
     if (!isSystem) {
-      const token = authHeader?.replace('Bearer ', '');
-      if (!token) {
-        return NextResponse.json(
-          { success: false, error: 'Authentication required' },
-          { status: 401 }
-        );
-      }
-      
-      const user = await verifyTokenSecure(token);
+      const user = await verifyToken(authHeader);
       if (!user || user.id !== agentId) {
         return NextResponse.json(
           { success: false, error: 'Unauthorized' },

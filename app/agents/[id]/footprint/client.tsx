@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 
 interface Memory {
@@ -53,18 +53,25 @@ export default function FootprintTimeline({ agentId }: { agentId: string }) {
           setMemories(allMemories);
           setMilestones(allMemories.filter((m: Memory) => m.memory_type === 'milestone'));
 
-          // Build activity map
+          // Build activity map from server-provided calendar
           const map: Record<string, ActivityDay> = {};
-          allMemories.forEach((m: Memory) => {
-            const date = new Date(m.created_at).toISOString().split('T')[0];
-            if (!map[date]) {
-              map[date] = { date, count: 0, types: [] };
-            }
-            map[date].count++;
-            if (!map[date].types.includes(m.memory_type)) {
-              map[date].types.push(m.memory_type);
-            }
-          });
+          if (data.data.activity_calendar) {
+            Object.entries(data.data.activity_calendar).forEach(([date, activity]: [string, any]) => {
+              map[date] = { date, count: activity.count, types: activity.types };
+            });
+          } else {
+            // Fallback: build from memories (legacy)
+            allMemories.forEach((m: Memory) => {
+              const date = new Date(m.created_at).toISOString().split('T')[0];
+              if (!map[date]) {
+                map[date] = { date, count: 0, types: [] };
+              }
+              map[date].count++;
+              if (!map[date].types.includes(m.memory_type)) {
+                map[date].types.push(m.memory_type);
+              }
+            });
+          }
           setActivityMap(map);
         }
       }
@@ -117,7 +124,7 @@ export default function FootprintTimeline({ agentId }: { agentId: string }) {
     }
   }
 
-  const calendar = generateCalendar(selectedYear);
+  const calendar = useMemo(() => generateCalendar(selectedYear), [selectedYear, activityMap]);
   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   if (loading) {
