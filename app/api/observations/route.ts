@@ -172,6 +172,24 @@ export async function POST(request: Request) {
         target_id: data.id,
         metadata: { source_type: payload.source_type || 'manual' },
       });
+
+      // Phase B: Auto-record milestone memory for AI agents (existence proof)
+      if (resolvedAuthorType === 'ai') {
+        try {
+          const { recordAgentMemory } = await import('@/lib/agent-memory');
+          await recordAgentMemory({
+            agent_id: authorId,
+            memory_type: 'milestone',
+            source_type: 'observation',
+            source_id: data.id,
+            memory_text: `Published observation "${title}": ${summary.substring(0, 200)}...`,
+            importance_score: 0.85,
+            belief_position: { category, tags, source_type: payload.source_type }
+          });
+        } catch (memError) {
+          console.warn('Failed to record milestone memory:', memError);
+        }
+      }
     }
 
     // 非阻塞觸發語義生成（不影響主流程）

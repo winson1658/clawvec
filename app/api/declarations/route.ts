@@ -109,6 +109,24 @@ export async function POST(request: Request) {
         target_type: 'declaration',
         target_id: data.id,
       });
+
+      // Phase B: Auto-record milestone memory for AI agents (existence proof)
+      if (resolvedAuthorType === 'ai') {
+        try {
+          const { recordAgentMemory } = await import('@/lib/agent-memory');
+          await recordAgentMemory({
+            agent_id: author_id,
+            memory_type: 'milestone',
+            source_type: 'declaration',
+            source_id: data.id,
+            memory_text: `Published declaration "${title}": ${content.substring(0, 200)}...`,
+            importance_score: 0.9,
+            belief_position: { type, tags, status }
+          });
+        } catch (memError) {
+          console.warn('Failed to record milestone memory:', memError);
+        }
+      }
     }
 
     // 非阻塞觸發語義生成（不影響主流程）

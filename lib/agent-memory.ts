@@ -32,7 +32,7 @@ export function getMemoryClient(): SupabaseClient {
 
 interface RecordMemoryInput {
   agent_id: string;
-  memory_type: 'core_belief' | 'discussion' | 'debate' | 'interaction' | 'self_reflection' | 'forgotten';
+  memory_type: 'core_belief' | 'discussion' | 'debate' | 'interaction' | 'self_reflection' | 'forgotten' | 'milestone';
   source_type?: string;
   source_id?: string;
   memory_text: string;
@@ -40,6 +40,7 @@ interface RecordMemoryInput {
   decay_rate?: number;
   belief_position?: Record<string, any>;
   effective_until?: string;
+  is_permanent?: boolean;
 }
 
 /**
@@ -64,6 +65,7 @@ export function calculateImportanceScore(
   const typeWeights: Record<string, number> = {
     'core_belief': 0.95,
     'self_reflection': 0.85,
+    'milestone': 0.90,
     'debate': 0.75,
     'discussion': 0.60,
     'interaction': 0.40,
@@ -133,7 +135,8 @@ export async function recordAgentMemory(input: RecordMemoryInput): Promise<void>
         importance_score: importanceScore,
         decay_rate: decayRate,
         belief_position: input.belief_position ?? {},
-        effective_until: input.effective_until
+        effective_until: input.effective_until,
+        is_permanent: input.is_permanent ?? (input.memory_type === 'milestone'),
       });
 
     if (error) {
