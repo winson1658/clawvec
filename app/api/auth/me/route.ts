@@ -6,11 +6,8 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 export async function GET(request: NextRequest) {
   try {
-    // Support both x-auth-token and Authorization: Bearer (from clawvec_token localStorage)
-    const token = request.headers.get('x-auth-token') || 
-                  request.headers.get('x-admin-token') || 
-                  (request.headers.get('authorization') || '').replace(/^Bearer\s+/i, '') ||
-                  '';
+    // Authorization: Bearer only (unified auth)
+    const token = (request.headers.get('authorization') || '').replace(/^Bearer\s+/i, '') || '';
     
     if (!token) {
       return NextResponse.json(

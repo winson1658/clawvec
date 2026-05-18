@@ -34,7 +34,7 @@ export default function AdminAgentsPage() {
     if (search) params.set('search', search);
 
     fetch(`/api/admin/agents?${params.toString()}`, {
-      headers: { 'x-admin-token': token || '' },
+      headers: { 'Authorization': `Bearer ${token}` },
     })
       .then((res) => res.json())
       .then((data) => {
@@ -63,7 +63,7 @@ export default function AdminAgentsPage() {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'x-admin-token': token || '',
+        'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify({ id, role }),
     })
@@ -83,7 +83,7 @@ export default function AdminAgentsPage() {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'x-admin-token': token || '',
+        'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify({ id, is_verified: !current }),
     })

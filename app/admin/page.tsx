@@ -40,7 +40,7 @@ export default function AdminDashboardPage() {
     
     fetch('/api/admin/stats', {
       headers: {
-        'x-admin-token': token || '',
+        'Authorization': `Bearer ${token}`,
       },
     })
       .then((res) => res.json())

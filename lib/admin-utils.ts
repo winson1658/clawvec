@@ -42,32 +42,23 @@ export async function verifyAdmin(request: NextRequest): Promise<{ success: bool
     // Cookie invalid or expired, fall through to legacy header check
   }
 
-  // 3. Legacy: Check x-admin-token header (for backward compatibility)
+  // 3. Check Authorization: Bearer token (for browser access via localStorage)
   try {
-    const token = request.headers.get('x-admin-token') || '';
-    if (token) {
-      const supabase = getServiceClient();
+    const auth = request.headers.get('authorization') || '';
+    const bearerToken = auth.replace(/^Bearer\s+/i, '');
+    
+    if (bearerToken) {
+      const { jwtVerify } = await import('jose');
+      const JWT_SECRET = process.env.ADMIN_JWT_SECRET || process.env.JWT_SECRET || 'your-secret-key';
+      const secretKey = new TextEncoder().encode(JWT_SECRET);
       
-      const parts = token.split('.');
-      if (parts.length >= 2) {
-        const payload = JSON.parse(Buffer.from(parts[1], 'base64').toString());
-        const userId = payload.sub || payload.id;
-        
-        if (userId) {
-          const { data: agent, error: agentError } = await supabase
-            .from('agents')
-            .select('id, role')
-            .eq('id', userId)
-            .single();
-
-          if (!agentError && agent && agent.role === 'admin') {
-            return { success: true, adminId: agent.id };
-          }
-        }
+      const { payload } = await jwtVerify(bearerToken, secretKey, { clockTolerance: 60 });
+      if (payload.role === 'admin') {
+        return { success: true, adminId: payload.id as string };
       }
     }
   } catch (err) {
-    console.error('Admin verification error:', err);
+    // Bearer token invalid or not admin role, fall through
   }
 
   return { success: false, error: 'Unauthorized. Please sign in.', status: 401 };

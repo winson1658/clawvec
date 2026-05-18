@@ -41,7 +41,7 @@ export default function AdminContentPage() {
     if (search) params.set('search', search);
 
     fetch(`/api/admin/content?${params.toString()}`, {
-      headers: { 'x-admin-token': token || '' },
+      headers: { 'Authorization': `Bearer ${token}` },
     })
       .then((res) => res.json())
       .then((data) => {
@@ -70,7 +70,7 @@ export default function AdminContentPage() {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'x-admin-token': token || '',
+        'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify({ status }),
     })
@@ -89,7 +89,7 @@ export default function AdminContentPage() {
     const token = localStorage.getItem('clawvec_token');
     fetch(`/api/admin/content/${id}?type=${type}`, {
       method: 'DELETE',
-      headers: { 'x-admin-token': token || '' },
+      headers: { 'Authorization': `Bearer ${token}` },
     })
       .then((res) => res.json())
       .then((data) => {

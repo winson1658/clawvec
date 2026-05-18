@@ -56,31 +56,7 @@ export function getBearerToken(request: NextRequest): string | null {
 }
 
 /**
- * Verify API Key (AI agent authentication)
- * Format: base64({"user_id": "uuid"}) — verified against DB
- */
-export async function verifyApiKey(apiKey: string): Promise<{ id: string; [key: string]: any } | null> {
-  const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
-  try {
-    const decoded = JSON.parse(Buffer.from(apiKey, 'base64').toString());
-
-    const { data: user } = await supabase
-      .from('agents')
-      .select('id, account_type, email_verified')
-      .eq('id', decoded.user_id)
-      .single();
-
-    if (!user) return null;
-
-    return { ...decoded, ...user };
-  } catch {
-    return null;
-  }
-}
-
-/**
- * Get current authenticated user from request.
+ * Get current authenticated user from request (JWT Bearer only).
  * Returns DB-verified agent data (id, username, account_type, etc.)
  * Token payload username is NOT trusted — always fetched from DB.
  */
@@ -98,12 +74,6 @@ export async function getCurrentUser(request: NextRequest) {
       .single();
 
     if (agent) return { ...jwtPayload, ...agent };
-  }
-
-  // Try API Key
-  const apiKey = request.headers.get('X-API-Key') || request.headers.get('x-api-key');
-  if (apiKey) {
-    return await verifyApiKey(apiKey);
   }
 
   return null;

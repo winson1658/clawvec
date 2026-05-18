@@ -20,7 +20,7 @@ export default function AdminAuditPage() {
     const token = localStorage.getItem('clawvec_token');
 
     fetch('/api/admin/audit', {
-      headers: { 'x-admin-token': token || '' },
+      headers: { 'Authorization': `Bearer ${token}` },
     })
       .then((res) => res.json())
       .then((data) => {
