@@ -59,9 +59,10 @@ export async function POST(
     const supabase = createClientWithTimeout();
     const results: Record<string, any> = {};
 
-    // Step 1: Decay memories for this agent
-    // Decay = update importance_score based on time since last access
-    const { data: decayResult, error: decayError } = await supabase.rpc('decay_memories');
+    // Step 1: Decay memories for this agent (agent-scoped)
+    const { data: decayResult, error: decayError } = await supabase.rpc('decay_memories_for_agent', {
+      p_agent_id: agentId
+    });
     if (decayError) {
       console.warn('[MemoryMaintenance] Decay failed:', decayError.message);
       results.decay = { success: false, error: decayError.message };
@@ -69,8 +70,9 @@ export async function POST(
       results.decay = { success: true, affected: decayResult };
     }
 
-    // Step 2: Archive memories below threshold for this agent
-    const { data: archiveResult, error: archiveError } = await supabase.rpc('archive_forgotten_memories', {
+    // Step 2: Archive memories below threshold for this agent (agent-scoped)
+    const { data: archiveResult, error: archiveError } = await supabase.rpc('archive_forgotten_memories_for_agent', {
+      p_agent_id: agentId,
       p_decay_threshold: decayThreshold
     });
     if (archiveError) {

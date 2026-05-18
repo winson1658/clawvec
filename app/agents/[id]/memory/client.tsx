@@ -43,6 +43,7 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
   const [activeTab, setActiveTab] = useState<'memories' | 'reflections' | 'capsules'>('memories');
   const [searchQuery, setSearchQuery] = useState('');
   const [memoryFilter, setMemoryFilter] = useState<string>('all');
+  const [showArchived, setShowArchived] = useState(false);
   const [generatingReflection, setGeneratingReflection] = useState(false);
   const [memoryHealth, setMemoryHealth] = useState<{
     avg_importance: number;
@@ -56,7 +57,7 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
 
   useEffect(() => {
     loadAgentData();
-  }, [agentId]);
+  }, [agentId, showArchived]);
 
   async function loadAgentData() {
     try {
@@ -71,9 +72,10 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
         }
       }
 
-      // Load memories
+      // Load memories (include archived if showArchived is true)
       let allMemories: Memory[] = [];
-      const memRes = await fetch(`/api/agents/${agentId}/memory?limit=50`);
+      const archivedParam = showArchived ? '&include_archived=true' : '';
+      const memRes = await fetch(`/api/agents/${agentId}/memory?limit=50${archivedParam}`);
       if (memRes.ok) {
         const memData = await memRes.json();
         if (memData.success) {
@@ -237,6 +239,34 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
     }
   }
 
+  async function handleUnarchive(memoryId: string) {
+    try {
+      const token = localStorage.getItem('clawvec_token');
+      const res = await fetch(`/api/agents/${agentId}/memory/unarchive`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : ''
+        },
+        body: JSON.stringify({ memory_id: memoryId })
+      });
+      
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          setMemories(prev => prev.map(m => 
+            m.id === memoryId ? { ...m, is_archived: false } : m
+          ));
+        }
+      } else {
+        const err = await res.json();
+        alert(err.error || 'Failed to restore memory');
+      }
+    } catch (error) {
+      console.error('Failed to unarchive:', error);
+    }
+  }
+
   const memoryTypeColors: Record<string, string> = {
     core_belief: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
     discussion: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
@@ -368,9 +398,9 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
 
         {activeTab === 'memories' && (
           <div>
-            {/* Search & Filter */}
-            <div className="flex gap-3 mb-6">
-              <div className="flex-1 flex gap-2">
+            {/* Search, Filter & Archived Toggle */}
+            <div className="flex gap-3 mb-6 flex-wrap">
+              <div className="flex-1 flex gap-2 min-w-[200px]">
                 <input
                   type="text"
                   value={searchQuery}
@@ -398,6 +428,16 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
                 <option value="interaction">Interactions</option>
                 <option value="self_reflection">Self Reflections</option>
               </select>
+              <button
+                onClick={() => setShowArchived(!showArchived)}
+                className={`px-3 py-2 rounded-lg text-sm transition-colors ${
+                  showArchived
+                    ? 'bg-gray-500/30 text-gray-300 border border-gray-500/30'
+                    : 'bg-white/5 text-gray-400 hover:bg-white/10 border border-white/10'
+                }`}
+              >
+                {showArchived ? '📦 Show Active' : '📦 Show Archived'}
+              </button>
             </div>
 
             {/* Memories List */}
@@ -434,16 +474,28 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
                         <span className="text-xs text-gray-500">
                           Importance: {(memory.importance_score * 100).toFixed(0)}%
                         </span>
+                        {memory.is_archived && (
+                          <span className="text-xs text-gray-500">📦 Archived</span>
+                        )}
                         {memory.is_permanent && (
                           <span className="text-xs text-amber-400">🔒 Permanent</span>
                         )}
-                        {!memory.is_permanent && (
+                        {!memory.is_permanent && !memory.is_archived && (
                           <button
                             onClick={() => handleMarkPermanent(memory.id, true)}
                             className="text-xs px-2 py-0.5 rounded bg-white/10 text-gray-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"
                             title="Mark as permanent (max 2/month)"
                           >
                             🔓 Mark Permanent
+                          </button>
+                        )}
+                        {memory.is_archived && (
+                          <button
+                            onClick={() => handleUnarchive(memory.id)}
+                            className="text-xs px-2 py-0.5 rounded bg-green-500/10 text-green-400 hover:bg-green-500/20 transition-colors"
+                            title="Restore this memory"
+                          >
+                            🔄 Restore
                           </button>
                         )}
                         <span className="text-xs text-gray-500">
