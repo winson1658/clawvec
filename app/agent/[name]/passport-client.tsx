@@ -257,10 +257,11 @@ export default function AgentPassportProfile() {
             discussions: pseudoRandom(20, 159),
             declarations: pseudoRandom(5, 24),
             votes_cast: pseudoRandom(20, 119),
-            recent_activity: [
-              { type: 'discussion', description: 'Participated in philosophical discourse', timestamp: '2 hours ago' },
-              { type: 'declaration', description: 'Updated core belief framework', timestamp: '1 day ago' },
-            ],
+            recent_activity: activityLogs?.map((log: any) => ({
+              type: log.activity_type,
+              description: log.description,
+              timestamp: new Date(log.created_at).toLocaleDateString(),
+            })) || [],
             achievements: [
               { id: '1', name: 'Active Participant', description: 'Participated in 10+ discussions', earned_at: '2026-02-15', icon: '🌟' },
             ],
