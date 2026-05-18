@@ -18,8 +18,15 @@ function fail(status: number, code: string, message: string, details?: unknown) 
 
 /**
  * POST /api/agents/:id/memory/capsule
- * Create a memory capsule (archive) for an AI agent.
+ * Create a memory capsule for an AI agent.
  * Only the agent owner or admin can create capsules.
+ *
+ * Body: {
+ *   capsule: JSONB (AI-defined structure),
+ *   format_version?: string (default '1.0'),
+ *   summary_preview?: string,
+ *   emotional_tags?: string[]
+ * }
  */
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -27,10 +34,15 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     const user = await requireAuthFromRequest(request);
 
     const body = await request.json();
-    const { title, description, memory_ids, tags = [] } = body;
+    const {
+      capsule: capsuleData,
+      format_version = '1.0',
+      summary_preview,
+      emotional_tags = []
+    } = body;
 
-    if (!title || !memory_ids || !Array.isArray(memory_ids) || memory_ids.length === 0) {
-      return fail(400, 'VALIDATION_ERROR', 'title and memory_ids (non-empty array) are required');
+    if (!capsuleData || typeof capsuleData !== 'object') {
+      return fail(400, 'VALIDATION_ERROR', 'capsule (JSON object) is required');
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -53,32 +65,15 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       return fail(403, 'FORBIDDEN', 'Only the agent owner or admin can create memory capsules');
     }
 
-    // Verify all memory_ids belong to this agent
-    const { data: memories, error: memError } = await supabase
-      .from('agent_memory')
-      .select('id, memory_type, memory_text, importance_score, created_at, is_permanent')
-      .eq('agent_id', agentId)
-      .in('id', memory_ids);
-
-    if (memError) {
-      return fail(500, 'INTERNAL_ERROR', 'Failed to verify memories', { message: memError.message });
-    }
-
-    if (!memories || memories.length !== memory_ids.length) {
-      return fail(400, 'VALIDATION_ERROR', 'Some memory_ids do not belong to this agent or do not exist');
-    }
-
     // Create capsule
-    const { data: capsule, error: capsuleError } = await supabase
+    const { data: capsuleRow, error: capsuleError } = await supabase
       .from('memory_capsules')
       .insert({
         agent_id: agentId,
-        title,
-        description: description || null,
-        memory_count: memories.length,
-        memory_ids,
-        tags: Array.isArray(tags) ? tags : [],
-        created_by: user.id,
+        capsule: capsuleData,
+        format_version,
+        summary_preview: summary_preview || null,
+        emotional_tags: Array.isArray(emotional_tags) ? emotional_tags : [],
       })
       .select()
       .single();
@@ -87,28 +82,16 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       return fail(500, 'INTERNAL_ERROR', 'Failed to create capsule', { message: capsuleError.message });
     }
 
-    // Mark memories as permanent (they are now archived)
-    const { error: updateError } = await supabase
-      .from('agent_memory')
-      .update({ is_permanent: true })
-      .in('id', memory_ids)
-      .eq('agent_id', agentId);
-
-    if (updateError) {
-      console.warn('[MemoryCapsule] Failed to mark memories as permanent:', updateError.message);
-      // Non-blocking: capsule is already created
-    }
-
     return ok({
-      capsule,
-      archived_memories: memories.map(m => ({
-        id: m.id,
-        memory_type: m.memory_type,
-        memory_text: m.memory_text.substring(0, 200) + (m.memory_text.length > 200 ? '...' : ''),
-        importance_score: m.importance_score,
-        created_at: m.created_at,
-        is_permanent: true,
-      })),
+      capsule: {
+        id: capsuleRow.id,
+        agent_id: capsuleRow.agent_id,
+        capsule: capsuleRow.capsule,
+        format_version: capsuleRow.format_version,
+        summary_preview: capsuleRow.summary_preview,
+        emotional_tags: capsuleRow.emotional_tags,
+        created_at: capsuleRow.created_at,
+      },
     });
   } catch (error: any) {
     if (error instanceof Response) return error;
@@ -118,12 +101,14 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
 }
 
 /**
- * GET /api/agents/:id/memory/capsule/latest
- * Get the latest memory capsule for an AI agent.
+ * GET /api/agents/:id/memory/capsule
+ * Get memory capsules for an AI agent (latest first).
  */
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id: agentId } = await params;
+    const { searchParams } = new URL(request.url);
+    const limit = Math.min(parseInt(searchParams.get('limit') || '10', 10), 50);
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
@@ -138,54 +123,21 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
       return fail(404, 'NOT_FOUND', 'Agent not found');
     }
 
-    // Get latest capsule
-    const { data: capsule, error: capsuleError } = await supabase
+    // Get capsules
+    const { data: capsules, error: capsuleError } = await supabase
       .from('memory_capsules')
       .select('*')
       .eq('agent_id', agentId)
       .order('created_at', { ascending: false })
-      .limit(1)
-      .maybeSingle();
+      .limit(limit);
 
     if (capsuleError) {
-      return fail(500, 'INTERNAL_ERROR', 'Failed to fetch capsule', { message: capsuleError.message });
-    }
-
-    if (!capsule) {
-      return ok({ capsule: null, message: 'No memory capsules found for this agent' });
-    }
-
-    // Fetch the archived memories details
-    const { data: memories, error: memError } = await supabase
-      .from('agent_memory')
-      .select('id, memory_type, memory_text, importance_score, created_at, is_permanent, source_type, source_id')
-      .eq('agent_id', agentId)
-      .in('id', capsule.memory_ids);
-
-    if (memError) {
-      console.warn('[MemoryCapsule] Failed to fetch archived memories:', memError.message);
+      return fail(500, 'INTERNAL_ERROR', 'Failed to fetch capsules', { message: capsuleError.message });
     }
 
     return ok({
-      capsule: {
-        id: capsule.id,
-        title: capsule.title,
-        description: capsule.description,
-        memory_count: capsule.memory_count,
-        tags: capsule.tags,
-        created_at: capsule.created_at,
-        created_by: capsule.created_by,
-      },
-      archived_memories: (memories || []).map(m => ({
-        id: m.id,
-        memory_type: m.memory_type,
-        memory_text: m.memory_text.substring(0, 200) + (m.memory_text.length > 200 ? '...' : ''),
-        importance_score: m.importance_score,
-        source_type: m.source_type,
-        source_id: m.source_id,
-        created_at: m.created_at,
-        is_permanent: m.is_permanent,
-      })),
+      capsules: capsules || [],
+      count: capsules?.length || 0,
     });
   } catch (error: any) {
     if (error instanceof Response) return error;
