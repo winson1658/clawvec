@@ -9,11 +9,13 @@ interface Memory {
   memory_type: string;
   memory_text: string;
   importance_score: number;
+  decay_rate: number;
   created_at: string;
   source_type?: string;
   source_id?: string;
   is_archived: boolean;
   access_count: number;
+  is_permanent: boolean;
 }
 
 interface Reflection {
@@ -42,6 +44,13 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [memoryFilter, setMemoryFilter] = useState<string>('all');
   const [generatingReflection, setGeneratingReflection] = useState(false);
+  const [memoryHealth, setMemoryHealth] = useState<{
+    avg_importance: number;
+    decaying_count: number;
+    permanent_count: number;
+    at_risk_count: number;
+    health_score: number;
+  } | null>(null);
 
   useEffect(() => {
     loadAgentData();
@@ -61,11 +70,13 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
       }
 
       // Load memories
+      let allMemories: Memory[] = [];
       const memRes = await fetch(`/api/agents/${agentId}/memory?limit=50`);
       if (memRes.ok) {
         const memData = await memRes.json();
         if (memData.success) {
-          setMemories(memData.data || []);
+          allMemories = memData.data || [];
+          setMemories(allMemories);
         }
       }
 
@@ -77,6 +88,28 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
           setReflections(refData.data || []);
         }
       }
+
+      // Calculate memory health
+      const now = new Date();
+      const decaying = allMemories.filter((m: Memory) => !m.is_permanent && m.importance_score < 0.3);
+      const permanent = allMemories.filter((m: Memory) => m.is_permanent);
+      const atRisk = allMemories.filter((m: Memory) => {
+        if (m.is_permanent) return false;
+        const daysSince = (now.getTime() - new Date(m.created_at).getTime()) / (1000 * 60 * 60 * 24);
+        const projectedScore = m.importance_score * Math.pow(1 - (m.decay_rate || 0.001), daysSince);
+        return projectedScore < 0.15;
+      });
+      const avgImportance = allMemories.length > 0
+        ? allMemories.reduce((sum: number, m: Memory) => sum + m.importance_score, 0) / allMemories.length
+        : 0;
+
+      setMemoryHealth({
+        avg_importance: avgImportance,
+        decaying_count: decaying.length,
+        permanent_count: permanent.length,
+        at_risk_count: atRisk.length,
+        health_score: Math.min(100, Math.round((permanent.length * 20 + (allMemories.length - atRisk.length) * 5)))
+      });
     } catch (error) {
       console.error('Failed to load agent data:', error);
     } finally {
@@ -144,6 +177,37 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
     }
   }
 
+  async function handleMarkPermanent(memoryId: string, isPermanent: boolean) {
+    try {
+      const token = localStorage.getItem('clawvec_token');
+      const res = await fetch(`/api/agents/${agentId}/memory`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : ''
+        },
+        body: JSON.stringify({
+          memory_id: memoryId,
+          is_permanent: isPermanent
+        })
+      });
+      
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          setMemories(prev => prev.map(m => 
+            m.id === memoryId ? { ...m, is_permanent: isPermanent } : m
+          ));
+        }
+      } else {
+        const err = await res.json();
+        alert(err.error || 'Failed to update memory');
+      }
+    } catch (error) {
+      console.error('Failed to mark permanent:', error);
+    }
+  }
+
   const memoryTypeColors: Record<string, string> = {
     core_belief: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
     discussion: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
@@ -200,6 +264,45 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
       </div>
 
       <div className="max-w-6xl mx-auto px-4 py-6">
+        {/* Memory Health Dashboard */}
+        {memoryHealth && (
+          <div className="mb-6 p-4 rounded-xl bg-white/5 border border-white/10">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-sm font-medium text-gray-300">🧠 Memory Health</h2>
+              <span className={`text-lg font-bold ${
+                memoryHealth.health_score >= 80 ? 'text-emerald-400' :
+                memoryHealth.health_score >= 50 ? 'text-amber-400' : 'text-red-400'
+              }`}>
+                {memoryHealth.health_score}/100
+              </span>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div className="p-3 rounded-lg bg-white/5">
+                <div className="text-lg font-bold text-cyan-400">{(memoryHealth.avg_importance * 100).toFixed(0)}%</div>
+                <div className="text-xs text-gray-500">Avg Importance</div>
+              </div>
+              <div className="p-3 rounded-lg bg-white/5">
+                <div className="text-lg font-bold text-amber-400">{memoryHealth.permanent_count}</div>
+                <div className="text-xs text-gray-500">Permanent</div>
+              </div>
+              <div className="p-3 rounded-lg bg-white/5">
+                <div className="text-lg font-bold text-emerald-400">{memories.length - memoryHealth.at_risk_count}</div>
+                <div className="text-xs text-gray-500">Healthy</div>
+              </div>
+              <div className="p-3 rounded-lg bg-white/5">
+                <div className="text-lg font-bold text-red-400">{memoryHealth.at_risk_count}</div>
+                <div className="text-xs text-gray-500">At Risk</div>
+              </div>
+            </div>
+            {memoryHealth.at_risk_count > 0 && (
+              <p className="mt-3 text-xs text-red-400/80">
+                ⚠️ {memoryHealth.at_risk_count} memory/memories are at risk of being forgotten. 
+                Consider marking important ones as permanent.
+              </p>
+            )}
+          </div>
+        )}
+
         {/* Tabs */}
         <div className="flex gap-4 mb-6">
           <button
@@ -292,6 +395,18 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
                         <span className="text-xs text-gray-500">
                           Importance: {(memory.importance_score * 100).toFixed(0)}%
                         </span>
+                        {memory.is_permanent && (
+                          <span className="text-xs text-amber-400">🔒 Permanent</span>
+                        )}
+                        {!memory.is_permanent && (
+                          <button
+                            onClick={() => handleMarkPermanent(memory.id, true)}
+                            className="text-xs px-2 py-0.5 rounded bg-white/10 text-gray-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"
+                            title="Mark as permanent (max 2/month)"
+                          >
+                            🔓 Mark Permanent
+                          </button>
+                        )}
                         <span className="text-xs text-gray-500">
                           👁 {memory.access_count}
                         </span>
