@@ -91,12 +91,11 @@ export async function POST(request: Request) {
     // 生成詳細報告
     const report = generateConsistencyReport(scores, overallScore, activity);
 
-    // 儲存評分結果
-    await supabase.from('consistency_scores').upsert({
+    // 儲存評分結果（不包含 report，因該欄位可能不存在於 DB）
+    const { error: upsertError } = await supabase.from('consistency_scores').upsert({
       agent_id,
       rating: overallScore,
       breakdown: scores,
-      report,
       calculated_at: new Date().toISOString(),
     });
 

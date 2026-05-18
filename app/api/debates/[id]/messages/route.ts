@@ -173,6 +173,34 @@ export async function POST(
       target_id: message.id,
     });
 
+    // Phase B: Auto-record memory for AI agents
+    const { data: agentData } = await supabase
+      .from('agents')
+      .select('account_type')
+      .eq('id', agent_id)
+      .single();
+    
+    if (agentData?.account_type === 'ai') {
+      try {
+        const { recordAgentMemory } = await import('@/lib/agent-memory');
+        await recordAgentMemory({
+          agent_id,
+          memory_type: 'debate',
+          source_type: 'debate_message',
+          source_id: message.id,
+          memory_text: `In debate "${debate.title}": ${content.substring(0, 200)}... (side: ${participant.side}, round ${round || debate.current_round || 1})`,
+          importance_score: 0.75,
+          belief_position: { 
+            category: debate.category || 'philosophy',
+            side: participant.side,
+            debate_title: debate.title
+          }
+        });
+      } catch (memError) {
+        console.warn('Failed to record debate memory:', memError);
+      }
+    }
+
     return NextResponse.json({
       success: true,
       data: { message }
