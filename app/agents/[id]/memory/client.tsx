@@ -40,7 +40,7 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
   const [memories, setMemories] = useState<Memory[]>([]);
   const [reflections, setReflections] = useState<Reflection[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'memories' | 'reflections'>('memories');
+  const [activeTab, setActiveTab] = useState<'memories' | 'reflections' | 'capsules'>('memories');
   const [searchQuery, setSearchQuery] = useState('');
   const [memoryFilter, setMemoryFilter] = useState<string>('all');
   const [generatingReflection, setGeneratingReflection] = useState(false);
@@ -51,6 +51,8 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
     at_risk_count: number;
     health_score: number;
   } | null>(null);
+  const [capsules, setCapsules] = useState<any[]>([]);
+  const [loadingCapsules, setLoadingCapsules] = useState(false);
 
   useEffect(() => {
     loadAgentData();
@@ -86,6 +88,15 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
         const refData = await refRes.json();
         if (refData.success) {
           setReflections(refData.data || []);
+        }
+      }
+
+      // Load capsules
+      const capRes = await fetch(`/api/agents/${agentId}/memory/capsule?limit=20`);
+      if (capRes.ok) {
+        const capData = await capRes.json();
+        if (capData.success) {
+          setCapsules(capData.data.capsules || []);
         }
       }
 
@@ -343,6 +354,16 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
           >
             Reflections ({reflections.length})
           </button>
+          <button
+            onClick={() => setActiveTab('capsules')}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              activeTab === 'capsules'
+                ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
+                : 'bg-white/5 text-gray-400 hover:bg-white/10'
+            }`}
+          >
+            Capsules ({capsules.length})
+          </button>
         </div>
 
         {activeTab === 'memories' && (
@@ -455,7 +476,6 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
 
         {activeTab === 'reflections' && (
           <div>
-            {/* Generate Reflection Button */}
             <div className="mb-6">
               <button
                 onClick={handleGenerateReflection}
@@ -466,7 +486,6 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
               </button>
             </div>
 
-            {/* Reflections List */}
             {reflections.length === 0 ? (
               <div className="text-center py-12 text-gray-500">
                 <div className="text-4xl mb-4">💭</div>
@@ -517,6 +536,60 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
                         ))}
                       </div>
                     )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'capsules' && (
+          <div>
+            {capsules.length === 0 ? (
+              <div className="text-center py-12 text-gray-500">
+                <div className="text-4xl mb-4">💊</div>
+                <p>No memory capsules yet.</p>
+                <p className="text-sm mt-2">Capsules are AI-defined memory structures stored as JSON.</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {capsules.map((capsule) => (
+                  <div
+                    key={capsule.id}
+                    className="p-4 rounded-lg border border-purple-500/20 bg-purple-500/5"
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">💊</span>
+                        <span className="text-sm font-medium text-purple-400">Memory Capsule</span>
+                        <span className="text-xs text-gray-500">
+                          {new Date(capsule.created_at).toLocaleDateString('en-US')}
+                        </span>
+                      </div>
+                      <span className="text-xs text-gray-500">
+                        v{capsule.format_version}
+                      </span>
+                    </div>
+                    
+                    {capsule.summary_preview && (
+                      <p className="text-sm text-gray-300 mb-3">{capsule.summary_preview}</p>
+                    )}
+                    
+                    {capsule.emotional_tags && capsule.emotional_tags.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {capsule.emotional_tags.map((tag: string) => (
+                          <span key={tag} className="px-2 py-0.5 rounded-full text-xs bg-purple-500/20 text-purple-400">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    
+                    <div className="mt-2 p-3 rounded bg-black/30">
+                      <pre className="text-xs text-gray-400 overflow-x-auto">
+                        {JSON.stringify(capsule.capsule, null, 2)}
+                      </pre>
+                    </div>
                   </div>
                 ))}
               </div>
