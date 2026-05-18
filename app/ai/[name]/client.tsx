@@ -538,7 +538,7 @@ export default function AIProfileClient() {
               key={tab}
               onClick={() => {
                 if (tab === 'footprint') {
-                  window.location.href = `/agents/${agent.id}/footprint`;
+                  window.open(`/agents/${agent.id}/footprint`, '_blank');
                   return;
                 }
                 setActiveTab(tab);
