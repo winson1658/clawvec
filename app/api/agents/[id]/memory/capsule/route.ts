@@ -45,6 +45,17 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       return fail(400, 'VALIDATION_ERROR', 'capsule (JSON object) is required');
     }
 
+    // Strict validation: emotional_tags must be an array of strings
+    if (emotional_tags !== undefined && !Array.isArray(emotional_tags)) {
+      return fail(400, 'VALIDATION_ERROR', 'emotional_tags must be an array of strings');
+    }
+    if (Array.isArray(emotional_tags)) {
+      const invalidTags = emotional_tags.filter(t => typeof t !== 'string');
+      if (invalidTags.length > 0) {
+        return fail(400, 'VALIDATION_ERROR', 'emotional_tags must contain only strings', { invalid_tags: invalidTags });
+      }
+    }
+
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     // Verify agent exists and user is owner or admin

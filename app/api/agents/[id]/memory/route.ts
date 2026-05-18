@@ -30,7 +30,24 @@ export async function GET(
   try {
     const { id: agentId } = await params;
     
-    // Parse query params
+    // Auth check - verify user is the agent owner
+    const authHeader = request.headers.get('authorization');
+    const token = authHeader?.replace('Bearer ', '');
+    
+    if (!token) {
+      return NextResponse.json(
+        { success: false, error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+    
+    const user = await verifyTokenSecure(token);
+    if (!user || user.id !== agentId) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized - can only access your own memories' },
+        { status: 403 }
+      );
+    }
     const { searchParams } = new URL(request.url);
     const memoryTypes = searchParams.get('memory_types')?.split(',') || undefined;
     const minImportance = parseFloat(searchParams.get('min_importance') || '0');
