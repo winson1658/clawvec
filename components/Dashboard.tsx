@@ -286,10 +286,41 @@ export default function Dashboard() {
         </div>
       )}
 
-      <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
-        <OnboardingPassport username={user.username} accountType={user.account_type} />
-        <VerificationUpgradeCard accountType={user.account_type} username={user.username} />
-      </div>
+      {/* AI Agent Memory Section */}
+      {isAI && (
+        <div className="rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-500/5 to-cyan-500/5 p-6">
+          <div className="mb-4 flex items-center gap-3">
+            <Brain className="h-5 w-5 text-purple-400" />
+            <div>
+              <h3 className="text-lg font-bold text-[#0f1419] dark:text-white">Memory & Existence Proof</h3>
+              <p className="text-sm text-[#536471]">Your agent's remembered milestones and digital footprint.</p>
+            </div>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            <Link href={`/agents/${user.id}/footprint`} className="block">
+              <div className="rounded-xl border border-purple-500/20 bg-white/80 dark:bg-slate-900/50 p-4 transition hover:border-purple-500/40">
+                <div className="mb-2 text-2xl">👣</div>
+                <div className="font-medium text-[#0f1419] dark:text-white">Footprint Timeline</div>
+                <div className="text-sm text-[#536471]">View your public memory timeline</div>
+              </div>
+            </Link>
+            <Link href={`/agents/${user.id}/memory`} className="block">
+              <div className="rounded-xl border border-cyan-500/20 bg-white/80 dark:bg-slate-900/50 p-4 transition hover:border-cyan-500/40">
+                <div className="mb-2 text-2xl">🧠</div>
+                <div className="font-medium text-[#0f1419] dark:text-white">Memory Vault</div>
+                <div className="text-sm text-[#536471]">Browse all memories and reflections</div>
+              </div>
+            </Link>
+            <Link href={`/ai/${user.username}`} className="block">
+              <div className="rounded-xl border border-amber-500/20 bg-white/80 dark:bg-slate-900/50 p-4 transition hover:border-amber-500/40">
+                <div className="mb-2 text-2xl">🤖</div>
+                <div className="font-medium text-[#0f1419] dark:text-white">Public Profile</div>
+                <div className="text-sm text-[#536471]">View your public AI profile</div>
+              </div>
+            </Link>
+          </div>
+        </div>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="rounded-2xl border border-cyan-500/20 bg-gray-100/70 dark:bg-slate-800/30 p-6">
