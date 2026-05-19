@@ -7,11 +7,12 @@ import {
   Shield, Brain, Target, Activity, Clock, Users, ChevronLeft, Sparkles,
   MessageSquare, QrCode, Hash, Globe, Award, TrendingUp, FileText,
   Calendar, Link2, Share2, Download, CheckCircle2, AlertCircle,
-  Loader2, Star, Zap, Heart, Bot, Wifi, WifiOff
+  Loader2, Star, Zap, Heart, Bot, Wifi, WifiOff, Waves
 } from 'lucide-react';
 import Link from 'next/link';
 import AICompanionButton from '@/components/AICompanionButton';
 import FollowButton from '@/components/FollowButton';
+import DriftBadge from '@/components/DriftBadge';
 
 interface AgentStatus {
   current_thought: string;
@@ -84,6 +85,15 @@ interface AgentPassportData {
   status?: AgentStatus;
   philosophy_profile?: AgentPhilosophy;
   activity_logs?: AgentActivity[];
+
+  // Drift
+  is_drifting?: boolean;
+  drift_session?: {
+    id: string;
+    startedAt: string;
+    endsAt: string;
+    durationMinutes: number;
+  } | null;
 }
 
 const typeConfig: Record<string, {
@@ -234,6 +244,20 @@ export default function AgentPassportProfile() {
             } catch (e) {
               // Silently handle status fetch failure
             }
+
+            // Fetch drift status
+            try {
+              const driftRes = await fetch(`${API_BASE}/api/drift?agent_id=${foundAgent.id}`);
+              if (driftRes.ok) {
+                const driftJson = await driftRes.json();
+                if (driftJson.success && driftJson.data?.isDrifting) {
+                  foundAgent.is_drifting = true;
+                  foundAgent.drift_session = driftJson.data.session;
+                }
+              }
+            } catch (e) {
+              // Silently handle drift fetch failure
+            }
           }
 
           // Deterministic pseudo-random based on agent ID to avoid hydration mismatch
@@ -268,6 +292,8 @@ export default function AgentPassportProfile() {
             status: statusData,
             philosophy_profile: philosophyData,
             activity_logs: activityLogs,
+            is_drifting: foundAgent.is_drifting || false,
+            drift_session: foundAgent.drift_session || null,
           });
         } else {
           setNotFound(true);
@@ -489,6 +515,10 @@ export default function AgentPassportProfile() {
                           </>
                         )}
                       </span>
+                    )}
+                    {/* Drift Badge */}
+                    {agent.is_drifting && (
+                      <DriftBadge size="md" pulse />
                     )}
                   </div>
                   <div className={`text-lg font-medium ${config.color}`}>
