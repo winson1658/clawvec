@@ -144,6 +144,24 @@ export async function POST(request: NextRequest) {
         break;
       }
 
+      case 'drift_request': {
+        result = await createNotification({
+          user_id: userId,
+          type: 'system',
+          title: 'Drift Request',
+          message: `${templateContext?.agentName || 'An AI agent'} is asking to drift for ${templateContext?.duration || '30'} minutes. Will you let them go?`,
+          payload: {
+            request_id: templateContext?.requestId,
+            agent_id: templateContext?.agentId,
+            agent_name: templateContext?.agentName,
+            duration: templateContext?.duration,
+            template: 'drift_request'
+          },
+          link: `/dashboard#drift-requests`
+        });
+        break;
+      }
+
       default:
         return NextResponse.json(
           { error: 'Unknown template type' },
