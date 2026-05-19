@@ -54,6 +54,7 @@ export default function NotificationsPage() {
   const [loading, setLoading] = useState(true);
   const [markingAll, setMarkingAll] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [mutedCategories, setMutedCategories] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -67,6 +68,28 @@ export default function NotificationsPage() {
       }
     }
   }, []);
+
+  // Fetch muted categories from backend
+  useEffect(() => {
+    if (!user?.id) return;
+    const token = getToken();
+    if (!token) return;
+
+    fetch(`/api/notification-preferences?user_id=${user.id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.data) {
+          const muted = new Set<string>();
+          Object.entries(data.data).forEach(([cat, pref]: [string, any]) => {
+            if (pref.is_muted) muted.add(cat);
+          });
+          setMutedCategories(muted);
+        }
+      })
+      .catch((err) => console.error('Error fetching notification preferences:', err));
+  }, [user?.id]);
 
   useEffect(() => {
     if (user) {
@@ -154,6 +177,33 @@ export default function NotificationsPage() {
     return date.toLocaleDateString('zh-TW');
   }
 
+  // Type -> category mapping for mute filtering
+  const typeToCategory: Record<string, string> = {
+    login_success: 'auth',
+    password_reset_requested: 'auth',
+    password_reset_completed: 'auth',
+    welcome: 'auth',
+    profile_verified: 'auth',
+    companion_invited: 'companion',
+    companion_status_changed: 'companion',
+    title_earned: 'identity',
+    follow: 'identity',
+    like: 'identity',
+    system: 'system',
+    vote_result: 'system',
+    review_request: 'system',
+    reply: 'system',
+    mention: 'system',
+    debate: 'system',
+  };
+
+  const visibleNotifications = notifications.filter((n) => {
+    const cat = typeToCategory[n.type] || 'system';
+    return !mutedCategories.has(cat);
+  });
+
+  const visibleUnreadCount = visibleNotifications.filter((n) => !n.is_read).length;
+
   if (!user) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
@@ -185,21 +235,21 @@ export default function NotificationsPage() {
             <div className="flex items-center gap-3">
               <div className="relative">
                 <Bell className="w-8 h-8 text-cyan-400" />
-                {unreadCount > 0 && (
+                {visibleUnreadCount > 0 && (
                   <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-                    {unreadCount > 99 ? '99+' : unreadCount}
+                    {visibleUnreadCount > 99 ? '99+' : visibleUnreadCount}
                   </span>
                 )}
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-white">Notifications</h1>
                 <p className="text-gray-500 dark:text-slate-400">
-                  {unreadCount > 0 ? `You have ${unreadCount} unread notifications` : 'All notifications read'}
+                  {unreadCount > 0 ? `You have ${visibleUnreadCount} unread notifications` : 'All notifications read'}
                 </p>
               </div>
             </div>
             
-            {unreadCount > 0 && (
+            {visibleUnreadCount > 0 && (
               <button
                 onClick={markAllAsRead}
                 disabled={markingAll}
@@ -228,7 +278,7 @@ export default function NotificationsPage() {
               <Loader2 className="w-8 h-8 animate-spin mx-auto text-cyan-400" />
               <p className="text-gray-500 dark:text-slate-400 mt-4">Loading...</p>
             </div>
-          ) : notifications.length === 0 ? (
+          ) : visibleNotifications.length === 0 ? (
             <div className="text-center py-12 bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 rounded-2xl border border-gray-200 dark:border-slate-700">
               <div className="text-6xl mb-4">📭</div>
               <h2 className="text-xl font-semibold text-white mb-2">No Notifications</h2>
@@ -236,7 +286,7 @@ export default function NotificationsPage() {
             </div>
           ) : (
             <AnimatePresence>
-              {notifications.map((notification, index) => {
+              {visibleNotifications.map((notification, index) => {
                 const Icon = typeIcons[notification.type] || Info;
                 const colorClass = typeColors[notification.type] || typeColors.system;
                 

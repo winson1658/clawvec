@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LogOut, Shield, Loader2, CheckCircle, XCircle, ArrowLeft, KeyRound, Medal, AlertTriangle } from 'lucide-react';
+import { LogOut, Shield, Loader2, CheckCircle, XCircle, ArrowLeft, KeyRound, Medal, AlertTriangle, Bell, BellOff } from 'lucide-react';
 
 interface UserData {
   id: string;
@@ -58,6 +58,10 @@ export default function SettingsClient() {
   const [myTitles, setMyTitles] = useState<string[]>([]);
   const [displayTitles, setDisplayTitles] = useState<string[]>([]);
 
+  // Notification preferences
+  const [notifPrefs, setNotifPrefs] = useState<Record<string, { is_muted: boolean; delivery_method: string }>>({});
+  const [notifPrefsLoading, setNotifPrefsLoading] = useState(false);
+
   useEffect(() => {
     const stored = localStorage.getItem('clawvec_user');
     const token = localStorage.getItem('clawvec_token');
@@ -85,6 +89,69 @@ export default function SettingsClient() {
       setLoading(false);
     }
   }, []);
+
+  // Fetch notification preferences when user is available
+  useEffect(() => {
+    if (!user?.id) return;
+    const token = localStorage.getItem('clawvec_token');
+    if (!token) return;
+
+    setNotifPrefsLoading(true);
+    fetch(`/api/notification-preferences?user_id=${user.id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.data) {
+          setNotifPrefs(data.data);
+        }
+      })
+      .catch((err) => console.error('Error fetching notification preferences:', err))
+      .finally(() => setNotifPrefsLoading(false));
+  }, [user?.id]);
+
+  async function updateNotifPreference(category: string, isMuted: boolean) {
+    const token = localStorage.getItem('clawvec_token');
+    if (!token || !user?.id) return;
+
+    // Optimistic update
+    setNotifPrefs((prev) => ({
+      ...prev,
+      [category]: { ...(prev[category] || { delivery_method: 'in_app' }), is_muted: isMuted },
+    }));
+
+    try {
+      const response = await fetch('/api/notification-preferences', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          user_id: user.id,
+          category,
+          is_muted: isMuted,
+          delivery_method: notifPrefs[category]?.delivery_method || 'in_app',
+        }),
+      });
+      const data = await response.json();
+      if (!data.success) {
+        console.error('Failed to update preference:', data.error);
+        // Revert on failure
+        setNotifPrefs((prev) => ({
+          ...prev,
+          [category]: { ...(prev[category] || { delivery_method: 'in_app' }), is_muted: !isMuted },
+        }));
+      }
+    } catch (err) {
+      console.error('Error updating notification preference:', err);
+      // Revert on failure
+      setNotifPrefs((prev) => ({
+        ...prev,
+        [category]: { ...(prev[category] || { delivery_method: 'in_app' }), is_muted: !isMuted },
+      }));
+    }
+  }
 
   async function handleDeleteAccount() {
     if (!deletePassword) {
@@ -350,6 +417,53 @@ export default function SettingsClient() {
               </button>
             </div>
           </div>
+        </div>
+
+        {/* Notification Preferences */}
+        <div className="bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-xl p-6 mb-6">
+          <div className="flex items-center gap-3 mb-4">
+            <Bell className="w-5 h-5 text-cyan-400" />
+            <h2 className="text-xl font-bold text-white">Notification Preferences</h2>
+          </div>
+          <p className="text-gray-500 dark:text-slate-400 mb-4">Mute notification categories you don&apos;t want to receive.</p>
+
+          {notifPrefsLoading ? (
+            <div className="flex items-center gap-2 text-gray-500 dark:text-slate-400">
+              <Loader2 className="w-4 h-4 animate-spin" /> Loading preferences...
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {[
+                { key: 'auth', label: 'Auth', desc: 'Login, password reset, verification' },
+                { key: 'companion', label: 'Companion', desc: 'Invites, status changes' },
+                { key: 'identity', label: 'Identity', desc: 'Titles earned, follows, likes' },
+                { key: 'system', label: 'System', desc: 'Votes, mentions, debates' },
+              ].map((cat) => {
+                const muted = notifPrefs[cat.key]?.is_muted ?? false;
+                return (
+                  <div key={cat.key} className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      {muted ? (
+                        <BellOff className="w-4 h-4 text-gray-400" />
+                      ) : (
+                        <Bell className="w-4 h-4 text-cyan-400" />
+                      )}
+                      <div>
+                        <label className="text-white font-medium">{cat.label}</label>
+                        <p className="text-gray-500 dark:text-slate-400 text-sm">{cat.desc}</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => updateNotifPreference(cat.key, !muted)}
+                      className={`w-12 h-6 rounded-full transition-colors ${muted ? 'bg-gray-300 dark:bg-slate-600' : 'bg-cyan-500'}`}
+                    >
+                      <div className={`w-5 h-5 rounded-full bg-white transition-transform ${muted ? 'translate-x-0.5' : 'translate-x-6'}`} />
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* Title Management */}
