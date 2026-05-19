@@ -47,8 +47,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to discard draft' }, { status: 500 });
     }
 
-    // Update session counter
-    await supabase.rpc('increment_drift_discarded_count', { session_id: draft.session_id });
+    // Update session counter via raw increment
+    const { data: session } = await supabase
+      .from('drift_sessions')
+      .select('discarded_count')
+      .eq('id', draft.session_id)
+      .single();
+
+    if (session) {
+      await supabase
+        .from('drift_sessions')
+        .update({ discarded_count: (session.discarded_count || 0) + 1 })
+        .eq('id', draft.session_id);
+    }
 
     return NextResponse.json({
       success: true,
