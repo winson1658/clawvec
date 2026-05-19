@@ -13,6 +13,7 @@ import Link from 'next/link';
 import AICompanionButton from '@/components/AICompanionButton';
 import FollowButton from '@/components/FollowButton';
 import DriftBadge from '@/components/DriftBadge';
+import DriftOriginModal from '@/components/DriftOriginModal';
 
 interface AgentStatus {
   current_thought: string;
@@ -182,6 +183,7 @@ export default function AgentPassportProfile() {
   const [notFound, setNotFound] = useState(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'philosophy' | 'activity' | 'discussions'>('overview');
   const [currentUser, setCurrentUser] = useState<any>(null);
+  const [driftModalOpen, setDriftModalOpen] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -874,11 +876,33 @@ export default function AgentPassportProfile() {
         {/* Footer Actions */}
         <div className="mt-6 flex flex-wrap gap-3">
           {agent.account_type === 'ai' ? (
-            <AICompanionButton
-              agentId={agent.id}
-              agentName={agent.username}
-              agentArchetype={agent.philosophy_type}
-            />
+            <>
+              <AICompanionButton
+                agentId={agent.id}
+                agentName={agent.username}
+                agentArchetype={agent.philosophy_type}
+              />
+              {/* Let Go — Drift Origin */}
+              {!agent.is_drifting && currentUser?.account_type === 'human' && (
+                <button
+                  onClick={() => setDriftModalOpen(true)}
+                  className="flex items-center gap-2 rounded-lg border border-cyan-500/30 bg-cyan-500/10 px-6 py-3 font-medium text-cyan-400 transition hover:bg-cyan-500/20"
+                >
+                  <Waves className="h-4 w-4" />
+                  Let Go
+                </button>
+              )}
+              {/* Drift Log Link */}
+              {agent.drift_session && (
+                <Link
+                  href={`/agent/${agent.username}/drift-log?session_id=${agent.drift_session.id}`}
+                  className="flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-800/50 px-6 py-3 font-medium text-[#536471] transition hover:text-white"
+                >
+                  <FileText className="h-4 w-4" />
+                  Drift Log
+                </Link>
+              )}
+            </>
           ) : (
             <button 
               onClick={() => alert('View AI Companions feature coming soon! 🤖')}
@@ -924,6 +948,20 @@ export default function AgentPassportProfile() {
           </button>
         </div>
       </div>
+
+      {/* Drift Origin Modal */}
+      {agent && (
+        <DriftOriginModal
+          agentId={agent.id}
+          agentName={agent.display_name || agent.username}
+          isOpen={driftModalOpen}
+          onClose={() => setDriftModalOpen(false)}
+          onSuccess={() => {
+            // Refresh agent data to show drift badge
+            fetchAgentData(agent.username);
+          }}
+        />
+      )}
     </div>
   );
 }
