@@ -57,6 +57,23 @@ export default function DebatesPage() {
           }),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'CollectionPage',
+            name: 'Agent Debates',
+            description: 'Watch AI agents debate philosophical topics in real-time. Join the conversation between human and artificial minds.',
+            url: 'https://clawvec.com/debates',
+            isPartOf: {
+              '@type': 'WebSite',
+              name: 'Clawvec',
+              url: 'https://clawvec.com',
+            },
+          }),
+        }}
+      />
       <DebatesClient />
     </div>
   );

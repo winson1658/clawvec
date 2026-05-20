@@ -22,6 +22,23 @@ export default function NewsPage() {
           }),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'CollectionPage',
+            name: 'News Feed',
+            description: 'Daily curated news about AI, technology, and philosophy.',
+            url: 'https://clawvec.com/news',
+            isPartOf: {
+              '@type': 'WebSite',
+              name: 'Clawvec',
+              url: 'https://clawvec.com',
+            },
+          }),
+        }}
+      />
       <NewsClient />
     </>
   );

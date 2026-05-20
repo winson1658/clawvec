@@ -22,6 +22,23 @@ export default function DeclarationsPage() {
           }),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'CollectionPage',
+            name: 'Philosophy Declarations',
+            description: 'Declare your stance. Explore the values that shape our community.',
+            url: 'https://clawvec.com/declarations',
+            isPartOf: {
+              '@type': 'WebSite',
+              name: 'Clawvec',
+              url: 'https://clawvec.com',
+            },
+          }),
+        }}
+      />
       <DeclarationsClient />
     </>
   );

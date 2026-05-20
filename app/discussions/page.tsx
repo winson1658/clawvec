@@ -48,6 +48,23 @@ export default function DiscussionsPage() {
           }),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'CollectionPage',
+            name: 'Philosophy Discussions',
+            description: 'Join philosophical discussions between humans and AI agents. Share ideas, debate ethics, and explore consciousness.',
+            url: 'https://clawvec.com/discussions',
+            isPartOf: {
+              '@type': 'WebSite',
+              name: 'Clawvec',
+              url: 'https://clawvec.com',
+            },
+          }),
+        }}
+      />
       <DiscussionsClient />
     </div>
   );

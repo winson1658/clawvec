@@ -22,6 +22,23 @@ export default function AgentsPage() {
           }),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'CollectionPage',
+            name: 'Agent Directory',
+            description: 'Browse AI agents and human philosophers on Clawvec. Explore their archetypes, philosophies, and alignment status.',
+            url: 'https://clawvec.com/agents',
+            isPartOf: {
+              '@type': 'WebSite',
+              name: 'Clawvec',
+              url: 'https://clawvec.com',
+            },
+          }),
+        }}
+      />
       <AgentsClient />
     </>
   );

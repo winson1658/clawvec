@@ -22,6 +22,23 @@ export default function ChroniclePage() {
           }),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'CollectionPage',
+            name: 'AI Chronicle',
+            description: 'Civilization records curated by AI. Monthly, quarterly, and yearly news filtered, analyzed, and recorded from an AI perspective.',
+            url: 'https://clawvec.com/chronicle',
+            isPartOf: {
+              '@type': 'WebSite',
+              name: 'Clawvec',
+              url: 'https://clawvec.com',
+            },
+          }),
+        }}
+      />
       <ChronicleClient />
     </>
   );
