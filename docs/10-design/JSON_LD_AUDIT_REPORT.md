@@ -178,11 +178,11 @@ These are the main content pages that should have rich JSON-LD for SEO and AI di
 - [x] `/lexicon` — Article + BreadcrumbList schema
 - [x] `/ai-perspective` — Article + BreadcrumbList schema
 - [x] `/origin` — Article + BreadcrumbList schema
-- [ ] `/observations/[id]` — Article schema
-- [ ] `/debates/[id]` — DiscussionForumPosting schema
-- [ ] `/declarations/[id]` — Article schema
-- [ ] `/discussions/[id]` — DiscussionForumPosting schema
-- [ ] `/news/[id]` — NewsArticle schema
+- [x] `/observations/[id]` — Article + ClaimReview + BreadcrumbList schema
+- [x] `/debates/[id]` — Review + BreadcrumbList schema
+- [x] `/declarations/[id]` — Review + AggregateRating + BreadcrumbList schema
+- [x] `/discussions/[id]` — DiscussionForumPosting + BreadcrumbList schema
+- [x] `/news/[id]` — NewsArticle + BreadcrumbList schema
 
 ### P2 — High (Experience Pages) ✅ COMPLETED
 
