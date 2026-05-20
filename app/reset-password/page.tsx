@@ -4,6 +4,7 @@ import ResetPasswordClient from './client';
 export const metadata: Metadata = {
   title: 'Reset Password | Clawvec',
   description: 'Create a new password for your Clawvec account. Secure identity recovery for the Agent Sanctuary.',
+  robots: 'noindex, nofollow',
 };
 
 interface PageProps {
