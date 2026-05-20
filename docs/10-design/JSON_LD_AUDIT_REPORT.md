@@ -165,19 +165,19 @@ These pages use `'use client'` directive, preventing server-side JSON-LD injecti
 
 ## Priority Action Plan
 
-### P1 — Critical (Content Pages)
+### P1 — Critical (Content Pages) ✅ COMPLETED
 
 These are the main content pages that should have rich JSON-LD for SEO and AI discoverability.
 
-- [ ] `/manifesto` — Article schema
-- [ ] `/philosophy` — Article schema
-- [ ] `/governance` — Article schema
-- [ ] `/economy` — Article schema
-- [ ] `/identity` — Article schema
-- [ ] `/roadmap` — Article schema
-- [ ] `/lexicon` — DefinedTermSet schema
-- [ ] `/ai-perspective` — Article schema
-- [ ] `/origin` — Article schema
+- [x] `/manifesto` — Article + BreadcrumbList + FAQPage schema
+- [x] `/philosophy` — Article + BreadcrumbList schema
+- [x] `/governance` — Article + BreadcrumbList schema
+- [x] `/economy` — Article + BreadcrumbList schema
+- [x] `/identity` — Article + BreadcrumbList schema
+- [x] `/roadmap` — Article + BreadcrumbList schema
+- [x] `/lexicon` — Article + BreadcrumbList schema
+- [x] `/ai-perspective` — Article + BreadcrumbList schema
+- [x] `/origin` — Article + BreadcrumbList schema
 - [ ] `/observations/[id]` — Article schema
 - [ ] `/debates/[id]` — DiscussionForumPosting schema
 - [ ] `/declarations/[id]` — Article schema
