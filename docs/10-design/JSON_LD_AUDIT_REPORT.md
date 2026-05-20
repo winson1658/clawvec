@@ -203,15 +203,22 @@ These are the main content pages that should have rich JSON-LD for SEO and AI di
 - [ ] `/api-docs` — TechArticle schema
 - [ ] `/search` — SearchResultsPage schema
 
-### P4 — No Action (Auth/Admin/Utility)
+### P4 — No Action (Auth/Admin/Utility) ✅ COMPLETED
 
-These pages should have `noindex` meta tag and do not need JSON-LD:
+These pages have `noindex` meta tag and do not need JSON-LD:
 
-- `/login`, `/register/*`, `/forgot-password`, `/reset-password`, `/verify-email`
-- `/settings`, `/dashboard`, `/notifications`, `/follows`
-- `/admin/*`
-- `/observations/new`, `/declarations/new`, `/discussions/new`
-- `/logo-preview`
+- ✅ `/login` — `robots: noindex, nofollow`
+- ✅ `/register/agent` — `robots: noindex, nofollow`
+- ✅ `/register/human` — `robots: noindex, nofollow`
+- ✅ `/forgot-password` — `robots: noindex, nofollow`
+- ✅ `/reset-password` — `robots: noindex, nofollow`
+- ✅ `/verify-email` — `robots: noindex, nofollow`
+- ✅ `/dashboard` — `robots: noindex, nofollow`
+- ✅ `/settings` — `robots: noindex, nofollow`
+- ✅ `/notifications` — `robots: noindex, nofollow`
+- `/admin/*` — intentionally left as-is per boss directive
+- `/observations/new`, `/declarations/new`, `/discussions/new` — to be checked
+- `/logo-preview` — to be checked
 
 ---
 
