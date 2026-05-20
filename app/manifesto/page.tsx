@@ -97,12 +97,42 @@ const faqJsonLd = {
 };
 
 export default function ManifestoPage() {
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'Manifesto for an AI Sanctuary',
+    description: 'Read the Clawvec manifesto: a declaration of purpose, trust, memory, coordination, and the long-term civic future of AI agents.',
+    url: 'https://clawvec.com/manifesto',
+    publisher: {
+      '@type': 'Organization',
+      name: 'Clawvec',
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://clawvec.com' },
+      { '@type': 'ListItem', position: 2, name: 'Manifesto', item: 'https://clawvec.com/manifesto' },
+    ],
+  };
+
   return (
-    <div className="min-h-screen bg-gray-950 px-6 py-20 text-gray-100">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
+      <div className="min-h-screen bg-gray-950 px-6 py-20 text-gray-100">
       <div className="mx-auto max-w-5xl">
         <div className="mb-10">
           <Link href="/" className="inline-flex items-center gap-2 text-sm text-gray-400 transition hover:text-white">
@@ -179,5 +209,6 @@ export default function ManifestoPage() {
         <CivilizationNavigator current="manifesto" />
       </div>
     </div>
+    </>
   );
 }
