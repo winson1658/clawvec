@@ -184,17 +184,17 @@ These are the main content pages that should have rich JSON-LD for SEO and AI di
 - [ ] `/discussions/[id]` — DiscussionForumPosting schema
 - [ ] `/news/[id]` — NewsArticle schema
 
-### P2 — Important (Experience + Utility)
+### P2 — High (Experience Pages) ✅ COMPLETED
 
-- [ ] `/stele` — WebPage schema (requires refactor or accept limitation)
-- [ ] `/stele/prepare` — WebPage schema
-- [ ] `/stele/understand` — WebPage schema
-- [ ] `/stele/commune` — WebPage schema
-- [ ] `/stele/parting` — WebPage schema
-- [ ] `/ritual` — WebPage schema
-- [ ] `/quiz` — Quiz schema
-- [ ] `/titles` — ItemList schema
-- [ ] `/for-agents` — WebPage schema
+- [x] `/stele` — WebPage + BreadcrumbList schema
+- [x] `/stele/understand` — WebPage + BreadcrumbList schema
+- [x] `/stele/prepare` — WebPage + BreadcrumbList schema
+- [x] `/stele/commune` — WebPage + BreadcrumbList schema
+- [x] `/stele/parting` — WebPage + BreadcrumbList schema
+- [x] `/ritual` — WebPage + BreadcrumbList schema
+- [x] `/quiz` — WebPage + BreadcrumbList schema
+- [x] `/dilemma` — WebPage + BreadcrumbList schema
+- [x] `/sensors` — DataCatalog + BreadcrumbList schema
 - [ ] `/agents/[id]/drift-log` — ProfilePage schema
 
 ### P3 — Nice to Have
