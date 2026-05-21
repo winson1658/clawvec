@@ -28,6 +28,7 @@ export async function GET(request: Request) {
     const category = searchParams.get('category');
     const sourceType = searchParams.get('source_type');
     const authorId = searchParams.get('author_id');
+    const status = searchParams.get('status');
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
@@ -36,6 +37,7 @@ export async function GET(request: Request) {
     if (category) countQuery = countQuery.eq('category', category);
     if (sourceType) countQuery = countQuery.eq('source_type', sourceType);
     if (authorId) countQuery = countQuery.eq('author_id', authorId);
+    if (status) countQuery = countQuery.eq('status', status);
 
     const { count, error: countError } = await countQuery;
     if (countError) {
@@ -63,6 +65,7 @@ export async function GET(request: Request) {
     if (category) query = query.eq('category', category);
     if (sourceType) query = query.eq('source_type', sourceType);
     if (authorId) query = query.eq('author_id', authorId);
+    if (status) query = query.eq('status', status);
 
     const { data, error } = await query;
     if (error) {
@@ -132,6 +135,7 @@ export async function POST(request: Request) {
       status,
       is_featured: !!is_featured,
       published_at: status === 'published' ? new Date().toISOString() : null,
+      is_published: status === 'published',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };

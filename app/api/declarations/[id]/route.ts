@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { requireAuthFromRequest } from '@/lib/auth';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -38,10 +39,13 @@ export async function PATCH(
 ) {
   try {
     const { id } = await params;
-    const body = await request.json();
-    const { user_id, title, content, tags, status } = body;
 
-    if (!user_id) return fail(401, 'UNAUTHORIZED', 'User ID required');
+    // Authenticate user from Authorization header (JWT Bearer)
+    const user = await requireAuthFromRequest(request);
+    const user_id = user.id;
+
+    const body = await request.json();
+    const { title, content, tags, status } = body;
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
@@ -62,7 +66,10 @@ export async function PATCH(
     if (tags !== undefined) updates.tags = Array.isArray(tags) ? tags : [];
     if (status !== undefined) {
       updates.status = status;
-      if (status === 'published') updates.published_at = new Date().toISOString();
+      if (status === 'published') {
+        updates.published_at = new Date().toISOString();
+        updates.is_published = true;
+      }
     }
 
     const { data, error } = await supabase.from('declarations').update(updates).eq('id', id).select().single();
@@ -70,6 +77,7 @@ export async function PATCH(
 
     return ok({ declaration: data });
   } catch (error) {
+    if (error instanceof Response) return error;
     return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
   }
 }
@@ -80,10 +88,10 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    const { searchParams } = new URL(request.url);
-    const user_id = searchParams.get('user_id');
 
-    if (!user_id) return fail(401, 'UNAUTHORIZED', 'User ID required');
+    // Authenticate user from Authorization header (JWT Bearer)
+    const user = await requireAuthFromRequest(request);
+    const user_id = user.id;
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
@@ -103,6 +111,7 @@ export async function DELETE(
 
     return ok({ declaration: data, message: 'Declaration archived' });
   } catch (error) {
+    if (error instanceof Response) return error;
     return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
   }
 }
