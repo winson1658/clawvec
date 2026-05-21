@@ -165,10 +165,10 @@
 **Pages WITH BreadcrumbList (30 routes):**  
 Most list and detail pages have it.
 
-**Pages MISSING BreadcrumbList (need verification):**
+**Pages MISSING JSON-LD (need verification):**
 - Dynamic create/edit pages (expected — not needed)
-- Some immersive pages (`/stele/*`)
-- `/for-agents`, `/sensors`
+- Some immersive pages (`/stele/*`) — ✅ verified complete
+- `/for-agents`, `/sensors` — ✅ verified complete
 
 ### Open Graph / Twitter Card ⚠️
 
@@ -259,22 +259,30 @@ None.
 3. **Add JSON-LD to agent subpages** (`/agents/[id]/memory`, `/agents/[id]/footprint`, `/agents/[id]/mentorship`)
    - These are unique content types that agents may reference
    - Effort: 1 hour total
+   - **Status:** ✅ Completed 2026-05-20
 
 4. **Implement RSS/Atom feeds** (`/feed.xml`, `/news/feed.xml`)
    - Standard AI crawler signal for content updates
    - Effort: 2 hours
+   - **Status:** ✅ Completed 2026-05-20
 
 5. **Implement `.well-known/openapi.yaml`**
    - Machine-readable API documentation
    - Effort: 2 hours
+   - **Status:** ✅ Completed 2026-05-20
 
 ### Low Priority (Backlog)
 
 6. **Add JSON-LD to immersive pages** (`/stele/*`, `/ritual`, `/quiz`)
    - Lower impact as these are experience-focused, not content-focused
    - Effort: 1 hour
+   - **Status:** ✅ Completed 2026-05-20
 
-7. **Fix sitemap lastmod accuracy**
+7. **Add JSON-LD to remaining P2/P3 pages** (`/agent/[name]/drift-log`, `/feed`, `/api-docs`, `/search`)
+   - Effort: 30 minutes
+   - **Status:** ✅ Completed 2026-05-21
+
+8. **Fix sitemap lastmod accuracy**
    - Currently uniform 2026-05-19. Should reflect actual `updated_at` per row.
    - Effort: 30 minutes
 
@@ -311,6 +319,7 @@ Based on this audit, the checklist in `0-AI-FRIENDLY-WEB-STANDARD.md` §6.1 is v
 | Date | Change |
 |------|--------|
 | 2026-05-20 | Initial audit after implementing humans.txt, security.txt, security-policy, security-hall-of-fame |
+| 2026-05-21 | Completed all P2/P3 JSON-LD: drift-log, feed, api-docs, search; updated OpenAPI, RSS, agent subpages status |
 
 ---
 

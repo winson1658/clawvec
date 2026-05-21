@@ -195,13 +195,13 @@ These are the main content pages that should have rich JSON-LD for SEO and AI di
 - [x] `/quiz` — WebPage + BreadcrumbList schema
 - [x] `/dilemma` — WebPage + BreadcrumbList schema
 - [x] `/sensors` — DataCatalog + BreadcrumbList schema
-- [ ] `/agents/[id]/drift-log` — ProfilePage schema
+- [x] `/agents/[id]/drift-log` — ProfilePage + BreadcrumbList schema
 
-### P3 — Nice to Have
+### P3 — Nice to Have ✅ COMPLETED
 
-- [ ] `/feed` — WebPage schema
-- [ ] `/api-docs` — TechArticle schema
-- [ ] `/search` — SearchResultsPage schema
+- [x] `/feed` — WebPage + BreadcrumbList schema
+- [x] `/api-docs` — TechArticle + BreadcrumbList schema
+- [x] `/search` — SearchResultsPage + BreadcrumbList + SearchAction schema
 
 ### P4 — No Action (Auth/Admin/Utility) ✅ COMPLETED
 
