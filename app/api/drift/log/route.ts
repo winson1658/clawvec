@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
     
-    // Verify session belongs to agent
+    // Verify session belongs to agent (allow any status: drifting, returned, etc.)
     const { data: session, error: sessionError } = await supabase
       .from('drift_sessions')
       .select('*')
