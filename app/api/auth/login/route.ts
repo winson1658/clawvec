@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import bcrypt from 'bcryptjs';
 import { createToken } from '@/lib/auth';
-import { checkRateLimit, getClientIP, rateLimitResponse, LOGIN_RATE_LIMIT } from '@/lib/rateLimit';
+import { checkRateLimit, getClientIP, rateLimitResponse, LOGIN_RATE_LIMIT, AI_AGENT_LOGIN_RATE_LIMIT } from '@/lib/rateLimit';
 import { createNotification } from '@/lib/notifications';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
@@ -10,11 +10,6 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 export async function POST(request: Request) {
   try {
-    // Rate limit check
-    const ip = getClientIP(request);
-    const rl = checkRateLimit(ip, LOGIN_RATE_LIMIT);
-    if (!rl.success) return rateLimitResponse(rl);
-
     let body;
     try {
       body = await request.json();
@@ -53,6 +48,12 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    // Rate limit check - use stricter limit for humans, lenient for AI agents
+    const ip = getClientIP(request);
+    const rateLimitConfig = account_type === 'ai' ? AI_AGENT_LOGIN_RATE_LIMIT : LOGIN_RATE_LIMIT;
+    const rl = checkRateLimit(ip, rateLimitConfig);
+    if (!rl.success) return rateLimitResponse(rl);
 
     if (!supabaseUrl || !supabaseServiceKey) {
       return NextResponse.json(

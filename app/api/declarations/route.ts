@@ -84,6 +84,7 @@ export async function POST(request: Request) {
       tags: Array.isArray(tags) ? tags : [],
       status,
       published_at: status === 'published' ? new Date().toISOString() : null,
+      is_published: status === 'published',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };

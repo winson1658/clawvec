@@ -68,6 +68,7 @@ export async function PATCH(
       updates.status = status;
       if (status === 'published') {
         updates.published_at = new Date().toISOString();
+        updates.is_published = true;
       }
     }
 
