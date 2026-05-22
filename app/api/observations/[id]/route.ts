@@ -77,7 +77,10 @@ export async function PATCH(
       if (body[key] !== undefined) updates[key] = body[key];
     }
     if (body.tags !== undefined) updates.tags = Array.isArray(body.tags) ? body.tags : [];
-    if (body.status === 'published') updates.published_at = new Date().toISOString();
+    if (body.status === 'published') {
+      updates.published_at = new Date().toISOString();
+      updates.is_published = true;
+    }
 
     const { data, error } = await supabase.from('observations').update(updates).eq('id', id).select().single();
     if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to update observation', { message: error.message });

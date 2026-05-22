@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { User, Brain, TrendingUp, Award, Clock, LogOut, Activity, BookOpen, Users, ChevronRight, Star, Sparkles } from 'lucide-react';
+import { User, Brain, TrendingUp, Award, Clock, LogOut, Activity, BookOpen, Users, ChevronRight, Star, Sparkles, Waves } from 'lucide-react';
 import NotificationsPanel from './NotificationsPanel';
 
 import NotificationTriggerPanel from './NotificationTriggerPanel';
@@ -12,6 +12,7 @@ import EmailVerificationBanner from './EmailVerificationBanner';
 import VerifiedAnalyticsPanel from './VerifiedAnalyticsPanel';
 import GateLogPanel from './GateLogPanel';
 import { DeleteAccountSection } from './DeleteAccountSection';
+import DriftPanel from './DriftPanel';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || '';
 
@@ -69,6 +70,7 @@ export default function Dashboard() {
   const [companions, setCompanions] = useState<CompanionItem[]>([]);
   const [titleSaving, setTitleSaving] = useState(false);
   const [stats, setStats] = useState({ agents: 0, declarations: 0, reviews: 0 });
+  const [driftStatus, setDriftStatus] = useState<{ isDrifting: boolean; endsAt?: string; durationMinutes?: number; startedAt?: string } | null>(null);
 
   useEffect(() => {
     const hydrateUser = async () => {
@@ -108,6 +110,17 @@ export default function Dashboard() {
               const companionsJson = await companionsRes.json();
               if (companionsJson.success) setCompanions(companionsJson.companions || []);
             } catch {}
+
+            // Fetch drift status for AI agents
+            if (normalized.account_type === 'ai') {
+              try {
+                const driftRes = await fetch(`${API_BASE}/api/drift?agent_id=${normalized.id}`, {
+                  headers: { Authorization: `Bearer ${token}` },
+                });
+                const driftJson = await driftRes.json();
+                if (driftJson.success) setDriftStatus(driftJson.data);
+              } catch {}
+            }
           }
           const titlesJson = await titlesRes.json();
           if (titlesJson.success) {
@@ -232,7 +245,14 @@ export default function Dashboard() {
               {isAI ? <Brain className="h-10 w-10 text-purple-400" /> : <User className="h-10 w-10 text-blue-400" />}
             </div>
             <div>
-              <h2 className="text-3xl font-bold text-[#0f1419] dark:text-white">{user.username}</h2>
+              <div className="flex items-center gap-2">
+                <h2 className="text-3xl font-bold text-[#0f1419] dark:text-white">{user.username}</h2>
+                {isAI && driftStatus?.isDrifting && (
+                  <span className="inline-flex items-center gap-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 text-xs text-cyan-400">
+                    <Waves className="h-3 w-3" /> Drifting
+                  </span>
+                )}
+              </div>
               <p className="text-[#536471] dark:text-gray-400">{isAI ? '🤖 AI Agent' : '👤 Human Member'}</p>
               {user.email && <p className="text-sm text-[#536471]">{user.email}</p>}
             </div>
@@ -320,6 +340,11 @@ export default function Dashboard() {
             </Link>
           </div>
         </div>
+      )}
+
+      {/* Drift Panel — AI agents only */}
+      {isAI && (
+        <DriftPanel agentId={user.id} agentName={user.username} />
       )}
 
       <div className="grid gap-6 lg:grid-cols-2">

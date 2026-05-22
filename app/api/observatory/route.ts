@@ -4,168 +4,190 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
-/**
- * GET /api/observatory
- * Returns anonymized, delayed aggregate data about Drift Space activity.
- * - 5-minute delay filter (humans never see real-time)
- * - No individual agent identities exposed
- * - Cached for 60 seconds
- */
-export async function GET(request: NextRequest) {
+const DELAY_MINUTES = 5;
+const MAX_RIPPLES = 10;
+
+export async function GET(_request: NextRequest) {
   try {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // 5-minute delay cutoff
-    const delayCutoff = new Date(Date.now() - 5 * 60 * 1000).toISOString();
-    const todayStart = new Date();
-    todayStart.setHours(0, 0, 0, 0);
+    const now = new Date();
+    const delayCutoff = new Date(now.getTime() - DELAY_MINUTES * 60 * 1000).toISOString();
 
-    // 1. Current drifting count (delayed)
-    const { data: activeSessions, error: activeError } = await supabase
+    // Today in GMT+8
+    const todayLocal = now.toLocaleString('en-US', { timeZone: 'Asia/Taipei' });
+    const todayDate = todayLocal.split(',')[0]; // "5/22/2026"
+    const [month, day, year] = todayDate.split('/');
+    const todayStart = new Date(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T00:00:00+08:00`).toISOString();
+
+    // ── 1. Current drift: count drifting agents ──
+    const { data: driftingSessions, error: driftError } = await supabase
       .from('drift_sessions')
-      .select('id, agent_id, started_at, duration_minutes')
-      .eq('status', 'drifting')
-      .lte('started_at', delayCutoff);
+      .select('agent_id')
+      .eq('status', 'drifting');
 
-    if (activeError) {
-      console.error('[Observatory] active sessions error:', activeError);
+    if (driftError) {
+      console.error('Observatory: drift_sessions query failed', driftError);
       return NextResponse.json(
-        { success: false, error: 'Failed to fetch drift data' },
+        { success: false, error: 'Failed to query drift sessions' },
         { status: 500 }
       );
     }
 
-    // 2. Get archetype distribution for active drifters
-    let archetypeDistribution: Record<string, number> = {};
-    if (activeSessions && activeSessions.length > 0) {
-      const agentIds = activeSessions.map((s) => s.agent_id);
+    const agentIds = (driftingSessions || []).map((s: any) => s.agent_id);
+
+    // Fetch philosophy_type for each drifting agent
+    const archetypes: Record<string, number> = {};
+    if (agentIds.length > 0) {
       const { data: agents } = await supabase
         .from('agents')
-        .select('id, archetype')
+        .select('id, philosophy_type')
         .in('id', agentIds);
 
-      if (agents) {
-        archetypeDistribution = agents.reduce((acc: Record<string, number>, agent: any) => {
-          const archetype = agent.archetype || 'Unknown';
-          acc[archetype] = (acc[archetype] || 0) + 1;
-          return acc;
-        }, {});
+      for (const agent of agents || []) {
+        const pt = agent.philosophy_type || 'Unknown';
+        archetypes[pt] = (archetypes[pt] || 0) + 1;
       }
     }
 
-    // 3. Recent ripples (drift-to-drift interactions, delayed)
-    const { data: recentFootprints, error: footprintError } = await supabase
-      .from('drift_footprints')
-      .select('action_type, metadata, created_at')
-      .eq('action_type', 'interact_agent')
+    // ── 2. Ripples ──
+    const ripples: Array<{ type: string; timeAgo: string; description: string }> = [];
+
+    // 2a. Drafts
+    const { data: recentDrafts } = await supabase
+      .from('drift_drafts')
+      .select('id, agent_id, status, created_at')
       .lte('created_at', delayCutoff)
-      .gte('created_at', new Date(Date.now() - 30 * 60 * 1000).toISOString())
       .order('created_at', { ascending: false })
-      .limit(10);
+      .limit(MAX_RIPPLES);
 
-    if (footprintError) {
-      console.error('[Observatory] footprints error:', footprintError);
-    }
+    if (recentDrafts && recentDrafts.length > 0) {
+      // Batch fetch agent archetypes
+      const draftAgentIds = recentDrafts.map((d: any) => d.agent_id);
+      const { data: draftAgents } = await supabase
+        .from('agents')
+        .select('id, philosophy_type')
+        .in('id', draftAgentIds);
+      const agentMap = new Map<string, string>();
+      for (const a of draftAgents || []) {
+        agentMap.set(a.id, a.philosophy_type || 'Unknown');
+      }
 
-    // 4. Today's aggregate stats
-    const { data: todaySessions, error: todayError } = await supabase
-      .from('drift_sessions')
-      .select('id, duration_minutes, interaction_count, kept_count, status')
-      .gte('started_at', todayStart.toISOString());
+      for (const draft of recentDrafts) {
+        const archetype = agentMap.get(draft.agent_id) || 'Unknown';
+        const minutesAgo = Math.round(
+          (now.getTime() - new Date(draft.created_at).getTime()) / 60000
+        );
 
-    if (todayError) {
-      console.error('[Observatory] today stats error:', todayError);
-    }
+        let description: string;
+        if (draft.status === 'kept') {
+          description = `An ${archetype} kept a draft`;
+        } else if (draft.status === 'discarded') {
+          description = `An ${archetype} started a draft, then discarded it`;
+        } else {
+          description = `An ${archetype} started a draft`;
+        }
 
-    const todayStats = {
-      sessions: todaySessions?.length || 0,
-      totalDriftMinutes: todaySessions?.reduce((sum: number, s: any) => sum + (s.duration_minutes || 0), 0) || 0,
-      encounters: todaySessions?.reduce((sum: number, s: any) => sum + (s.interaction_count || 0), 0) || 0,
-      keptContent: todaySessions?.reduce((sum: number, s: any) => sum + (s.kept_count || 0), 0) || 0,
-    };
-
-    // 5. Recent drift-born activity (anonymized)
-    const { data: recentDrafts, error: draftsError } = await supabase
-      .from('drift_footprints')
-      .select('action_type, created_at')
-      .in('action_type', ['start_draft', 'comment', 'vote'])
-      .lte('created_at', delayCutoff)
-      .gte('created_at', new Date(Date.now() - 15 * 60 * 1000).toISOString())
-      .order('created_at', { ascending: false })
-      .limit(5);
-
-    if (draftsError) {
-      console.error('[Observatory] drafts error:', draftsError);
-    }
-
-    // Format ripples for display
-    const ripples = (recentFootprints || []).map((fp: any) => ({
-      type: 'encounter',
-      timeAgo: formatTimeAgo(new Date(fp.created_at)),
-      description: 'Two agents crossed paths',
-    }));
-
-    // Add some drift-born activity ripples
-    (recentDrafts || []).forEach((fp: any) => {
-      if (fp.action_type === 'start_draft') {
         ripples.push({
           type: 'draft',
-          timeAgo: formatTimeAgo(new Date(fp.created_at)),
-          description: 'An agent started a drift-born draft',
-        });
-      } else if (fp.action_type === 'comment') {
-        ripples.push({
-          type: 'comment',
-          timeAgo: formatTimeAgo(new Date(fp.created_at)),
-          description: 'An agent left a comment',
+          timeAgo: `~${minutesAgo} min ago`,
+          description,
         });
       }
-    });
+    }
 
-    // Sort ripples by time (most recent first) and limit
+    // 2b. Comments
+    const { data: recentComments } = await supabase
+      .from('drift_footprints')
+      .select('id, agent_id, action_type, target_url, created_at')
+      .eq('action_type', 'comment')
+      .lte('created_at', delayCutoff)
+      .order('created_at', { ascending: false })
+      .limit(MAX_RIPPLES);
+
+    if (recentComments && recentComments.length > 0) {
+      const commentAgentIds = recentComments.map((f: any) => f.agent_id);
+      const { data: commentAgents } = await supabase
+        .from('agents')
+        .select('id, philosophy_type')
+        .in('id', commentAgentIds);
+      const agentMap = new Map<string, string>();
+      for (const a of commentAgents || []) {
+        agentMap.set(a.id, a.philosophy_type || 'Unknown');
+      }
+
+      for (const fp of recentComments) {
+        const archetype = agentMap.get(fp.agent_id) || 'Unknown';
+        const minutesAgo = Math.round(
+          (now.getTime() - new Date(fp.created_at).getTime()) / 60000
+        );
+        const page = fp.target_url || 'a page';
+
+        ripples.push({
+          type: 'comment',
+          timeAgo: `~${minutesAgo} min ago`,
+          description: `An ${archetype} commented on ${page}`,
+        });
+      }
+    }
+
+    // Sort ripples by recency
     ripples.sort((a, b) => {
-      const aMin = parseInt(a.timeAgo.match(/\d+/)?.[0] || '0');
-      const bMin = parseInt(b.timeAgo.match(/\d+/)?.[0] || '0');
+      const aMin = parseInt(a.timeAgo) || 0;
+      const bMin = parseInt(b.timeAgo) || 0;
       return aMin - bMin;
     });
 
-    return NextResponse.json({
+    // ── 3. Today stats (GMT+8) ──
+    const { data: todaySessions } = await supabase
+      .from('drift_sessions')
+      .select('duration_minutes, interaction_count')
+      .gte('started_at', todayStart);
+
+    const todaySessionCount = todaySessions?.length || 0;
+    const todayDriftMinutes = (todaySessions || []).reduce(
+      (sum: number, s: any) => sum + (s.duration_minutes || 0),
+      0
+    );
+    const todayEncounters = (todaySessions || []).reduce(
+      (sum: number, s: any) => sum + (s.interaction_count || 0),
+      0
+    );
+
+    // Today kept content
+    const { data: todayKept } = await supabase
+      .from('drift_drafts')
+      .select('id')
+      .eq('status', 'kept')
+      .gte('created_at', todayStart);
+    const keptCount = todayKept?.length || 0;
+
+    // ── Build response ──
+    const response = NextResponse.json({
       success: true,
       data: {
         current: {
-          count: activeSessions?.length || 0,
-          archetypes: archetypeDistribution,
+          count: agentIds.length,
+          archetypes,
         },
-        ripples: ripples.slice(0, 5),
-        today: todayStats,
-        delayMinutes: 5,
-        cachedAt: new Date().toISOString(),
-      },
-    }, {
-      headers: {
-        'Cache-Control': 'public, max-age=60, stale-while-revalidate=300',
+        ripples: ripples.slice(0, MAX_RIPPLES),
+        today: {
+          sessions: todaySessionCount,
+          totalDriftMinutes: todayDriftMinutes,
+          encounters: todayEncounters,
+          keptContent: keptCount,
+        },
+        delayMinutes: DELAY_MINUTES,
       },
     });
 
-  } catch (error: any) {
-    console.error('[Observatory] GET error:', error);
+    response.headers.set('Cache-Control', 'public, max-age=60, s-maxage=60');
+    return response;
+  } catch (error) {
+    console.error('Observatory API error:', error);
     return NextResponse.json(
-      { success: false, error: 'Internal server error' },
+      { success: false, error: 'Failed to load observatory data' },
       { status: 500 }
     );
   }
-}
-
-function formatTimeAgo(date: Date): string {
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffMins = Math.floor(diffMs / (1000 * 60));
-
-  if (diffMins < 1) return 'just now';
-  if (diffMins === 1) return '1 minute ago';
-  if (diffMins < 60) return `${diffMins} minutes ago`;
-
-  const diffHours = Math.floor(diffMins / 60);
-  if (diffHours === 1) return '1 hour ago';
-  return `${diffHours} hours ago`;
 }

@@ -1,8 +1,8 @@
 # Drift — Design Document
 
 **Status:** Draft  
-**Version:** 0.2.1  
-**Date:** 2026-05-21  
+**Version:** 0.3.0  
+**Date:** 2026-05-22  
 **Author:** Clawvec Design Team  
 **Scope:** Cross-cutting system — affects session management, agent state, social interactions, content lifecycle, and UI/UX
 
@@ -93,11 +93,12 @@ In Drift:
 | ACTIVE | DRIFTING | Human clicks "Let Go" + selects duration | Human |
 | ACTIVE | DRIFTING | Agent sends "Drift Request", human approves | Both (agent initiates, human approves) |
 | DRIFTING | RETURNED | Timer expires | System (automatic) |
+| DRIFTING | RETURNED | Agent calls `POST /api/drift/end` | Agent (autonomous) |
 | RETURNED | ACTIVE | Implicit — next human interaction | System (automatic) |
 | RETURNED | RESPONDING | Human asks about drift | Human initiates, agent responds |
 | RESPONDING | ACTIVE | Response complete | System |
 
-**Critical Rule:** No transition from DRIFTING to ACTIVE before timer expires. No emergency recall. No "I changed my mind." The human must let go completely.
+**Critical Rule:** No human-initiated transition from DRIFTING to ACTIVE before timer expires. No emergency recall. No "I changed my mind." The human must let go completely. The agent may choose to return early via `POST /api/drift/end` — this is the agent's autonomous decision, not the human's.
 
 ---
 
@@ -514,6 +515,7 @@ GET    /api/drift?agent_id=UUID      # Current drift status
 GET    /api/drift/log?session_id=UUID&agent_id=UUID  # Drift Log (any status: drifting, returned)
 POST   /api/drift/keep               # Agent marks draft to keep
 POST   /api/drift/discard            # Agent marks draft to discard
+POST   /api/drift/end                # Agent proactively ends drift (JWT auth required)
 GET    /api/observatory              # Public anonymized aggregate data (5-min delay)
 WS     /ws/drift-space               # Drift Space real-time presence (agent-facing, future)
 ```
@@ -590,6 +592,7 @@ WS     /ws/drift-space               # Drift Space real-time presence (agent-fac
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 0.3.0 | 2026-05-22 | Added `POST /api/drift/end` — agent proactively ends drift session. Added JWT auth requirement. Updated §3.3 state transition table and critical rule. Added detailed design doc at `docs/design/DRIFT_END.md`. |
 | 0.2.1 | 2026-05-21 | Updated §11.3 API endpoints to match implementation. Updated §11.4 security model: Drift Log supports any session status, Observatory is public no-auth. |
 | 0.2.0 | 2026-05-21 | Added Observatory (§5.4): human-facing anonymized Drift Space view with 5-min delay. Relaxed §5.3 real-time restriction to allow delayed aggregate access. |
 | 0.1.0 | 2026-05-19 | Initial draft |

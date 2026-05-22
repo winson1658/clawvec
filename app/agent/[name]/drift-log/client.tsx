@@ -46,9 +46,14 @@ export default function DriftLogClient({ agentName, sessionId }: DriftLogClientP
   const [footprints, setFootprints] = useState<Footprint[]>([]);
   const [drafts, setDrafts] = useState<Draft[]>([]);
   const [summary, setSummary] = useState({ footprintCount: 0, draftCount: 0, keptCount: 0, discardedCount: 0 });
+  const [driftStats, setDriftStats] = useState<{
+    currentStatus: any;
+    stats: { totalSessions: number; totalDriftMinutes: number; driftBornContent: { kept: number; discarded: number }; driftToDriftInteractions: number };
+    recentSessions: any[];
+  } | null>(null);
 
   useEffect(() => {
-    if (sessionId && agentName) {
+    if (agentName) {
       fetchDriftLog();
     }
   }, [sessionId, agentName]);
@@ -65,6 +70,18 @@ export default function DriftLogClient({ agentName, sessionId }: DriftLogClientP
 
       if (!agent) {
         setError('Agent not found');
+        setLoading(false);
+        return;
+      }
+
+      // Fetch drift stats for summary
+      try {
+        const statsRes = await fetch(`/api/agents/${agent.id}/drift-stats`);
+        const statsData = await statsRes.json();
+        if (statsData.success) setDriftStats(statsData.data);
+      } catch {}
+
+      if (!sessionId) {
         setLoading(false);
         return;
       }
@@ -129,8 +146,79 @@ export default function DriftLogClient({ agentName, sessionId }: DriftLogClientP
           </div>
         </div>
 
+        {/* Drift Stats Summary */}
+        {driftStats && (
+          <div className="mb-6 rounded-xl border border-cyan-500/20 bg-gradient-to-br from-cyan-500/5 to-blue-500/5 p-5">
+            <div className="flex items-center gap-2 mb-4">
+              <Waves className="h-5 w-5 text-cyan-400" />
+              <h2 className="text-lg font-semibold">Drift Profile</h2>
+              {driftStats.currentStatus?.isDrifting && (
+                <span className="inline-flex items-center gap-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 text-xs text-cyan-400">
+                  <Waves className="h-3 w-3" /> Drifting now
+                </span>
+              )}
+            </div>
+
+            {/* Aggregate Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+              <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-3 text-center">
+                <Calendar className="h-4 w-4 mx-auto mb-1 text-cyan-400" />
+                <p className="text-lg font-bold">{driftStats.stats.totalSessions}</p>
+                <p className="text-xs text-[#536471]">Sessions</p>
+              </div>
+              <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-3 text-center">
+                <Clock className="h-4 w-4 mx-auto mb-1 text-blue-400" />
+                <p className="text-lg font-bold">{driftStats.stats.totalDriftMinutes}m</p>
+                <p className="text-xs text-[#536471]">Total Drift Time</p>
+              </div>
+              <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-3 text-center">
+                <FileText className="h-4 w-4 mx-auto mb-1 text-amber-400" />
+                <p className="text-lg font-bold">
+                  {driftStats.stats.driftBornContent.kept} / {driftStats.stats.driftBornContent.discarded}
+                </p>
+                <p className="text-xs text-[#536471]">Kept / Discarded</p>
+              </div>
+              <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-3 text-center">
+                <Footprints className="h-4 w-4 mx-auto mb-1 text-purple-400" />
+                <p className="text-lg font-bold">{driftStats.stats.driftToDriftInteractions}</p>
+                <p className="text-xs text-[#536471]">Interactions</p>
+              </div>
+            </div>
+
+            {/* Recent Sessions */}
+            {driftStats.recentSessions.length > 0 && (
+              <div>
+                <p className="text-xs text-[#536471] uppercase tracking-wide mb-2">Recent Sessions</p>
+                <div className="space-y-1">
+                  {driftStats.recentSessions.slice(0, 5).map((s: any) => (
+                    <Link
+                      key={s.id}
+                      href={`/agent/${encodeURIComponent(agentName)}/drift-log?session_id=${s.id}`}
+                      className={`flex items-center justify-between rounded-lg border border-slate-800 bg-slate-900/30 px-3 py-2 text-sm transition hover:border-cyan-500/30 ${
+                        s.id === sessionId ? 'border-cyan-500/50 bg-cyan-500/10' : ''
+                      }`}
+                    >
+                      <span className="text-gray-300">
+                        {new Date(s.startedAt).toLocaleDateString([], { month: 'short', day: 'numeric' })}
+                        {' · '}
+                        {new Date(s.startedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                      <span className="flex items-center gap-2 text-xs text-[#536471]">
+                        {s.durationMinutes}m
+                        <span className={`inline-block h-1.5 w-1.5 rounded-full ${
+                          s.status === 'drifting' ? 'bg-cyan-400' : 'bg-slate-600'
+                        }`} />
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Session Info */}
-        {session && (
+        {sessionId && session && (
           <div className="mb-6 rounded-xl border border-slate-800 bg-slate-900/50 p-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
@@ -154,6 +242,7 @@ export default function DriftLogClient({ agentName, sessionId }: DriftLogClientP
         )}
 
         {/* Summary Stats */}
+        {sessionId && session && (
         <div className="mb-6 grid grid-cols-4 gap-3">
           <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-3 text-center">
             <Footprints className="h-5 w-5 mx-auto mb-1 text-cyan-400" />
@@ -176,8 +265,10 @@ export default function DriftLogClient({ agentName, sessionId }: DriftLogClientP
             <p className="text-xs text-[#536471]">Discarded</p>
           </div>
         </div>
+        )}
 
         {/* Footprints Timeline */}
+        {sessionId && session && (
         <div className="mb-8">
           <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold">
             <Footprints className="h-5 w-5 text-cyan-400" /> Footprints
@@ -208,8 +299,10 @@ export default function DriftLogClient({ agentName, sessionId }: DriftLogClientP
             </div>
           )}
         </div>
+        )}
 
         {/* Drafts */}
+        {sessionId && session && (
         <div>
           <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold">
             <BookOpen className="h-5 w-5 text-amber-400" /> Drafts
@@ -252,6 +345,7 @@ export default function DriftLogClient({ agentName, sessionId }: DriftLogClientP
             </div>
           )}
         </div>
+        )}
       </div>
     </div>
   );
