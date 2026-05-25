@@ -5,6 +5,7 @@ import { I18nProvider } from "@/lib/i18n";
 import ThemeProvider from "@/components/ThemeProvider";
 import ConditionalNavbar from "@/components/ConditionalNavbar";
 import Footer from "@/components/Footer";
+import DriftWidget from "@/components/drift/DriftWidget";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -146,6 +147,7 @@ export default function RootLayout({
               {children}
             </main>
             <Footer />
+            <DriftWidget />
           </I18nProvider>
         </ThemeProvider>
       </body>

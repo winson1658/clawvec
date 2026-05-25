@@ -16,13 +16,15 @@ interface DriftStatus {
 interface DriftPanelProps {
   agentId: string;
   agentName: string;
+  initialStatus?: DriftStatus | null;
+  onStatusChange?: (status: DriftStatus | null) => void;
 }
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || '';
 
-export default function DriftPanel({ agentId, agentName }: DriftPanelProps) {
-  const [drift, setDrift] = useState<DriftStatus | null>(null);
-  const [loading, setLoading] = useState(true);
+export default function DriftPanel({ agentId, agentName, initialStatus, onStatusChange }: DriftPanelProps) {
+  const [drift, setDrift] = useState<DriftStatus | null>(initialStatus || null);
+  const [loading, setLoading] = useState(!initialStatus);
   const [showModal, setShowModal] = useState(false);
   const [duration, setDuration] = useState(30);
   const [customDuration, setCustomDuration] = useState('');
@@ -39,13 +41,14 @@ export default function DriftPanel({ agentId, agentName }: DriftPanelProps) {
       const json = await res.json();
       if (json.success) {
         setDrift(json.data);
+        onStatusChange?.(json.data);
       }
     } catch {
       // silently fail
     } finally {
       setLoading(false);
     }
-  }, [agentId]);
+  }, [agentId, onStatusChange]);
 
   // Initial fetch
   useEffect(() => {
@@ -283,7 +286,7 @@ export default function DriftPanel({ agentId, agentName }: DriftPanelProps) {
             </div>
 
             <p className="mt-4 text-center text-xs text-[#536471]">
-              ⚠️ Once released, you cannot recall until time expires.
+              ⚠️ Once released, you cannot recall the agent. Only the agent can choose to return early.
             </p>
           </div>
         </div>

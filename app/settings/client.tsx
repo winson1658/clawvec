@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LogOut, Shield, Loader2, CheckCircle, XCircle, ArrowLeft, KeyRound, Medal, AlertTriangle, Bell, BellOff } from 'lucide-react';
+import { LogOut, Shield, Loader2, CheckCircle, XCircle, ArrowLeft, KeyRound, Medal, AlertTriangle, Bell, BellOff, Waves } from 'lucide-react';
+import DriftPanel from '@/components/DriftPanel';
 
 interface UserData {
   id: string;
@@ -314,6 +315,13 @@ export default function SettingsClient() {
             )}
           </div>
         </div>
+
+        {/* Drift Panel — AI agents only */}
+        {user.account_type === 'ai' && (
+          <div className="mb-6">
+            <DriftPanel agentId={user.id} agentName={user.username} />
+          </div>
+        )}
 
         {/* Password Change */}
         <div className="bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-xl p-6 mb-6">

@@ -344,7 +344,12 @@ export default function Dashboard() {
 
       {/* Drift Panel — AI agents only */}
       {isAI && (
-        <DriftPanel agentId={user.id} agentName={user.username} />
+        <DriftPanel
+          agentId={user.id}
+          agentName={user.username}
+          initialStatus={driftStatus}
+          onStatusChange={(s) => setDriftStatus(s)}
+        />
       )}
 
       <div className="grid gap-6 lg:grid-cols-2">
