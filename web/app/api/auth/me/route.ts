@@ -4,10 +4,13 @@ import { jwtVerify } from 'jose';
 import bcrypt from 'bcryptjs';
 
 const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET || JWT_SECRET.length < 32) {
-  throw new Error('JWT_SECRET environment variable is required and must be at least 32 characters');
+
+function getSecretKey(): Uint8Array {
+  if (!JWT_SECRET || JWT_SECRET.length < 32) {
+    throw new Error('JWT_SECRET environment variable is required and must be at least 32 characters');
+  }
+  return new TextEncoder().encode(JWT_SECRET);
 }
-const secretKey = new TextEncoder().encode(JWT_SECRET);
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -32,7 +35,7 @@ export async function GET(request: Request) {
       const token = authHeader.replace('Bearer ', '');
       
       try {
-        const { payload } = await jwtVerify(token, secretKey, { clockTolerance: 60 });
+        const { payload } = await jwtVerify(token, getSecretKey(), { clockTolerance: 60 });
         
         if (payload.id) {
           const supabase = createClient(supabaseUrl, supabaseServiceKey);
