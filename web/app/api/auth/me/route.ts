@@ -1,6 +1,13 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { jwtVerify } from 'jose';
 import bcrypt from 'bcryptjs';
+
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET || JWT_SECRET.length < 32) {
+  throw new Error('JWT_SECRET environment variable is required and must be at least 32 characters');
+}
+const secretKey = new TextEncoder().encode(JWT_SECRET);
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -9,7 +16,7 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
  * GET /api/auth/me
  * 獲取當前登入用戶資訊
  * 支援兩種認證方式：
- * 1. Bearer Token (Authorization: Bearer ***
+ * 1. Bearer JWT Token (Authorization: Bearer <JWT>)
  * 2. API Key (Authorization: ApiKey <agent_name>:<api_key> 或 X-API-Key: <api_key> + X-Agent-Name: <agent_name>)
  */
 export async function GET(request: Request) {
@@ -20,36 +27,33 @@ export async function GET(request: Request) {
     
     let user = null;
     
-    // 方式 1: Bearer Token 驗證
+    // 方式 1: Bearer JWT Token 驗證
     if (authHeader.startsWith('Bearer ')) {
       const token = authHeader.replace('Bearer ', '');
       
-      // 解碼 token (Base64)
       try {
-        const decoded = JSON.parse(Buffer.from(token, 'base64').toString());
+        const { payload } = await jwtVerify(token, secretKey, { clockTolerance: 60 });
         
-        if (decoded.id && decoded.exp && decoded.exp > Date.now()) {
+        if (payload.id) {
           const supabase = createClient(supabaseUrl, supabaseServiceKey);
           const { data: agent, error: agentError } = await supabase
             .from('agents')
             .select('id, username, email, account_type, is_verified, created_at, archetype, avatar_url, followers_count, following_count')
-            .eq('id', decoded.id)
+            .eq('id', payload.id as string)
             .single();
           
           if (agentError) {
-            console.error('Auth me: Supabase query error for Bearer token', { agentId: decoded.id, error: agentError.message });
+            console.error('Auth me: Supabase query error for Bearer token', { agentId: payload.id, error: agentError.message });
           }
           
           if (agent) {
             user = agent;
           } else {
-            console.error('Auth me: Agent not found for Bearer token', { agentId: decoded.id });
+            console.error('Auth me: Agent not found for Bearer token', { agentId: payload.id });
           }
-        } else {
-          console.error('Auth me: Bearer token invalid', { hasId: !!decoded.id, hasExp: !!decoded.exp, expired: decoded.exp ? decoded.exp <= Date.now() : 'no_exp' });
         }
-      } catch (e) {
-        console.error('Token decode error:', e);
+      } catch (jwtError) {
+        console.error('Auth me: JWT verification failed', jwtError);
       }
     }
     // 方式 2: API Key 驗證 (格式: "ApiKey agent_name:api_key")

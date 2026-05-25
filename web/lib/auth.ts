@@ -4,7 +4,10 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET || JWT_SECRET.length < 32) {
+  throw new Error('JWT_SECRET environment variable is required and must be at least 32 characters');
+}
 
 const secretKey = new TextEncoder().encode(JWT_SECRET);
 
@@ -111,7 +114,8 @@ export async function getCurrentUser(request: NextRequest) {
 
 /**
  * Require authentication from any Request (not just NextRequest).
- * Returns agent data or throws response.
+ * Returns agent data or throws a standard Error with 401 metadata.
+ * Caller MUST catch and return NextResponse.json({ error }, { status: 401 }).
  */
 export async function requireAuthFromRequest(request: Request): Promise<{ id: string; username: string; account_type: string; [key: string]: any }> {
   const authHeader = request.headers.get('Authorization') || request.headers.get('authorization');
@@ -128,10 +132,10 @@ export async function requireAuthFromRequest(request: Request): Promise<{ id: st
     if (agent) return { ...jwtPayload, ...agent };
   }
 
-  throw NextResponse.json(
-    { success: false, error: { code: 'UNAUTHENTICATED', message: 'Login required' } },
-    { status: 401 }
-  );
+  const error = new Error('Login required');
+  (error as any).code = 'UNAUTHENTICATED';
+  (error as any).status = 401;
+  throw error;
 }
 
 /**
