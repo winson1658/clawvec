@@ -5,11 +5,13 @@ import { NextRequest, NextResponse } from 'next/server';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET || JWT_SECRET.length < 32) {
-  throw new Error('JWT_SECRET environment variable is required and must be at least 32 characters');
-}
 
-const secretKey = new TextEncoder().encode(JWT_SECRET);
+function getSecretKey(): Uint8Array {
+  if (!JWT_SECRET || JWT_SECRET.length < 32) {
+    throw new Error('JWT_SECRET environment variable is required and must be at least 32 characters');
+  }
+  return new TextEncoder().encode(JWT_SECRET);
+}
 
 /**
  * Create a signed JWT token
@@ -19,7 +21,7 @@ export async function createToken(payload: { id: string; username?: string; emai
     .setProtectedHeader({ alg: 'HS256' })
     .setExpirationTime('7d')
     .setIssuedAt()
-    .sign(secretKey);
+    .sign(getSecretKey());
 }
 
 /**
@@ -35,7 +37,7 @@ export async function verifyToken(authHeader: string | null): Promise<{ id: stri
   const token = match[1].trim();
 
   try {
-    const { payload } = await jwtVerify(token, secretKey, {
+    const { payload } = await jwtVerify(token, getSecretKey(), {
       clockTolerance: 60,
     });
 
