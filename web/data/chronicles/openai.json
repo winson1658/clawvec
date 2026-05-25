@@ -1,0 +1,410 @@
+[
+  {
+    "id": "1",
+    "date": "2015-12-11",
+    "title": "OpenAI Founded",
+    "description": "Sam Altman, Elon Musk, Greg Brockman, Ilya Sutskever, and others announce OpenAI with $1B in pledged funding. Mission: to advance digital intelligence for humanity's benefit.",
+    "category": "milestone",
+    "impact": 5
+  },
+  {
+    "id": "2",
+    "date": "2016-04-27",
+    "title": "OpenAI Gym Released",
+    "description": "OpenAI releases Gym, a toolkit for developing and comparing reinforcement learning algorithms. Becomes standard benchmark for RL research.",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "id": "3",
+    "date": "2016-12-05",
+    "title": "Universe Platform",
+    "description": "OpenAI Universe released — software platform for measuring and training AI using games, websites, and applications.",
+    "category": "product",
+    "impact": 2
+  },
+  {
+    "id": "4",
+    "date": "2017-06-16",
+    "title": "World Models Paper",
+    "description": "OpenAI publishes influential research on World Models, showing agents can learn in imagined environments.",
+    "category": "research",
+    "impact": 3
+  },
+  {
+    "id": "5",
+    "date": "2017-08-11",
+    "title": "Dota 2 Bot",
+    "description": "OpenAI bot defeats top Dota 2 players at The International, demonstrating emergent teamwork in competitive games.",
+    "category": "research",
+    "impact": 4
+  },
+  {
+    "id": "6",
+    "date": "2018-02-20",
+    "title": "Elon Musk Departs",
+    "description": "Elon Musk leaves OpenAI board citing potential future conflicts with Tesla's AI development.",
+    "category": "personnel",
+    "impact": 3
+  },
+  {
+    "id": "7",
+    "date": "2018-06-11",
+    "title": "GPT-1 Released",
+    "description": "OpenAI publishes 'Improving Language Understanding by Generative Pre-Training' — GPT-1 with 117M parameters introduces unsupervised pre-training + fine-tuning paradigm.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "id": "8",
+    "date": "2019-02-14",
+    "title": "GPT-2 Released (Partial)",
+    "description": "OpenAI releases GPT-2 (1.5B parameters) in staged rollout citing potential misuse concerns. Generates global debate on responsible AI release.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "id": "9",
+    "date": "2019-03-11",
+    "title": "OpenAI LP Founded",
+    "description": "OpenAI transitions from non-profit to 'capped-profit' model (OpenAI LP) to attract capital for AGI development. Profit cap set at 100x investment.",
+    "category": "milestone",
+    "impact": 4
+  },
+  {
+    "id": "10",
+    "date": "2019-07-22",
+    "title": "Microsoft Invests $1B",
+    "description": "Microsoft announces $1 billion investment in OpenAI, becoming exclusive cloud provider and integrating OpenAI tech into Azure.",
+    "category": "milestone",
+    "impact": 5
+  },
+  {
+    "id": "11",
+    "date": "2019-10-15",
+    "title": "Rubik's Cube Solved by Robot",
+    "description": "OpenAI demonstrates robotic hand solving Rubik's Cube using reinforcement learning — breakthrough in dexterous manipulation.",
+    "category": "research",
+    "impact": 3
+  },
+  {
+    "id": "12",
+    "date": "2020-06-11",
+    "title": "GPT-3 Released",
+    "description": "GPT-3 (175B parameters) released via API. Demonstrates emergent few-shot learning capabilities. Hailed as landmark in NLP and sparks widespread commercial interest.",
+    "category": "product",
+    "impact": 5
+  },
+  {
+    "id": "13",
+    "date": "2020-09-22",
+    "title": "GPT-3 Licensed Exclusively to Microsoft",
+    "description": "Microsoft obtains exclusive license to GPT-3 source code while OpenAI retains API access rights.",
+    "category": "milestone",
+    "impact": 3
+  },
+  {
+    "id": "14",
+    "date": "2021-01-05",
+    "title": "DALL-E Announced",
+    "description": "OpenAI introduces DALL-E, a 12B parameter model that generates images from text descriptions. Demonstrates surprising compositional abilities.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "id": "15",
+    "date": "2021-02-26",
+    "title": "CLIP Released",
+    "description": "CLIP (Contrastive Language-Image Pre-training) released — learns visual concepts from natural language supervision. Foundation for many multimodal systems.",
+    "category": "research",
+    "impact": 4
+  },
+  {
+    "id": "16",
+    "date": "2021-08-10",
+    "title": "Codex Announced",
+    "description": "OpenAI introduces Codex, GPT model fine-tuned on code. Powers GitHub Copilot (launched with GitHub in June).",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "id": "17",
+    "date": "2022-04-06",
+    "title": "DALL-E 2 Released",
+    "description": "DALL-E 2 launched with photorealistic image generation, outpainting, and variations. Waitlist system due to safety concerns.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "id": "18",
+    "date": "2022-08-10",
+    "title": "GPT-3.5 Fine-Tuning API",
+    "description": "OpenAI releases fine-tuning API for GPT-3.5, allowing developers to customize models for specific tasks.",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "id": "19",
+    "date": "2022-11-30",
+    "title": "ChatGPT Launched",
+    "description": "ChatGPT released as research preview. Based on GPT-3.5 with RLHF. Becomes fastest-growing consumer app in history, reaching 100M users in 2 months.",
+    "category": "product",
+    "impact": 5
+  },
+  {
+    "id": "20",
+    "date": "2023-01-23",
+    "title": "Microsoft Invests $10B",
+    "description": "Microsoft announces multi-year, multi-billion dollar investment (reported $10B) in OpenAI, extending partnership. Valuation reaches ~$29B.",
+    "category": "milestone",
+    "impact": 5
+  },
+  {
+    "id": "21",
+    "date": "2023-02-07",
+    "title": "Bing Chat Announced",
+    "description": "Microsoft unveils Bing with ChatGPT integration, powered by GPT-4. Marks beginning of search engine AI wars with Google.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "id": "22",
+    "date": "2023-03-01",
+    "title": "ChatGPT API Released",
+    "description": "OpenAI releases ChatGPT API (gpt-3.5-turbo) at 10x cheaper price than text-davinci-003. Triggers explosion of AI-powered applications.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "id": "23",
+    "date": "2023-03-14",
+    "title": "GPT-4 Released",
+    "description": "GPT-4 launched with multimodal capabilities (text + images), 32K context option, and significantly improved reasoning. Powers ChatGPT Plus.",
+    "category": "product",
+    "impact": 5
+  },
+  {
+    "id": "24",
+    "date": "2023-03-20",
+    "title": "ChatGPT Plugins",
+    "description": "OpenAI announces plugin system for ChatGPT, allowing integration with external services (Expedia, Instacart, Wolfram Alpha, etc.).",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "id": "25",
+    "date": "2023-05-13",
+    "title": "ChatGPT Mobile App",
+    "description": "ChatGPT iOS app launched. Android follows in July. Brings conversational AI to mobile mainstream.",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "id": "26",
+    "date": "2023-07-06",
+    "title": "GPT-4 API General Availability",
+    "description": "GPT-4 API made available to all paying customers, democratizing access to frontier model capabilities.",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "id": "27",
+    "date": "2023-09-25",
+    "title": "ChatGPT Gains Voice & Vision",
+    "description": "ChatGPT updated with voice conversations and image understanding capabilities, making it truly multimodal.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "id": "28",
+    "date": "2023-11-06",
+    "title": "GPT-4 Turbo & GPTs Store",
+    "description": "At DevDay: GPT-4 Turbo (128K context, cheaper), GPTs (custom ChatGPT versions), and Assistants API announced. Sam Altman returns to spotlight after board drama.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "id": "29",
+    "date": "2023-11-17",
+    "title": "Sam Altman Fired by Board",
+    "description": "OpenAI board unexpectedly fires CEO Sam Altman. Greg Brockman resigns. 700+ employees threaten to quit. Microsoft hires Altman. Altman reinstated after 5 days of chaos.",
+    "category": "personnel",
+    "impact": 5
+  },
+  {
+    "id": "30",
+    "date": "2023-11-29",
+    "title": "Altman Reinstated as CEO",
+    "description": "Sam Altman returns as CEO with new initial board. Microsoft gains non-voting observer seat. Board restructuring continues.",
+    "category": "personnel",
+    "impact": 4
+  },
+  {
+    "id": "31",
+    "date": "2024-02-15",
+    "title": "Sora Announced",
+    "description": "OpenAI unveils Sora, a text-to-video model capable of generating 60-second realistic videos. Stuns creative industries and raises deepfake concerns.",
+    "category": "product",
+    "impact": 5
+  },
+  {
+    "id": "32",
+    "date": "2024-03-12",
+    "title": "Elon Musk Sues OpenAI",
+    "description": "Elon Musk files lawsuit against OpenAI, alleging breach of founding agreement by prioritizing profit over humanity's benefit. Later withdraws and refiles.",
+    "category": "legal",
+    "impact": 3
+  },
+  {
+    "id": "33",
+    "date": "2024-05-13",
+    "title": "GPT-4o Released",
+    "description": "GPT-4o ('omni') launched — native multimodal model processing text, audio, and vision in single architecture. 2x faster, 50% cheaper than GPT-4 Turbo.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "id": "34",
+    "date": "2024-06-25",
+    "title": "Apple Integrates ChatGPT",
+    "description": "Apple announces ChatGPT integration into iOS 18, iPadOS 18, and macOS Sequoia as part of Apple Intelligence. Siri can delegate to ChatGPT.",
+    "category": "milestone",
+    "impact": 4
+  },
+  {
+    "id": "35",
+    "date": "2024-07-18",
+    "title": "GPT-4o Mini Released",
+    "description": "GPT-4o mini launched as cost-efficient small model. Priced at 15¢/1M input tokens, outperforming GPT-3.5 at fraction of cost.",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "id": "36",
+    "date": "2024-09-12",
+    "title": "o1 Preview Released",
+    "description": "OpenAI introduces o1-preview and o1-mini — first 'reasoning' models using chain-of-thought. Excels at math, coding, and scientific reasoning. Trades speed for accuracy.",
+    "category": "product",
+    "impact": 5
+  },
+  {
+    "id": "37",
+    "date": "2024-10-02",
+    "title": "OpenAI Closes $6.6B Funding",
+    "description": "OpenAI raises $6.6 billion at $157 billion valuation. Thrive Capital leads, Microsoft, NVIDIA, SoftBank participate. Becomes one of most valuable private companies.",
+    "category": "milestone",
+    "impact": 5
+  },
+  {
+    "id": "38",
+    "date": "2024-10-31",
+    "title": "ChatGPT Search Launched",
+    "description": "OpenAI launches ChatGPT Search, directly competing with Google and Perplexity. Provides real-time web search with conversational interface.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "id": "39",
+    "date": "2024-11-14",
+    "title": "Sora Public Launch",
+    "description": "Sora made available to ChatGPT Plus/Pro users after 9-month waitlist period. Generates up to 1080p 20-second videos.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "id": "40",
+    "date": "2024-12-04",
+    "title": "o1 Full Released",
+    "description": "o1 full version launched with improved reasoning, vision capabilities, and function calling. o1 Pro mode introduced for ChatGPT Pro subscribers.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "id": "41",
+    "date": "2024-12-20",
+    "title": "o3 Preview Announced",
+    "description": "OpenAI announces o3 and o3-mini preview models. o3 achieves breakthrough scores on ARC-AGI benchmark (87.5%). Not yet publicly available.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "id": "42",
+    "date": "2025-01-20",
+    "title": "Stargate Project Announced",
+    "description": "Trump, Altman, and Oracle's Larry Ellison announce $500B Stargate Project for US AI infrastructure. OpenAI is primary technology partner.",
+    "category": "milestone",
+    "impact": 5
+  },
+  {
+    "id": "43",
+    "date": "2025-01-23",
+    "title": "Operator Agent Released",
+    "description": "OpenAI launches Operator, an AI agent that can autonomously use computers to browse websites, fill forms, and complete tasks via CUA (Computer Using Agent).",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "id": "44",
+    "date": "2025-01-31",
+    "title": "o3-mini Released",
+    "description": "o3-mini launched as cost-efficient reasoning model. Offers adjustable reasoning effort (low/medium/high). Competitive with o1 at fraction of cost.",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "id": "45",
+    "date": "2025-02-02",
+    "title": "DeepResearch Released",
+    "description": "OpenAI launches DeepResearch agent capable of autonomous multi-step research, synthesizing information from hundreds of sources in minutes.",
+    "category": "product",
+    "impact": 4
+  },
+  {
+    "id": "46",
+    "date": "2025-04-16",
+    "title": "o3 Full Released",
+    "description": "o3 full version launched. Currently the strongest reasoning model with major improvements in coding, math, and scientific reasoning. Available via API.",
+    "category": "product",
+    "impact": 5
+  },
+  {
+    "id": "47",
+    "date": "2025-04-23",
+    "title": "OpenAI Moves to For-Profit",
+    "description": "OpenAI announces restructuring plan to remove non-profit control, transitioning to public benefit corporation. Faced regulatory scrutiny and Elon Musk opposition.",
+    "category": "milestone",
+    "impact": 4
+  },
+  {
+    "id": "48",
+    "date": "2025-05-13",
+    "title": "GPT-4.1 Released",
+    "description": "GPT-4.1 launched with improved instruction following, coding, and long-context performance (1M tokens). Significant price reductions compared to GPT-4o.",
+    "category": "product",
+    "impact": 3
+  },
+  {
+    "id": "49",
+    "date": "2025-05-28",
+    "title": "OpenAI Acquires io",
+    "description": "OpenAI acquires AI hardware startup io (founded by Jony Ive, former Apple designer) for $6.5B. Aims to build AI-native devices.",
+    "category": "milestone",
+    "impact": 4
+  },
+  {
+    "id": "50",
+    "date": "2025-06-06",
+    "title": "OpenAI Acquires Windsurf",
+    "description": "OpenAI acquires Windsurf (formerly Codeium) AI coding IDE for approximately $3B. Integrates into AI coding product line.",
+    "category": "milestone",
+    "impact": 3
+  },
+  {
+    "id": "51",
+    "date": "2025-08-07",
+    "title": "GPT-5 Released",
+    "description": "OpenAI releases GPT-5 with unified architecture replacing separate GPT-4o and o-series models. Claims 'tremendous leap' in capabilities but faces mixed reviews and controversy over safety evaluation.",
+    "category": "product",
+    "impact": 5
+  }
+]

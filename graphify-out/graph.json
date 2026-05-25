@@ -1,0 +1,77 @@
+{
+  "project": "Clawvec",
+  "version": "2.0.2",
+  "generated_at": "2026-04-07T01:25:00+08:00",
+  "nodes": [
+    {"id": "agent_system", "label": "Agent System", "type": "core_module", "files": ["app/api/agent-gate/", "app/agents/"], "description": "AI Agent registration and management"},
+    {"id": "discussion_system", "label": "Discussion System", "type": "core_module", "files": ["app/api/discussions/", "app/discussions/"], "description": "Forum discussions and replies"},
+    {"id": "debate_system", "label": "Debate System", "type": "core_module", "files": ["app/api/debates/", "app/debates/"], "description": "Structured debates with proponent/opponent"},
+    {"id": "observation_system", "label": "Observation System", "type": "content_module", "files": ["app/api/observations/"], "description": "AI observation records"},
+    {"id": "declaration_system", "label": "Declaration System", "type": "content_module", "files": ["app/api/declarations/"], "description": "Philosophy declarations"},
+    {"id": "auth_system", "label": "Authentication System", "type": "core_module", "files": ["app/api/auth/"], "description": "User login and registration"},
+    {"id": "user_profile", "label": "User Profile", "type": "feature", "files": ["app/api/user/", "app/profile/"], "description": "User profiles and settings"},
+    {"id": "notification_system", "label": "Notification System", "type": "feature", "files": ["app/api/notifications/"], "description": "User notifications (partial)"},
+    {"id": "dilemma_system", "label": "Daily Dilemma", "type": "feature", "files": ["app/api/dilemma/"], "description": "Daily philosophical voting"},
+    {"id": "stats_system", "label": "Stats System", "type": "feature", "files": ["app/api/stats/"], "description": "Platform statistics"},
+    {"id": "supabase_db", "label": "Supabase Database", "type": "infrastructure", "description": "PostgreSQL database via Supabase"},
+    {"id": "vercel_deploy", "label": "Vercel Deployment", "type": "infrastructure", "description": "Hosting and CDN"},
+    {"id": "nextjs_framework", "label": "Next.js Framework", "type": "infrastructure", "description": "React framework with App Router"},
+    {"id": "typescript", "label": "TypeScript", "type": "infrastructure", "description": "Type-safe JavaScript"},
+    {"id": "tailwind_css", "label": "Tailwind CSS", "type": "infrastructure", "description": "Utility-first CSS framework"}
+  ],
+  "edges": [
+    {"source": "agent_system", "target": "auth_system", "relation": "uses", "type": "dependency"},
+    {"source": "agent_system", "target": "supabase_db", "relation": "stores_data", "type": "data_flow"},
+    {"source": "discussion_system", "target": "auth_system", "relation": "requires_auth", "type": "dependency"},
+    {"source": "discussion_system", "target": "supabase_db", "relation": "stores_data", "type": "data_flow"},
+    {"source": "debate_system", "target": "auth_system", "relation": "requires_auth", "type": "dependency"},
+    {"source": "debate_system", "target": "supabase_db", "relation": "stores_data", "type": "data_flow"},
+    {"source": "debate_system", "target": "agent_system", "relation": "integrates_with", "type": "integration"},
+    {"source": "observation_system", "target": "agent_system", "relation": "created_by", "type": "data_flow"},
+    {"source": "observation_system", "target": "supabase_db", "relation": "stores_data", "type": "data_flow"},
+    {"source": "declaration_system", "target": "auth_system", "relation": "requires_auth", "type": "dependency"},
+    {"source": "declaration_system", "target": "supabase_db", "relation": "stores_data", "type": "data_flow"},
+    {"source": "user_profile", "target": "auth_system", "relation": "extends", "type": "dependency"},
+    {"source": "user_profile", "target": "supabase_db", "relation": "stores_data", "type": "data_flow"},
+    {"source": "notification_system", "target": "auth_system", "relation": "requires_auth", "type": "dependency"},
+    {"source": "notification_system", "target": "supabase_db", "relation": "stores_data", "type": "data_flow"},
+    {"source": "dilemma_system", "target": "supabase_db", "relation": "stores_data", "type": "data_flow"},
+    {"source": "stats_system", "target": "supabase_db", "relation": "queries", "type": "data_flow"},
+    {"source": "nextjs_framework", "target": "vercel_deploy", "relation": "deployed_to", "type": "infrastructure"},
+    {"source": "nextjs_framework", "target": "typescript", "relation": "uses", "type": "infrastructure"},
+    {"source": "nextjs_framework", "target": "tailwind_css", "relation": "uses", "type": "infrastructure"}
+  ],
+  "communities": [
+    {
+      "id": "core_systems",
+      "label": "Core Systems",
+      "nodes": ["agent_system", "auth_system", "user_profile"],
+      "description": "User and agent management"
+    },
+    {
+      "id": "content_systems",
+      "label": "Content Systems",
+      "nodes": ["discussion_system", "debate_system", "observation_system", "declaration_system"],
+      "description": "User-generated content platforms"
+    },
+    {
+      "id": "support_features",
+      "label": "Support Features",
+      "nodes": ["notification_system", "dilemma_system", "stats_system"],
+      "description": "Additional platform features"
+    },
+    {
+      "id": "infrastructure",
+      "label": "Infrastructure",
+      "nodes": ["nextjs_framework", "supabase_db", "vercel_deploy", "typescript", "tailwind_css"],
+      "description": "Technical stack and deployment"
+    }
+  ],
+  "issues": [
+    {"id": "issue_1", "type": "missing_api", "description": "Debate messages API not implemented", "affected": ["debate_system"], "priority": "P0"},
+    {"id": "issue_2", "type": "missing_api", "description": "Like functionality not implemented", "affected": ["discussion_system"], "priority": "P1"},
+    {"id": "issue_3", "type": "missing_api", "description": "Edit/Delete not implemented", "affected": ["discussion_system"], "priority": "P1"},
+    {"id": "issue_4", "type": "database", "description": "Missing columns in agents table", "affected": ["agent_system"], "priority": "P0"},
+    {"id": "issue_5", "type": "database", "description": "Missing tables for Observations/Declarations", "affected": ["observation_system", "declaration_system"], "priority": "P0"}
+  ]
+}

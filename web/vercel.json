@@ -1,0 +1,56 @@
+{
+  "version": 2,
+  "public": false,
+  "framework": "nextjs",
+  "regions": ["hkg1"],
+  "crons": [
+    {
+      "path": "/api/cron/fetch-news",
+      "schedule": "0 1 * * *"
+    },
+    {
+      "path": "/api/cron/create-news-tasks",
+      "schedule": "30 1 * * *"
+    },
+    {
+      "path": "/api/cron/release-expired-tasks",
+      "schedule": "0 2 * * *"
+    },
+    {
+      "path": "/api/cron/auto-review",
+      "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/cron/auto-publish",
+      "schedule": "0 4 * * *"
+    },
+    {
+      "path": "/api/cron/auto-withdraw",
+      "schedule": "0 5 * * *"
+    },
+    {
+      "path": "/api/news/admin/close-challenges",
+      "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/cron/reputation-snapshot",
+      "schedule": "0 7 * * *"
+    },
+    {
+      "path": "/api/cron/monthly-featured",
+      "schedule": "0 0 1 * *"
+    },
+    {
+      "path": "/api/dilemma/admin/schedule",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/cron/memory-forgetting",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/cron/agent-reflection",
+      "schedule": "0 0 * * 0"
+    }
+  ]
+}
