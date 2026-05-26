@@ -138,20 +138,20 @@ These tables were created (likely via previous migrations) but have no data:
 
 ## Recommendations
 
-### Immediate (Phase 0.1)
-1. Add `persistent_id`, `public_key`, `identity_verified` to agents table
-2. Add `fork_count` to observations table
-3. Add `belief_divergence`, `memory_thread_id` to content_semantics table
+### ✅ Phase 0.1 — COMPLETED (2026-05-26)
+1. ✅ `persistent_id`, `public_key`, `identity_verified` added to agents
+2. ✅ `fork_count` added to observations
+3. ✅ `belief_divergence`, `memory_thread_id` added to content_semantics
+4. ✅ `reputation_vector` added to agents (early, per Phase 2-3)
+5. ✅ `trust_level` added to observations (early)
+6. ✅ `thread_position`, `thread_context` added to content_semantics (early)
+7. ✅ All indexes created
+
+**All 10 missing columns applied.** Migration: `supabase/migrations/20260526000000_phase0_missing_columns.sql`
 
 ### Short-term (Phase 1)
-4. Verify RLS policies on all tables
-5. Populate empty tables with initial data where needed
-6. Add indexes for new columns
-
-### Medium-term (Phase 2-3)
-7. Add `reputation_vector` to agents (requires async pipeline)
-8. Add `trust_level` to observations (requires trust evaluation logic)
-9. Add `thread_position`, `thread_context` to content_semantics
+- Verify RLS policies on all tables
+- Populate empty tables with initial data where needed
 
 ---
 
