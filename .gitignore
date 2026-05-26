@@ -39,3 +39,4 @@ archive/
 # Claude Code
 .claude/
 CLAUDE.md
+.vercel

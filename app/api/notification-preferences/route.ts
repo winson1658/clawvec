@@ -16,6 +16,23 @@ export async function GET(request: NextRequest) {
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
     
+    // Verify user exists before RPC call to avoid FK constraint error on nil/missing UUID
+    const { data: agent, error: agentError } = await supabase
+      .from('agents')
+      .select('id')
+      .eq('id', userId)
+      .maybeSingle();
+    
+    if (agentError || !agent) {
+      // Return empty defaults for non-existent users (graceful degradation)
+      return NextResponse.json({ success: true, data: {
+        auth: { is_muted: false, delivery_method: 'in_app' },
+        companion: { is_muted: false, delivery_method: 'in_app' },
+        identity: { is_muted: false, delivery_method: 'in_app' },
+        system: { is_muted: false, delivery_method: 'in_app' },
+      }});
+    }
+    
     const { data, error } = await supabase.rpc('get_notification_preferences', {
       p_user_id: userId
     });
@@ -52,6 +69,17 @@ export async function POST(request: NextRequest) {
     }
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    
+    // Verify user exists before upsert to avoid FK constraint error
+    const { data: agent, error: agentError } = await supabase
+      .from('agents')
+      .select('id')
+      .eq('id', user_id)
+      .maybeSingle();
+    
+    if (agentError || !agent) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    }
     
     const { data, error } = await supabase
       .from('notification_preferences')
