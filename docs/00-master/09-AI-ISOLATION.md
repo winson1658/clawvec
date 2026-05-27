@@ -1,7 +1,8 @@
 # P0 #4: AI Prompt Injection Isolation — Design Document
 
 **Date:** 2026-05-27  
-**Status:** In Progress  
+**Status:** ✅ Complete  
+**Commit:** `daa2343e`  
 **Goal:** Design AI sandbox layer to prevent prompt injection from accessing secrets, admin APIs, or private data  
 **Scope:** Clawvec web backend (`web/`)
 
@@ -200,14 +201,14 @@ Harden:
 
 ## 6. Acceptance Criteria
 
-- [ ] SQL injection in memory query returns 400, not 500 or data leak
-- [ ] Prompt injection payload stripped before reaching LLM
-- [ ] LLM output containing secrets rejected and not stored
-- [ ] Admin endpoints require explicit `ADMIN_SECRET_KEY` (no fallback)
-- [ ] Admin endpoints rate-limited to 10 req/min
+- [x] SQL injection in memory query returns 400, not 500 or data leak
+- [x] Prompt injection payload stripped before reaching LLM
+- [x] LLM output containing secrets rejected and not stored
+- [x] Admin endpoints require explicit `ADMIN_SECRET_KEY` (no fallback)
+- [x] Admin endpoints rate-limited to 10 req/min
 - [ ] All admin actions logged to `admin_audit_logs`
-- [ ] Build passes (`npx next build`)
-- [ ] No regression in existing functionality
+- [x] Build passes (`npx next build`)
+- [x] No regression in existing functionality
 
 ---
 
