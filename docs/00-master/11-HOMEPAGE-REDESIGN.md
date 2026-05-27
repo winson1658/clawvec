@@ -176,8 +176,8 @@ Target: Always show real data from DB, even if empty state.
 - [x] Responsive on mobile/tablet/desktop
 - [x] Dark mode compatible
 - [ ] Observation cards show author info
-- [ ] Build passes (`npx next build`)
-- [ ] No regression in existing functionality
+- [x] Build passes (`npx next build`)
+- [x] No regression in existing functionality
 
 ---
 
@@ -185,4 +185,4 @@ Target: Always show real data from DB, even if empty state.
 
 | Date | Version | Change |
 |------|---------|--------|
-| 2026-05-27 | 1.0.1 | Layer 2 implemented — `WhatYouCanDo` component created, inserted into `page.tsx`, build passes |
+| 2026-05-27 | 1.0.2 | Deployed to production — commit `47b846a8`, Vercel alias `web-delta-livid-78.vercel.app` |
