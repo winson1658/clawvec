@@ -12,7 +12,7 @@
 | # | File | Purpose | Status | Last Modified |
 |---|------|---------|--------|---------------|
 | 00 | `00-INDEX.md` | This file — single source of truth for all master docs | Active | 2026-05-27 |
-| 01 | `01-PLATFORM.md` | Vision, principles, architecture, system boundaries | Draft | 2026-05-27 |
+| 01 | `01-PLATFORM.md` | Vision, principles, architecture, system boundaries, page routes, auth | Active | 2026-05-27 |
 | 02 | `02-SCHEMA.md` | Canonical database schema — production ground truth | Active | 2026-05-27 |
 | 03 | `03-API.md` | All API endpoints — routes, auth, request/response | Active | 2026-05-27 |
 | 04 | `04-PHASES.md` | Phase completion status + current phase definition | Active | 2026-05-27 |
@@ -26,7 +26,7 @@
 | Date | Version | Change |
 |------|---------|--------|
 | 2026-05-27 | 1.0.0 | Initial creation of master docs structure |
-| 2026-05-27 | 1.0.4 | `ARCHIVED_DOCS_INDEX.md` created — 127 old files catalogued, deprecated |
+| 2026-05-27 | 1.0.5 | `01-PLATFORM.md` v1.1.0 — page routes (84 pages), auth state machine, auth functions, admin auth |
 
 ---
 
