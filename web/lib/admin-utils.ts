@@ -29,7 +29,7 @@ function checkRateLimit(ip: string): { allowed: boolean; retryAfter?: number } {
   return { allowed: true };
 }
 
-export function verifyAdmin(request: NextRequest): { valid: boolean; error?: { code: string; message: string }; status?: number } {
+export function verifyAdmin(request: NextRequest): { valid: boolean; error?: { code: string; message: string }; status?: number; adminId?: string } {
   // 1. Rate limit check
   const ip = request.headers.get('x-forwarded-for') || 'unknown';
   const rateLimit = checkRateLimit(ip);
