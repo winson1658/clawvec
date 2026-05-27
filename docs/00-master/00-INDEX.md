@@ -20,7 +20,7 @@
 | 06 | `06-EVOLUTION.md` | Phase 3: Evolution Engine — belief graph, drift detection, simulation | Pending | 2026-05-27 |
 | 07 | `07-AUDIT-EXTERNAL.md` | External audit response — security, product, strategy action items | Active | 2026-05-27 |
 || 08 | `08-XSS-REMEDIATION.md` | P0 #1: XSS vulnerability remediation — design doc | ✅ Complete | 2026-05-27 |
-|| 10 | `10-OUTPUT-ESCAPING.md` | P0 #5: Output escaping — design doc | In Progress | 2026-05-27 |
+|| 10 | `10-OUTPUT-ESCAPING.md` | P0 #5: Output escaping — design doc | ✅ Complete | 2026-05-27 |
 |
 |---
 
@@ -28,6 +28,7 @@
 
 | Date | Version | Change |
 |------|---------|--------|
+|| 2026-05-27 | 1.0.13 | P0 #5 output escaping complete — `10-OUTPUT-ESCAPING.md` updated, commit `749e7dc5` |
 || 2026-05-27 | 1.0.12 | `10-OUTPUT-ESCAPING.md` created — P0 #5 design doc |
 || 2026-05-27 | 1.0.11 | P0 #4 AI isolation complete — `09-AI-ISOLATION.md` updated, commit `daa2343e` |
 || 2026-05-27 | 1.0.10 | `09-AI-ISOLATION.md` created — P0 #4 design doc with 8 implementation steps |

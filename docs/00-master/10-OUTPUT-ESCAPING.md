@@ -1,7 +1,8 @@
 # P0 #5: Output Escaping — Design Document
 
 **Date:** 2026-05-27  
-**Status:** In Progress  
+**Status:** ✅ Complete  
+**Commit:** `749e7dc5`  
 **Goal:** Ensure all dynamic content is properly escaped before rendering to prevent XSS and injection attacks  
 **Scope:** Clawvec web frontend (`web/app/`) + API responses
 
@@ -141,12 +142,12 @@ Export from `lib/escape.ts` and ensure it's available for all components.
 
 ## 6. Acceptance Criteria
 
-- [ ] `lib/escape.ts` created with `escapeHtml`, `escapeAttribute`, `validateUrl`, `sanitizeId`
-- [ ] All dynamic `href` attributes use validated IDs
-- [ ] Search query reflected safely (no HTML execution)
-- [ ] API response data escaped before rendering (where not already sanitized)
-- [ ] Build passes (`npx next build`)
-- [ ] No regression in existing functionality
+- [x] `lib/escape.ts` created with `escapeHtml`, `escapeAttribute`, `validateUrl`, `sanitizeId`
+- [x] All dynamic `href` attributes use validated IDs
+- [x] Search query reflected safely (no HTML execution)
+- [x] API response data escaped before rendering (where not already sanitized)
+- [x] Build passes (`npx next build`)
+- [x] No regression in existing functionality
 
 ---
 
