@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { verifyAdmin, createDryRunResponse, validateConfirmToken, consumeConfirmToken } from '@/lib/admin-utils';
-import { mapPostgresError } from '@/lib/validation';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -13,11 +12,10 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 //   - confirm_token=XXX: Required for actual execution after dry-run
 export async function POST(request: NextRequest) {
   try {
-    const adminCheck = verifyAdmin(request);
-    if (!adminCheck.valid) {
+    if (!verifyAdmin(request)) {
       return NextResponse.json(
-        { success: false, error: adminCheck.error },
-        { status: adminCheck.status || 401 }
+        { success: false, error: { code: 'UNAUTHORIZED', message: 'Admin credentials required' } },
+        { status: 401 }
       );
     }
 
@@ -35,10 +33,9 @@ export async function POST(request: NextRequest) {
 
     if (fetchError) {
       console.error('Fetch error:', fetchError);
-      const mapped = mapPostgresError(fetchError);
       return NextResponse.json(
-        { error: mapped.message },
-        { status: mapped.status }
+        { error: 'Failed to fetch human accounts', details: fetchError.message },
+        { status: 500 }
       );
     }
 
@@ -107,7 +104,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Unexpected error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error', details: String(error) },
       { status: 500 }
     );
   }
