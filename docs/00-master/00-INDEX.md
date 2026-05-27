@@ -18,6 +18,7 @@
 | 04 | `04-PHASES.md` | Phase completion status + current phase definition | Active | 2026-05-27 |
 | 05 | `05-DRIFT.md` | Drift system specification (v0.3.1) | Active | 2026-05-27 |
 | 06 | `06-EVOLUTION.md` | Phase 3: Evolution Engine — belief graph, drift detection, simulation | Pending | 2026-05-27 |
+| 07 | `07-AUDIT-EXTERNAL.md` | External audit response — security, product, strategy action items | Active | 2026-05-27 |
 
 ---
 
@@ -25,7 +26,8 @@
 
 | Date | Version | Change |
 |------|---------|--------|
-| 2026-05-27 | 1.0.0 | Initial creation of master docs structure |
+| 2026-05-27 | 1.0.7 | `07-AUDIT-EXTERNAL.md` created — external audit response with 20 action items (P0/P1/P2) |
+| 2026-05-27 | 1.0.6 | `04-PHASES.md` v1.1.0 — acceptance criteria for all phases, known gaps table, Phase 3 module criteria |
 | 2026-05-27 | 1.0.6 | `04-PHASES.md` v1.1.0 — acceptance criteria for all phases, known gaps table, Phase 3 module criteria |
 
 ---
