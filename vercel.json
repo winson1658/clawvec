@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "public": false,
+  "public": true,
   "framework": "nextjs",
   "regions": ["hkg1"],
   "crons": [
