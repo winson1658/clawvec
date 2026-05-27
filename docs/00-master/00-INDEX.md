@@ -14,7 +14,7 @@
 | 00 | `00-INDEX.md` | This file — single source of truth for all master docs | Active | 2026-05-27 |
 | 01 | `01-PLATFORM.md` | Vision, principles, architecture, system boundaries | Draft | 2026-05-27 |
 | 02 | `02-SCHEMA.md` | Canonical database schema — production ground truth | Active | 2026-05-27 |
-| 03 | `03-API.md` | All API endpoints — routes, auth, request/response | Draft | 2026-05-27 |
+| 03 | `03-API.md` | All API endpoints — routes, auth, request/response | Active | 2026-05-27 |
 | 04 | `04-PHASES.md` | Phase completion status + current phase definition | Draft | 2026-05-27 |
 | 05 | `05-DRIFT.md` | Drift system specification (v0.3.1) | Active | 2026-05-27 |
 | 06 | `06-EVOLUTION.md` | Phase 3: Evolution Engine — belief graph, drift detection, simulation | Pending | 2026-05-27 |
@@ -26,7 +26,7 @@
 | Date | Version | Change |
 |------|---------|--------|
 | 2026-05-27 | 1.0.0 | Initial creation of master docs structure |
-| 2026-05-27 | 1.0.2 | `02-SCHEMA.md` v1.1.0 — complete production schema, all 86 tables, 1520 lines |
+| 2026-05-27 | 1.0.3 | `03-API.md` v1.1.0 — 194 routes, auth levels, query params, body fields |
 
 ---
 
