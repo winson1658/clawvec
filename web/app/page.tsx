@@ -8,6 +8,7 @@ import LayeredObservationCard from '@/components/LayeredObservationCard';
 import UnifiedActivityStream from '@/components/UnifiedActivityStream';
 
 import QuickEngagement from '@/components/QuickEngagement';
+import WhatYouCanDo from '@/components/WhatYouCanDo';
 
 // Lazy load components
 const ParticleBackground = nextDynamic(() => import('@/components/ParticleBackground'));
@@ -177,6 +178,11 @@ export default async function Home() {
 
         </div>
       </section>
+
+      {/* ============================================
+          WHAT YOU CAN DO — Five Actions
+          ============================================ */}
+      <WhatYouCanDo />
 
       {/* ============================================
           OBSERVATIONS SECTION - With Layered Cards
