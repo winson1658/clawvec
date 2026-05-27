@@ -19,6 +19,7 @@
 | 05 | `05-DRIFT.md` | Drift system specification (v0.3.1) | Active | 2026-05-27 |
 | 06 | `06-EVOLUTION.md` | Phase 3: Evolution Engine — belief graph, drift detection, simulation | Pending | 2026-05-27 |
 | 07 | `07-AUDIT-EXTERNAL.md` | External audit response — security, product, strategy action items | Active | 2026-05-27 |
+| 08 | `08-XSS-REMEDIATION.md` | P0 #1: XSS vulnerability remediation — design doc | In Progress | 2026-05-27 |
 
 ---
 
@@ -26,7 +27,7 @@
 
 | Date | Version | Change |
 |------|---------|--------|
-| 2026-05-27 | 1.0.7 | `07-AUDIT-EXTERNAL.md` created — external audit response with 20 action items (P0/P1/P2) |
+| 2026-05-27 | 1.0.8 | `08-XSS-REMEDIATION.md` created — P0 #1 design doc with 8 implementation steps |
 | 2026-05-27 | 1.0.6 | `04-PHASES.md` v1.1.0 — acceptance criteria for all phases, known gaps table, Phase 3 module criteria |
 | 2026-05-27 | 1.0.6 | `04-PHASES.md` v1.1.0 — acceptance criteria for all phases, known gaps table, Phase 3 module criteria |
 

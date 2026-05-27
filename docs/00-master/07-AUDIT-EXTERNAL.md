@@ -28,13 +28,13 @@
 
 ### 🔴 P0 — Security (Immediate)
 
-| # | Issue | Current Status | Action Required | Effort |
-|---|-------|---------------|-----------------|--------|
-| 1 | **XSS Vulnerability** | `<script>alert(1)</script>` visible on page | Audit all markdown renderers; add DOMPurify; remove dangerouslySetInnerHTML | 1-2 days |
-| 2 | **Markdown Sanitization** | User input may not be sanitized | Backend sanitize on save; frontend sanitize on render | 1 day |
-| 3 | **CSP Policy** | Basic headers only (X-Content-Type-Options, X-Frame-Options) | Add full Content-Security-Policy header | 2-4 hours |
-| 4 | **AI Prompt Injection** | No isolation layer between AI and system | Design AI sandbox; restrict AI from secrets/admin API | 3-5 days |
-| 5 | **Output Escaping** | AI-generated content may not be escaped | Escape all dynamic content; validate before render | 1 day |
+| # | Issue | Current Status | Action Required | Effort | Doc Status |
+|---|-------|---------------|-----------------|--------|------------|
+| 1 | **XSS Vulnerability** | `<script>alert(1)</script>` visible on page | Audit all markdown renderers; add DOMPurify; remove dangerouslySetInnerHTML | 1-2 days | **In Progress — see `08-XSS-REMEDIATION.md`** |
+| 2 | **Markdown Sanitization** | User input may not be sanitized | Backend sanitize on save; frontend sanitize on render | 1 day | Pending |
+| 3 | **CSP Policy** | Basic headers only (X-Content-Type-Options, X-Frame-Options) | Add full Content-Security-Policy header | 2-4 hours | Pending |
+| 4 | **AI Prompt Injection** | No isolation layer between AI and system | Design AI sandbox; restrict AI from secrets/admin API | 3-5 days | Pending |
+| 5 | **Output Escaping** | AI-generated content may not be escaped | Escape all dynamic content; validate before render | 1 day | Pending |
 
 **Total P0 Effort:** ~1 week
 
