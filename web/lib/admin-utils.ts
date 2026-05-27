@@ -5,12 +5,63 @@
 
 import { NextRequest } from 'next/server';
 
-const adminSecret = process.env.ADMIN_SECRET_KEY || process.env.CRON_SECRET_KEY || '';
+const adminSecret = process.env.ADMIN_SECRET_KEY || '';
 
-export function verifyAdmin(request: NextRequest): boolean {
+// Simple in-memory rate limiter (use Redis in production)
+const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_MAX = 10; // requests per minute
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+
+function checkRateLimit(ip: string): { allowed: boolean; retryAfter?: number } {
+  const now = Date.now();
+  const record = rateLimitStore.get(ip);
+
+  if (!record || record.resetAt < now) {
+    rateLimitStore.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW });
+    return { allowed: true };
+  }
+
+  if (record.count >= RATE_LIMIT_MAX) {
+    return { allowed: false, retryAfter: Math.ceil((record.resetAt - now) / 1000) };
+  }
+
+  record.count++;
+  return { allowed: true };
+}
+
+export function verifyAdmin(request: NextRequest): { valid: boolean; error?: { code: string; message: string }; status?: number } {
+  // 1. Rate limit check
+  const ip = request.headers.get('x-forwarded-for') || 'unknown';
+  const rateLimit = checkRateLimit(ip);
+  if (!rateLimit.allowed) {
+    return {
+      valid: false,
+      error: { code: 'RATE_LIMITED', message: `Too many requests. Retry after ${rateLimit.retryAfter}s.` },
+      status: 429
+    };
+  }
+
+  // 2. Secret check (no fallback to CRON_SECRET)
   const auth = request.headers.get('authorization') || '';
   const token = auth.replace(/^Bearer\s+/i, '');
-  return token === adminSecret && adminSecret.length > 0;
+
+  if (!adminSecret || adminSecret.length === 0) {
+    return {
+      valid: false,
+      error: { code: 'NOT_CONFIGURED', message: 'ADMIN_SECRET_KEY not set' },
+      status: 500
+    };
+  }
+
+  if (token !== adminSecret) {
+    return {
+      valid: false,
+      error: { code: 'UNAUTHORIZED', message: 'Invalid admin credentials' },
+      status: 401
+    };
+  }
+
+  return { valid: true };
 }
 
 // In-memory store for confirm tokens (use Redis in production)
@@ -22,7 +73,8 @@ function generateToken(): string {
 
 export function cleanupExpiredTokens() {
   const now = Date.now();
-  for (const [token, data] of confirmTokens.entries()) {
+  const entries = Array.from(confirmTokens.entries());
+  for (const [token, data] of entries) {
     if (data.expiresAt < now) {
       confirmTokens.delete(token);
     }

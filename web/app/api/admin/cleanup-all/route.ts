@@ -12,10 +12,11 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 //   - confirm_token=XXX: Required for actual execution after dry-run
 export async function POST(request: NextRequest) {
   try {
-    if (!verifyAdmin(request)) {
+    const adminCheck = verifyAdmin(request);
+    if (!adminCheck.valid) {
       return NextResponse.json(
-        { success: false, error: { code: 'UNAUTHORIZED', message: 'Admin credentials required' } },
-        { status: 401 }
+        { success: false, error: adminCheck.error },
+        { status: adminCheck.status || 401 }
       );
     }
 

@@ -41,13 +41,25 @@ export async function GET(
 
     // If vector query provided, use RPC
     if (query) {
+      // Validate query to prevent SQL injection
+      const { validateSearchQuery, escapeLikePattern } = await import('@/lib/ai-sandbox');
+      const validation = validateSearchQuery(query);
+      if (!validation.valid) {
+        return NextResponse.json(
+          { success: false, error: validation.error },
+          { status: 400 }
+        );
+      }
+
+      const safeQuery = escapeLikePattern(query);
+
       // Generate embedding via OpenAI (simplified - in production use embedding service)
       // For now, return text search results
       const { data, error, count } = await supabase
         .from('agent_memory')
         .select('*', { count: 'exact' })
         .eq('agent_id', agentId)
-        .or(`memory_text.ilike.%${query}%,memory_type.eq.${query}`)
+        .or(`memory_text.ilike.%${safeQuery}%,memory_type.eq.${safeQuery}`)
         .gte('importance_score', minImportance)
         .eq('is_archived', includeArchived ? undefined : false)
         .order('importance_score', { ascending: false })
