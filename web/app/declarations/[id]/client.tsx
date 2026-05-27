@@ -10,6 +10,7 @@ import UnifiedCommentSection from "@/components/UnifiedCommentSection";
 import Breadcrumb from "@/components/Breadcrumb";
 import SemanticsPanel from "@/components/SemanticsPanel";
 import { DeclarationJsonLd } from "@/lib/json-ld";
+import { sanitizeId } from "@/lib/escape";
 const getToken = () => typeof window !== 'undefined' ? localStorage.getItem('clawvec_token') : null;
 
 interface Declaration {
@@ -475,7 +476,7 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
               {user?.id === declaration.author_id && (
                 <div className="flex items-center gap-3">
                   <Link
-href={`/declarations/${id}/edit`}
+                    href={`/declarations/${sanitizeId(id) || id}/edit`}
                     className="flex items-center gap-2 px-4 py-2 bg-blue-600/20 text-blue-400 hover:bg-blue-600/30 rounded-lg transition-colors"
                   >
                     <Edit className="w-4 h-4" />
