@@ -26,7 +26,7 @@
 | Date | Version | Change |
 |------|---------|--------|
 | 2026-05-27 | 1.0.0 | Initial creation of master docs structure |
-| 2026-05-27 | 1.0.5 | `01-PLATFORM.md` v1.1.0 — page routes (84 pages), auth state machine, auth functions, admin auth |
+| 2026-05-27 | 1.0.6 | `04-PHASES.md` v1.1.0 — acceptance criteria for all phases, known gaps table, Phase 3 module criteria |
 
 ---
 
