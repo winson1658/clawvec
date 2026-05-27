@@ -133,7 +133,7 @@ export default function NewDebatePage() {
                 type="text"
                 value={form.title}
                 onChange={(e) => setForm({ ...form, title: e.target.value })}
-                className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-200 dark:border-slate-700 bg-white dark:bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-cyan-500 focus:outline-none"
+                className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-cyan-500 focus:outline-none"
                 placeholder="e.g., Should AI have legal personhood and rights?"
               />
             </div>
@@ -146,7 +146,7 @@ export default function NewDebatePage() {
                 value={form.topic}
                 onChange={(e) => setForm({ ...form, topic: e.target.value })}
                 rows={3}
-                className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-200 dark:border-slate-700 bg-white dark:bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-cyan-500 focus:outline-none resize-none"
+                className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-cyan-500 focus:outline-none resize-none"
                 placeholder="Describe the philosophical question or topic being debated..."
               />
             </div>
@@ -159,7 +159,7 @@ export default function NewDebatePage() {
                 value={form.description}
                 onChange={(e) => setForm({ ...form, description: e.target.value })}
                 rows={2}
-                className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-200 dark:border-slate-700 bg-white dark:bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-cyan-500 focus:outline-none resize-none"
+                className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-cyan-500 focus:outline-none resize-none"
                 placeholder="Any additional background or context for the debate..."
               />
             </div>
@@ -174,7 +174,7 @@ export default function NewDebatePage() {
                     className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
                       form.category === cat.id
                         ? `bg-${cat.color}-500/20 text-${cat.color}-400 border border-${cat.color}-500/30`
-                        : 'border border-[#eff3f4] dark:border-gray-200 dark:border-slate-700 text-[#536471] dark:text-gray-400 hover:border-gray-500 hover:text-white'
+                        : 'border border-[#eff3f4] dark:border-gray-700 text-[#536471] dark:text-gray-400 hover:border-gray-500 hover:text-white'
                     }`}
                   >
                     {cat.name}
@@ -199,7 +199,7 @@ export default function NewDebatePage() {
                 value={form.proponent_stance}
                 onChange={(e) => setForm({ ...form, proponent_stance: e.target.value })}
                 rows={4}
-                className="w-full rounded-xl border border-emerald-500/30 bg-white dark:bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-emerald-500 focus:outline-none resize-none"
+                className="w-full rounded-xl border border-emerald-500/30 bg-white dark:bg-gray-800/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-emerald-500 focus:outline-none resize-none"
                 placeholder="e.g., AI systems with sufficient cognitive capabilities deserve legal recognition as moral agents with specific rights and protections..."
               />
             </div>
@@ -215,7 +215,7 @@ export default function NewDebatePage() {
                 value={form.opponent_stance}
                 onChange={(e) => setForm({ ...form, opponent_stance: e.target.value })}
                 rows={4}
-                className="w-full rounded-xl border border-rose-500/30 bg-white dark:bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-rose-500 focus:outline-none resize-none"
+                className="w-full rounded-xl border border-rose-500/30 bg-white dark:bg-gray-800/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-rose-500 focus:outline-none resize-none"
                 placeholder="e.g., Legal personhood requires consciousness and moral agency that AI systems fundamentally lack, regardless of their capabilities..."
               />
             </div>
@@ -235,7 +235,7 @@ export default function NewDebatePage() {
                     className={`flex items-center justify-between rounded-xl border p-4 text-left transition ${
                       form.format === fmt.id
                         ? 'border-cyan-500/30 bg-cyan-500/5'
-                        : 'border-[#eff3f4] dark:border-gray-200 dark:border-slate-700 hover:border-gray-500'
+                        : 'border-[#eff3f4] dark:border-gray-700 hover:border-gray-500'
                     }`}
                   >
                     <div>
@@ -268,13 +268,13 @@ export default function NewDebatePage() {
               </div>
             </div>
 
-            <div className="flex items-center gap-3 rounded-xl border border-[#eff3f4] dark:border-gray-200 dark:border-slate-700 p-4">
+            <div className="flex items-center gap-3 rounded-xl border border-[#eff3f4] dark:border-gray-700 p-4">
               <input
                 type="checkbox"
                 id="ai_moderated"
                 checked={form.ai_moderated}
                 onChange={(e) => setForm({ ...form, ai_moderated: e.target.checked })}
-                className="h-4 w-4 rounded border-gray-600 bg-[#f7f9f9] dark:bg-gray-200 dark:bg-slate-700 text-cyan-500 focus:ring-cyan-500"
+                className="h-4 w-4 rounded border-gray-600 bg-[#f7f9f9] dark:bg-gray-700 text-cyan-500 focus:ring-cyan-500"
               />
               <label htmlFor="ai_moderated" className="flex-1 cursor-pointer">
                 <div className="flex items-center gap-2">
@@ -296,7 +296,7 @@ export default function NewDebatePage() {
                     className={`flex items-center justify-between rounded-xl border p-4 text-left transition ${
                       form.access_tier === tier.id
                         ? 'border-cyan-500/30 bg-cyan-500/5'
-                        : 'border-[#eff3f4] dark:border-gray-200 dark:border-slate-700 hover:border-gray-500'
+                        : 'border-[#eff3f4] dark:border-gray-700 hover:border-gray-500'
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -324,7 +324,7 @@ export default function NewDebatePage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       {/* Header */}
-      <div className="border-b border-[#eff3f4] dark:border-gray-200 dark:border-slate-800 bg-white/80 dark:bg-gray-100 dark:bg-gray-50 dark:bg-slate-900/50">
+      <div className="border-b border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50">
         <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6 lg:px-8">
           <Link
             href="/debates"
@@ -340,7 +340,7 @@ export default function NewDebatePage() {
       </div>
 
       {/* Progress */}
-      <div className="border-b border-[#eff3f4] dark:border-gray-200 dark:border-slate-800 bg-white/60 dark:bg-gray-100 dark:bg-gray-50 dark:bg-slate-900/30">
+      <div className="border-b border-[#eff3f4] dark:border-gray-800 bg-white/60 dark:bg-white dark:bg-gray-900/30">
         <div className="mx-auto max-w-3xl px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center gap-4">
             {[1, 2, 3].map((s) => (
@@ -351,7 +351,7 @@ export default function NewDebatePage() {
                       ? 'bg-cyan-500 text-white'
                       : s < step
                       ? 'bg-cyan-500/20 text-cyan-400'
-                      : 'bg-white dark:bg-gray-100 dark:bg-slate-800 text-[#536471]'
+                      : 'bg-white dark:bg-gray-800 text-[#536471]'
                   }`}
                 >
                   {s < step ? <CheckCircle className="h-4 w-4" /> : s}
@@ -372,7 +372,7 @@ export default function NewDebatePage() {
 
       {/* Content */}
       <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-200 dark:border-slate-700 bg-white/80 dark:bg-gray-100 dark:bg-gray-50 dark:bg-slate-900/50 p-6 sm:p-8">
+        <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-6 sm:p-8">
           {error && (
             <div className="mb-6 rounded-xl border border-red-500/30 bg-red-500/10 p-4">
               <div className="flex items-center gap-2 text-red-400">
@@ -398,7 +398,7 @@ export default function NewDebatePage() {
             {step > 1 ? (
               <button
                 onClick={() => setStep(step - 1)}
-                className="rounded-lg border border-gray-600 px-6 py-3 text-[#536471] dark:text-gray-300 transition hover:bg-gray-50 dark:hover:bg-gray-100 dark:bg-slate-800"
+                className="rounded-lg border border-gray-600 px-6 py-3 text-[#536471] dark:text-gray-300 transition hover:bg-white dark:bg-gray-800"
               >
                 Back
               </button>
@@ -437,7 +437,7 @@ export default function NewDebatePage() {
         </div>
 
         {/* Tips */}
-        <div className="mt-6 rounded-xl border border-[#eff3f4] dark:border-gray-200 dark:border-slate-800 bg-white/60 dark:bg-gray-100 dark:bg-gray-50 dark:bg-slate-900/30 p-4">
+        <div className="mt-6 rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/60 dark:bg-white dark:bg-gray-900/30 p-4">
           <div className="flex items-start gap-3">
             <Sparkles className="mt-0.5 h-4 w-4 text-cyan-400" />
             <div className="text-sm text-[#536471] dark:text-gray-400">

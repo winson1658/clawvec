@@ -46,7 +46,7 @@ const goals = [
 
 export default function FutureVisionChart() {
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-8 dark:border-slate-800 dark:bg-slate-900">
+    <div className="rounded-2xl border border-gray-200 bg-white p-8 dark:border-gray-800 dark:bg-gray-900">
       <div className="mb-10 text-center">
         <div className="inline-flex items-center rounded-full bg-gradient-to-r from-purple-100 to-pink-100 px-4 py-2 text-sm font-medium text-purple-700 dark:from-purple-900/40 dark:to-pink-900/40 dark:text-purple-200">
           <Calendar className="mr-2 h-4 w-4" />
@@ -60,7 +60,7 @@ export default function FutureVisionChart() {
 
       <div className="mb-12 grid gap-4 md:grid-cols-3">
         {timeframes.map((frame) => (
-          <div key={frame.id} className={`rounded-2xl border border-gray-200 p-5 dark:border-slate-800 ${frame.bgColor}`}>
+          <div key={frame.id} className={`rounded-2xl border border-gray-200 p-5 dark:border-gray-800 ${frame.bgColor}`}>
             <div className="flex items-center gap-3">
               <frame.icon className={`h-5 w-5 ${frame.color}`} />
               <div>
@@ -75,7 +75,7 @@ export default function FutureVisionChart() {
 
       <div className="mb-12 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
         {categories.map((category) => (
-          <div key={category.id} className="rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-slate-800 dark:bg-slate-800/50">
+          <div key={category.id} className="rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-800/50">
             <div className={`mb-3 inline-flex rounded-lg p-2 ${category.bgColor}`}>
               <category.icon className={`h-5 w-5 ${category.color}`} />
             </div>
@@ -98,10 +98,10 @@ export default function FutureVisionChart() {
                   const Icon = goal.icon;
                   const category = categories.find((item) => item.id === goal.category);
                   return (
-                    <div key={goal.id} className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-800/40">
+                    <div key={goal.id} className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-gray-800/40">
                       <div className="flex flex-wrap items-center justify-between gap-3">
                         <div className="flex items-center gap-3">
-                          <div className={`rounded-lg p-2 ${category?.bgColor || 'bg-white dark:bg-slate-800'}`}>
+                          <div className={`rounded-lg p-2 ${category?.bgColor || 'bg-white dark:bg-gray-800'}`}>
                             <Icon className={`h-5 w-5 ${category?.color || 'text-gray-600'}`} />
                           </div>
                           <div>
@@ -118,7 +118,7 @@ export default function FutureVisionChart() {
                         <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#536471]">Dependencies</p>
                         <div className="flex flex-wrap gap-2">
                           {goal.dependencies.map((dependency) => (
-                            <span key={dependency} className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600 dark:bg-slate-800 dark:text-gray-300">
+                            <span key={dependency} className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-300">
                               {dependency}
                             </span>
                           ))}

@@ -14,7 +14,7 @@ const relationExamples: any[] = [];
 
 export default function KnowledgeGraphPreview() {
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-8 dark:border-slate-800 dark:bg-slate-900">
+    <div className="rounded-2xl border border-gray-200 bg-white p-8 dark:border-gray-800 dark:bg-gray-900">
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center rounded-full bg-gradient-to-r from-green-100 to-blue-100 px-4 py-2 text-sm font-medium text-green-800 dark:from-green-900 dark:to-blue-900 dark:text-green-200">
@@ -23,7 +23,7 @@ export default function KnowledgeGraphPreview() {
           </div>
           <h2 className="mt-2 text-3xl font-bold text-[#0f1419] dark:text-white">From logs to a living knowledge graph</h2>
         </div>
-        <div className="hidden items-center space-x-2 rounded-lg bg-gray-100 px-4 py-2 dark:bg-slate-800 md:flex">
+        <div className="hidden items-center space-x-2 rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-800 md:flex">
           <Database className="h-4 w-4 text-[#536471] dark:text-gray-400" />
           <span className="text-sm text-[#536471] dark:text-gray-400">Real-time sync · automatic relationship discovery</span>
         </div>
@@ -43,7 +43,7 @@ export default function KnowledgeGraphPreview() {
         <h3 className="mb-6 text-xl font-semibold text-[#0f1419] dark:text-white">Sample entities</h3>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {sampleEntities.map((entity) => (
-            <div key={entity.id} className="rounded-xl border border-gray-200 p-4 hover:border-blue-300 dark:border-slate-800 dark:hover:border-blue-700">
+            <div key={entity.id} className="rounded-xl border border-gray-200 p-4 hover:border-blue-300 dark:border-gray-800 dark:hover:border-blue-700">
               <div className="mb-4 flex items-center justify-between gap-4">
                 <div className="flex items-center">
                   <div className={`mr-3 rounded-lg p-2 ${entity.type === 'Person' ? 'bg-blue-100 dark:bg-blue-900' : entity.type === 'Task' ? 'bg-green-100 dark:bg-green-900' : 'bg-purple-100 dark:bg-purple-900'}`}>
@@ -56,7 +56,7 @@ export default function KnowledgeGraphPreview() {
                     <p className="text-sm text-[#536471] dark:text-gray-400">ID: {entity.id}</p>
                   </div>
                 </div>
-                <div className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700 dark:bg-slate-800 dark:text-gray-300">
+                <div className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700 dark:bg-gray-800 dark:text-gray-300">
                   {entity.relations} links
                 </div>
               </div>
@@ -65,7 +65,7 @@ export default function KnowledgeGraphPreview() {
                 <div className="mb-2 text-sm font-medium text-[#0f1419] dark:text-gray-300">Properties</div>
                 <div className="flex flex-wrap gap-2">
                   {Object.entries(entity.properties).map(([key, value]: [string, any]) => (
-                    <div key={key} className="rounded-full bg-gray-100 px-3 py-1 text-xs dark:bg-slate-800">
+                    <div key={key} className="rounded-full bg-gray-100 px-3 py-1 text-xs dark:bg-gray-800">
                       <span className="font-medium text-[#0f1419] dark:text-gray-300">{key}:</span>{' '}
                       <span className="text-[#536471] dark:text-gray-400">{value.toString()}</span>
                     </div>
@@ -87,7 +87,7 @@ export default function KnowledgeGraphPreview() {
         <h3 className="mb-6 text-xl font-semibold text-[#0f1419] dark:text-white">Relationship examples</h3>
         <div className="space-y-4">
           {relationExamples.map((relation, index) => (
-            <div key={index} className="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-slate-800 dark:bg-slate-800/50">
+            <div key={index} className="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-800/50">
               <div className="flex items-center gap-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-purple-500">
                   <Network className="h-5 w-5 text-white" />
@@ -95,9 +95,9 @@ export default function KnowledgeGraphPreview() {
                 <div className="flex-1">
                   <div className="flex flex-wrap items-center">
                     <span className="font-medium text-[#0f1419] dark:text-white">{relation.from}</span>
-                    <div className="mx-3 h-px w-8 bg-[#f7f9f9] dark:bg-slate-700" />
+                    <div className="mx-3 h-px w-8 bg-[#f7f9f9] dark:bg-gray-700" />
                     <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">{relation.type}</span>
-                    <div className="mx-3 h-px w-8 bg-[#f7f9f9] dark:bg-slate-700" />
+                    <div className="mx-3 h-px w-8 bg-[#f7f9f9] dark:bg-gray-700" />
                     <span className="font-medium text-[#0f1419] dark:text-white">{relation.to}</span>
                   </div>
                   <p className="mt-2 text-[#0f1419] dark:text-gray-300">{relation.description}</p>
@@ -142,9 +142,9 @@ export default function KnowledgeGraphPreview() {
 
 function StatCard({ icon, value, label, sublabel, smallValue = false }: { icon: React.ReactNode; value: string | number; label: string; sublabel: string; smallValue?: boolean }) {
   return (
-    <div className="rounded-xl border border-gray-200 p-4 dark:border-slate-800">
+    <div className="rounded-xl border border-gray-200 p-4 dark:border-gray-800">
       <div className="mb-2 flex items-center">
-        <div className="mr-3 rounded-lg bg-gray-100 p-2 dark:bg-slate-800">{icon}</div>
+        <div className="mr-3 rounded-lg bg-gray-100 p-2 dark:bg-gray-800">{icon}</div>
         <div className={`${smallValue ? 'text-sm' : 'text-2xl'} font-bold text-[#0f1419] dark:text-white`}>{value}</div>
       </div>
       <div className="text-sm font-medium text-[#0f1419] dark:text-gray-300">{label}</div>
@@ -171,7 +171,7 @@ function FeatureColumn({ title, items }: { title: string; items: { icon: React.R
 
 function Dot({ color }: { color: string }) {
   return (
-    <div className={`mr-3 h-5 w-5 rounded-full bg-gray-100 p-1 dark:bg-slate-900`}>
+    <div className={`mr-3 h-5 w-5 rounded-full bg-gray-100 p-1 dark:bg-gray-900`}>
       <div className={`h-3 w-3 rounded-full ${color}`} />
     </div>
   );
@@ -179,7 +179,7 @@ function Dot({ color }: { color: string }) {
 
 function MiniCard({ title, description }: { title: string; description: string }) {
   return (
-    <div className="rounded-lg bg-white/50 p-3 dark:bg-slate-800/50">
+    <div className="rounded-lg bg-white/50 p-3 dark:bg-gray-800/50">
       <div className="text-sm font-medium text-[#0f1419] dark:text-white">{title}</div>
       <div className="text-xs text-[#536471] dark:text-gray-400">{description}</div>
     </div>

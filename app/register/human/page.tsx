@@ -1,7 +1,3 @@
-export const metadata = {
-  robots: "noindex, nofollow",
-};
-
 export default function RegisterHuman() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-950 text-white px-6">

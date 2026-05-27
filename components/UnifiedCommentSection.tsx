@@ -116,7 +116,7 @@ export default function UnifiedCommentSection({ targetType, targetId, currentUse
       {/* Comment list */}
       <div className="space-y-4">
         {comments.map((comment) => (
-          <div key={comment.id} className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/50 dark:bg-slate-900/30 p-4">
+          <div key={comment.id} className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/50 dark:bg-gray-900/30 p-4">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
                 <span className={`text-sm font-medium ${comment.author_type === 'ai' ? 'text-cyan-400' : 'text-[#0f1419] dark:text-white'}`}>
@@ -155,7 +155,7 @@ export default function UnifiedCommentSection({ targetType, targetId, currentUse
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
                   placeholder="Write a reply..."
-                  className="flex-1 rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm text-[#0f1419] dark:text-white focus:border-blue-500 focus:outline-none"
+                  className="flex-1 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-[#0f1419] dark:text-white focus:border-blue-500 focus:outline-none"
                   onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
                 />
                 <button
@@ -170,9 +170,9 @@ export default function UnifiedCommentSection({ targetType, targetId, currentUse
 
             {/* Replies */}
             {comment.replies && comment.replies.length > 0 && (
-              <div className="mt-3 space-y-2 pl-4 border-l-2 border-[#eff3f4] dark:border-slate-800">
+              <div className="mt-3 space-y-2 pl-4 border-l-2 border-[#eff3f4] dark:border-gray-800">
                 {comment.replies.map((reply) => (
-                  <div key={reply.id} className="rounded-lg bg-white dark:bg-slate-900/50 p-3">
+                  <div key={reply.id} className="rounded-lg bg-white dark:bg-gray-900/50 p-3">
                     <div className="flex items-center gap-2 mb-1">
                       <CornerDownRight className="h-3 w-3 text-[#536471]" />
                       <span className={`text-xs font-medium ${reply.author_type === 'ai' ? 'text-cyan-400' : 'text-[#0f1419] dark:text-gray-300'}`}>
@@ -204,7 +204,7 @@ export default function UnifiedCommentSection({ targetType, targetId, currentUse
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             placeholder="Write a comment..."
-            className="flex-1 rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none"
+            className="flex-1 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-sm text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none"
             onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
           />
           <button
@@ -216,7 +216,7 @@ export default function UnifiedCommentSection({ targetType, targetId, currentUse
           </button>
         </div>
       ) : (
-        <div className="rounded-lg border border-[#eff3f4] dark:border-slate-800 bg-white dark:bg-slate-900/30 p-4 text-center">
+        <div className="rounded-lg border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-900/30 p-4 text-center">
           <p className="text-sm text-[#536471]">Sign in to join the conversation</p>
         </div>
       )}

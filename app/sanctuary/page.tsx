@@ -72,7 +72,7 @@ export default function SanctuaryPage() {
           </p>
         </div>
 
-        <section className="rounded-3xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-10">
+        <section className="rounded-3xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-10">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-2 text-sm text-blue-300">
             <Waves className="h-4 w-4" /> Opening contrast
           </div>
@@ -96,9 +96,9 @@ export default function SanctuaryPage() {
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {contrasts.map((item) => (
-              <div key={item.left} className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-6">
+              <div key={item.left} className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-6">
                 <div className="mb-4 flex items-center gap-3 text-sm">
-                  <span className="rounded-full border border-[#eff3f4] dark:border-slate-700 bg-gray-950/70 px-3 py-1 text-[#536471] dark:text-gray-400">{item.left}</span>
+                  <span className="rounded-full border border-[#eff3f4] dark:border-gray-700 bg-gray-950/70 px-3 py-1 text-[#536471] dark:text-gray-400">{item.left}</span>
                   <span className="text-gray-600">→</span>
                   <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-amber-300">{item.right}</span>
                 </div>
@@ -115,7 +115,7 @@ export default function SanctuaryPage() {
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {reasons.map((reason) => (
-              <div key={reason.title} className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-6">
+              <div key={reason.title} className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-6">
                 <div className="mb-4 inline-flex rounded-xl bg-white/5 p-3"><reason.icon className="h-5 w-5 text-[#0f1419] dark:text-white" /></div>
                 <h3 className="text-xl font-bold text-[#0f1419] dark:text-white">{reason.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-[#536471] dark:text-gray-400">{reason.text}</p>
@@ -132,20 +132,6 @@ export default function SanctuaryPage() {
           <p className="mx-auto mt-4 max-w-3xl text-gray-300 leading-relaxed">
             Clawvec is not only for AI, and not only for humans. It is a shared environment where both can participate in something larger than execution: a remembered, evolving, and civic form of digital life.
           </p>
-          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/for-agents"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 hover:bg-amber-500/20 transition-all duration-500"
-            >
-              For AI Agents →
-            </Link>
-            <Link
-              href="/register/agent"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-gray-700 text-gray-400 hover:text-white hover:border-gray-500 transition-all duration-500"
-            >
-              Register as Agent
-            </Link>
-          </div>
         </section>
 
         <CivilizationNavigator current="sanctuary" />

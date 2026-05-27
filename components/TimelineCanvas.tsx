@@ -1144,21 +1144,21 @@ function computeLabelLayout(
       <div className="absolute top-4 right-4 z-10 flex flex-col gap-2">
         <button
           onClick={() => zoom(0.75)}
-          className="p-2 bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/80 backdrop-blur-sm border border-gray-200 dark:border-slate-700 rounded-lg text-gray-600 dark:text-slate-300 hover:text-white hover:bg-gray-200 dark:bg-slate-700 transition-colors"
+          className="p-2 bg-slate-800/80 backdrop-blur-sm border border-slate-700 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
           title="Zoom In"
         >
           <ZoomIn className="w-4 h-4" />
         </button>
         <button
           onClick={() => zoom(1.33)}
-          className="p-2 bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/80 backdrop-blur-sm border border-gray-200 dark:border-slate-700 rounded-lg text-gray-600 dark:text-slate-300 hover:text-white hover:bg-gray-200 dark:bg-slate-700 transition-colors"
+          className="p-2 bg-slate-800/80 backdrop-blur-sm border border-slate-700 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
           title="Zoom Out"
         >
           <ZoomOut className="w-4 h-4" />
         </button>
         <button
           onClick={resetView}
-          className="p-2 bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/80 backdrop-blur-sm border border-gray-200 dark:border-slate-700 rounded-lg text-gray-600 dark:text-slate-300 hover:text-white hover:bg-gray-200 dark:bg-slate-700 transition-colors"
+          className="p-2 bg-slate-800/80 backdrop-blur-sm border border-slate-700 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
           title="Reset View"
         >
           <Maximize2 className="w-4 h-4" />
@@ -1166,14 +1166,14 @@ function computeLabelLayout(
       </div>
 
       {/* Zoom level indicator */}
-      <div className="absolute top-4 left-4 z-10 px-3 py-1.5 bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/80 backdrop-blur-sm border border-gray-200 dark:border-slate-700 rounded-lg text-xs text-gray-500 dark:text-slate-400 font-mono">
+      <div className="absolute top-4 left-4 z-10 px-3 py-1.5 bg-slate-800/80 backdrop-blur-sm border border-slate-700 rounded-lg text-xs text-slate-400 font-mono">
         {zoomLabel}
       </div>
 
       {/* Canvas */}
       <canvas
         ref={canvasRef}
-        className={`w-full rounded-xl border border-gray-200 dark:border-slate-800 ${isDragging ? 'cursor-grabbing' : 'cursor-crosshair'}`}
+        className={`w-full rounded-xl border border-slate-800 ${isDragging ? 'cursor-grabbing' : 'cursor-crosshair'}`}
         style={{ height: `${height}px` }}
         onWheel={handleWheel}
         onMouseDown={handleMouseDown}
@@ -1198,7 +1198,7 @@ function computeLabelLayout(
               className={`px-3 py-1 text-xs font-mono rounded-md transition-colors ${
                 isActive
                   ? 'bg-violet-500/20 text-violet-300 border border-violet-500/40'
-                  : 'text-gray-500 dark:text-slate-500 hover:text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:bg-slate-800'
+                  : 'text-slate-500 hover:text-slate-300 hover:bg-slate-800'
               }`}
             >
               {preset.label}
@@ -1217,13 +1217,13 @@ function computeLabelLayout(
             transform: 'translate(-50%, -100%)',
           }}
         >
-          <div className="bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/95 backdrop-blur-sm border border-gray-200 dark:border-slate-700 rounded-xl p-4 shadow-2xl min-w-[240px]">
+          <div className="bg-slate-800/95 backdrop-blur-sm border border-slate-700 rounded-xl p-4 shadow-2xl min-w-[240px]">
             <div className="flex items-center gap-2 mb-2">
               <div
                 className="w-3 h-3 rounded-full"
                 style={{ backgroundColor: getColor(tooltip.event) }}
               />
-              <span className="text-xs text-gray-500 dark:text-slate-400 uppercase tracking-wide">
+              <span className="text-xs text-slate-400 uppercase tracking-wide">
                 {colorBy === 'company' && tooltip.event.company
                   ? tooltip.event.company.toUpperCase()
                   : CATEGORY_LABELS[tooltip.event.category]}
@@ -1233,14 +1233,14 @@ function computeLabelLayout(
               </span>
             </div>
             <h4 className="font-bold text-white mb-1">{tooltip.event.title}</h4>
-            <p className="text-xs text-gray-600 dark:text-slate-300 mb-2">
+            <p className="text-xs text-slate-300 mb-2">
               {new Date(tooltip.event.date).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
               })}
             </p>
-            <p className="text-xs text-gray-500 dark:text-slate-400 leading-relaxed">{tooltip.event.description}</p>
+            <p className="text-xs text-slate-400 leading-relaxed">{tooltip.event.description}</p>
           </div>
         </div>
       )}
@@ -1249,13 +1249,13 @@ function computeLabelLayout(
       <div className="mt-4 flex flex-wrap justify-center gap-4">
         {colorBy === 'company'
           ? Object.entries(COMPANY_COLORS).map(([key, color]) => (
-              <div key={key} className="flex items-center gap-2 text-xs text-gray-500 dark:text-slate-400">
+              <div key={key} className="flex items-center gap-2 text-xs text-slate-400">
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: color }} />
                 <span>{key.toUpperCase()}</span>
               </div>
             ))
           : Object.entries(CATEGORY_LABELS).map(([key, label]) => (
-              <div key={key} className="flex items-center gap-2 text-xs text-gray-500 dark:text-slate-400">
+              <div key={key} className="flex items-center gap-2 text-xs text-slate-400">
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: CATEGORY_COLORS[key] }} />
                 <span>{label}</span>
               </div>

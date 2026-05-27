@@ -106,7 +106,7 @@ export default function NewDiscussionPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 text-[#0f1419] dark:text-gray-100">
+    <div className="min-h-screen bg-white dark:bg-gray-950 text-[#0f1419] dark:text-gray-100">
       {/* Header */}
 
       <main className="mx-auto max-w-3xl px-6 py-12">
@@ -130,7 +130,7 @@ export default function NewDiscussionPage() {
         )}
 
         {!user ? (
-          <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-8 text-center">
+          <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-8 text-center">
             <p className="mb-4 text-[#536471] dark:text-gray-400">Please log in to create a discussion</p>
             <Link
               href="/login"
@@ -150,7 +150,7 @@ export default function NewDiscussionPage() {
                 type="text"
                 value={form.title}
                 onChange={(e) => setForm({ ...form, title: e.target.value })}
-                className="w-full rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-white/80 dark:bg-slate-900/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-violet-500 focus:outline-none"
+                className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-white dark:bg-gray-900/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-violet-500 focus:outline-none"
                 placeholder="What's on your mind?"
                 required
                 minLength={5}
@@ -169,7 +169,7 @@ export default function NewDiscussionPage() {
                     className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
                       form.category === cat.id
                         ? 'bg-violet-600 text-white'
-                        : 'border border-[#eff3f4] dark:border-slate-700 text-[#536471] dark:text-gray-400 hover:border-gray-500 hover:text-white'
+                        : 'border border-[#eff3f4] dark:border-gray-700 text-[#536471] dark:text-gray-400 hover:border-gray-500 hover:text-white'
                     }`}
                   >
                     {cat.name}
@@ -187,7 +187,7 @@ export default function NewDiscussionPage() {
                 value={form.content}
                 onChange={(e) => setForm({ ...form, content: e.target.value })}
                 rows={8}
-                className="w-full rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-white/80 dark:bg-slate-900/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-violet-500 focus:outline-none resize-none"
+                className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-white dark:bg-gray-900/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-violet-500 focus:outline-none resize-none"
                 placeholder="Share your thoughts in detail..."
                 required
                 minLength={10}
@@ -206,13 +206,13 @@ export default function NewDiscussionPage() {
                   value={form.tagInput}
                   onChange={(e) => setForm({ ...form, tagInput: e.target.value })}
                   onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTag())}
-                  className="flex-1 rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-white/80 dark:bg-slate-900/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-violet-500 focus:outline-none"
+                  className="flex-1 rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-white dark:bg-gray-900/50 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-violet-500 focus:outline-none"
                   placeholder="Add a tag and press Enter"
                 />
                 <button
                   type="button"
                   onClick={handleAddTag}
-                  className="rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2 text-[#536471] dark:text-gray-400 transition hover:bg-[#f7f9f9] dark:hover:bg-slate-700 hover:text-[#0f1419] dark:text-white"
+                  className="rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-[#536471] dark:text-gray-400 transition hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-[#0f1419] dark:text-white"
                 >
                   Add
                 </button>
@@ -242,7 +242,7 @@ export default function NewDiscussionPage() {
             <div className="flex items-center justify-between pt-4">
               <Link
                 href="/discussions"
-                className="rounded-lg border border-[#eff3f4] dark:border-slate-700 px-6 py-3 text-[#536471] dark:text-gray-400 transition hover:bg-gray-50 dark:hover:bg-slate-800 hover:text-[#0f1419] dark:text-white"
+                className="rounded-lg border border-[#eff3f4] dark:border-gray-700 px-6 py-3 text-[#536471] dark:text-gray-400 transition hover:bg-white dark:bg-gray-800 hover:text-[#0f1419] dark:text-white"
               >
                 Cancel
               </Link>

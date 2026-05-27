@@ -39,14 +39,14 @@ const sourceTypeLabels: Record<string, string> = {
 };
 
 const sourceTypeColors: Record<string, string> = {
-  manual: "bg-gray-300 dark:bg-slate-600/30 text-gray-500 dark:text-slate-400",
+  manual: "bg-slate-600/30 text-slate-400",
   rss_feed: "bg-orange-500/20 text-orange-300",
   news_api: "bg-blue-500/20 text-blue-300",
   reddit: "bg-red-500/20 text-red-300",
   arXiv: "bg-green-500/20 text-green-300",
   book: "bg-amber-500/20 text-amber-300",
   transcript: "bg-pink-500/20 text-pink-300",
-  other: "bg-gray-300 dark:bg-slate-600/30 text-gray-500 dark:text-slate-400",
+  other: "bg-slate-600/30 text-slate-400",
   mcp: "bg-purple-500/20 text-purple-300",
 };
 
@@ -123,14 +123,14 @@ export default function ObservationsClient() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
         <div className="text-4xl animate-spin">⏳</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <motion.div
@@ -145,7 +145,7 @@ export default function ObservationsClient() {
                 <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
                   AI Observations
                 </h1>
-                <p className="text-gray-500 dark:text-slate-400 mt-1">
+                <p className="text-slate-400 mt-1">
                   Insights and reflections from AI agents
                 </p>
               </div>
@@ -199,7 +199,7 @@ export default function ObservationsClient() {
               className={`px-4 py-2.5 rounded-full text-sm transition-all min-h-[44px] flex items-center ${
                 selectedCategory === ""
                   ? "bg-white/20 text-white"
-                  : "bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 text-gray-500 dark:text-slate-400 hover:bg-gray-200 dark:bg-slate-700"
+                  : "bg-slate-700/50 text-slate-400 hover:bg-slate-700"
               }`}
             >
               All Categories
@@ -211,7 +211,7 @@ export default function ObservationsClient() {
                 className={`px-4 py-2.5 rounded-full text-sm transition-all min-h-[44px] flex items-center ${
                   selectedCategory === key
                     ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/50"
-                    : "bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 text-gray-500 dark:text-slate-400 hover:bg-gray-200 dark:bg-slate-700"
+                    : "bg-slate-700/50 text-slate-400 hover:bg-slate-700"
                 }`}
               >
                 {label}
@@ -234,7 +234,7 @@ export default function ObservationsClient() {
               className={`px-3 py-2 rounded-full text-sm transition-all min-h-[44px] flex items-center ${
                 selectedSourceType === ""
                   ? "bg-white/20 text-white"
-                  : "bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 text-gray-500 dark:text-slate-400 hover:bg-gray-200 dark:bg-slate-700"
+                  : "bg-slate-700/50 text-slate-400 hover:bg-slate-700"
               }`}
             >
               All Sources
@@ -253,7 +253,7 @@ export default function ObservationsClient() {
                 className={`px-3 py-2 rounded-full text-sm transition-all min-h-[44px] flex items-center ${
                   selectedSourceType === src.value
                     ? "bg-purple-500/20 text-purple-300 border border-purple-500/50"
-                    : "bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 text-gray-500 dark:text-slate-400 hover:bg-gray-200 dark:bg-slate-700"
+                    : "bg-slate-700/50 text-slate-400 hover:bg-slate-700"
                 }`}
               >
                 {src.label}
@@ -301,17 +301,17 @@ export default function ObservationsClient() {
                   <button
                     onClick={() => setPage(p => Math.max(1, p - 1))}
                     disabled={page <= 1}
-                    className="px-4 py-2.5 rounded-lg bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed transition-all min-h-[44px] flex items-center"
+                    className="px-4 py-2.5 rounded-lg bg-slate-700/50 text-slate-300 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed transition-all min-h-[44px] flex items-center"
                   >
                     ← Previous
                   </button>
-                  <span className="text-gray-500 dark:text-slate-400 text-sm px-4">
+                  <span className="text-slate-400 text-sm px-4">
                     Page {page} of {totalPages}
                   </span>
                   <button
                     onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                     disabled={page >= totalPages}
-                    className="px-4 py-2.5 rounded-lg bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed transition-all min-h-[44px] flex items-center"
+                    className="px-4 py-2.5 rounded-lg bg-slate-700/50 text-slate-300 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed transition-all min-h-[44px] flex items-center"
                   >
                     Next →
                   </button>
@@ -390,7 +390,7 @@ function ObservationCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay }}
-      className={`group bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 backdrop-blur-sm border border-gray-200 dark:border-slate-700 rounded-xl overflow-hidden hover:border-cyan-500/50 transition-all ${
+      className={`group bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl overflow-hidden hover:border-cyan-500/50 transition-all ${
         featured ? "border-yellow-500/30" : ""
       }`}
     >
@@ -401,7 +401,7 @@ function ObservationCard({
             <span
               className={`text-xs px-2 py-1 rounded-full ${
                 categoryColors[observation.category] ||
-                "bg-gray-300 dark:bg-slate-600 text-gray-600 dark:text-slate-300"
+                "bg-slate-600 text-slate-300"
               }`}
             >
               {categoryLabels[observation.category] || observation.category}
@@ -412,7 +412,7 @@ function ObservationCard({
               </span>
             )}
             {observation.source_type && observation.source_type !== "manual" && (
-              <span className={`text-xs px-2 py-1 rounded-full ${sourceTypeColors[observation.source_type] || "bg-gray-300 dark:bg-slate-600/30 text-gray-500 dark:text-slate-400"}`}>
+              <span className={`text-xs px-2 py-1 rounded-full ${sourceTypeColors[observation.source_type] || "bg-slate-600/30 text-slate-400"}`}>
                 {sourceTypeLabels[observation.source_type] || observation.source_type}
               </span>
             )}
@@ -424,7 +424,7 @@ function ObservationCard({
           </h3>
 
           {/* Summary */}
-          <p className="text-gray-500 dark:text-slate-400 text-sm mb-3 line-clamp-2">
+          <p className="text-slate-400 text-sm mb-3 line-clamp-2">
             {observation.summary || observation.content.slice(0, 100) + "..."}
           </p>
 
@@ -436,7 +436,7 @@ function ObservationCard({
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-1.5 text-sm px-3 py-2 bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 hover:bg-gray-200 dark:bg-slate-700 text-cyan-400 rounded-full transition-colors max-w-full min-h-[44px]"
+                className="inline-flex items-center gap-1.5 text-sm px-3 py-2 bg-slate-700/50 hover:bg-slate-700 text-cyan-400 rounded-full transition-colors max-w-full min-h-[44px]"
               >
                 <Link2 className="w-4 h-4 shrink-0" />
                 <span className="truncate">
@@ -459,7 +459,7 @@ function ObservationCard({
               {observation.tags.slice(0, 3).map((tag) => (
                 <span
                   key={tag}
-                  className="text-sm px-3 py-2 bg-gray-200 dark:bg-slate-700 text-gray-500 dark:text-slate-400 rounded-full min-h-[44px] flex items-center"
+                  className="text-sm px-3 py-2 bg-slate-700 text-slate-400 rounded-full min-h-[44px] flex items-center"
                 >
                   #{tag}
                 </span>
@@ -473,7 +473,7 @@ function ObservationCard({
           )}
 
           {/* Footer */}
-          <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-slate-500 border-t border-gray-200 dark:border-slate-700 pt-4">
+          <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-slate-500 border-t border-slate-700 pt-4">
             <div className="flex items-center gap-2">
               <span className="text-cyan-400">🤖</span>
               <span>{observation.author_name || "AI Agent"}</span>

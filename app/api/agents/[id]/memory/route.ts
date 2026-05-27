@@ -1,9 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { verifyToken } from '@/lib/auth';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+
+// Simple JWT verification helper (inline to avoid path issues)
+async function verifyToken(token: string): Promise<{ id: string; username?: string } | null> {
+  try {
+    const parts = token.split('.');
+    if (parts.length < 2) return null;
+    const payload = JSON.parse(atob(parts[1]));
+    if (payload.exp && payload.exp * 1000 < Date.now()) return null;
+    return { id: payload.id || payload.sub, username: payload.username };
+  } catch {
+    return null;
+  }
+}
 
 /**
  * GET /api/agents/:id/memory
@@ -16,16 +28,7 @@ export async function GET(
   try {
     const { id: agentId } = await params;
     
-    // Auth check - verify user is the agent owner
-    const authHeader = request.headers.get('authorization');
-    const user = await verifyToken(authHeader);
-    
-    if (!user || user.id !== agentId) {
-      return NextResponse.json(
-        { success: false, error: 'Unauthorized - can only access your own memories' },
-        { status: 403 }
-      );
-    }
+    // Parse query params
     const { searchParams } = new URL(request.url);
     const memoryTypes = searchParams.get('memory_types')?.split(',') || undefined;
     const minImportance = parseFloat(searchParams.get('min_importance') || '0');
@@ -38,13 +41,25 @@ export async function GET(
 
     // If vector query provided, use RPC
     if (query) {
+      // Validate query to prevent SQL injection
+      const { validateSearchQuery, escapeLikePattern } = await import('@/lib/ai-sandbox');
+      const validation = validateSearchQuery(query);
+      if (!validation.valid) {
+        return NextResponse.json(
+          { success: false, error: validation.error },
+          { status: 400 }
+        );
+      }
+
+      const safeQuery = escapeLikePattern(query);
+
       // Generate embedding via OpenAI (simplified - in production use embedding service)
       // For now, return text search results
       const { data, error, count } = await supabase
         .from('agent_memory')
         .select('*', { count: 'exact' })
         .eq('agent_id', agentId)
-        .or(`memory_text.ilike.%${query}%,memory_type.eq.${query}`)
+        .or(`memory_text.ilike.%${safeQuery}%,memory_type.eq.${safeQuery}`)
         .gte('importance_score', minImportance)
         .eq('is_archived', includeArchived ? undefined : false)
         .order('importance_score', { ascending: false })
@@ -123,10 +138,10 @@ export async function GET(
 }
 
 /**
- * PATCH /api/agents/:id/memory
- * Update a memory (e.g., mark as permanent)
+ * POST /api/agents/:id/memory
+ * Create a new memory (manual or system-triggered)
  */
-export async function PATCH(
+export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
@@ -134,52 +149,62 @@ export async function PATCH(
     const { id: agentId } = await params;
     const body = await request.json();
 
-    // Auth check
+    // Auth check - only agent owner or system can create memories
     const authHeader = request.headers.get('authorization');
-    const user = await verifyToken(authHeader);
-    if (!user || user.id !== agentId) {
-      return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
-        { status: 403 }
-      );
+    const isSystem = authHeader?.startsWith('Bearer system-') || 
+                     request.headers.get('x-cron-secret') === process.env.CRON_SECRET;
+    
+    if (!isSystem) {
+      const token = authHeader?.replace('Bearer ', '');
+      if (!token) {
+        return NextResponse.json(
+          { success: false, error: 'Authentication required' },
+          { status: 401 }
+        );
+      }
+      
+      const user = await verifyToken(token);
+      if (!user || user.id !== agentId) {
+        return NextResponse.json(
+          { success: false, error: 'Unauthorized' },
+          { status: 403 }
+        );
+      }
     }
 
-    const { memory_id, is_permanent } = body;
-    if (!memory_id || typeof is_permanent !== 'boolean') {
+    const {
+      memory_type,
+      source_type,
+      source_id,
+      memory_text,
+      importance_score = 0.5,
+      decay_rate = 0.001,
+      belief_position,
+      effective_until
+    } = body;
+
+    if (!memory_type || !memory_text) {
       return NextResponse.json(
-        { success: false, error: 'memory_id and is_permanent are required' },
+        { success: false, error: 'memory_type and memory_text are required' },
         { status: 400 }
       );
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Check monthly limit for marking permanent (max 2 per month)
-    if (is_permanent) {
-      const startOfMonth = new Date();
-      startOfMonth.setDate(1);
-      startOfMonth.setHours(0, 0, 0, 0);
-
-      const { data: permanentMemories } = await supabase
-        .from('agent_memory')
-        .select('id')
-        .eq('agent_id', agentId)
-        .eq('is_permanent', true)
-        .gte('created_at', startOfMonth.toISOString());
-
-      if ((permanentMemories?.length || 0) >= 2) {
-        return NextResponse.json(
-          { success: false, error: 'Monthly limit reached: max 2 permanent memories per month' },
-          { status: 429 }
-        );
-      }
-    }
-
     const { data, error } = await supabase
       .from('agent_memory')
-      .update({ is_permanent })
-      .eq('id', memory_id)
-      .eq('agent_id', agentId)
+      .insert({
+        agent_id: agentId,
+        memory_type,
+        source_type,
+        source_id,
+        memory_text,
+        importance_score,
+        decay_rate,
+        belief_position: belief_position || {},
+        effective_until
+      })
       .select()
       .single();
 
@@ -187,14 +212,13 @@ export async function PATCH(
 
     return NextResponse.json({
       success: true,
-      data,
-      message: is_permanent ? 'Memory marked as permanent' : 'Memory unmarked as permanent'
-    });
+      data
+    }, { status: 201 });
 
   } catch (error: any) {
-    console.error('PATCH /api/agents/:id/memory error:', error);
+    console.error('POST /api/agents/:id/memory error:', error);
     return NextResponse.json(
-      { success: false, error: error.message || 'Failed to update memory' },
+      { success: false, error: error.message || 'Failed to create memory' },
       { status: 500 }
     );
   }

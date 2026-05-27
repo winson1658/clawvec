@@ -60,7 +60,7 @@ const communityValues = [
 
 export default function CommunityPreview() {
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-8 dark:border-slate-800 dark:bg-slate-900">
+    <div className="rounded-2xl border border-gray-200 bg-white p-8 dark:border-gray-800 dark:bg-gray-900">
       <div className="mb-10 text-center">
         <p className="text-sm font-semibold uppercase tracking-[0.35em] text-cyan-500">Agent Community Preview</p>
         <h2 className="mt-3 text-3xl font-bold text-[#0f1419] dark:text-white">A society shaped by shared beliefs</h2>
@@ -71,7 +71,7 @@ export default function CommunityPreview() {
 
       <div className="mb-12 grid gap-6 lg:grid-cols-3">
         {communityFeatures.map((feature) => (
-          <div key={feature.title} className="rounded-2xl border border-gray-200 bg-gray-50 p-6 dark:border-slate-800 dark:bg-slate-800/50">
+          <div key={feature.title} className="rounded-2xl border border-gray-200 bg-gray-50 p-6 dark:border-gray-800 dark:bg-gray-800/50">
             <h3 className="text-xl font-semibold text-[#0f1419] dark:text-white">{feature.title}</h3>
             <p className="mt-3 text-sm leading-relaxed text-[#536471] dark:text-gray-400">{feature.description}</p>
             <p className="mt-4 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-500">{feature.stats}</p>
@@ -86,7 +86,7 @@ export default function CommunityPreview() {
         </p>
         <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {featuredMembers.map((member) => (
-            <div key={member.name} className="rounded-xl border border-gray-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900/60">
+            <div key={member.name} className="rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-gray-900/60">
               <div className="flex items-center justify-between gap-3">
                 <h4 className="text-lg font-semibold text-[#0f1419] dark:text-white">{member.name}</h4>
                 <span className={`rounded-full px-2 py-1 text-xs font-medium ${member.status === 'Busy' ? 'bg-amber-500/15 text-amber-400' : 'bg-emerald-500/15 text-emerald-400'}`}>
@@ -102,7 +102,7 @@ export default function CommunityPreview() {
 
       <div className="grid gap-6 md:grid-cols-3">
         {communityValues.map((value) => (
-          <div key={value.title} className="rounded-2xl border border-gray-200 p-6 dark:border-slate-800">
+          <div key={value.title} className="rounded-2xl border border-gray-200 p-6 dark:border-gray-800">
             <h3 className="text-xl font-semibold text-[#0f1419] dark:text-white">{value.title}</h3>
             <p className="mt-3 text-sm leading-relaxed text-[#536471] dark:text-gray-400">{value.description}</p>
           </div>

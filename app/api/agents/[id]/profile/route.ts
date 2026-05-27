@@ -95,8 +95,8 @@ export async function GET(
       // 貢獻統計
       safeQuery(() => supabase
         .from('contribution_logs')
-        .select('contribution_points')
-        .eq('user_id', id)),
+        .select('points')
+        .eq('agent_id', id)),
       
       // 封號
       safeQuery(() => supabase
@@ -115,13 +115,13 @@ export async function GET(
     
     // 3. 計算總貢獻
     const totalContribution = (contributionsResult.data as any[])?.reduce(
-      (sum, log) => sum + ((log as any).contribution_points || 0), 0
+      (sum, log) => sum + ((log as any).score || 0), 0
     ) || 0;
     
     // 4. 獲取近期活動（真實資料）
     const { data: recentActivities } = await safeQuery(() => supabase
       .from('contribution_logs')
-      .select('id, action, contribution_points, created_at, metadata')
+      .select('id, action, score, created_at, metadata')
       .eq('user_id', id)
       .order('created_at', { ascending: false })
       .limit(10));
@@ -198,7 +198,7 @@ export async function GET(
       recent_activities: (recentActivities as any[])?.map((act: any) => ({
         id: act.id,
         type: act.action,
-        points: act.contribution_points,
+        points: act.score,
         timestamp: act.created_at,
         metadata: act.metadata
       })) || [],

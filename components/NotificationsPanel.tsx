@@ -199,7 +199,7 @@ export default function NotificationsPanel() {
 
   if (!userId) {
     return (
-      <div className="rounded-2xl border border-dashed border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-6 text-center">
+      <div className="rounded-2xl border border-dashed border-[#eff3f4] dark:border-gray-700 bg-gray-100 dark:bg-white dark:bg-gray-800/50 p-6 text-center">
         <Bell className="mx-auto mb-3 h-8 w-8 text-[#536471]" />
         <p className="text-[#536471] dark:text-gray-400">Sign in to receive notifications such as review requests and consistency score updates.</p>
         <p className="mt-2 text-sm text-[#536471]">Once you are signed in, the latest activity will appear here.</p>
@@ -208,7 +208,7 @@ export default function NotificationsPanel() {
   }
 
   return (
-    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100/70 dark:bg-slate-800/30 p-6">
+    <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-700 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30 p-6">
       <div className="mb-4 flex items-center justify-between">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.4em] text-[#536471]">Notifications</p>
@@ -231,7 +231,7 @@ export default function NotificationsPanel() {
             key={value}
             type="button"
             onClick={() => setActiveTab(value as typeof activeTab)}
-            className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] transition ${activeTab === value ? 'bg-blue-500/20 text-blue-300 border border-blue-500/40' : 'bg-white dark:bg-slate-900 text-[#536471] dark:text-gray-400 border border-[#eff3f4] dark:border-slate-800 hover:text-[#0f1419] dark:text-white'}`}
+            className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] transition ${activeTab === value ? 'bg-blue-500/20 text-blue-300 border border-blue-500/40' : 'bg-white dark:bg-gray-900 text-[#536471] dark:text-gray-400 border border-[#eff3f4] dark:border-gray-800 hover:text-[#0f1419] dark:text-white'}`}
           >
             {label}
             <span className="ml-2 rounded-full bg-black/20 px-1.5 py-0.5 text-[10px] text-inherit">
@@ -247,7 +247,7 @@ export default function NotificationsPanel() {
             key={category}
             type="button"
             onClick={() => toggleMute(category)}
-            className={`rounded-full border px-3 py-1 transition ${mutedCategories[category] ? 'border-red-500/30 bg-red-500/10 text-red-300' : 'border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-900 text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:text-white'}`}
+            className={`rounded-full border px-3 py-1 transition ${mutedCategories[category] ? 'border-red-500/30 bg-red-500/10 text-red-300' : 'border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-900 text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:text-white'}`}
           >
             {mutedCategories[category] ? `Muted: ${category}` : `Mute ${category}`}
           </button>
@@ -272,7 +272,7 @@ export default function NotificationsPanel() {
             return (
               <div
                 key={notification.id}
-                className={`flex items-start gap-3 rounded-2xl border border-[#eff3f4] dark:border-slate-800 px-4 py-3 transition ${notification.is_read ? 'bg-white/80 dark:bg-slate-900/50' : 'bg-blue-500/5 border-blue-500/40'}`}
+                className={`flex items-start gap-3 rounded-2xl border border-[#eff3f4] dark:border-gray-800 px-4 py-3 transition ${notification.is_read ? 'bg-white/80 dark:bg-white dark:bg-gray-900/50' : 'bg-blue-500/5 border-blue-500/40'}`}
               >
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/5 text-[#0f1419] dark:text-white">
                   <Icon className="h-5 w-5" />
@@ -281,7 +281,7 @@ export default function NotificationsPanel() {
                   <div className="mb-1 flex items-center gap-2">
                     <p className="text-sm font-semibold text-[#0f1419] dark:text-white">{notification.title}</p>
                     {notification.priority && (
-                      <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.2em] ${notification.priority === 'high' ? 'bg-red-500/15 text-red-300' : notification.priority === 'medium' ? 'bg-amber-500/15 text-amber-300' : 'bg-[#f7f9f9] dark:bg-slate-700 text-[#536471] dark:text-gray-300'}`}>
+                      <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.2em] ${notification.priority === 'high' ? 'bg-red-500/15 text-red-300' : notification.priority === 'medium' ? 'bg-amber-500/15 text-amber-300' : 'bg-[#f7f9f9] dark:bg-gray-700 text-[#536471] dark:text-gray-300'}`}>
                         {notification.priority}
                       </span>
                     )}

@@ -56,7 +56,7 @@ export default function NotificationPreview() {
   const targetUrl = notification?.url || dashboardUrl;
 
   return (
-    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white dark:bg-slate-900/70 px-5 py-4 text-sm text-[#536471] dark:text-gray-300 shadow-lg shadow-black/30">
+    <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-900/70 px-5 py-4 text-sm text-[#536471] dark:text-gray-300 shadow-lg shadow-black/30">
       {status === 'loading' && (
         <div className="flex items-center gap-3">
           <Loader2 className="h-4 w-4 animate-spin text-blue-400" />

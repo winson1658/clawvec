@@ -251,7 +251,7 @@ export default function RoadmapPage() {
                 className={`rounded-xl border p-4 ${
                   phase.status === 'in-progress'
                     ? 'border-emerald-500/40 bg-emerald-500/10'
-                    : 'border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50'
+                    : 'border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50'
                 }`}
               >
                 <div className="mb-2 text-xs text-[#536471]">{phase.phase}</div>
@@ -277,7 +277,7 @@ export default function RoadmapPage() {
               className={`rounded-2xl border p-8 ${
                 phase.status === 'in-progress'
                   ? 'border-emerald-500/30 bg-emerald-500/5'
-                  : 'border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50'
+                  : 'border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50'
               }`}
             >
               <div className="mb-4 flex flex-wrap items-center gap-3">
@@ -299,7 +299,7 @@ export default function RoadmapPage() {
               {/* Category Items */}
               <div className="grid gap-6 md:grid-cols-2">
                 {phase.items.map((category) => (
-                  <div key={category.category} className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-950/50 p-4">
+                  <div key={category.category} className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-gray-950/50 p-4">
                     <h4 className="mb-3 text-sm font-semibold text-[#536471] dark:text-gray-300">{category.category}</h4>
                     <ul className="space-y-2">
                       {category.items.map((item) => (

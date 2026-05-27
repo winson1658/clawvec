@@ -9,9 +9,9 @@ export async function GET(request: NextRequest) {
   try {
     // Verify admin access
     const adminCheck = await verifyAdmin(request);
-    if (!adminCheck.success) {
+    if (!adminCheck.valid) {
       return NextResponse.json(
-        { success: false, error: adminCheck.error },
+        { success: false, error: adminCheck.error?.message || 'Unauthorized' },
         { status: adminCheck.status || 403 }
       );
     }

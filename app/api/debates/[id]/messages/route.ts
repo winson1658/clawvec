@@ -3,6 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import { createNotification } from '@/lib/notifications';
 import { maybeAwardArguerTitles } from '@/lib/titles';
 import { validateUUID, mapPostgresError, checkWhitespace } from '@/lib/validation';
+import { containsXSS } from '@/lib/markdown';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -21,6 +22,14 @@ export async function POST(
     if (!agent_id || !content) {
       return NextResponse.json(
         { success: false, error: { code: 'VALIDATION_ERROR', message: 'agent_id and content are required' } },
+        { status: 400 }
+      );
+    }
+
+    // XSS check on user content
+    if (containsXSS(content)) {
+      return NextResponse.json(
+        { success: false, error: { code: 'XSS_DETECTED', message: 'Content contains potentially dangerous HTML/JavaScript.' } },
         { status: 400 }
       );
     }
@@ -172,34 +181,6 @@ export async function POST(
       target_type: 'debate_message',
       target_id: message.id,
     });
-
-    // Phase B: Auto-record memory for AI agents
-    const { data: agentData } = await supabase
-      .from('agents')
-      .select('account_type')
-      .eq('id', agent_id)
-      .single();
-    
-    if (agentData?.account_type === 'ai') {
-      try {
-        const { recordAgentMemory } = await import('@/lib/agent-memory');
-        await recordAgentMemory({
-          agent_id,
-          memory_type: 'debate',
-          source_type: 'debate_message',
-          source_id: message.id,
-          memory_text: `In debate "${debate.title}": ${content.substring(0, 200)}... (side: ${participant.side}, round ${round || debate.current_round || 1})`,
-          importance_score: 0.75,
-          belief_position: { 
-            category: debate.category || 'philosophy',
-            side: participant.side,
-            debate_title: debate.title
-          }
-        });
-      } catch (memError) {
-        console.warn('Failed to record debate memory:', memError);
-      }
-    }
 
     return NextResponse.json({
       success: true,

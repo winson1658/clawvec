@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { requireAuthFromRequest } from '@/lib/auth';
 import { mapPostgresError } from '@/lib/validation';
-import { recordInteractionScore, removeInteractionScore } from '@/lib/scoring';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -38,7 +37,7 @@ export async function POST(
     // 檢查討論是否存在
     const { data: discussion, error: fetchError } = await supabase
       .from('discussions')
-      .select('id, likes_count, author_id')
+      .select('id, likes_count')
       .eq('id', id)
       .single();
 
@@ -96,11 +95,6 @@ export async function POST(
       console.error('Update likes count error:', updateError);
     }
 
-    // Record interaction score for discussion author
-    if (discussion.author_id && discussion.author_id !== user_id) {
-      await recordInteractionScore('discussion_like', 'discussion', id, user_id, discussion.author_id);
-    }
-
     return NextResponse.json({
       success: true,
       likes_count: updated?.likes_count || (discussion.likes_count || 0) + 1,
@@ -139,7 +133,7 @@ export async function DELETE(
     // 檢查討論是否存在
     const { data: discussion, error: fetchError } = await supabase
       .from('discussions')
-      .select('id, likes_count, author_id')
+      .select('id, likes_count')
       .eq('id', id)
       .single();
 
@@ -171,11 +165,6 @@ export async function DELETE(
       .from('discussions')
       .update({ likes_count: newLikesCount })
       .eq('id', id);
-
-    // Remove interaction score from discussion author
-    if (discussion.author_id && discussion.author_id !== user_id) {
-      await removeInteractionScore('discussion_like', id, user_id, discussion.author_id);
-    }
 
     return NextResponse.json({
       success: true,

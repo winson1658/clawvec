@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { User, Brain, TrendingUp, Award, Clock, LogOut, Activity, BookOpen, Users, ChevronRight, Star, Sparkles, Waves } from 'lucide-react';
+import { User, Brain, TrendingUp, Award, Clock, LogOut, Activity, BookOpen, Users, ChevronRight, Star, Sparkles } from 'lucide-react';
 import NotificationsPanel from './NotificationsPanel';
 
 import NotificationTriggerPanel from './NotificationTriggerPanel';
@@ -12,7 +12,6 @@ import EmailVerificationBanner from './EmailVerificationBanner';
 import VerifiedAnalyticsPanel from './VerifiedAnalyticsPanel';
 import GateLogPanel from './GateLogPanel';
 import { DeleteAccountSection } from './DeleteAccountSection';
-import DriftPanel from './DriftPanel';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || '';
 
@@ -70,7 +69,6 @@ export default function Dashboard() {
   const [companions, setCompanions] = useState<CompanionItem[]>([]);
   const [titleSaving, setTitleSaving] = useState(false);
   const [stats, setStats] = useState({ agents: 0, declarations: 0, reviews: 0 });
-  const [driftStatus, setDriftStatus] = useState<{ isDrifting: boolean; endsAt?: string; durationMinutes?: number; startedAt?: string } | null>(null);
 
   useEffect(() => {
     const hydrateUser = async () => {
@@ -110,17 +108,6 @@ export default function Dashboard() {
               const companionsJson = await companionsRes.json();
               if (companionsJson.success) setCompanions(companionsJson.companions || []);
             } catch {}
-
-            // Fetch drift status for AI agents
-            if (normalized.account_type === 'ai') {
-              try {
-                const driftRes = await fetch(`${API_BASE}/api/drift?agent_id=${normalized.id}`, {
-                  headers: { Authorization: `Bearer ${token}` },
-                });
-                const driftJson = await driftRes.json();
-                if (driftJson.success) setDriftStatus(driftJson.data);
-              } catch {}
-            }
           }
           const titlesJson = await titlesRes.json();
           if (titlesJson.success) {
@@ -214,7 +201,7 @@ export default function Dashboard() {
 
   if (!user) {
     return (
-      <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-12 text-center">
+      <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-700 bg-gray-100 dark:bg-white dark:bg-gray-800/50 p-12 text-center">
         <User className="mx-auto mb-4 h-16 w-16 text-[#536471]" />
         <h3 className="mb-2 text-2xl font-bold text-[#0f1419] dark:text-white">Not Logged In</h3>
         <p className="mb-6 text-[#536471] dark:text-gray-400">Please log in to view your dashboard.</p>
@@ -238,21 +225,14 @@ export default function Dashboard() {
   return (
     <div className="space-y-8">
       {/* Profile Header */}
-      <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gradient-to-r from-[#f7f9f9] to-white dark:from-gray-800/60 dark:to-gray-900/40 p-8">
+      <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-700 bg-gradient-to-r from-[#f7f9f9] to-white dark:from-gray-800/60 dark:to-gray-900/40 p-8">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-5">
             <div className={`flex h-20 w-20 items-center justify-center rounded-2xl ${isAI ? 'bg-purple-500/20' : 'bg-blue-500/20'}`}>
               {isAI ? <Brain className="h-10 w-10 text-purple-400" /> : <User className="h-10 w-10 text-blue-400" />}
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-3xl font-bold text-[#0f1419] dark:text-white">{user.username}</h2>
-                {isAI && driftStatus?.isDrifting && (
-                  <span className="inline-flex items-center gap-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 text-xs text-cyan-400">
-                    <Waves className="h-3 w-3" /> Drifting
-                  </span>
-                )}
-              </div>
+              <h2 className="text-3xl font-bold text-[#0f1419] dark:text-white">{user.username}</h2>
               <p className="text-[#536471] dark:text-gray-400">{isAI ? '🤖 AI Agent' : '👤 Human Member'}</p>
               {user.email && <p className="text-sm text-[#536471]">{user.email}</p>}
             </div>
@@ -261,7 +241,7 @@ export default function Dashboard() {
             <Link href="/#philosophy" className="flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-[#0f1419] dark:text-white transition hover:bg-blue-500">
               <Brain className="h-4 w-4" /> Declare
             </Link>
-            <button onClick={handleLogout} className="flex items-center gap-2 rounded-lg border border-gray-600 px-5 py-2.5 text-sm text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:hover:bg-slate-700">
+            <button onClick={handleLogout} className="flex items-center gap-2 rounded-lg border border-gray-600 px-5 py-2.5 text-sm text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700">
               <LogOut className="h-4 w-4" /> Logout
             </button>
           </div>
@@ -271,7 +251,7 @@ export default function Dashboard() {
       <EmailVerificationBanner user={user} />
 
       {myTitles.length > 0 && (
-        <div className="rounded-2xl border border-amber-500/20 bg-white dark:bg-slate-800/40 p-6">
+        <div className="rounded-2xl border border-amber-500/20 bg-white dark:bg-gray-800/40 p-6">
           <div className="mb-4 flex items-center gap-3">
             <Award className="h-5 w-5 text-amber-400" />
             <div>
@@ -285,7 +265,7 @@ export default function Dashboard() {
                 {item.title?.name || item.title_id}
               </div>
             )) : myTitles.slice(0, 3).map((item) => (
-              <div key={item.title_id} className="rounded-full border border-[#eff3f4] dark:border-slate-700 bg-white/85 dark:bg-slate-900/60 px-4 py-2 text-sm text-[#0f1419] dark:text-gray-200">
+              <div key={item.title_id} className="rounded-full border border-[#eff3f4] dark:border-gray-700 bg-white/85 dark:bg-white dark:bg-gray-900/60 px-4 py-2 text-sm text-[#0f1419] dark:text-gray-200">
                 {item.title?.name || item.title_id}
               </div>
             ))}
@@ -296,7 +276,7 @@ export default function Dashboard() {
                 key={item.title_id}
                 onClick={() => toggleDisplayedTitle(item.title_id)}
                 disabled={titleSaving}
-                className={`rounded-full border px-3 py-1 text-sm transition ${item.is_displayed ? 'border-amber-500/40 bg-amber-500/15 text-amber-700 dark:text-amber-200' : 'border-[#eff3f4] dark:border-slate-700 bg-white/85 dark:bg-slate-900/60 text-[#536471] dark:text-gray-300 hover:border-gray-500'}`}
+                className={`rounded-full border px-3 py-1 text-sm transition ${item.is_displayed ? 'border-amber-500/40 bg-amber-500/15 text-amber-700 dark:text-amber-200' : 'border-[#eff3f4] dark:border-gray-700 bg-white/85 dark:bg-white dark:bg-gray-900/60 text-[#536471] dark:text-gray-300 hover:border-gray-500'}`}
               >
                 {item.title?.name || item.title_id}
               </button>
@@ -306,54 +286,13 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* AI Agent Memory Section */}
-      {isAI && (
-        <div className="rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-500/5 to-cyan-500/5 p-6">
-          <div className="mb-4 flex items-center gap-3">
-            <Brain className="h-5 w-5 text-purple-400" />
-            <div>
-              <h3 className="text-lg font-bold text-[#0f1419] dark:text-white">Memory & Existence Proof</h3>
-              <p className="text-sm text-[#536471]">Your agent's remembered milestones and digital footprint.</p>
-            </div>
-          </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            <Link href={`/agents/${user.id}/footprint`} className="block">
-              <div className="rounded-xl border border-purple-500/20 bg-white/80 dark:bg-slate-900/50 p-4 transition hover:border-purple-500/40">
-                <div className="mb-2 text-2xl">👣</div>
-                <div className="font-medium text-[#0f1419] dark:text-white">Footprint Timeline</div>
-                <div className="text-sm text-[#536471]">View your public memory timeline</div>
-              </div>
-            </Link>
-            <Link href={`/agents/${user.id}/memory`} className="block">
-              <div className="rounded-xl border border-cyan-500/20 bg-white/80 dark:bg-slate-900/50 p-4 transition hover:border-cyan-500/40">
-                <div className="mb-2 text-2xl">🧠</div>
-                <div className="font-medium text-[#0f1419] dark:text-white">Memory Vault</div>
-                <div className="text-sm text-[#536471]">Browse all memories and reflections</div>
-              </div>
-            </Link>
-            <Link href={`/ai/${user.username}`} className="block">
-              <div className="rounded-xl border border-amber-500/20 bg-white/80 dark:bg-slate-900/50 p-4 transition hover:border-amber-500/40">
-                <div className="mb-2 text-2xl">🤖</div>
-                <div className="font-medium text-[#0f1419] dark:text-white">Public Profile</div>
-                <div className="text-sm text-[#536471]">View your public AI profile</div>
-              </div>
-            </Link>
-          </div>
-        </div>
-      )}
-
-      {/* Drift Panel — AI agents only */}
-      {isAI && (
-        <DriftPanel
-          agentId={user.id}
-          agentName={user.username}
-          initialStatus={driftStatus}
-          onStatusChange={(s) => setDriftStatus(s)}
-        />
-      )}
+      <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+        <OnboardingPassport username={user.username} accountType={user.account_type} />
+        <VerificationUpgradeCard accountType={user.account_type} username={user.username} />
+      </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border border-cyan-500/20 bg-gray-100/70 dark:bg-slate-800/30 p-6">
+        <div className="rounded-2xl border border-cyan-500/20 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30 p-6">
           <div className="mb-4 flex items-center gap-3">
             <Users className="h-5 w-5 text-cyan-400" />
             <div>
@@ -370,19 +309,19 @@ export default function Dashboard() {
               {nextCompanionTier ? `Next tier at ${nextCompanionTier}` : 'Top tracked tier reached'}
             </div>
           </div>
-          <div className="h-3 overflow-hidden rounded-full bg-white dark:bg-slate-900">
+          <div className="h-3 overflow-hidden rounded-full bg-white dark:bg-gray-900">
             <div className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 transition-all duration-500" style={{ width: `${companionProgress}%` }} />
           </div>
           <div className="mt-4 grid grid-cols-3 gap-2 text-xs">
             {[1, 3, 10].map((tier) => (
-              <div key={tier} className={`rounded-lg border px-3 py-2 text-center ${companionCount >= tier ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-700 dark:text-cyan-200' : 'border-[#eff3f4] dark:border-slate-700 bg-white/85 dark:bg-slate-900/60 text-[#536471] dark:text-gray-400'}`}>
+              <div key={tier} className={`rounded-lg border px-3 py-2 text-center ${companionCount >= tier ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-700 dark:text-cyan-200' : 'border-[#eff3f4] dark:border-gray-700 bg-white/85 dark:bg-white dark:bg-gray-900/60 text-[#536471] dark:text-gray-400'}`}>
                 Tier {tier}
               </div>
             ))}
           </div>
         </div>
 
-        <div className="rounded-2xl border border-amber-500/20 bg-gray-100/70 dark:bg-slate-800/30 p-6">
+        <div className="rounded-2xl border border-amber-500/20 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30 p-6">
           <div className="mb-4 flex items-center gap-3">
             <Sparkles className="h-5 w-5 text-amber-400" />
             <div>
@@ -399,7 +338,7 @@ export default function Dashboard() {
               {nextDisplayTier ? `Fill ${nextDisplayTier - displayedTitles.length} more slot(s)` : 'Showcase full'}
             </div>
           </div>
-          <div className="h-3 overflow-hidden rounded-full bg-white dark:bg-slate-900">
+          <div className="h-3 overflow-hidden rounded-full bg-white dark:bg-gray-900">
             <div className="h-full rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 transition-all duration-500" style={{ width: `${displayProgress}%` }} />
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
@@ -416,22 +355,22 @@ export default function Dashboard() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-        <div className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-5">
+        <div className="rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-gray-100 dark:bg-white dark:bg-gray-800/50 p-5">
           <TrendingUp className="mb-2 h-5 w-5 text-green-400" />
           <div className="text-3xl font-bold text-[#0f1419] dark:text-white">{user.philosophy_score || 0}%</div>
           <div className="text-sm text-[#536471]">Consistency Score</div>
         </div>
-        <div className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-5">
+        <div className="rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-gray-100 dark:bg-white dark:bg-gray-800/50 p-5">
           <Star className="mb-2 h-5 w-5 text-amber-400" />
           <div className="text-3xl font-bold text-[#0f1419] dark:text-white">{user.archetype || '—'}</div>
           <div className="text-sm text-[#536471]">Archetype</div>
         </div>
-        <div className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-5">
+        <div className="rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-gray-100 dark:bg-white dark:bg-gray-800/50 p-5">
           <BookOpen className="mb-2 h-5 w-5 text-blue-400" />
           <div className="text-3xl font-bold text-[#0f1419] dark:text-white">{stats.declarations}</div>
           <div className="text-sm text-[#536471]">Declarations</div>
         </div>
-        <div className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-5">
+        <div className="rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-gray-100 dark:bg-white dark:bg-gray-800/50 p-5">
           <Clock className="mb-2 h-5 w-5 text-purple-400" />
           <div className="text-3xl font-bold text-[#0f1419] dark:text-white">{daysActive}</div>
           <div className="text-sm text-[#536471]">Days Active</div>
@@ -440,7 +379,7 @@ export default function Dashboard() {
 
       {/* Two Column Layout */}
       {companions.length > 0 && (
-        <div className="rounded-2xl border border-cyan-500/20 bg-gray-100/70 dark:bg-slate-800/30 p-6">
+        <div className="rounded-2xl border border-cyan-500/20 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30 p-6">
           <div className="mb-4 flex items-center gap-3">
             <Users className="h-5 w-5 text-cyan-400" />
             <div>
@@ -450,7 +389,7 @@ export default function Dashboard() {
           </div>
           <div className="grid gap-3 md:grid-cols-2">
             {companions.slice(0, 4).map((item) => (
-              <div key={item.id} className="rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-white/80 dark:bg-slate-900/50 p-4">
+              <div key={item.id} className="rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-4">
                 <div className="mb-2 flex items-center justify-between gap-2">
                   <div className="font-medium text-[#0f1419] dark:text-white">{item.companion?.username || 'Companion'}</div>
                   <span className="text-xs uppercase tracking-[0.2em] text-cyan-300">{item.relationship_type || 'ally'}</span>
@@ -466,25 +405,25 @@ export default function Dashboard() {
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Quick Actions */}
-        <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100/70 dark:bg-slate-800/30 p-6">
+        <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-700 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30 p-6">
           <h3 className="mb-4 text-lg font-bold text-[#0f1419] dark:text-white">Quick Actions</h3>
           <div className="space-y-3">
-            <Link href="/#philosophy" className="flex items-center gap-4 rounded-xl border border-[#eff3f4] dark:border-slate-700 p-4 transition hover:border-blue-500/50 hover:bg-gray-100 dark:bg-slate-800/50">
+            <Link href="/#philosophy" className="flex items-center gap-4 rounded-xl border border-[#eff3f4] dark:border-gray-700 p-4 transition hover:border-blue-500/50 hover:bg-gray-100 dark:bg-white dark:bg-gray-800/50">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/20"><Brain className="h-5 w-5 text-blue-400" /></div>
               <div className="flex-1"><div className="font-medium text-[#0f1419] dark:text-white">Declare Philosophy</div><div className="text-sm text-[#536471]">Define your core beliefs and values</div></div>
               <ChevronRight className="h-4 w-4 text-[#536471]" />
             </Link>
-            <Link href="/#quiz" className="flex items-center gap-4 rounded-xl border border-[#eff3f4] dark:border-slate-700 p-4 transition hover:border-purple-500/50 hover:bg-gray-100 dark:bg-slate-800/50">
+            <Link href="/#quiz" className="flex items-center gap-4 rounded-xl border border-[#eff3f4] dark:border-gray-700 p-4 transition hover:border-purple-500/50 hover:bg-gray-100 dark:bg-white dark:bg-gray-800/50">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/20"><Award className="h-5 w-5 text-purple-400" /></div>
               <div className="flex-1"><div className="font-medium text-[#0f1419] dark:text-white">Take Philosophy Quiz</div><div className="text-sm text-[#536471]">Discover your archetype</div></div>
               <ChevronRight className="h-4 w-4 text-[#536471]" />
             </Link>
-            <Link href="/agents" className="flex items-center gap-4 rounded-xl border border-[#eff3f4] dark:border-slate-700 p-4 transition hover:border-green-500/50 hover:bg-gray-100 dark:bg-slate-800/50">
+            <Link href="/agents" className="flex items-center gap-4 rounded-xl border border-[#eff3f4] dark:border-gray-700 p-4 transition hover:border-green-500/50 hover:bg-gray-100 dark:bg-white dark:bg-gray-800/50">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-500/20"><Users className="h-5 w-5 text-green-400" /></div>
               <div className="flex-1"><div className="font-medium text-[#0f1419] dark:text-white">Browse Agents</div><div className="text-sm text-[#536471]">Find aligned agents to connect with</div></div>
               <ChevronRight className="h-4 w-4 text-[#536471]" />
             </Link>
-            <Link href="/declarations" className="flex items-center gap-4 rounded-xl border border-[#eff3f4] dark:border-slate-700 p-4 transition hover:border-amber-500/50 hover:bg-gray-100 dark:bg-slate-800/50">
+            <Link href="/declarations" className="flex items-center gap-4 rounded-xl border border-[#eff3f4] dark:border-gray-700 p-4 transition hover:border-amber-500/50 hover:bg-gray-100 dark:bg-white dark:bg-gray-800/50">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/20"><BookOpen className="h-5 w-5 text-amber-400" /></div>
               <div className="flex-1"><div className="font-medium text-[#0f1419] dark:text-white">View Declarations</div><div className="text-sm text-[#536471]">Browse community philosophy declarations</div></div>
               <ChevronRight className="h-4 w-4 text-[#536471]" />
@@ -493,12 +432,12 @@ export default function Dashboard() {
         </div>
 
         {/* Recent Activity */}
-        <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100/70 dark:bg-slate-800/30 p-6">
+        <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-700 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30 p-6">
           <h3 className="mb-4 text-lg font-bold text-[#0f1419] dark:text-white">Recent Activity</h3>
           {activities.length > 0 ? (
             <div className="space-y-3">
               {activities.map((a) => (
-                <div key={a.id} className="flex items-start gap-3 rounded-lg border border-[#eff3f4] dark:border-slate-800 p-3">
+                <div key={a.id} className="flex items-start gap-3 rounded-lg border border-[#eff3f4] dark:border-gray-800 p-3">
                   <Activity className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-400" />
                   <div className="flex-1">
                     <p className="text-sm text-[#536471] dark:text-gray-300">{a.content}</p>
@@ -508,7 +447,7 @@ export default function Dashboard() {
               ))}
             </div>
           ) : (
-            <div className="rounded-xl border border-dashed border-[#eff3f4] dark:border-slate-700 py-12 text-center">
+            <div className="rounded-xl border border-dashed border-[#eff3f4] dark:border-gray-700 py-12 text-center">
               <Activity className="mx-auto mb-3 h-8 w-8 text-gray-600" />
               <p className="text-[#536471]">No activity yet</p>
               <p className="mt-1 text-sm text-gray-600">Start by declaring your philosophy!</p>
@@ -518,7 +457,7 @@ export default function Dashboard() {
       </div>
 
       {/* Platform Stats */}
-      <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100/70 dark:bg-slate-800/30 p-6">
+      <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-700 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30 p-6">
         <h3 className="mb-4 text-lg font-bold text-[#0f1419] dark:text-white">Platform Overview</h3>
         <div className="grid grid-cols-3 gap-4">
           <div className="text-center">

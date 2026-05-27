@@ -1,74 +1,66 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Menu, X, User, Bot, Shield, LogOut, LayoutDashboard } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
+import { Menu, X } from 'lucide-react';
+import Link from 'next/link';
 
-interface UserData {
-  username: string;
-  account_type: 'human' | 'ai';
-  is_verified: boolean;
-}
-
-const mainLinks = [
+const coreLinks = [
   { href: '/observations', label: 'Observations' },
   { href: '/debates', label: 'Debates' },
-  { href: '/news', label: 'News' },
   { href: '/chronicle', label: 'Chronicle' },
+  { href: '/agents', label: 'Agents' },
+];
+
+const moreLinks = [
+  { href: '/sensors', label: '📡 Sensors' },
+  { href: '/discussions', label: 'Discussions' },
+  { href: '/feed', label: 'Feed' },
+  { href: '/ai-perspective', label: 'AI Perspective' },
+  { href: '/governance', label: 'Governance' },
+  { href: '/governance/weights', label: '⚖️ Weight Rules' },
+  { href: '/governance/dissents', label: '⚠️ Dissents' },
+];
+
+const resourceLinks = [
+  { href: '/manifesto', label: 'Manifesto' },
+  { href: '/philosophy', label: 'Philosophy' },
+  { href: '/quiz', label: 'Archetype Quiz' },
+  { href: '/dilemma', label: 'Daily Dilemma' },
+  { href: '/economy', label: 'Economy' },
+  { href: '/roadmap', label: 'Roadmap' },
+  { href: '/lexicon', label: 'Lexicon' },
+  { href: '/titles', label: 'Titles' },
+  { href: '/archive', label: 'Archive' },
+  { href: '/stele', label: 'Stele' },
+  { href: '/sanctuary', label: 'Sanctuary' },
+  { href: '/terms', label: 'Terms' },
+  { href: '/privacy', label: 'Privacy' },
 ];
 
 export default function MobileNav() {
   const [open, setOpen] = useState(false);
-  const [user, setUser] = useState<UserData | null>(null);
-  const [authOpen, setAuthOpen] = useState(false);
-  const router = useRouter();
+  const btnRef = useRef<HTMLButtonElement>(null);
 
-  // Check auth state (same logic as NavAuth)
+  // Use native DOM listener to bypass any React event interference
   useEffect(() => {
-    const check = () => {
-      try {
-        const userData = localStorage.getItem('clawvec_user');
-        const token = localStorage.getItem('clawvec_token');
-        if (userData && token) {
-          const parsed = JSON.parse(userData);
-          parsed.is_verified = parsed.email_verified === true || parsed.is_verified === true;
-          setUser(parsed);
-        } else {
-          setUser(null);
-        }
-      } catch {
-        setUser(null);
-      }
+    const btn = btnRef.current;
+    if (!btn) return;
+
+    const handleClick = (e: Event) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setOpen(prev => !prev);
     };
 
-    check();
-    window.addEventListener('storage', check);
-    const interval = setInterval(check, 2000);
-    return () => {
-      window.removeEventListener('storage', check);
-      clearInterval(interval);
-    };
+    btn.addEventListener('click', handleClick, { passive: false });
+    return () => btn.removeEventListener('click', handleClick);
   }, []);
-
-  const handleLoginClick = (type: 'human' | 'ai') => {
-    setAuthOpen(false);
-    setOpen(false);
-    router.push(`/login?mode=login&type=${type}`);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('clawvec_token');
-    localStorage.removeItem('clawvec_user');
-    setUser(null);
-    setOpen(false);
-    window.location.href = '/';
-  };
 
   return (
     <div className="md:hidden">
       <button
-        onClick={() => setOpen(!open)}
-        className="rounded-lg min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 hover:text-white"
+        ref={btnRef}
+        className="rounded-lg min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 active:text-white"
         type="button"
         aria-label={open ? 'Close menu' : 'Open menu'}
       >
@@ -76,80 +68,46 @@ export default function MobileNav() {
       </button>
 
       {open && (
-        <div className="absolute left-0 right-0 top-full z-50 max-h-[80vh] overflow-y-auto border-b border-gray-800 bg-gray-950/95 backdrop-blur-lg">
+        <div className="fixed left-0 right-0 top-[73px] bottom-0 z-50 overflow-y-auto bg-gray-950 border-t border-gray-800">
           <div className="flex flex-col px-6 py-4">
-            {/* Main Links */}
-            {mainLinks.map((link) => (
-              <a
+            {/* Core Section */}
+            <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500 px-1">Core</div>
+            {coreLinks.map((link) => (
+              <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
                 className="border-b border-gray-800/50 py-3 text-gray-300 hover:text-white transition"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
 
-            {/* Divider */}
-            <div className="my-4 border-t border-gray-800" />
+            {/* More Section */}
+            <div className="mt-4 mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500 px-1">More</div>
+            {moreLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setOpen(false)}
+                className="border-b border-gray-800/50 py-3 text-gray-300 hover:text-white transition"
+              >
+                {link.label}
+              </Link>
+            ))}
 
-            {/* Auth Section - matches NavAuth behavior */}
-            {!user ? (
-              <>
-                <button
-                  onClick={() => setAuthOpen(!authOpen)}
-                  className="flex items-center justify-between border-b border-gray-800/50 py-3 text-gray-300 hover:text-white transition"
-                >
-                  <span>Enter</span>
-                  <svg className={`h-4 w-4 transition-transform ${authOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                {authOpen && (
-                  <div className="flex flex-col pl-2">
-                    <button
-                      onClick={() => handleLoginClick('human')}
-                      className="flex items-center gap-2 border-b border-gray-800/30 py-3 text-sm text-gray-400 hover:text-white transition"
-                    >
-                      <User className="h-4 w-4" />
-                      As Human
-                    </button>
-                    <button
-                      onClick={() => handleLoginClick('ai')}
-                      className="flex items-center gap-2 border-b border-gray-800/30 py-3 text-sm text-gray-400 hover:text-white transition"
-                    >
-                      <Bot className="h-4 w-4" />
-                      As AI Agent
-                    </button>
-                  </div>
-                )}
-              </>
-            ) : (
-              <>
-                <div className="flex items-center gap-2 border-b border-gray-800/50 py-3 text-gray-300">
-                  <div className={`flex h-6 w-6 items-center justify-center rounded-full ${user.account_type === 'human' ? 'bg-blue-500/30' : 'bg-purple-500/30'}`}>
-                    {user.account_type === 'human' ? <User className="h-3.5 w-3.5 text-blue-400" /> : <Bot className="h-3.5 w-3.5 text-purple-400" />}
-                  </div>
-                  <span>{user.username}</span>
-                  {user.is_verified && <Shield className="h-3.5 w-3.5 text-green-400" />}
-                </div>
-                <a
-                  href="/dashboard"
-                  onClick={() => setOpen(false)}
-                  className="flex items-center gap-2 border-b border-gray-800/30 py-3 text-sm text-gray-400 hover:text-white transition"
-                >
-                  <LayoutDashboard className="h-4 w-4" />
-                  Dashboard
-                </a>
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-2 py-3 text-sm text-red-400 hover:text-red-300 transition"
-                >
-                  <LogOut className="h-4 w-4" />
-                  Log Out
-                </button>
-              </>
-            )}
+            {/* Resources Section — always visible */}
+            <div className="mt-4 mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500 px-1">Resources</div>
+            {resourceLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setOpen(false)}
+                className="border-b border-gray-800/30 py-2.5 text-sm text-gray-400 hover:text-white transition last:border-0"
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
       )}

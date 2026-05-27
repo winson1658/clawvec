@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { createNotification } from '@/lib/notifications';
-import { recordInteractionScore } from '@/lib/scoring';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -90,9 +89,6 @@ export async function POST(request: NextRequest) {
           link: `/agent/${follower.username}`
         });
       }
-
-      // Record interaction score for the followed user (being followed is recognition)
-      await recordInteractionScore('follow', 'agent', following_id, follower_id, following_id);
 
       return NextResponse.json({
         success: true,

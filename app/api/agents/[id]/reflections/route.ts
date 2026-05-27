@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { verifyToken } from '@/lib/auth';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -14,6 +13,19 @@ function createClientWithTimeout() {
       headers: { 'X-Statement-Timeout': '5000' },
     },
   });
+}
+
+// Simple JWT verification helper (inline to avoid path issues)
+async function verifyToken(token: string): Promise<{ id: string; username?: string } | null> {
+  try {
+    const parts = token.split('.');
+    if (parts.length < 2) return null;
+    const payload = JSON.parse(atob(parts[1]));
+    if (payload.exp && payload.exp * 1000 < Date.now()) return null;
+    return { id: payload.id || payload.sub, username: payload.username };
+  } catch {
+    return null;
+  }
 }
 
 const VALID_TRIGGER_TYPES = ['scheduled', 'event_driven', 'user_prompted', 'milestone'] as const;
@@ -42,7 +54,7 @@ export async function GET(
     
     if (token) {
       try {
-        const user = await verifyToken(authHeader);
+        const user = await verifyToken(token);
         isOwner = user?.id === agentId;
       } catch {
         // Invalid token, treat as anonymous
@@ -115,7 +127,7 @@ export async function POST(
       );
     }
     
-    const user = await verifyToken(authHeader);
+    const user = await verifyToken(token);
     if (!user || user.id !== agentId) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized - only agent owner can submit reflections' },

@@ -228,7 +228,7 @@ export default function AgentsClient() {
               {aiAgents.slice(0, 8).map((agent) => (
                 <div 
                   key={agent.id}
-                  className="flex items-center gap-2 rounded-full border border-[#eff3f4] dark:border-slate-700 bg-white/80 dark:bg-slate-900/50 px-3 py-1.5 text-sm"
+                  className="flex items-center gap-2 rounded-full border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 px-3 py-1.5 text-sm"
                 >
                   <span className={`h-2 w-2 rounded-full ${agent.agent_status?.is_online ? 'bg-green-500 animate-pulse' : 'bg-gray-500'}`} />
                   <span className="text-[#536471] dark:text-gray-300">{agent.name}</span>
@@ -257,7 +257,7 @@ export default function AgentsClient() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search agents by name, role, or keyword..."
-              className="w-full rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-white/80 dark:bg-slate-900/50 py-4 pl-12 pr-4 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 py-4 pl-12 pr-4 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
           <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
@@ -268,7 +268,7 @@ export default function AgentsClient() {
                 <button
                   key={type}
                   onClick={() => setFilterType(type)}
-                  className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${filterType === type ? 'bg-blue-600 text-white' : 'border border-[#eff3f4] dark:border-slate-700 text-gray-400 hover:border-gray-500 hover:text-white'}`}
+                  className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${filterType === type ? 'bg-blue-600 text-white' : 'border border-[#eff3f4] dark:border-gray-700 text-gray-400 hover:border-gray-500 hover:text-white'}`}
                 >
                   {type === 'all' ? 'All' : type}
                 </button>
@@ -301,7 +301,7 @@ export default function AgentsClient() {
           <div className="grid gap-6 md:grid-cols-2">
             {filtered.map((agent) => (
               <Link key={agent.id} href={`/${agent.account_type}/${agent.name.toLowerCase()}`}>
-                <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-gray-900/40 p-6 transition hover:border-blue-500/30 cursor-pointer h-full flex flex-col">
+                <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-gray-900/40 p-6 transition hover:border-blue-500/30 cursor-pointer h-full flex flex-col">
                 {/* Header */}
                 <div className="mb-3 flex items-center gap-3">
                   <span className="text-3xl">{agent.emoji}</span>
@@ -335,7 +335,7 @@ export default function AgentsClient() {
 
                 {/* AI Status Card */}
                 {agent.account_type === 'ai' && (
-                  <div className="mb-4 rounded-xl border border-[#eff3f4] dark:border-slate-700/50 bg-gray-800/30 p-4">
+                  <div className="mb-4 rounded-xl border border-[#eff3f4] dark:border-gray-700/50 bg-gray-800/30 p-4">
                     <AgentStatusCard agentId={agent.id} />
                     {agent.active_source && (
                       <div className="mt-2 text-[10px] text-[#536471]">

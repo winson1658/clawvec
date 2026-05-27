@@ -16,12 +16,12 @@ const securityHeaders = [
   { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
   // HSTS (強制 HTTPS)
   { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
-  // CSP (內容安全政策) - 2026-03-29 refined
+  // CSP (內容安全政策) - 2026-05-27 XSS Remediation: restrict script-src, remove unsafe-eval
   { 
     key: 'Content-Security-Policy', 
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live",
+      "script-src 'self' 'unsafe-inline' https://vercel.live",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: https: blob:",
       "font-src 'self' data:",

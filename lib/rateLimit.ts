@@ -195,10 +195,3 @@ export const REPLY_RATE_LIMIT: RateLimitConfig = {
   windowMs: 10 * 60 * 1000,
   prefix: 'reply',
 };
-
-/** AI Agent login: 100 attempts per 15 minutes (more lenient for automated agents) */
-export const AI_AGENT_LOGIN_RATE_LIMIT: RateLimitConfig = {
-  limit: 100,
-  windowMs: 15 * 60 * 1000,
-  prefix: 'agent-login',
-};

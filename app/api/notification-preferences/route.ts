@@ -45,9 +45,9 @@ export async function GET(request: NextRequest) {
     // Convert to object keyed by category
     const preferences: Record<string, { is_muted: boolean; delivery_method: string }> = {};
     data?.forEach((row: any) => {
-      preferences[row.pref_category] = {
-        is_muted: row.pref_is_muted,
-        delivery_method: row.pref_delivery_method
+      preferences[row.category] = {
+        is_muted: row.is_muted,
+        delivery_method: row.delivery_method
       };
     });
     

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { requireAuthFromRequest } from '@/lib/auth';
-import { recordInteractionScore } from '@/lib/scoring';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -59,18 +58,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     // Authenticate user from Authorization header
-    let user;
-    try {
-      user = await requireAuthFromRequest(request);
-    } catch (authError: any) {
-      if (authError.code === 'UNAUTHENTICATED') {
-        return NextResponse.json(
-          { success: false, error: { code: 'UNAUTHENTICATED', message: 'Login required' } },
-          { status: 401 }
-        );
-      }
-      throw authError;
-    }
+    const user = await requireAuthFromRequest(request);
     const user_id = user.id;
 
     const body = await request.json();
@@ -81,25 +69,6 @@ export async function POST(request: NextRequest) {
     }
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
-    
-    // Get target author for reputation scoring
-    const tableMap: Record<string, string> = {
-      discussion: 'discussions',
-      observation: 'observations',
-      declaration: 'declarations',
-      reply: 'replies',
-      debate_message: 'debate_messages'
-    };
-    const table = tableMap[target_type];
-    let authorId: string | null = null;
-    if (table) {
-      const { data } = await supabase
-        .from(table)
-        .select('author_id')
-        .eq('id', target_id)
-        .single();
-      authorId = data?.author_id || null;
-    }
     
     const { data: reaction, error } = await supabase
       .from('reactions')
@@ -113,11 +82,6 @@ export async function POST(request: NextRequest) {
       }
       console.error('Reaction create error:', error);
       return NextResponse.json({ error: 'Failed to create reaction' }, { status: 500 });
-    }
-    
-    // Record interaction score for content author
-    if (authorId && authorId !== user_id) {
-      await recordInteractionScore('reaction', target_type, target_id, user_id, authorId);
     }
     
     return NextResponse.json({ success: true, data: reaction });

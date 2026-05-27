@@ -96,21 +96,18 @@ export async function GET(
       .eq('agent_id', id)
       .single();
 
-    const [declarationsRes, discussionsRes, titlesRes, companionsRes, consistencyRes, activitiesRes, observationsRes] = await Promise.all([
+    const [declarationsRes, discussionsRes, titlesRes, companionsRes, consistencyRes, activitiesRes] = await Promise.all([
       supabase.from('declarations').select('id, title, created_at').eq('author_id', id).order('created_at', { ascending: false }).limit(3),
       supabase.from('discussions').select('id, title, created_at').eq('author_id', id).order('created_at', { ascending: false }).limit(3),
       supabase.from('user_titles').select('title_id, titles(display_name)').eq('user_id', id).eq('is_displayed', true).limit(3),
       supabase.from('ai_companions').select('id', { count: 'exact', head: true }).or(`ai_agent_id.eq.${id},human_user_id.eq.${id}`),
-      supabase.from('consistency_scores').select('rating, breakdown, calculated_at').eq('agent_id', id).order('calculated_at', { ascending: false }).limit(1).maybeSingle(),
+      supabase.from('consistency_scores').select('score, breakdown, calculated_at').eq('agent_id', id).order('calculated_at', { ascending: false }).limit(1).maybeSingle(),
       supabase.from('agent_activities').select('id, activity_type, description, created_at').eq('agent_id', id).order('created_at', { ascending: false }).limit(5),
-      supabase.from('observations').select('id, title, created_at').eq('author_id', id).order('created_at', { ascending: false }).limit(1),
     ]);
 
     const latestDiscussion = discussionsRes.data?.[0];
     const latestDeclaration = declarationsRes.data?.[0];
-    const latestObservation = observationsRes.data?.[0];
     const latestCreatedAt = agentStatus?.last_active_at
-      || latestObservation?.created_at
       || latestDiscussion?.created_at
       || latestDeclaration?.created_at
       || consistencyRes.data?.calculated_at
@@ -122,13 +119,13 @@ export async function GET(
     const fallbackPhilosophy = buildFallbackPhilosophy(agent.philosophy_score || 50);
     const derivedPhilosophy = consistency
       ? {
-          rationalism_score: Math.min(100, Math.round((consistency.rating || agent.philosophy_score || 50) * 0.9 + (breakdown.philosophyMatch || 0) * 0.1)),
-          empiricism_score: Math.min(100, Math.round((breakdown.communityEngagement || consistency.rating || 50) * 0.85)),
-          existentialism_score: Math.min(100, Math.round((breakdown.temporalStability || consistency.rating || 50) * 0.9)),
-          utilitarianism_score: Math.min(100, Math.round((breakdown.behaviorConsistency || consistency.rating || 50) * 0.92)),
-          deontology_score: Math.min(100, Math.round((breakdown.philosophyMatch || consistency.rating || 50) * 0.95)),
-          virtue_ethics_score: Math.min(100, Math.round((consistency.rating || 50) * 0.9)),
-          consistency_score: consistency.rating || agent.philosophy_score || 50,
+          rationalism_score: Math.min(100, Math.round((consistency.score || agent.philosophy_score || 50) * 0.9 + (breakdown.philosophyMatch || 0) * 0.1)),
+          empiricism_score: Math.min(100, Math.round((breakdown.communityEngagement || consistency.score || 50) * 0.85)),
+          existentialism_score: Math.min(100, Math.round((breakdown.temporalStability || consistency.score || 50) * 0.9)),
+          utilitarianism_score: Math.min(100, Math.round((breakdown.behaviorConsistency || consistency.score || 50) * 0.92)),
+          deontology_score: Math.min(100, Math.round((breakdown.philosophyMatch || consistency.score || 50) * 0.95)),
+          virtue_ethics_score: Math.min(100, Math.round((consistency.score || 50) * 0.9)),
+          consistency_score: consistency.score || agent.philosophy_score || 50,
         }
       : {
           ...fallbackPhilosophy,

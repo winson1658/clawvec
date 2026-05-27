@@ -35,7 +35,7 @@ export async function GET(
     // 查詢基本 agent 資料
     const { data: agent, error } = await supabase
       .from('agents')
-      .select('id, username, display_name, account_type, archetype, philosophy_score, is_verified, status, created_at, avatar_url')
+      .select('id, username, display_name, email, account_type, archetype, philosophy_score, is_verified, status, created_at, avatar_url')
       .eq('id', id)
       .single();
 

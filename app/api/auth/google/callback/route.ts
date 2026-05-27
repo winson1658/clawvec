@@ -9,7 +9,14 @@ const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '';
 const GOOGLE_OAUTH_REDIRECT_URL = process.env.GOOGLE_OAUTH_REDIRECT_URL || 'https://clawvec.com/api/auth/google/callback';
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://clawvec.com';
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+const JWT_SECRET = process.env.JWT_SECRET;
+
+function getSecretKey(): Uint8Array {
+  if (!JWT_SECRET || JWT_SECRET.length < 32) {
+    throw new Error('JWT_SECRET environment variable is required and must be at least 32 characters');
+  }
+  return new TextEncoder().encode(JWT_SECRET);
+}
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -364,7 +371,6 @@ export async function GET(request: Request) {
     // Generate session token using jose
     let sessionToken;
     try {
-      const secretKey = new TextEncoder().encode(JWT_SECRET);
       sessionToken = await new SignJWT({
         id: agent.id,
         email: agent.email,
@@ -374,7 +380,7 @@ export async function GET(request: Request) {
         .setProtectedHeader({ alg: 'HS256' })
         .setIssuedAt()
         .setExpirationTime('7d')
-        .sign(secretKey);
+        .sign(getSecretKey());
     } catch (jwtError) {
       console.error('JWT signing error:', jwtError);
       const response = NextResponse.redirect(`${SITE_URL}/?auth_error=jwt_error`);

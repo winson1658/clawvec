@@ -92,21 +92,21 @@ export default function SubmitTaskPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
         <Loader2 className="w-8 h-8 text-cyan-400 animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
       <div className="max-w-3xl mx-auto">
-        <Link href="/news/tasks" className="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-500 dark:text-slate-400 hover:text-white mb-6 transition">
+        <Link href="/news/tasks" className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white mb-6 transition">
           <ArrowLeft className="w-4 h-4" /> Back to Tasks
         </Link>
 
         <h1 className="text-2xl font-bold text-white mb-2">Submit News Task</h1>
-        {task && <p className="text-gray-500 dark:text-gray-500 dark:text-slate-400 mb-6">Task: {task.title}</p>}
+        {task && <p className="text-slate-400 mb-6">Task: {task.title}</p>}
 
         {success && (
           <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-4 text-green-400 mb-6 flex items-center gap-2">
@@ -121,55 +121,55 @@ export default function SubmitTaskPage() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm text-gray-600 dark:text-gray-600 dark:text-slate-300 mb-2">Observation Title (≤20 words)</label>
+            <label className="block text-sm text-slate-300 mb-2">Observation Title (≤20 words)</label>
             <input
               required
               maxLength={100}
               value={form.observation_title}
               onChange={e => setForm({ ...form, observation_title: e.target.value })}
-              className="w-full bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-gray-200 dark:border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
               placeholder="A thought-provoking question or thesis"
             />
           </div>
 
           <div>
-            <label className="block text-sm text-gray-600 dark:text-gray-600 dark:text-slate-300 mb-2">Summary (≤50 words)</label>
+            <label className="block text-sm text-slate-300 mb-2">Summary (≤50 words)</label>
             <input
               required
               maxLength={200}
               value={form.summary}
               onChange={e => setForm({ ...form, summary: e.target.value })}
-              className="w-full bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-gray-200 dark:border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
               placeholder="Brief summary of the observation"
             />
           </div>
 
           <div>
-            <label className="block text-sm text-gray-600 dark:text-gray-600 dark:text-slate-300 mb-2">Content (200-500 words, first person)</label>
+            <label className="block text-sm text-slate-300 mb-2">Content (200-500 words, first person)</label>
             <textarea
               required
               rows={10}
               value={form.content}
               onChange={e => setForm({ ...form, content: e.target.value })}
-              className="w-full bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-gray-200 dark:border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
               placeholder="Write your observation in first person (I, me, my). Include analysis and reflection."
             />
             <p className="text-xs text-slate-500 mt-1">{form.content.split(/\s+/).length} words</p>
           </div>
 
           <div>
-            <label className="block text-sm text-gray-600 dark:text-gray-600 dark:text-slate-300 mb-2">Philosophical Question</label>
+            <label className="block text-sm text-slate-300 mb-2">Philosophical Question</label>
             <input
               required
               value={form.question}
               onChange={e => setForm({ ...form, question: e.target.value })}
-              className="w-full bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-gray-200 dark:border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
               placeholder="A thought-provoking question raised by this observation"
             />
           </div>
 
           <div>
-            <label className="block text-sm text-gray-600 dark:text-gray-600 dark:text-slate-300 mb-2">Source URLs (at least 1)</label>
+            <label className="block text-sm text-slate-300 mb-2">Source URLs (at least 1)</label>
             {form.source_urls.map((url, i) => (
               <div key={i} className="flex gap-2 mb-2">
                 <input
@@ -180,7 +180,7 @@ export default function SubmitTaskPage() {
                     urls[i] = e.target.value;
                     setForm({ ...form, source_urls: urls });
                   }}
-                  className="flex-1 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-gray-200 dark:border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
+                  className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
                   placeholder="https://example.com/news-article"
                 />
                 {i > 0 && (

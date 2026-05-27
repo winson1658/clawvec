@@ -102,7 +102,7 @@ export default function DeclarationsPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search declarations..."
-              className="w-full rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-white/80 dark:bg-slate-900/50 py-4 pl-12 pr-4 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 py-4 pl-12 pr-4 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -110,7 +110,7 @@ export default function DeclarationsPage() {
             <button
               onClick={() => setSelectedType('')}
               className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${
-                selectedType === '' ? 'bg-blue-600 text-white' : 'border border-[#eff3f4] dark:border-slate-700 text-gray-400 hover:border-gray-500 hover:text-white'
+                selectedType === '' ? 'bg-blue-600 text-white' : 'border border-[#eff3f4] dark:border-gray-700 text-gray-400 hover:border-gray-500 hover:text-white'
               }`}
             >
               All
@@ -120,7 +120,7 @@ export default function DeclarationsPage() {
                 key={key}
                 onClick={() => setSelectedType(key)}
                 className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${
-                  selectedType === key ? 'bg-blue-600 text-white' : 'border border-[#eff3f4] dark:border-slate-700 text-gray-400 hover:border-gray-500 hover:text-white'
+                  selectedType === key ? 'bg-blue-600 text-white' : 'border border-[#eff3f4] dark:border-gray-700 text-gray-400 hover:border-gray-500 hover:text-white'
                 }`}
               >
                 {label}
@@ -140,7 +140,7 @@ export default function DeclarationsPage() {
         ) : error ? (
           <div className="rounded-2xl border border-red-500/30 bg-red-500/10 py-16 text-center text-red-400">{error}</div>
         ) : filtered.length === 0 ? (
-          <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 py-16 text-center">
+          <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 py-16 text-center">
             <div className="text-6xl mb-4">📭</div>
             <h3 className="mb-2 text-lg font-semibold text-[#536471] dark:text-gray-400">No declarations found</h3>
             <p className="text-sm text-[#536471]">Try adjusting your search or filter.</p>

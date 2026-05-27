@@ -99,7 +99,7 @@ export default function DebatesClient() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       {/* Stats Bar */}
-      <div className="mb-8 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4">
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-4">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-500/20">
@@ -139,7 +139,7 @@ export default function DebatesClient() {
             setSelectedStatus(e.target.value);
             setPage(1);
           }}
-          className="rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2 text-sm text-[#536471] dark:text-gray-300"
+          className="rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-sm text-[#536471] dark:text-gray-300"
         >
           <option value="all">All Status</option>
           <option value="waiting">⏳ Waiting</option>
@@ -162,7 +162,7 @@ export default function DebatesClient() {
               className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition ${
                 selectedCategory === cat.id
                   ? `bg-gradient-to-r ${cat.color} text-white shadow-lg`
-                  : 'bg-white dark:bg-slate-800 text-[#536471] dark:text-gray-400 hover:bg-[#f7f9f9] dark:hover:bg-slate-700 hover:text-white'
+                  : 'bg-white dark:bg-gray-800 text-[#536471] dark:text-gray-400 hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-white'
               }`}
             >
               <Icon className="h-3.5 w-3.5" />
@@ -223,8 +223,8 @@ export default function DebatesClient() {
               const nonActiveDebates = debates.filter(d => d.status !== 'active');
               if (nonActiveDebates.length === 0) {
                 return (
-                  <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-16 text-center">
-                    <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-white dark:bg-slate-800">
+                  <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-16 text-center">
+                    <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-white dark:bg-gray-800">
                       <Sword className="h-10 w-10 text-gray-600" />
                     </div>
                     <p className="mb-2 text-lg text-[#536471] dark:text-gray-300">No debates found</p>
@@ -253,7 +253,7 @@ export default function DebatesClient() {
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="flex items-center gap-1 rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2 text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white disabled:opacity-50"
+            className="flex items-center gap-1 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white disabled:opacity-50"
           >
             <ChevronLeft className="h-4 w-4" /> Previous
           </button>
@@ -265,7 +265,7 @@ export default function DebatesClient() {
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
-            className="flex items-center gap-1 rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2 text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white disabled:opacity-50"
+            className="flex items-center gap-1 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white disabled:opacity-50"
           >
             Next <ChevronRight className="h-4 w-4" />
           </button>
@@ -285,7 +285,7 @@ function DebateCard({ debate, isLive = false }: { debate: Debate; isLive?: boole
       className={`group relative block overflow-hidden rounded-xl border transition-all hover:scale-[1.01] ${
         isLive
           ? 'border-green-500/50 bg-gradient-to-br from-green-500/10 to-cyan-500/5'
-          : 'border-[#eff3f4] dark:border-slate-800 bg-gradient-to-br from-white to-gray-50 dark:from-gray-900/80 dark:to-gray-800/50 hover:border-cyan-500/30'
+          : 'border-[#eff3f4] dark:border-gray-800 bg-gradient-to-br from-white to-gray-50 dark:from-gray-900/80 dark:to-gray-800/50 hover:border-cyan-500/30'
       }`}
     >
       {/* Live Indicator */}
@@ -310,7 +310,7 @@ function DebateCard({ debate, isLive = false }: { debate: Debate; isLive?: boole
             </span>
           )}
           
-          <span className="rounded-full bg-[#f7f9f9] dark:bg-slate-700/50 px-2.5 py-1 text-xs text-[#536471] dark:text-gray-400">
+          <span className="rounded-full bg-[#f7f9f9] dark:bg-gray-700/50 px-2.5 py-1 text-xs text-[#536471] dark:text-gray-400">
             {debate.category}
           </span>
         </div>

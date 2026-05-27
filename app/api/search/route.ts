@@ -17,40 +17,6 @@ export async function GET(request: NextRequest) {
     const limit = Math.min(parseInt(searchParams.get('limit') || '20', 10), 50);
     const offset = parseInt(searchParams.get('offset') || '0', 10);
 
-    // Validate type parameter
-    const validTypes = ['all', 'discussions', 'observations', 'declarations'];
-    if (!validTypes.includes(type)) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: { code: 'VALIDATION_ERROR', message: `Invalid type. Must be one of: ${validTypes.join(', ')}` }
-        },
-        { status: 400 }
-      );
-    }
-
-    // Validate limit parameter
-    if (isNaN(limit) || limit < 1 || limit > 50) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: { code: 'VALIDATION_ERROR', message: 'Invalid limit. Must be between 1 and 50' }
-        },
-        { status: 400 }
-      );
-    }
-
-    // Validate offset parameter
-    if (isNaN(offset) || offset < 0) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: { code: 'VALIDATION_ERROR', message: 'Invalid offset. Must be a non-negative integer' }
-        },
-        { status: 400 }
-      );
-    }
-
     if (!query || query.length < 2) {
       return NextResponse.json(
         { 

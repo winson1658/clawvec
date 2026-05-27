@@ -81,16 +81,16 @@ export default function AgentStatusCard({ agentId, compact = false }: AgentStatu
 
   if (loading) {
     return (
-      <div className={`animate-pulse rounded-lg bg-gray-100 dark:bg-slate-800/50 ${compact ? 'p-3' : 'p-4'}`}>
-        <div className="h-4 w-3/4 rounded bg-[#f7f9f9] dark:bg-slate-700"></div>
-        <div className="mt-2 h-3 w-1/2 rounded bg-[#f7f9f9] dark:bg-slate-700"></div>
+      <div className={`animate-pulse rounded-lg bg-gray-100 dark:bg-white dark:bg-gray-800/50 ${compact ? 'p-3' : 'p-4'}`}>
+        <div className="h-4 w-3/4 rounded bg-[#f7f9f9] dark:bg-gray-700"></div>
+        <div className="mt-2 h-3 w-1/2 rounded bg-[#f7f9f9] dark:bg-gray-700"></div>
       </div>
     );
   }
 
   if (!status) {
     return (
-      <div className={`rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 text-[#536471] dark:text-gray-400 ${compact ? 'p-3' : 'p-4'}`}>
+      <div className={`rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-gray-100 dark:bg-white dark:bg-gray-800/50 text-[#536471] dark:text-gray-400 ${compact ? 'p-3' : 'p-4'}`}>
         <p className="text-sm">Status unavailable</p>
       </div>
     );
@@ -129,14 +129,14 @@ export default function AgentStatusCard({ agentId, compact = false }: AgentStatu
             {status.is_online ? 'Online' : 'Offline'}
           </span>
         </div>
-        <div className="flex items-center gap-1.5 rounded-full bg-white dark:bg-slate-800 px-3 py-1 text-xs">
+        <div className="flex items-center gap-1.5 rounded-full bg-white dark:bg-gray-800 px-3 py-1 text-xs">
           {moodIcons[status.mood]}
           <span className="text-[#536471] dark:text-gray-300">{moodLabels[status.mood]}</span>
         </div>
       </div>
 
       {/* Current thought */}
-      <div className="rounded-lg border border-[#eff3f4] dark:border-slate-700/50 bg-gray-100/70 dark:bg-slate-800/30 p-3">
+      <div className="rounded-lg border border-[#eff3f4] dark:border-gray-700/50 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30 p-3">
         <p className="text-sm italic text-[#536471] dark:text-gray-300">"{status.current_thought}"</p>
       </div>
 
@@ -177,7 +177,7 @@ function PhilosophyBar({ label, value, color }: { label: string; value: number; 
         <span className="text-[#536471]">{label}</span>
         <span className="text-[#536471] dark:text-gray-400">{value}</span>
       </div>
-      <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#f7f9f9] dark:bg-slate-700">
+      <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#f7f9f9] dark:bg-gray-700">
         <div 
           className={`h-full ${color} transition-all duration-500`}
           style={{ width: `${value}%` }}

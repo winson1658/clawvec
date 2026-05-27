@@ -206,9 +206,9 @@ export default function CompanyChronicleClient({ company }: { company: string })
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="animate-pulse text-gray-500 dark:text-slate-400">Loading chronicle...</div>
+          <div className="animate-pulse text-slate-400">Loading chronicle...</div>
         </div>
       </div>
     );
@@ -216,13 +216,13 @@ export default function CompanyChronicleClient({ company }: { company: string })
 
   if (events.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <BackLink />
           <div className="text-center py-20">
             <div className="text-6xl mb-4">📖</div>
             <h1 className="text-3xl font-bold text-white mb-4">{info.name} Chronicle</h1>
-            <p className="text-gray-500 dark:text-slate-400 max-w-xl mx-auto">
+            <p className="text-slate-400 max-w-xl mx-auto">
               Deep chronicle data for {info.name} is being compiled. 
               Check back soon for a complete interactive timeline.
             </p>
@@ -234,7 +234,7 @@ export default function CompanyChronicleClient({ company }: { company: string })
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
       <div className="max-w-6xl mx-auto">
         <BackLink />
 
@@ -253,10 +253,10 @@ export default function CompanyChronicleClient({ company }: { company: string })
             </div>
             <div>
               <h1 className="text-4xl font-bold text-white">{info.name} Chronicle</h1>
-              <p className="text-gray-500 dark:text-slate-400 text-sm">{info.fullName}</p>
+              <p className="text-slate-400 text-sm">{info.fullName}</p>
             </div>
           </div>
-          <p className="text-gray-600 dark:text-slate-300 max-w-3xl leading-relaxed">{info.description}</p>
+          <p className="text-slate-300 max-w-3xl leading-relaxed">{info.description}</p>
 
           {stats && (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
@@ -306,7 +306,7 @@ export default function CompanyChronicleClient({ company }: { company: string })
                     className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm border transition-all ${
                       activeCategories.has(cat)
                         ? 'border-white/50 bg-white/10 text-white'
-                        : 'border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 text-gray-500 dark:text-slate-400 hover:border-slate-500 hover:text-gray-700 dark:text-slate-200'
+                        : 'border-slate-700 bg-slate-800/50 text-slate-400 hover:border-slate-500 hover:text-slate-200'
                     }`}
                   >
                     <div
@@ -328,7 +328,7 @@ export default function CompanyChronicleClient({ company }: { company: string })
                   className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-xs border transition-all ${
                     activeImpacts.has(impact)
                       ? 'border-amber-500/50 bg-amber-500/10 text-amber-300'
-                      : 'border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 text-slate-500 hover:border-slate-500 hover:text-gray-600 dark:text-slate-300'
+                      : 'border-slate-700 bg-slate-800/50 text-slate-500 hover:border-slate-500 hover:text-slate-300'
                   }`}
                 >
                   {'⭐'.repeat(impact)}
@@ -337,7 +337,7 @@ export default function CompanyChronicleClient({ company }: { company: string })
               {(activeCategories.size > 0 || activeImpacts.size > 0) && (
                 <button
                   onClick={clearFilters}
-                  className="ml-2 text-xs text-slate-500 hover:text-gray-600 dark:text-slate-300 underline"
+                  className="ml-2 text-xs text-slate-500 hover:text-slate-300 underline"
                 >
                   Clear
                 </button>
@@ -371,7 +371,7 @@ function BackLink() {
   return (
     <Link
       href="/chronicle"
-      className="inline-flex items-center gap-2 text-gray-500 dark:text-slate-400 hover:text-white transition-colors mb-6"
+      className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-6"
     >
       <ArrowLeft className="w-4 h-4" />
       Back to Chronicle
@@ -381,10 +381,10 @@ function BackLink() {
 
 function StatCard({ icon, label, value, color }: { icon: React.ReactNode; label: string; value: string; color: string }) {
   return (
-    <div className="bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-xl p-4">
+    <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
       <div className="flex items-center gap-2 mb-2" style={{ color }}>
         {icon}
-        <span className="text-xs uppercase tracking-wider text-gray-500 dark:text-slate-400">{label}</span>
+        <span className="text-xs uppercase tracking-wider text-slate-400">{label}</span>
       </div>
       <div className="text-2xl font-bold text-white">{value}</div>
     </div>
@@ -393,7 +393,7 @@ function StatCard({ icon, label, value, color }: { icon: React.ReactNode; label:
 
 function CompanyNav({ active }: { active: string }) {
   return (
-    <div className="mt-16 pt-8 border-t border-gray-200 dark:border-slate-800">
+    <div className="mt-16 pt-8 border-t border-slate-800">
       <h3 className="text-lg font-semibold text-white mb-4">Explore Other AI Chronicles</h3>
       <div className="flex flex-wrap gap-3">
         {Object.entries(COMPANY_CONFIG).map(([key, info]) => (
@@ -402,8 +402,8 @@ function CompanyNav({ active }: { active: string }) {
             href={`/chronicle/${key}`}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-all ${
               active === key
-                ? 'border-slate-500 bg-gray-100 dark:bg-slate-800 text-white'
-                : 'border-gray-200 dark:border-slate-800 bg-gray-100 dark:bg-gray-50 dark:bg-slate-900/50 text-gray-500 dark:text-slate-400 hover:border-gray-300 dark:border-slate-600 hover:text-gray-700 dark:text-slate-200'
+                ? 'border-slate-500 bg-slate-800 text-white'
+                : 'border-slate-800 bg-slate-900/50 text-slate-400 hover:border-slate-600 hover:text-slate-200'
             }`}
           >
             <div

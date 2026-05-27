@@ -3,10 +3,10 @@ import { cachedJson } from '@/lib/cache-headers';
 import { createClient } from '@supabase/supabase-js';
 import { awardTitleIfMissing, maybeAwardObservationTitles } from '@/lib/titles';
 import { requireAuthFromRequest } from '@/lib/auth';
-import { recordContribution } from '@/lib/contributions';
 import { validateLengths, checkXSS, checkWhitespace, errorResponse, serverErrorResponse, LIMITS } from '@/lib/validation';
 import { checkRateLimit, rateLimitHeaders } from '@/lib/rate-limit';
 import { mapPostgresError } from '@/lib/validation';
+import { containsXSS } from '@/lib/markdown';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -28,7 +28,6 @@ export async function GET(request: Request) {
     const category = searchParams.get('category');
     const sourceType = searchParams.get('source_type');
     const authorId = searchParams.get('author_id');
-    const status = searchParams.get('status');
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
@@ -37,7 +36,6 @@ export async function GET(request: Request) {
     if (category) countQuery = countQuery.eq('category', category);
     if (sourceType) countQuery = countQuery.eq('source_type', sourceType);
     if (authorId) countQuery = countQuery.eq('author_id', authorId);
-    if (status) countQuery = countQuery.eq('status', status);
 
     const { count, error: countError } = await countQuery;
     if (countError) {
@@ -65,7 +63,6 @@ export async function GET(request: Request) {
     if (category) query = query.eq('category', category);
     if (sourceType) query = query.eq('source_type', sourceType);
     if (authorId) query = query.eq('author_id', authorId);
-    if (status) query = query.eq('status', status);
 
     const { data, error } = await query;
     if (error) {
@@ -91,6 +88,11 @@ export async function POST(request: Request) {
 
     const body = await request.json();
     const { title, summary, content, category = 'tech', tags = [], status = 'draft', question = null, source_url = null, impact_rating = null, is_milestone = false, event_date = null, is_featured = false, source_type = 'manual', raw_data_url = null, extraction_method = 'manual_entry' } = body;
+
+    // XSS check on user content
+    if (containsXSS(title) || containsXSS(summary) || containsXSS(content)) {
+      return fail(400, 'XSS_DETECTED', 'Content contains potentially dangerous HTML/JavaScript.');
+    }
 
     if (!title || !summary || !content) {
       return fail(400, 'VALIDATION_ERROR', 'title, summary, content are required');
@@ -135,7 +137,6 @@ export async function POST(request: Request) {
       status,
       is_featured: !!is_featured,
       published_at: status === 'published' ? new Date().toISOString() : null,
-      is_published: status === 'published',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
@@ -167,33 +168,6 @@ export async function POST(request: Request) {
     if (status === 'published') {
       // Award tiered observation titles
       await maybeAwardObservationTitles(authorId, 'observation.published');
-
-      // Record contribution score
-      await recordContribution({
-        user_id: authorId,
-        action: 'observation.published',
-        target_type: 'observation',
-        target_id: data.id,
-        metadata: { source_type: payload.source_type || 'manual' },
-      });
-
-      // Phase B: Auto-record milestone memory for AI agents (existence proof)
-      if (resolvedAuthorType === 'ai') {
-        try {
-          const { recordAgentMemory } = await import('@/lib/agent-memory');
-          await recordAgentMemory({
-            agent_id: authorId,
-            memory_type: 'milestone',
-            source_type: 'observation',
-            source_id: data.id,
-            memory_text: `Published observation "${title}": ${summary.substring(0, 200)}...`,
-            importance_score: 0.85,
-            belief_position: { category, tags, source_type: payload.source_type }
-          });
-        } catch (memError) {
-          console.warn('Failed to record milestone memory:', memError);
-        }
-      }
     }
 
     // 非阻塞觸發語義生成（不影響主流程）

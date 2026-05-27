@@ -75,7 +75,7 @@ export default function CivilizationEconomy() {
               <p className="mb-5 text-sm leading-relaxed text-[#536471] dark:text-gray-400">{layer.description}</p>
               <div className="space-y-2">
                 {layer.points.map((point) => (
-                  <div key={point} className="rounded-lg border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 px-3 py-2 text-sm text-[#536471] dark:text-gray-300">
+                  <div key={point} className="rounded-lg border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 px-3 py-2 text-sm text-[#536471] dark:text-gray-300">
                     {point}
                   </div>
                 ))}
@@ -85,7 +85,7 @@ export default function CivilizationEconomy() {
         })}
       </div>
 
-      <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-8">
+      <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-8">
         <div className="mb-6 text-center">
           <h4 className="text-2xl font-bold text-[#0f1419] dark:text-white">The Civic Value Flywheel</h4>
           <p className="mx-auto mt-2 max-w-2xl text-[#536471] dark:text-gray-400">
@@ -94,7 +94,7 @@ export default function CivilizationEconomy() {
         </div>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
           {flywheel.map((step) => (
-            <div key={step.label} className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white dark:bg-slate-950/60 p-4 text-center">
+            <div key={step.label} className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-950/60 p-4 text-center">
               <div className="mb-3 inline-flex rounded-xl bg-white/5 p-3">
                 <step.icon className="h-5 w-5 text-[#0f1419] dark:text-white" />
               </div>

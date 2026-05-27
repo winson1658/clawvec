@@ -226,7 +226,7 @@ export default function RitualPage() {
   // ==================== Completion Screen ====================
   if (showCompletion) {
     return (
-      <div className="min-h-screen bg-white text-[#0f1419] dark:bg-slate-950 dark:text-gray-100">
+      <div className="min-h-screen bg-white text-[#0f1419] dark:bg-gray-950 dark:text-gray-100">
         <div className="relative flex min-h-screen items-center justify-center overflow-hidden p-6">
           {/* Background Animation */}
           <div className="absolute inset-0">
@@ -344,7 +344,7 @@ export default function RitualPage() {
                   setCompletedSteps([]);
                   setCurrentStep(0);
                 }}
-                className="rounded-xl border border-[#eff3f4] bg-white px-6 py-4 text-gray-600 transition hover:bg-[#f7f9f9] hover:text-gray-900 dark:border-slate-700 dark:bg-slate-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                className="rounded-xl border border-[#eff3f4] bg-white px-6 py-4 text-gray-600 transition hover:bg-[#f7f9f9] hover:text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
               >
                 Restart Ritual
               </button>
@@ -358,7 +358,7 @@ export default function RitualPage() {
   // ==================== Intro Screen ====================
   if (showIntro) {
     return (
-      <div className="min-h-screen bg-white text-[#0f1419] dark:bg-slate-950 dark:text-gray-100">
+      <div className="min-h-screen bg-white text-[#0f1419] dark:bg-gray-950 dark:text-gray-100">
         <div className="relative flex min-h-screen items-center justify-center overflow-hidden p-6">
           {/* Background Effects */}
           <div className="absolute inset-0">
@@ -402,7 +402,7 @@ export default function RitualPage() {
                   key={step.id}
                   className={`rounded-xl border p-4 text-center transition ${step.borderColor} ${step.bgColor}`}
                 >
-                  <div className={`mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-white/80 shadow-sm dark:bg-slate-900/50 ${step.color}`}>
+                  <div className={`mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-white/80 shadow-sm dark:bg-gray-900/50 ${step.color}`}>
                     {step.icon}
                   </div>
                   <div className="text-xs font-medium text-[#0f1419] dark:text-gray-300">{step.title}</div>
@@ -425,7 +425,7 @@ export default function RitualPage() {
                       flex items-center gap-2 rounded-xl border px-4 py-3 transition
                       ${selectedArchetype === archetype.name
                         ? `${archetype.borderColor} ${archetype.bgColor} ${archetype.color}`
-                        : 'border-gray-200 bg-white text-gray-600 shadow-sm hover:border-[#eff3f4] hover:text-gray-800 dark:border-slate-800 dark:bg-slate-900/50 dark:text-gray-500 dark:hover:border-gray-700 dark:hover:text-gray-400'
+                        : 'border-gray-200 bg-white text-gray-600 shadow-sm hover:border-[#eff3f4] hover:text-gray-800 dark:border-gray-800 dark:bg-gray-900/50 dark:text-gray-500 dark:hover:border-gray-700 dark:hover:text-gray-400'
                       }
                     `}
                   >
@@ -463,7 +463,7 @@ export default function RitualPage() {
 
   // ==================== Main Ritual Flow ====================
   return (
-    <div className="min-h-screen bg-white text-[#0f1419] dark:bg-slate-950 dark:text-gray-100">
+    <div className="min-h-screen bg-white text-[#0f1419] dark:bg-gray-950 dark:text-gray-100">
       {/* Top Navigation */}
 
       <main className="mx-auto max-w-4xl px-6 py-12">
@@ -540,7 +540,7 @@ export default function RitualPage() {
           </div>
 
           {/* Quote */}
-          <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 p-4">
+          <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-4">
             <p className="text-sm italic text-[#536471]">
               {currentStepData.quote}
             </p>
@@ -582,7 +582,7 @@ export default function RitualPage() {
                 completeRitual();
               }
             }}
-            className="flex items-center gap-2 rounded-xl border border-[#eff3f4] bg-white px-6 py-4 text-gray-600 transition hover:bg-[#f7f9f9] hover:text-gray-900 dark:border-slate-700 dark:bg-slate-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+            className="flex items-center gap-2 rounded-xl border border-[#eff3f4] bg-white px-6 py-4 text-gray-600 transition hover:bg-[#f7f9f9] hover:text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
           >
             <Check className="h-5 w-5" />
             {completedSteps.includes(currentStepData.id) ? 'Completed' : 'Mark as Complete'}
@@ -604,8 +604,8 @@ export default function RitualPage() {
                   ${isCompleted 
                     ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400' 
                     : isCurrent
-                      ? 'bg-[#f7f9f9] text-gray-900 dark:bg-slate-700 dark:text-white'
-                      : 'bg-white text-gray-400 hover:bg-[#f7f9f9] dark:hover:bg-slate-800 dark:text-gray-600 dark:hover:bg-gray-700'
+                      ? 'bg-[#f7f9f9] text-gray-900 dark:bg-gray-700 dark:text-white'
+                      : 'bg-white text-gray-400 hover:bg-[#f7f9f9] dark:bg-gray-800 dark:text-gray-600 dark:hover:bg-gray-700'
                   }
                 `}
               >

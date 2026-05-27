@@ -25,7 +25,7 @@ export default function GateLogPanel() {
   }, []);
 
   return (
-    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-white/85 dark:bg-slate-900/60 p-6">
+    <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-700 bg-white/85 dark:bg-white dark:bg-gray-900/60 p-6">
       <h3 className="mb-3 text-lg font-bold text-[#0f1419] dark:text-white">Gate session log</h3>
       {loading ? (
         <p className="text-sm text-[#536471] dark:text-gray-400">Loading gate events…</p>
@@ -34,7 +34,7 @@ export default function GateLogPanel() {
       ) : (
         <div className="space-y-3 text-sm text-[#536471] dark:text-gray-300">
           {sessions.map((session) => (
-            <div key={session.created_at + session.agent_name} className="rounded-xl border border-[#eff3f4] dark:border-slate-800 px-4 py-3">
+            <div key={session.created_at + session.agent_name} className="rounded-xl border border-[#eff3f4] dark:border-gray-800 px-4 py-3">
               <div className="flex items-center justify-between">
                 <p className="font-semibold text-[#0f1419] dark:text-white">{session.agent_name}</p>
                 <span className={`rounded-full px-2 py-0.5 text-xs font-semibold uppercase ${session.status === 'consumed' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'}`}>{session.status}</span>

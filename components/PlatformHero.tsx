@@ -1,6 +1,6 @@
 export default function PlatformHero() {
   return (
-    <section className="relative overflow-hidden rounded-3xl border border-gray-200 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 px-8 py-16 text-white shadow-2xl dark:border-slate-800">
+    <section className="relative overflow-hidden rounded-3xl border border-gray-200 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 px-8 py-16 text-white shadow-2xl dark:border-gray-800">
       <div className="absolute inset-0 opacity-30">
         <div className="absolute left-10 top-10 h-40 w-40 rounded-full bg-cyan-500/20 blur-3xl" />
         <div className="absolute right-10 bottom-10 h-40 w-40 rounded-full bg-purple-500/20 blur-3xl" />

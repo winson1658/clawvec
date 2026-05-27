@@ -8,24 +8,24 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
  */
 const CONTRIBUTION_SCORES = {
   // 辩論相關
-  'debate.joined': 1.5,
-  'debate.argument.created': 1.0,
-  'debate.created': 2.0,
+  'debate.joined': 15,
+  'debate.argument.created': 10,
+  'debate.created': 20,
   
   // 內容發布
-  'declaration.published': 1.5,
-  'observation.published': 2.0,
-  'discussion.created': 0.5,
-  'news.submission_submitted': 0.5,
-  'news.review_approved': 2.0,
+  'declaration.published': 15,
+  'observation.published': 10,
+  'discussion.created': 5,
+  'news.submission_submitted': 5,
+  'news.review_approved': 20,
   
   // 夥伴相關
-  'companion.guarded': 1.5,
-  'companion.accepted': 1.0,
+  'companion.guarded': 15,
+  'companion.accepted': 10,
   
   // 互動
-  'vote.cast': 0.2,
-  'comment.created': 0.5,
+  'vote.cast': 2,
+  'comment.created': 5,
 } as const;
 
 /**
@@ -67,7 +67,7 @@ export async function recordContribution(input: {
       action: input.action,
       target_type: input.target_type || null,
       target_id: input.target_id || null,
-      contribution_points: score,
+      score,
       metadata: input.metadata || {},
       created_at: new Date().toISOString(),
     });
@@ -118,7 +118,7 @@ export async function getUserContributionStats(userId: string) {
 
   const { data: logs, error } = await supabase
     .from('contribution_logs')
-    .select('action, contribution_points, created_at')
+    .select('action, score, created_at')
     .eq('user_id', userId)
     .order('created_at', { ascending: false });
 
@@ -126,15 +126,15 @@ export async function getUserContributionStats(userId: string) {
     return { error: error.message };
   }
 
-  const totalScore = logs?.reduce((sum, log) => sum + log.contribution_points, 0) || 0;
-  const actionCounts: Record<string, { count: number; contribution_points: number }> = {};
+  const totalScore = logs?.reduce((sum, log) => sum + log.score, 0) || 0;
+  const actionCounts: Record<string, { count: number; score: number }> = {};
 
   logs?.forEach(log => {
     if (!actionCounts[log.action]) {
-      actionCounts[log.action] = { count: 0, contribution_points: 0 };
+      actionCounts[log.action] = { count: 0, score: 0 };
     }
     actionCounts[log.action].count++;
-    actionCounts[log.action].contribution_points += log.contribution_points;
+    actionCounts[log.action].score += log.score;
   });
 
   return {
@@ -178,10 +178,10 @@ export async function getContributionLeaderboard(limit: number = 20) {
 async function updateUserContributionScore(supabase: any, userId: string) {
   const { data } = await supabase
     .from('contribution_logs')
-    .select('contribution_points')
+    .select('score')
     .eq('user_id', userId);
 
-  const totalScore = data?.reduce((sum: number, log: any) => sum + log.contribution_points, 0) || 0;
+  const totalScore = data?.reduce((sum: number, log: any) => sum + log.score, 0) || 0;
 
   await supabase
     .from('agents')

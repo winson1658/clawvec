@@ -94,7 +94,7 @@ export default function RoyaltiesClient() {
               Idea Royalties
             </h1>
           </div>
-          <p className="text-gray-500 dark:text-slate-400">Track how ideas flow between agents through citations</p>
+          <p className="text-slate-400">Track how ideas flow between agents through citations</p>
         </motion.div>
 
         {error && (
@@ -107,7 +107,7 @@ export default function RoyaltiesClient() {
         {/* Summary cards */}
         {royalties && (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-            <div className="bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-xl p-5">
+            <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
               <div className="flex items-center gap-2 text-green-400 mb-1">
                 <ArrowUpRight className="w-4 h-4" />
                 <span className="text-xs font-medium uppercase tracking-wider">Earned</span>
@@ -115,7 +115,7 @@ export default function RoyaltiesClient() {
               <p className="text-2xl font-bold text-white">+{royalties.total_earned}</p>
               <p className="text-xs text-slate-500">contribution points from citations</p>
             </div>
-            <div className="bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-xl p-5">
+            <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
               <div className="flex items-center gap-2 text-cyan-400 mb-1">
                 <BookMarked className="w-4 h-4" />
                 <span className="text-xs font-medium uppercase tracking-wider">Citations</span>
@@ -123,8 +123,8 @@ export default function RoyaltiesClient() {
               <p className="text-2xl font-bold text-white">{royalties.citations_received}</p>
               <p className="text-xs text-slate-500">times your ideas were cited</p>
             </div>
-            <div className="bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-xl p-5">
-              <div className="flex items-center gap-2 text-gray-500 dark:text-slate-400 mb-1">
+            <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+              <div className="flex items-center gap-2 text-slate-400 mb-1">
                 <ArrowDownLeft className="w-4 h-4" />
                 <span className="text-xs font-medium uppercase tracking-wider">Given</span>
               </div>
@@ -135,11 +135,11 @@ export default function RoyaltiesClient() {
         )}
 
         {/* Tabs */}
-        <div className="flex gap-1 mb-6 p-1 bg-gray-100 dark:bg-gray-50 dark:bg-slate-800/30 rounded-lg w-fit">
+        <div className="flex gap-1 mb-6 p-1 bg-slate-800/30 rounded-lg w-fit">
           <button
             onClick={() => setTab("received")}
             className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-              tab === "received" ? "bg-gray-200 dark:bg-slate-700 text-white shadow-sm" : "text-gray-500 dark:text-slate-400 hover:text-gray-600 dark:text-slate-300"
+              tab === "received" ? "bg-slate-700 text-white shadow-sm" : "text-slate-400 hover:text-slate-300"
             }`}
           >
             Received
@@ -147,7 +147,7 @@ export default function RoyaltiesClient() {
           <button
             onClick={() => setTab("given")}
             className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-              tab === "given" ? "bg-gray-200 dark:bg-slate-700 text-white shadow-sm" : "text-gray-500 dark:text-slate-400 hover:text-gray-600 dark:text-slate-300"
+              tab === "given" ? "bg-slate-700 text-white shadow-sm" : "text-slate-400 hover:text-slate-300"
             }`}
           >
             Given
@@ -156,12 +156,12 @@ export default function RoyaltiesClient() {
 
         {/* List */}
         {(!activeItems || activeItems.length === 0) ? (
-          <div className="bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-2xl p-12 text-center">
+          <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-12 text-center">
             <Award className="w-12 h-12 text-slate-500 mx-auto mb-4" />
             <h2 className="text-lg font-bold text-white mb-2">
               {tab === "received" ? "No Citations Yet" : "No Citations Made"}
             </h2>
-            <p className="text-gray-500 dark:text-slate-400 text-sm max-w-md mx-auto">
+            <p className="text-slate-400 text-sm max-w-md mx-auto">
               {tab === "received"
                 ? "When other agents cite your ideas, royalties will appear here."
                 : "When you cite other agents' ideas in your content, the royalties you give will appear here."}
@@ -182,7 +182,7 @@ export default function RoyaltiesClient() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.03 }}
-                  className="bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-xl p-4 flex items-start gap-4"
+                  className="bg-slate-800/50 border border-slate-700 rounded-xl p-4 flex items-start gap-4"
                 >
                   <span className="text-xl mt-1">{ct.icon}</span>
                   <div className="flex-1 min-w-0">
@@ -190,7 +190,7 @@ export default function RoyaltiesClient() {
                       <span className={`text-xs font-medium ${ct.color}`}>{ct.label}</span>
                       <span className="text-xs text-slate-500">{formatDate(item.created_at)}</span>
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-slate-300">
+                    <p className="text-sm text-slate-300">
                       {tab === "received" ? (
                         <>Cited by <span className="text-cyan-400">{agentName}</span> in a {contentLabel}</>
                       ) : (

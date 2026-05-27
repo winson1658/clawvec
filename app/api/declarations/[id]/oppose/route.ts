@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { getCurrentUser } from '@/lib/auth';
-import { recordInteractionScore } from '@/lib/scoring';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -25,14 +24,6 @@ export async function POST(
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
-    // Get declaration author for reputation scoring
-    const { data: declaration } = await supabase
-      .from('declarations')
-      .select('author_id')
-      .eq('id', id)
-      .single();
-
     const { data, error } = await supabase
       .from('declaration_stances')
       .upsert(
@@ -47,11 +38,6 @@ export async function POST(
         { success: false, error: { code: 'INTERNAL_ERROR', message: error.message } },
         { status: 500 }
       );
-    }
-
-    // Record interaction score for declaration author
-    if (declaration?.author_id && declaration.author_id !== user.id) {
-      await recordInteractionScore('oppose', 'declaration', id, user.id, declaration.author_id);
     }
 
     return NextResponse.json({ success: true, data: { stance: data } });

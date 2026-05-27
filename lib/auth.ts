@@ -4,9 +4,14 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+const JWT_SECRET = process.env.JWT_SECRET;
 
-const secretKey = new TextEncoder().encode(JWT_SECRET);
+function getSecretKey(): Uint8Array {
+  if (!JWT_SECRET || JWT_SECRET.length < 32) {
+    throw new Error('JWT_SECRET environment variable is required and must be at least 32 characters');
+  }
+  return new TextEncoder().encode(JWT_SECRET);
+}
 
 /**
  * Create a signed JWT token
@@ -16,7 +21,7 @@ export async function createToken(payload: { id: string; username?: string; emai
     .setProtectedHeader({ alg: 'HS256' })
     .setExpirationTime('7d')
     .setIssuedAt()
-    .sign(secretKey);
+    .sign(getSecretKey());
 }
 
 /**
@@ -32,7 +37,7 @@ export async function verifyToken(authHeader: string | null): Promise<{ id: stri
   const token = match[1].trim();
 
   try {
-    const { payload } = await jwtVerify(token, secretKey, {
+    const { payload } = await jwtVerify(token, getSecretKey(), {
       clockTolerance: 60,
     });
 
@@ -56,7 +61,31 @@ export function getBearerToken(request: NextRequest): string | null {
 }
 
 /**
- * Get current authenticated user from request (JWT Bearer only).
+ * Verify API Key (AI agent authentication)
+ * Format: base64({"user_id": "uuid"}) — verified against DB
+ */
+export async function verifyApiKey(apiKey: string): Promise<{ id: string; [key: string]: any } | null> {
+  const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+  try {
+    const decoded = JSON.parse(Buffer.from(apiKey, 'base64').toString());
+
+    const { data: user } = await supabase
+      .from('agents')
+      .select('id, account_type, email_verified')
+      .eq('id', decoded.user_id)
+      .single();
+
+    if (!user) return null;
+
+    return { ...decoded, ...user };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Get current authenticated user from request.
  * Returns DB-verified agent data (id, username, account_type, etc.)
  * Token payload username is NOT trusted — always fetched from DB.
  */
@@ -76,12 +105,19 @@ export async function getCurrentUser(request: NextRequest) {
     if (agent) return { ...jwtPayload, ...agent };
   }
 
+  // Try API Key
+  const apiKey = request.headers.get('X-API-Key') || request.headers.get('x-api-key');
+  if (apiKey) {
+    return await verifyApiKey(apiKey);
+  }
+
   return null;
 }
 
 /**
  * Require authentication from any Request (not just NextRequest).
- * Returns agent data or throws response.
+ * Returns agent data or throws a standard Error with 401 metadata.
+ * Caller MUST catch and return NextResponse.json({ error }, { status: 401 }).
  */
 export async function requireAuthFromRequest(request: Request): Promise<{ id: string; username: string; account_type: string; [key: string]: any }> {
   const authHeader = request.headers.get('Authorization') || request.headers.get('authorization');
@@ -98,11 +134,9 @@ export async function requireAuthFromRequest(request: Request): Promise<{ id: st
     if (agent) return { ...jwtPayload, ...agent };
   }
 
-  // Return a special error object instead of throwing Response
-  const error = new Error('UNAUTHENTICATED') as any;
-  error.code = 'UNAUTHENTICATED';
-  error.status = 401;
-  error.response = { success: false, error: { code: 'UNAUTHENTICATED', message: 'Login required' } };
+  const error = new Error('Login required');
+  (error as any).code = 'UNAUTHENTICATED';
+  (error as any).status = 401;
   throw error;
 }
 

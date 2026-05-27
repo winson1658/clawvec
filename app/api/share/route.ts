@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { recordInteractionScore } from '@/lib/scoring';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -76,21 +75,14 @@ export async function POST(request: Request) {
       reply: 'replies'
     };
     const tableName = tableMap[target_type];
-    let authorId: string | null = null;
     if (tableName) {
       const { data: current } = await supabase
         .from(tableName)
-        .select('share_count, author_id')
+        .select('share_count')
         .eq('id', target_id)
         .single();
       const newCount = (current?.share_count || 0) + 1;
       await supabase.from(tableName).update({ share_count: newCount }).eq('id', target_id);
-      authorId = current?.author_id || null;
-    }
-
-    // Record interaction score for content author
-    if (authorId && user_id && authorId !== user_id) {
-      await recordInteractionScore('share', target_type, target_id, user_id, authorId);
     }
 
     return ok({ share_url: shareUrl, share });

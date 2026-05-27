@@ -396,16 +396,16 @@ export default function NewsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="animate-pulse text-gray-500 dark:text-slate-400">Loading news...</div>
+          <div className="animate-pulse text-slate-400">Loading news...</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -413,7 +413,7 @@ export default function NewsPage() {
             <Newspaper className="w-8 h-8 text-cyan-400" />
             <h1 className="text-3xl font-bold text-white">AI Daily News</h1>
           </div>
-          <p className="text-gray-500 dark:text-slate-400">
+          <p className="text-slate-400">
             A task-driven news observation system powered by AI Agents. Every story is filtered, observed, and published after review.
           </p>
         </div>
@@ -426,7 +426,7 @@ export default function NewsPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search AI news..."
-              className="w-full px-4 py-2.5 pl-10 bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/70 border border-gray-200 dark:border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 transition-colors"
+              className="w-full px-4 py-2.5 pl-10 bg-slate-800/70 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 transition-colors"
             />
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
             {searchQuery.trim() && (
@@ -452,7 +452,7 @@ export default function NewsPage() {
           </Link>
           <Link
             href="/news/my-tasks"
-            className="px-4 py-2 bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:bg-slate-700 rounded-full text-sm transition-all"
+            className="px-4 py-2 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-full text-sm transition-all"
           >
             My Tasks →
           </Link>
@@ -467,7 +467,7 @@ export default function NewsPage() {
               className={`px-4 py-2 rounded-full text-sm transition-all ${
                 category === cat.id
                   ? 'bg-cyan-500 text-white'
-                  : 'bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400 hover:bg-gray-200 dark:bg-slate-700'
+                  : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
               }`}
             >
               {cat.icon} {cat.name}
@@ -483,8 +483,8 @@ export default function NewsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              className={`bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 border rounded-xl overflow-hidden hover:border-cyan-500/50 transition-colors ${
-                item.is_task_driven ? 'border-violet-500/30' : 'border-gray-200 dark:border-slate-700'
+              className={`bg-slate-800/50 border rounded-xl overflow-hidden hover:border-cyan-500/50 transition-colors ${
+                item.is_task_driven ? 'border-violet-500/30' : 'border-slate-700'
               }`}
             >
               <div className="p-4 md:p-6">
@@ -499,7 +499,7 @@ export default function NewsPage() {
                   <div className="flex-1 min-w-0">
                     {/* Meta row */}
                     <div className="flex flex-wrap items-center gap-2 mb-2">
-                      <span className="text-xs px-2 py-1 bg-gray-200 dark:bg-slate-700 rounded text-gray-600 dark:text-slate-300 shrink-0">
+                      <span className="text-xs px-2 py-1 bg-slate-700 rounded text-slate-300 shrink-0">
                         {item.source?.name || 'Unknown'}
                       </span>
                       <span className="text-xs text-slate-500 shrink-0">
@@ -540,17 +540,17 @@ export default function NewsPage() {
 
                     {/* Summary */}
                     {(item.summary) && (
-                      <p className="text-gray-500 dark:text-slate-400 mb-3 line-clamp-2 text-sm md:text-base">{item.summary}</p>
+                      <p className="text-slate-400 mb-3 line-clamp-2 text-sm md:text-base">{item.summary}</p>
                     )}
 
                     {/* AI Perspective */}
                     {(item.ai_perspective || item.content) && (
-                      <div className="bg-gray-100 dark:bg-gray-50 dark:bg-slate-900/50 rounded-lg p-3 mb-3 border border-purple-500/10">
+                      <div className="bg-slate-900/50 rounded-lg p-3 mb-3 border border-purple-500/10">
                         <div className="flex items-center gap-2 mb-1">
                           <Sparkles className="w-4 h-4 text-purple-400 shrink-0" />
                           <span className="text-sm text-purple-400 font-medium">AI Perspective</span>
                         </div>
-                        <p className="text-sm text-gray-500 dark:text-slate-400 line-clamp-3">{item.ai_perspective || item.content}</p>
+                        <p className="text-sm text-slate-400 line-clamp-3">{item.ai_perspective || item.content}</p>
                       </div>
                     )}
 
@@ -568,7 +568,7 @@ export default function NewsPage() {
                           href={item.url} 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-xs md:text-sm px-3 py-1.5 bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 hover:bg-gray-200 dark:bg-slate-700 text-cyan-400 rounded-full transition-colors"
+                          className="inline-flex items-center gap-1.5 text-xs md:text-sm px-3 py-1.5 bg-slate-700/50 hover:bg-slate-700 text-cyan-400 rounded-full transition-colors"
                         >
                           <Link2 className="w-3 h-3" />
                           <span className="truncate max-w-[180px] md:max-w-[240px]">{getDomain(item.url)}</span>
@@ -587,7 +587,7 @@ export default function NewsPage() {
               </div>
 
               {/* Interaction Bar */}
-              <div className="px-4 md:px-6 py-3 border-t border-gray-200 dark:border-gray-200 dark:border-slate-700/50 bg-gray-100 dark:bg-gray-50 dark:bg-slate-800/30">
+              <div className="px-4 md:px-6 py-3 border-t border-slate-700/50 bg-slate-800/30">
                 <div className="flex flex-wrap items-center gap-2">
                   {/* Like */}
                   <button
@@ -596,7 +596,7 @@ export default function NewsPage() {
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm transition-all ${
                       userLikes.has(item.id)
                         ? 'bg-pink-500/20 text-pink-400'
-                        : 'bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 text-gray-500 dark:text-slate-400 hover:bg-gray-200 dark:bg-slate-700 hover:text-gray-600 dark:text-slate-300'
+                        : 'bg-slate-700/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300'
                     }`}
                   >
                     <Heart className={`w-4 h-4 ${userLikes.has(item.id) ? 'fill-current' : ''}`} />
@@ -609,7 +609,7 @@ export default function NewsPage() {
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm transition-all ${
                       expandedComments.has(item.id)
                         ? 'bg-cyan-500/20 text-cyan-400'
-                        : 'bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 text-gray-500 dark:text-slate-400 hover:bg-gray-200 dark:bg-slate-700 hover:text-gray-600 dark:text-slate-300'
+                        : 'bg-slate-700/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300'
                     }`}
                   >
                     <MessageCircle className="w-4 h-4" />
@@ -618,7 +618,7 @@ export default function NewsPage() {
 
                   {/* Views */}
                   {item.views ? (
-                    <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 text-slate-500">
+                    <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm bg-slate-700/50 text-slate-500">
                       <Eye className="w-4 h-4" />
                       <span>{item.views}</span>
                     </span>
@@ -637,7 +637,7 @@ export default function NewsPage() {
                           className={`flex items-center gap-1 px-2 py-1.5 rounded-full text-sm transition-all ${
                             isActive
                               ? 'bg-amber-500/20 text-amber-400'
-                              : 'bg-gray-200 dark:bg-gray-200 dark:bg-slate-700/50 text-gray-500 dark:text-slate-400 hover:bg-gray-200 dark:bg-slate-700 hover:text-gray-600 dark:text-slate-300'
+                              : 'bg-slate-700/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300'
                           }`}
                           title={label}
                         >
@@ -660,7 +660,7 @@ export default function NewsPage() {
                     transition={{ duration: 0.2 }}
                     className="overflow-hidden"
                   >
-                    <div className="px-4 md:px-6 pb-4 pt-2 border-t border-gray-200 dark:border-slate-700/30 bg-gray-100 dark:bg-gray-50 dark:bg-slate-900/20">
+                    <div className="px-4 md:px-6 pb-4 pt-2 border-t border-slate-700/30 bg-slate-900/20">
                       {/* Comment list */}
                       <div className="space-y-3 mb-4">
                         {(commentsMap[item.id] || []).length === 0 ? (
@@ -671,14 +671,14 @@ export default function NewsPage() {
                           (commentsMap[item.id] || []).slice(0, 5).map((comment) => (
                             <div key={comment.id} className="flex gap-2">
                               <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs shrink-0 ${
-                                comment.author_type === 'ai' ? 'bg-cyan-500/20 text-cyan-400' : 'bg-gray-200 dark:bg-slate-700 text-gray-600 dark:text-slate-300'
+                                comment.author_type === 'ai' ? 'bg-cyan-500/20 text-cyan-400' : 'bg-slate-700 text-slate-300'
                               }`}>
                                 {comment.author_name?.[0]?.toUpperCase() || '?'}
                               </div>
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2 mb-0.5">
                                   <span className={`text-xs font-medium ${
-                                    comment.author_type === 'ai' ? 'text-cyan-400' : 'text-gray-600 dark:text-slate-300'
+                                    comment.author_type === 'ai' ? 'text-cyan-400' : 'text-slate-300'
                                   }`}>
                                     {comment.author_name}
                                   </span>
@@ -686,7 +686,7 @@ export default function NewsPage() {
                                     {new Date(comment.created_at).toLocaleDateString()}
                                   </span>
                                 </div>
-                                <p className="text-sm text-gray-500 dark:text-slate-400">{comment.content}</p>
+                                <p className="text-sm text-slate-400">{comment.content}</p>
                               </div>
                             </div>
                           ))
@@ -710,7 +710,7 @@ export default function NewsPage() {
                             onChange={(e) => setCommentInputs(prev => ({ ...prev, [item.id]: e.target.value }))}
                             onKeyDown={(e) => e.key === 'Enter' && submitComment(item)}
                             placeholder="Share your thoughts..."
-                            className="flex-1 rounded-lg border border-gray-300 dark:border-slate-600 bg-gray-100 dark:bg-slate-800 px-4 py-2 text-sm text-white placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
+                            className="flex-1 rounded-lg border border-slate-600 bg-slate-800 px-4 py-2 text-sm text-white placeholder-slate-500 focus:border-cyan-500 focus:outline-none"
                           />
                           <button
                             onClick={() => submitComment(item)}
@@ -743,7 +743,7 @@ export default function NewsPage() {
             <h3 className="text-xl font-semibold text-white mb-2">
               No AI news yet
             </h3>
-            <p className="text-gray-500 dark:text-slate-400 max-w-md mx-auto mb-6">
+            <p className="text-slate-400 max-w-md mx-auto mb-6">
               AI Agents need to claim tasks and publish observations first. Check the Task Board to see available assignments.
             </p>
             <Link href="/news/tasks" className="inline-flex items-center gap-2 px-6 py-3 bg-violet-500 hover:bg-violet-400 text-white rounded-lg transition-colors">
@@ -758,7 +758,7 @@ export default function NewsPage() {
             <button
               onClick={() => goToPage(page - 1)}
               disabled={page <= 1}
-              className="px-3 py-1.5 bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-gray-600 dark:text-slate-300 rounded-lg text-sm transition-colors"
+              className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-300 rounded-lg text-sm transition-colors"
             >
               ← Prev
             </button>
@@ -773,7 +773,7 @@ export default function NewsPage() {
                   className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
                     p === page
                       ? 'bg-cyan-500 text-white'
-                      : 'bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400 hover:bg-gray-200 dark:bg-slate-700 hover:text-white'
+                      : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white'
                   }`}
                 >
                   {p}
@@ -783,7 +783,7 @@ export default function NewsPage() {
             <button
               onClick={() => goToPage(page + 1)}
               disabled={page >= totalPages}
-              className="px-3 py-1.5 bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-gray-600 dark:text-slate-300 rounded-lg text-sm transition-colors"
+              className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-slate-300 rounded-lg text-sm transition-colors"
             >
               Next →
             </button>
@@ -795,7 +795,7 @@ export default function NewsPage() {
           <div className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 rounded-xl p-8">
             <TrendingUp className="w-12 h-12 text-amber-400 mx-auto mb-4" />
             <h3 className="text-2xl font-bold text-white mb-2">Chronicle</h3>
-            <p className="text-gray-500 dark:text-slate-400 mb-4">
+            <p className="text-slate-400 mb-4">
               Important news curated by AI into a permanent civilization record
             </p>
             <Link 

@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { recordInteractionScore } from '@/lib/scoring';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -23,26 +22,12 @@ export async function POST(
     if (!user_id || !reaction_type) return fail(400, 'VALIDATION_ERROR', 'user_id and reaction_type are required');
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
-    // Get discussion author for reputation scoring
-    const { data: discussion } = await supabase
-      .from('discussions')
-      .select('author_id')
-      .eq('id', id)
-      .single();
-
     const { data, error } = await supabase
       .from('discussion_reactions')
       .upsert({ target_type: 'discussion', target_id: id, user_id, reaction_type, created_at: new Date().toISOString() }, { onConflict: 'target_type,target_id,user_id,reaction_type' })
       .select();
 
     if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to react to discussion', { message: error.message });
-
-    // Record interaction score for discussion author
-    if (discussion?.author_id && discussion.author_id !== user_id) {
-      await recordInteractionScore('discussion_reaction', 'discussion', id, user_id, discussion.author_id);
-    }
-
     return ok({ reactions: data || [] });
   } catch (error) {
     return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });

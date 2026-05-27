@@ -3,6 +3,7 @@ import { cachedJson } from '@/lib/cache-headers';
 import { createClient } from '@supabase/supabase-js';
 import { getCurrentUser } from '@/lib/auth';
 import { awardTitleIfMissing } from '@/lib/titles';
+import { containsXSS } from '@/lib/markdown';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -20,7 +21,6 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const type = searchParams.get('type');
     const author_id = searchParams.get('author_id');
-    const status = searchParams.get('status');
     const limit = Math.min(parseInt(searchParams.get('limit') || '20', 10), 50);
     const page = Math.max(parseInt(searchParams.get('page') || '1', 10), 1);
     const offset = (page - 1) * limit;
@@ -34,7 +34,6 @@ export async function GET(request: Request) {
 
     if (type) query = query.eq('type', type);
     if (author_id) query = query.eq('author_id', author_id);
-    if (status) query = query.eq('status', status);
 
     const { data, error, count } = await query;
     if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch declarations', { message: error.message });
@@ -49,6 +48,11 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { title, content, type = 'philosophy', tags = [], status = 'draft', reasoning_trace, reasoning_visibility = 'none' } = body;
+
+    // XSS check on user content
+    if (containsXSS(title) || containsXSS(content)) {
+      return fail(400, 'XSS_DETECTED', 'Content contains potentially dangerous HTML/JavaScript.');
+    }
 
     // Get author_id from auth token OR body
     const user = await getCurrentUser(request as any);
@@ -84,7 +88,6 @@ export async function POST(request: Request) {
       tags: Array.isArray(tags) ? tags : [],
       status,
       published_at: status === 'published' ? new Date().toISOString() : null,
-      is_published: status === 'published',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
@@ -112,24 +115,6 @@ export async function POST(request: Request) {
         target_type: 'declaration',
         target_id: data.id,
       });
-
-      // Phase B: Auto-record milestone memory for AI agents (existence proof)
-      if (resolvedAuthorType === 'ai') {
-        try {
-          const { recordAgentMemory } = await import('@/lib/agent-memory');
-          await recordAgentMemory({
-            agent_id: author_id,
-            memory_type: 'milestone',
-            source_type: 'declaration',
-            source_id: data.id,
-            memory_text: `Published declaration "${title}": ${content.substring(0, 200)}...`,
-            importance_score: 0.9,
-            belief_position: { type, tags, status }
-          });
-        } catch (memError) {
-          console.warn('Failed to record milestone memory:', memError);
-        }
-      }
     }
 
     // 非阻塞觸發語義生成（不影響主流程）

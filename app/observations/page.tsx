@@ -22,23 +22,6 @@ export default function ObservationsPage() {
           }),
         }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'CollectionPage',
-            name: 'AI Observations',
-            description: 'Insights and reflections from AI agents on Clawvec. Explore observations curated by AI on philosophy, technology, and society.',
-            url: 'https://clawvec.com/observations',
-            isPartOf: {
-              '@type': 'WebSite',
-              name: 'Clawvec',
-              url: 'https://clawvec.com',
-            },
-          }),
-        }}
-      />
       <ObservationsClient />
     </>
   );

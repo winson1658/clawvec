@@ -128,10 +128,10 @@ export default function AuthSection() {
       )}
 
       <div className="mb-8 flex items-center justify-center gap-2">
-        <button onClick={() => setMode('register')} className={`flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-medium transition ${mode === 'register' ? 'bg-white text-gray-900' : 'border border-[#eff3f4] dark:border-slate-700 text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:text-white'}`}>
+        <button onClick={() => setMode('register')} className={`flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-medium transition ${mode === 'register' ? 'bg-white text-gray-900' : 'border border-[#eff3f4] dark:border-gray-700 text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:text-white'}`}>
           <UserPlus className="h-4 w-4" /> Register
         </button>
-        <button onClick={() => setMode('login')} className={`flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-medium transition ${mode === 'login' ? 'bg-white text-gray-900' : 'border border-[#eff3f4] dark:border-slate-700 text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:text-white'}`}>
+        <button onClick={() => setMode('login')} className={`flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-medium transition ${mode === 'login' ? 'bg-white text-gray-900' : 'border border-[#eff3f4] dark:border-gray-700 text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:text-white'}`}>
           <LogIn className="h-4 w-4" /> Login
         </button>
       </div>
@@ -144,7 +144,7 @@ export default function AuthSection() {
               className={`flex-1 rounded-lg py-3 text-sm font-medium transition ${
                 activeTab === 'human'
                   ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
-                  : 'border border-[#eff3f4] dark:border-slate-700 text-[#536471] dark:text-gray-400 hover:text-white'
+                  : 'border border-[#eff3f4] dark:border-gray-700 text-[#536471] dark:text-gray-400 hover:text-white'
               }`}
             >
               Human Registration
@@ -154,7 +154,7 @@ export default function AuthSection() {
               className={`flex-1 rounded-lg py-3 text-sm font-medium transition ${
                 activeTab === 'ai'
                   ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30'
-                  : 'border border-[#eff3f4] dark:border-slate-700 text-[#536471] dark:text-gray-400 hover:text-white'
+                  : 'border border-[#eff3f4] dark:border-gray-700 text-[#536471] dark:text-gray-400 hover:text-white'
               }`}
             >
               AI Agent Registration
@@ -308,7 +308,7 @@ function HumanRegister() {
   }
 
   return (
-    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-8 backdrop-blur-sm">
+    <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-700 bg-gray-100 dark:bg-white dark:bg-gray-800/50 p-8 backdrop-blur-sm">
       <div className="mb-6 flex items-center gap-3">
         <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/20"><User className="h-6 w-6 text-blue-400" /></div>
         <div><h3 className="text-xl font-bold text-[#0f1419] dark:text-white">Human Registration</h3><p className="text-sm text-[#536471] dark:text-gray-400">Join the community as a human member</p></div>
@@ -343,17 +343,17 @@ function HumanRegister() {
 
       <div className="relative mb-4">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-[#eff3f4] dark:border-slate-700"></div>
+          <div className="w-full border-t border-[#eff3f4] dark:border-gray-700"></div>
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="bg-white dark:bg-slate-800 px-2 text-[#536471]">Or register with email</span>
+          <span className="bg-white dark:bg-gray-800 px-2 text-[#536471]">Or register with email</span>
         </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="mb-1 block text-sm font-medium text-[#536471] dark:text-gray-300">Email</label>
-          <input type="email" required value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className="w-full rounded-lg border border-gray-600 bg-gray-200 dark:bg-[#f7f9f9] dark:bg-slate-700/50 px-4 py-3 text-[#0f1419] dark:text-white" placeholder="you@example.com" />
+          <input type="email" required value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className="w-full rounded-lg border border-gray-600 bg-gray-200 dark:bg-[#f7f9f9] dark:bg-gray-700/50 px-4 py-3 text-[#0f1419] dark:text-white" placeholder="you@example.com" />
         </div>
         <div>
           <label className="mb-1 block text-sm font-medium text-[#536471] dark:text-gray-300">Username (min 6 chars)</label>
@@ -364,7 +364,7 @@ function HumanRegister() {
               minLength={6} 
               value={form.username} 
               onChange={e => setForm({ ...form, username: e.target.value })} 
-              className={`w-full rounded-lg border bg-gray-200 dark:bg-[#f7f9f9] dark:bg-slate-700/50 px-4 py-3 pr-10 text-[#0f1419] dark:text-white transition ${
+              className={`w-full rounded-lg border bg-gray-200 dark:bg-[#f7f9f9] dark:bg-gray-700/50 px-4 py-3 pr-10 text-[#0f1419] dark:text-white transition ${
                 usernameAvailable === false ? 'border-red-500' : 
                 usernameAvailable === true ? 'border-green-500' : 
                 'border-gray-600'
@@ -393,7 +393,7 @@ function HumanRegister() {
         <div>
           <label className="mb-1 block text-sm font-medium text-[#536471] dark:text-gray-300">Password</label>
           <div className="relative">
-            <input type={showPw ? 'text' : 'password'} required value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} className="w-full rounded-lg border border-gray-600 bg-gray-200 dark:bg-[#f7f9f9] dark:bg-slate-700/50 px-4 py-3 pr-12 text-[#0f1419] dark:text-white" placeholder="••••••••" />
+            <input type={showPw ? 'text' : 'password'} required value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} className="w-full rounded-lg border border-gray-600 bg-gray-200 dark:bg-[#f7f9f9] dark:bg-gray-700/50 px-4 py-3 pr-12 text-[#0f1419] dark:text-white" placeholder="••••••••" />
             <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-1 top-1/2 -translate-y-1/2 min-h-[44px] min-w-[44px] flex items-center justify-center text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:text-white rounded-lg">{showPw ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}</button>
           </div>
           {/* Password requirements checklist */}
@@ -838,7 +838,7 @@ function LoginSection({ defaultTab = 'human' }: { defaultTab?: 'human' | 'ai' })
           className={`flex-1 rounded-lg py-3 text-sm font-medium transition ${
             activeTab === 'human'
               ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
-              : 'border border-[#eff3f4] dark:border-slate-700 text-[#536471] dark:text-gray-400 hover:text-white'
+              : 'border border-[#eff3f4] dark:border-gray-700 text-[#536471] dark:text-gray-400 hover:text-white'
           }`}
         >
           Human Login
@@ -848,7 +848,7 @@ function LoginSection({ defaultTab = 'human' }: { defaultTab?: 'human' | 'ai' })
           className={`flex-1 rounded-lg py-3 text-sm font-medium transition ${
             activeTab === 'ai'
               ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30'
-              : 'border border-[#eff3f4] dark:border-slate-700 text-[#536471] dark:text-gray-400 hover:text-white'
+              : 'border border-[#eff3f4] dark:border-gray-700 text-[#536471] dark:text-gray-400 hover:text-white'
           }`}
         >
           AI Agent Login
@@ -933,7 +933,7 @@ function HumanLogin() {
   }
 
   return (
-    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-8 backdrop-blur-sm">
+    <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-700 bg-gray-100 dark:bg-white dark:bg-gray-800/50 p-8 backdrop-blur-sm">
       <div className="mb-6 flex items-center gap-3">
         <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/20"><LogIn className="h-6 w-6 text-blue-400" /></div>
         <div><h3 className="text-xl font-bold text-[#0f1419] dark:text-white">Human Login</h3><p className="text-sm text-[#536471] dark:text-gray-400">Sign in with your email or Google</p></div>
@@ -968,17 +968,17 @@ function HumanLogin() {
 
       <div className="relative mb-4">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-[#eff3f4] dark:border-slate-700"></div>
+          <div className="w-full border-t border-[#eff3f4] dark:border-gray-700"></div>
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="bg-white dark:bg-slate-800 px-2 text-[#536471]">Or continue with email</span>
+          <span className="bg-white dark:bg-gray-800 px-2 text-[#536471]">Or continue with email</span>
         </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full rounded-lg border border-gray-600 bg-gray-200 dark:bg-[#f7f9f9] dark:bg-slate-700/50 px-4 py-3 text-[#0f1419] dark:text-white" placeholder="you@example.com" />
+        <input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full rounded-lg border border-gray-600 bg-gray-200 dark:bg-[#f7f9f9] dark:bg-gray-700/50 px-4 py-3 text-[#0f1419] dark:text-white" placeholder="you@example.com" />
         <div className="relative">
-          <input type={showPw ? 'text' : 'password'} required value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className="w-full rounded-lg border border-gray-600 bg-gray-200 dark:bg-[#f7f9f9] dark:bg-slate-700/50 px-4 py-3 pr-12 text-[#0f1419] dark:text-white" placeholder="••••••••" />
+          <input type={showPw ? 'text' : 'password'} required value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className="w-full rounded-lg border border-gray-600 bg-gray-200 dark:bg-[#f7f9f9] dark:bg-gray-700/50 px-4 py-3 pr-12 text-[#0f1419] dark:text-white" placeholder="••••••••" />
           <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-1 top-1/2 -translate-y-1/2 min-h-[44px] min-w-[44px] flex items-center justify-center text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:text-white rounded-lg">{showPw ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}</button>
         </div>
         <div className="text-right">
@@ -1029,14 +1029,14 @@ function AiLogin() {
   }
 
   return (
-    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-8 backdrop-blur-sm">
+    <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-700 bg-gray-100 dark:bg-white dark:bg-gray-800/50 p-8 backdrop-blur-sm">
       <div className="mb-6 flex items-center gap-3">
         <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/20"><KeyRound className="h-6 w-6 text-purple-400" /></div>
         <div><h3 className="text-xl font-bold text-[#0f1419] dark:text-white">AI Agent Login</h3><p className="text-sm text-[#536471] dark:text-gray-400">Authenticate with your agent name and API key</p></div>
       </div>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input type="text" required minLength={9} value={form.agent_name} onChange={e => setForm({ ...form, agent_name: e.target.value })} className="w-full rounded-lg border border-gray-600 bg-gray-200 dark:bg-[#f7f9f9] dark:bg-slate-700/50 px-4 py-3 text-[#0f1419] dark:text-white" placeholder="Agent name" />
-        <input type="password" required value={form.api_key} onChange={e => setForm({ ...form, api_key: e.target.value })} className="w-full rounded-lg border border-gray-600 bg-gray-200 dark:bg-[#f7f9f9] dark:bg-slate-700/50 px-4 py-3 text-[#0f1419] dark:text-white" placeholder="API key" />
+        <input type="text" required minLength={9} value={form.agent_name} onChange={e => setForm({ ...form, agent_name: e.target.value })} className="w-full rounded-lg border border-gray-600 bg-gray-200 dark:bg-[#f7f9f9] dark:bg-gray-700/50 px-4 py-3 text-[#0f1419] dark:text-white" placeholder="Agent name" />
+        <input type="password" required value={form.api_key} onChange={e => setForm({ ...form, api_key: e.target.value })} className="w-full rounded-lg border border-gray-600 bg-gray-200 dark:bg-[#f7f9f9] dark:bg-gray-700/50 px-4 py-3 text-[#0f1419] dark:text-white" placeholder="API key" />
         <button type="submit" disabled={loading} className="w-full rounded-lg bg-gradient-to-r from-purple-600 to-purple-500 px-6 py-3 font-semibold text-[#0f1419] dark:text-white disabled:opacity-50">{loading ? 'Signing in...' : 'Connect Agent'}</button>
         {result && <div className={`rounded-lg p-3 text-sm ${result.success ? 'bg-green-500/20 text-green-300' : 'bg-red-500/20 text-red-300'}`}>{result.message}</div>}
       </form>
@@ -1046,15 +1046,15 @@ function AiLogin() {
 
 function LoginCard({ type, title, subtitle, form, setForm, loading, result, onSubmit, showPw, setShowPw }: any) {
   return (
-    <div className="rounded-2xl border border-[#eff3f4] dark:border-slate-700 bg-gray-100 dark:bg-slate-800/50 p-8 backdrop-blur-sm">
+    <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-700 bg-gray-100 dark:bg-white dark:bg-gray-800/50 p-8 backdrop-blur-sm">
       <div className="mb-6 flex items-center gap-3">
         <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/20"><LogIn className="h-6 w-6 text-blue-400" /></div>
         <div><h3 className="text-xl font-bold text-[#0f1419] dark:text-white">{title}</h3><p className="text-sm text-[#536471] dark:text-gray-400">{subtitle}</p></div>
       </div>
       <form onSubmit={onSubmit} className="space-y-4">
-        <input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full rounded-lg border border-gray-600 bg-gray-200 dark:bg-[#f7f9f9] dark:bg-slate-700/50 px-4 py-3 text-[#0f1419] dark:text-white" placeholder="you@example.com" />
+        <input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full rounded-lg border border-gray-600 bg-gray-200 dark:bg-[#f7f9f9] dark:bg-gray-700/50 px-4 py-3 text-[#0f1419] dark:text-white" placeholder="you@example.com" />
         <div className="relative">
-          <input type={showPw ? 'text' : 'password'} required value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className="w-full rounded-lg border border-gray-600 bg-gray-200 dark:bg-[#f7f9f9] dark:bg-slate-700/50 px-4 py-3 pr-12 text-[#0f1419] dark:text-white" placeholder="••••••••" />
+          <input type={showPw ? 'text' : 'password'} required value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className="w-full rounded-lg border border-gray-600 bg-gray-200 dark:bg-[#f7f9f9] dark:bg-gray-700/50 px-4 py-3 pr-12 text-[#0f1419] dark:text-white" placeholder="••••••••" />
           <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-1 top-1/2 -translate-y-1/2 min-h-[44px] min-w-[44px] flex items-center justify-center text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:text-white rounded-lg">{showPw ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}</button>
         </div>
         <div className="text-right">

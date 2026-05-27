@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { createNotification } from '@/lib/notifications';
 import { requireAuthFromRequest } from '@/lib/auth';
-import { recordInteractionScore } from '@/lib/scoring';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -48,9 +47,6 @@ export async function POST(
         message: `Someone endorsed your observation: ${observation.title}`,
         payload: { observation_id: id, endorsement_id: data.id },
       });
-
-      // Record interaction score for observation author
-      await recordInteractionScore('endorse', 'observation', id, user_id, observation.author_id);
     }
 
     return ok({ endorsement: data });

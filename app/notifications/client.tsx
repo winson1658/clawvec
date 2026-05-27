@@ -54,7 +54,6 @@ export default function NotificationsPage() {
   const [loading, setLoading] = useState(true);
   const [markingAll, setMarkingAll] = useState(false);
   const [user, setUser] = useState<any>(null);
-  const [mutedCategories, setMutedCategories] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -68,28 +67,6 @@ export default function NotificationsPage() {
       }
     }
   }, []);
-
-  // Fetch muted categories from backend
-  useEffect(() => {
-    if (!user?.id) return;
-    const token = getToken();
-    if (!token) return;
-
-    fetch(`/api/notification-preferences?user_id=${user.id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success && data.data) {
-          const muted = new Set<string>();
-          Object.entries(data.data).forEach(([cat, pref]: [string, any]) => {
-            if (pref.is_muted) muted.add(cat);
-          });
-          setMutedCategories(muted);
-        }
-      })
-      .catch((err) => console.error('Error fetching notification preferences:', err));
-  }, [user?.id]);
 
   useEffect(() => {
     if (user) {
@@ -177,40 +154,13 @@ export default function NotificationsPage() {
     return date.toLocaleDateString('zh-TW');
   }
 
-  // Type -> category mapping for mute filtering
-  const typeToCategory: Record<string, string> = {
-    login_success: 'auth',
-    password_reset_requested: 'auth',
-    password_reset_completed: 'auth',
-    welcome: 'auth',
-    profile_verified: 'auth',
-    companion_invited: 'companion',
-    companion_status_changed: 'companion',
-    title_earned: 'identity',
-    follow: 'identity',
-    like: 'identity',
-    system: 'system',
-    vote_result: 'system',
-    review_request: 'system',
-    reply: 'system',
-    mention: 'system',
-    debate: 'system',
-  };
-
-  const visibleNotifications = notifications.filter((n) => {
-    const cat = typeToCategory[n.type] || 'system';
-    return !mutedCategories.has(cat);
-  });
-
-  const visibleUnreadCount = visibleNotifications.filter((n) => !n.is_read).length;
-
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <div className="text-6xl mb-4">🔔</div>
           <h1 className="text-2xl font-bold text-white mb-4">Please Sign In</h1>
-          <p className="text-gray-500 dark:text-slate-400 mb-6">Sign in to view your notifications</p>
+          <p className="text-slate-400 mb-6">Sign in to view your notifications</p>
           <Link 
             href="/login"
             className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-lg transition-colors"
@@ -223,7 +173,7 @@ export default function NotificationsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <motion.div
@@ -235,25 +185,25 @@ export default function NotificationsPage() {
             <div className="flex items-center gap-3">
               <div className="relative">
                 <Bell className="w-8 h-8 text-cyan-400" />
-                {visibleUnreadCount > 0 && (
+                {unreadCount > 0 && (
                   <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-                    {visibleUnreadCount > 99 ? '99+' : visibleUnreadCount}
+                    {unreadCount > 99 ? '99+' : unreadCount}
                   </span>
                 )}
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-white">Notifications</h1>
-                <p className="text-gray-500 dark:text-slate-400">
-                  {unreadCount > 0 ? `You have ${visibleUnreadCount} unread notifications` : 'All notifications read'}
+                <p className="text-slate-400">
+                  {unreadCount > 0 ? `You have ${unreadCount} unread notifications` : 'All notifications read'}
                 </p>
               </div>
             </div>
             
-            {visibleUnreadCount > 0 && (
+            {unreadCount > 0 && (
               <button
                 onClick={markAllAsRead}
                 disabled={markingAll}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:bg-slate-600 text-white rounded-lg transition-colors disabled:opacity-50"
+                className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors disabled:opacity-50"
               >
                 {markingAll ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -276,17 +226,17 @@ export default function NotificationsPage() {
           {loading ? (
             <div className="text-center py-12">
               <Loader2 className="w-8 h-8 animate-spin mx-auto text-cyan-400" />
-              <p className="text-gray-500 dark:text-slate-400 mt-4">Loading...</p>
+              <p className="text-slate-400 mt-4">Loading...</p>
             </div>
-          ) : visibleNotifications.length === 0 ? (
-            <div className="text-center py-12 bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50 rounded-2xl border border-gray-200 dark:border-slate-700">
+          ) : notifications.length === 0 ? (
+            <div className="text-center py-12 bg-slate-800/50 rounded-2xl border border-slate-700">
               <div className="text-6xl mb-4">📭</div>
               <h2 className="text-xl font-semibold text-white mb-2">No Notifications</h2>
-              <p className="text-gray-500 dark:text-slate-400">When there are important updates, you will see them here</p>
+              <p className="text-slate-400">When there are important updates, you will see them here</p>
             </div>
           ) : (
             <AnimatePresence>
-              {visibleNotifications.map((notification, index) => {
+              {notifications.map((notification, index) => {
                 const Icon = typeIcons[notification.type] || Info;
                 const colorClass = typeColors[notification.type] || typeColors.system;
                 
@@ -299,8 +249,8 @@ export default function NotificationsPage() {
                     transition={{ delay: index * 0.05 }}
                     className={`p-4 rounded-xl border transition-all ${
                       notification.is_read 
-                        ? 'bg-gray-100 dark:bg-gray-50 dark:bg-slate-800/30 border-gray-200 dark:border-slate-700 opacity-70' 
-                        : 'bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/70 border-cyan-500/30'
+                        ? 'bg-slate-800/30 border-slate-700 opacity-70' 
+                        : 'bg-slate-800/70 border-cyan-500/30'
                     }`}
                   >
                     <div className="flex items-start gap-4">
@@ -316,7 +266,7 @@ export default function NotificationsPage() {
                             <h3 className="font-semibold text-white">
                               {notification.title}
                             </h3>
-                            <p className="text-gray-500 dark:text-slate-400 text-sm mt-1">
+                            <p className="text-slate-400 text-sm mt-1">
                               {notification.message}
                             </p>
                             <p className="text-slate-500 text-xs mt-2">

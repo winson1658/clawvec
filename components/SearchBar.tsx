@@ -28,7 +28,7 @@ export default function SearchBar() {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search..."
             autoFocus
-            className="w-48 px-3 py-1.5 bg-white dark:bg-slate-800 border border-gray-600 rounded-lg text-sm text-[#0f1419] dark:text-white placeholder-[#536471] focus:outline-none focus:border-cyan-500"
+            className="w-48 px-3 py-1.5 bg-white dark:bg-gray-800 border border-gray-600 rounded-lg text-sm text-[#0f1419] dark:text-white placeholder-[#536471] focus:outline-none focus:border-cyan-500"
           />
           <button
             type="submit"

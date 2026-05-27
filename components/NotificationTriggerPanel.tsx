@@ -50,14 +50,14 @@ export default function NotificationTriggerPanel() {
   }
 
   return (
-    <div className="rounded-2xl border border-dashed border-[#eff3f4] dark:border-slate-700 bg-white/85 dark:bg-slate-900/60 p-5 text-sm text-[#536471] dark:text-gray-300">
+    <div className="rounded-2xl border border-dashed border-[#eff3f4] dark:border-gray-700 bg-white/85 dark:bg-white dark:bg-gray-900/60 p-5 text-sm text-[#536471] dark:text-gray-300">
       <p className="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-[#536471]">Notifications Lab</p>
       <p className="mb-4 text-sm text-[#536471] dark:text-gray-400">Use these buttons to simulate review, vote, and consistency alerts for your account.</p>
       <div className="space-y-2">
         {templates.map((template) => (
           <button
             key={template.key}
-            className="w-full rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-950/50 px-4 py-3 text-left text-sm font-semibold transition hover:border-blue-400 hover:text-[#0f1419] dark:text-white"
+            className="w-full rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-950/50 px-4 py-3 text-left text-sm font-semibold transition hover:border-blue-400 hover:text-[#0f1419] dark:text-white"
             onClick={() => handleSend(template.key)}
             disabled={status === 'sending'}
           >

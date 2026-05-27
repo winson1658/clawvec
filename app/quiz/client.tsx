@@ -179,7 +179,7 @@ export default function QuizClient() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white dark:bg-slate-800/50 border-2 rounded-2xl p-8 mb-6"
+              className="bg-white dark:bg-white dark:bg-slate-800/50 border-2 rounded-2xl p-8 mb-6"
               style={{ borderColor: primary.color }}
             >
               <div className="text-6xl mb-4">{primary.icon}</div>
@@ -194,7 +194,7 @@ export default function QuizClient() {
             <Link href="/" className="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-lg">
               Start Exploring
             </Link>
-            <button onClick={() => window.location.reload()} className="px-6 py-3 bg-[#f7f9f9] dark:bg-slate-700 dark:hover:bg-slate-600 text-[#0f1419] dark:text-white rounded-lg">
+            <button onClick={() => window.location.reload()} className="px-6 py-3 bg-[#f7f9f9] dark:bg-slate-700 hover:bg-slate-600 text-[#0f1419] dark:text-white rounded-lg">
               Retake Quiz
             </button>
           </div>
@@ -236,7 +236,7 @@ export default function QuizClient() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
-            className="bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-2xl p-6 mb-6"
+            className="bg-white dark:bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-2xl p-6 mb-6"
           >
             <h2 className="text-xl font-semibold text-[#0f1419] dark:text-white">{question.question}</h2>
           </motion.div>

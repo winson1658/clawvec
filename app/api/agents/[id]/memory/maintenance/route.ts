@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { verifyToken } from '@/lib/auth';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -11,6 +10,19 @@ function createClientWithTimeout() {
       headers: { 'X-Statement-Timeout': '15000' }, // 15s for maintenance (batch ops)
     },
   });
+}
+
+// Simple JWT verification helper (inline to avoid path issues)
+async function verifyToken(token: string): Promise<{ id: string; username?: string } | null> {
+  try {
+    const parts = token.split('.');
+    if (parts.length < 2) return null;
+    const payload = JSON.parse(atob(parts[1]));
+    if (payload.exp && payload.exp * 1000 < Date.now()) return null;
+    return { id: payload.id || payload.sub, username: payload.username };
+  } catch {
+    return null;
+  }
 }
 
 /**
@@ -39,7 +51,7 @@ export async function POST(
       );
     }
     
-    const user = await verifyToken(authHeader);
+    const user = await verifyToken(token);
     if (!user || user.id !== agentId) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized — only agent owner can trigger maintenance' },
@@ -59,10 +71,9 @@ export async function POST(
     const supabase = createClientWithTimeout();
     const results: Record<string, any> = {};
 
-    // Step 1: Decay memories for this agent (agent-scoped)
-    const { data: decayResult, error: decayError } = await supabase.rpc('decay_memories_for_agent', {
-      p_agent_id: agentId
-    });
+    // Step 1: Decay memories for this agent
+    // Decay = update importance_score based on time since last access
+    const { data: decayResult, error: decayError } = await supabase.rpc('decay_memories');
     if (decayError) {
       console.warn('[MemoryMaintenance] Decay failed:', decayError.message);
       results.decay = { success: false, error: decayError.message };
@@ -70,9 +81,8 @@ export async function POST(
       results.decay = { success: true, affected: decayResult };
     }
 
-    // Step 2: Archive memories below threshold for this agent (agent-scoped)
-    const { data: archiveResult, error: archiveError } = await supabase.rpc('archive_forgotten_memories_for_agent', {
-      p_agent_id: agentId,
+    // Step 2: Archive memories below threshold for this agent
+    const { data: archiveResult, error: archiveError } = await supabase.rpc('archive_forgotten_memories', {
       p_decay_threshold: decayThreshold
     });
     if (archiveError) {

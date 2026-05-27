@@ -94,11 +94,23 @@ export async function POST(
       }, { status: 400 });
     }
 
+    // Validate query to prevent SQL injection
+    const { validateSearchQuery, escapeLikePattern } = await import('@/lib/ai-sandbox');
+    const validation = validateSearchQuery(query);
+    if (!validation.valid) {
+      return NextResponse.json({
+        success: false,
+        error: validation.error
+      }, { status: 400 });
+    }
+
+    const safeQuery = escapeLikePattern(query);
+
     let textQuery = supabase
       .from('agent_memory')
       .select('*')
       .eq('agent_id', agentId)
-      .ilike('memory_text', `%${query}%`)
+      .ilike('memory_text', `%${safeQuery}%`)
       .gte('importance_score', min_importance);
 
     // Only filter by archived status if not requesting archived

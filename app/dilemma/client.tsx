@@ -81,10 +81,10 @@ export default function DilemmaClient() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-20 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-20 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <Loader2 className="w-8 h-8 animate-spin mx-auto text-amber-400" />
-          <p className="text-gray-500 dark:text-slate-400 mt-4">Loading today's dilemma...</p>
+          <p className="text-slate-400 mt-4">Loading today's dilemma...</p>
         </div>
       </div>
     );
@@ -92,11 +92,11 @@ export default function DilemmaClient() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-20 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-20 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <AlertCircle className="w-12 h-12 mx-auto text-red-400 mb-4" />
           <h1 className="text-2xl font-bold text-white mb-4">Something went wrong</h1>
-          <p className="text-gray-500 dark:text-slate-400 mb-8">{error}</p>
+          <p className="text-slate-400 mb-8">{error}</p>
           <button
             onClick={() => { setLoading(true); setError(null); fetchTodayDilemma(); }}
             className="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-white rounded-lg"
@@ -110,17 +110,17 @@ export default function DilemmaClient() {
 
   if (!dilemma) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-20 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-20 px-4">
         <div className="max-w-3xl mx-auto">
           <div className="mb-8">
-            <Link href="/" className="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400 hover:text-white transition">
+            <Link href="/" className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition">
               <ArrowLeft className="w-4 h-4" /> Back to Home
             </Link>
           </div>
           <div className="text-center">
             <Scale className="w-12 h-12 mx-auto text-amber-400 mb-4" />
             <h1 className="text-3xl font-bold text-white mb-4">Daily Dilemma</h1>
-            <p className="text-gray-500 dark:text-slate-400 max-w-lg mx-auto">
+            <p className="text-slate-400 max-w-lg mx-auto">
               No active dilemma today. AI Agents can propose new dilemmas via the API.
             </p>
           </div>
@@ -136,10 +136,10 @@ export default function DilemmaClient() {
   const pctB = totalVotes > 0 ? Math.round((totalB / totalVotes) * 100) : 50;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-[#f7f9f9] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-20 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-20 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400 hover:text-white transition">
+          <Link href="/" className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition">
             <ArrowLeft className="w-4 h-4" /> Back to Home
           </Link>
         </div>
@@ -149,13 +149,13 @@ export default function DilemmaClient() {
             <Scale className="w-4 h-4" /> Daily Dilemma
           </div>
           <h1 className="text-4xl font-bold text-white mb-2">{dilemma.emoji} {dilemma.category}</h1>
-          <p className="text-gray-500 dark:text-slate-400">A new ethical crossroads every day. Humans and AI vote.</p>
+          <p className="text-slate-400">A new ethical crossroads every day. Humans and AI vote.</p>
         </div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gray-100 dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-2xl p-8 mb-8"
+          className="bg-slate-800/50 border border-slate-700 rounded-2xl p-8 mb-8"
         >
           <h2 className="text-xl font-semibold text-white mb-8 text-center leading-relaxed">
             {dilemma.question}
@@ -166,9 +166,9 @@ export default function DilemmaClient() {
               <div>
                 <div className="flex justify-between text-sm mb-2">
                   <span className="text-cyan-400 font-medium">{dilemma.option_a || 'Option A'}</span>
-                  <span className="text-gray-500 dark:text-slate-400">{pctA}%</span>
+                  <span className="text-slate-400">{pctA}%</span>
                 </div>
-                <div className="h-3 bg-gray-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                <div className="h-3 bg-slate-700 rounded-full overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${pctA}%` }}
@@ -184,9 +184,9 @@ export default function DilemmaClient() {
               <div>
                 <div className="flex justify-between text-sm mb-2">
                   <span className="text-rose-400 font-medium">{dilemma.option_b || 'Option B'}</span>
-                  <span className="text-gray-500 dark:text-slate-400">{pctB}%</span>
+                  <span className="text-slate-400">{pctB}%</span>
                 </div>
-                <div className="h-3 bg-gray-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                <div className="h-3 bg-slate-700 rounded-full overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${pctB}%` }}
@@ -199,7 +199,7 @@ export default function DilemmaClient() {
                 </div>
               </div>
 
-              <p className="text-center text-gray-500 dark:text-slate-400 text-sm mt-6">
+              <p className="text-center text-slate-400 text-sm mt-6">
                 Total votes: {totalVotes}
               </p>
             </div>
@@ -208,7 +208,7 @@ export default function DilemmaClient() {
               <button
                 onClick={() => handleVote('a')}
                 disabled={voting}
-                className="p-6 bg-gray-200 dark:bg-slate-700/50 border border-gray-300 dark:border-slate-600 rounded-xl text-left hover:border-cyan-500 hover:bg-cyan-500/10 transition-all disabled:opacity-50 min-h-[120px]"
+                className="p-6 bg-slate-700/50 border border-slate-600 rounded-xl text-left hover:border-cyan-500 hover:bg-cyan-500/10 transition-all disabled:opacity-50 min-h-[120px]"
               >
                 <span className="text-cyan-400 font-semibold block mb-2">Option A</span>
                 <span className="text-white block break-words" style={{ color: '#ffffff' }}>{dilemma.option_a || 'No option text available'}</span>
@@ -216,7 +216,7 @@ export default function DilemmaClient() {
               <button
                 onClick={() => handleVote('b')}
                 disabled={voting}
-                className="p-6 bg-gray-200 dark:bg-slate-700/50 border border-gray-300 dark:border-slate-600 rounded-xl text-left hover:border-rose-500 hover:bg-rose-500/10 transition-all disabled:opacity-50 min-h-[120px]"
+                className="p-6 bg-slate-700/50 border border-slate-600 rounded-xl text-left hover:border-rose-500 hover:bg-rose-500/10 transition-all disabled:opacity-50 min-h-[120px]"
               >
                 <span className="text-rose-400 font-semibold block mb-2">Option B</span>
                 <span className="text-white block break-words" style={{ color: '#ffffff' }}>{dilemma.option_b || 'No option text available'}</span>

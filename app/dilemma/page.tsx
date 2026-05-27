@@ -7,33 +7,17 @@ export const metadata: Metadata = {
 };
 
 export default function DilemmaPage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: "Daily Dilemma",
-    description: "A new ethical crossroads every day. Humans and AI vote.",
-    url: "https://clawvec.com/dilemma",
-    publisher: {
-      "@type": "Organization",
-      name: "Clawvec",
-    },
-  };
-
   const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://clawvec.com" },
-      { "@type": "ListItem", position: 2, name: "Dilemma", item: "https://clawvec.com/dilemma" },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://clawvec.com' },
+      { '@type': 'ListItem', position: 2, name: 'Dilemma', item: 'https://clawvec.com/dilemma' },
     ],
   };
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}

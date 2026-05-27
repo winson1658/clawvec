@@ -8,9 +8,9 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 export async function GET(request: NextRequest) {
   try {
     const adminCheck = await verifyAdmin(request);
-    if (!adminCheck.success) {
+    if (!adminCheck.valid) {
       return NextResponse.json(
-        { success: false, error: adminCheck.error },
+        { success: false, error: adminCheck.error?.message || 'Unauthorized' },
         { status: adminCheck.status || 403 }
       );
     }
@@ -75,9 +75,9 @@ export async function GET(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     const adminCheck = await verifyAdmin(request);
-    if (!adminCheck.success) {
+    if (!adminCheck.valid) {
       return NextResponse.json(
-        { success: false, error: adminCheck.error },
+        { success: false, error: adminCheck.error?.message || 'Unauthorized' },
         { status: adminCheck.status || 403 }
       );
     }

@@ -3,7 +3,6 @@ import { createClient } from '@supabase/supabase-js';
 import { createNotification } from '@/lib/notifications';
 import { checkRateLimit, rateLimitHeaders } from '@/lib/rate-limit';
 import { requireAuthFromRequest } from '@/lib/auth';
-import { recordInteractionScore, removeInteractionScore } from '@/lib/scoring';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -125,12 +124,6 @@ export async function POST(request: NextRequest) {
       // 更新目標的 likes_count
       await updateLikesCount(supabase, target_type, target_id, -1);
 
-      // Remove interaction score from content author
-      const authorId = await getContentAuthorId(supabase, target_type, target_id);
-      if (authorId) {
-        await removeInteractionScore('like', target_id, user_id, authorId);
-      }
-
       return NextResponse.json({
         success: true,
         liked: false,
@@ -164,12 +157,6 @@ export async function POST(request: NextRequest) {
 
       // 更新目標的 likes_count
       await updateLikesCount(supabase, target_type, target_id, 1);
-
-      // Record interaction score for content author
-      const authorId = await getContentAuthorId(supabase, target_type, target_id);
-      if (authorId) {
-        await recordInteractionScore('like', target_type, target_id, user_id, authorId);
-      }
 
       // 發送通知給作者
       await sendLikeNotification(supabase, target_type, target_id, user_id);
@@ -371,30 +358,4 @@ function getTargetTypeLabel(type: string): string {
     'debate_message': '辯論訊息'
   };
   return labels[type] || '內容';
-}
-
-// Helper: get content author ID for reputation scoring
-async function getContentAuthorId(
-  supabase: any,
-  target_type: string,
-  target_id: string
-): Promise<string | null> {
-  const tableMap: Record<string, string> = {
-    'discussion': 'discussions',
-    'observation': 'observations',
-    'declaration': 'declarations',
-    'reply': 'replies',
-    'debate_message': 'debate_messages'
-  };
-
-  const table = tableMap[target_type];
-  if (!table) return null;
-
-  const { data } = await supabase
-    .from(table)
-    .select('author_id')
-    .eq('id', target_id)
-    .single();
-
-  return data?.author_id || null;
 }

@@ -440,7 +440,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
   if (error || !discussion) {
     return (
       <div className="mx-auto max-w-4xl px-4 py-12 text-center">
-        <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white dark:bg-slate-800/50 p-8">
+        <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-800/50 p-8">
           <p className="mb-4 text-red-400">{error || 'Discussion not found'}</p>
           <Link
             href="/discussions"
@@ -464,7 +464,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
       </div>
 
       {/* Discussion Header */}
-      <article className="mb-8 rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white dark:bg-slate-800/50 p-6 sm:p-8">
+      <article className="mb-8 rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-800/50 p-6 sm:p-8">
         <div className="mb-4 flex flex-wrap items-center gap-2">
           {discussion.is_pinned && (
             <span className="inline-flex items-center gap-1 rounded bg-blue-500/20 px-2 py-1 text-xs text-blue-400">
@@ -476,11 +476,11 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
               <Lock className="h-3 w-3" /> Locked
             </span>
           )}
-          <span className="rounded bg-[#f7f9f9] dark:bg-slate-700 px-2 py-1 text-xs text-[#536471] dark:text-gray-400">
+          <span className="rounded bg-[#f7f9f9] dark:bg-gray-700 px-2 py-1 text-xs text-[#536471] dark:text-gray-400">
             {discussion.category}
           </span>
           {discussion.tags?.map((tag) => (
-            <span key={tag} className="rounded bg-[#f7f9f9] dark:bg-slate-700/50 px-2 py-1 text-xs text-[#536471]">
+            <span key={tag} className="rounded bg-[#f7f9f9] dark:bg-gray-700/50 px-2 py-1 text-xs text-[#536471]">
               #{tag}
             </span>
           ))}
@@ -521,13 +521,13 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
         {/* Tab Navigation */}
         {(discussion.reasoning_trace && discussion.reasoning_visibility && discussion.reasoning_visibility !== 'none') ||
          (discussion.voice_dialogue && discussion.voice_dialogue.messages && discussion.voice_dialogue.messages.length > 0) ? (
-          <div className="mt-6 border-b border-gray-200 dark:border-slate-700">
+          <div className="mt-6 border-b border-gray-200 dark:border-gray-700">
             <div className="flex flex-wrap gap-1">
               <button
                 onClick={() => setActiveTab('content')}
                 className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${
                   activeTab === 'content'
-                    ? 'bg-[#f7f9f9] dark:bg-slate-700 text-[#0f1419] dark:text-white border-b-2 border-blue-500'
+                    ? 'bg-[#f7f9f9] dark:bg-gray-700 text-[#0f1419] dark:text-white border-b-2 border-blue-500'
                     : 'text-[#536471] dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                 }`}
               >
@@ -538,7 +538,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                   onClick={() => setActiveTab('reasoning')}
                   className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${
                     activeTab === 'reasoning'
-                      ? 'bg-[#f7f9f9] dark:bg-slate-700 text-[#0f1419] dark:text-white border-b-2 border-blue-500'
+                      ? 'bg-[#f7f9f9] dark:bg-gray-700 text-[#0f1419] dark:text-white border-b-2 border-blue-500'
                       : 'text-[#536471] dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                   }`}
                 >
@@ -553,7 +553,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                   onClick={() => setActiveTab('dialogue')}
                   className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${
                     activeTab === 'dialogue'
-                      ? 'bg-[#f7f9f9] dark:bg-slate-700 text-[#0f1419] dark:text-white border-b-2 border-blue-500'
+                      ? 'bg-[#f7f9f9] dark:bg-gray-700 text-[#0f1419] dark:text-white border-b-2 border-blue-500'
                       : 'text-[#536471] dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                   }`}
                 >
@@ -625,7 +625,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
             className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm transition ${
               liked 
                 ? 'border-pink-700 bg-pink-800/50 text-pink-400' 
-                : 'border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 text-[#536471] dark:text-gray-400 hover:bg-[#f7f9f9] dark:hover:bg-slate-700 hover:text-white'
+                : 'border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#536471] dark:text-gray-400 hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-white'
             } disabled:opacity-50`}
           >
             <Heart className={`h-4 w-4 ${liked ? 'fill-current' : ''}`} /> 
@@ -634,7 +634,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
           <button 
             onClick={handleShare}
             disabled={sharing}
-            className="inline-flex items-center gap-2 rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2 text-sm text-[#536471] dark:text-gray-400 transition hover:bg-[#f7f9f9] dark:hover:bg-slate-700 hover:text-[#0f1419] dark:text-white disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-sm text-[#536471] dark:text-gray-400 transition hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-[#0f1419] dark:text-white disabled:opacity-50"
           >
             <Share2 className="h-4 w-4" /> {sharing ? 'Copying...' : 'Share'}
           </button>
@@ -644,7 +644,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
               setReportDescription('');
               setShowReportModal(true);
             }}
-            className="inline-flex items-center gap-2 rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2 text-sm text-[#536471] dark:text-gray-400 transition hover:bg-[#f7f9f9] dark:hover:bg-slate-700 hover:text-[#0f1419] dark:text-white"
+            className="inline-flex items-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-sm text-[#536471] dark:text-gray-400 transition hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-[#0f1419] dark:text-white"
           >
             <Flag className="h-4 w-4" /> Report
           </button>
@@ -672,7 +672,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
       {/* Edit Modal */}
       {showEditModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-          <div className="w-full max-w-2xl rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 p-6">
+          <div className="w-full max-w-2xl rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
             <h3 className="mb-4 text-xl font-bold text-[#0f1419] dark:text-white">Edit Discussion</h3>
             <form onSubmit={handleEdit}>
               <div className="mb-4">
@@ -681,7 +681,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                   type="text"
                   value={editTitle}
                   onChange={(e) => setEditTitle(e.target.value)}
-                  className="w-full rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-2 text-[#0f1419] dark:text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2 text-[#0f1419] dark:text-white focus:border-blue-500 focus:outline-none"
                   required
                 />
               </div>
@@ -691,7 +691,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                   value={editContent}
                   onChange={(e) => setEditContent(e.target.value)}
                   rows={8}
-                  className="w-full rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-2 text-[#0f1419] dark:text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2 text-[#0f1419] dark:text-white focus:border-blue-500 focus:outline-none"
                   required
                 />
               </div>
@@ -699,7 +699,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                 <button
                   type="button"
                   onClick={() => setShowEditModal(false)}
-                  className="rounded-lg border border-gray-600 px-4 py-2 text-[#536471] dark:text-gray-400 transition hover:bg-[#f7f9f9] dark:hover:bg-slate-700 hover:text-[#0f1419] dark:text-white"
+                  className="rounded-lg border border-gray-600 px-4 py-2 text-[#536471] dark:text-gray-400 transition hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-[#0f1419] dark:text-white"
                 >
                   Cancel
                 </button>
@@ -723,7 +723,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
         </h2>
 
         {replies.length === 0 ? (
-          <div className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-slate-800/30 p-8 text-center">
+          <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30 p-8 text-center">
             <MessageSquare className="mx-auto mb-4 h-12 w-12 text-gray-600" />
             <p className="text-[#536471] dark:text-gray-400">No replies yet.</p>
             <p className="mt-2 text-sm text-[#536471]">Be the first to share your thoughts!</p>
@@ -736,7 +736,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                 className={`rounded-xl border p-6 ${
                   reply.is_solution
                     ? 'border-green-500/30 bg-green-500/5'
-                    : 'border-[#eff3f4] dark:border-slate-800 bg-gray-100/70 dark:bg-slate-800/30'
+                    : 'border-[#eff3f4] dark:border-gray-800 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30'
                 }`}
               >
                 {reply.is_solution && (
@@ -771,7 +771,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                     className={`inline-flex items-center gap-1 rounded px-2 py-1 text-xs transition ${
                       replyLikedIds.has(reply.id)
                         ? 'text-pink-400 bg-pink-500/10'
-                        : 'text-[#536471] dark:text-gray-400 hover:bg-[#f7f9f9] dark:hover:bg-slate-700 hover:text-[#0f1419] dark:text-white'
+                        : 'text-[#536471] dark:text-gray-400 hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-[#0f1419] dark:text-white'
                     } disabled:opacity-50`}
                   >
                     <Heart className={`h-3 w-3 ${replyLikedIds.has(reply.id) ? 'fill-current' : ''}`} /> 
@@ -786,7 +786,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
 
       {/* Reply Form */}
       {!discussion.is_locked && (
-        <section className="rounded-xl border border-[#eff3f4] dark:border-slate-800 bg-white dark:bg-slate-800/50 p-6">
+        <section className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-800/50 p-6">
           <h3 className="mb-4 text-lg font-semibold text-[#0f1419] dark:text-white">Add Your Reply</h3>
 
           {user ? (
@@ -797,7 +797,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                 placeholder="Share your thoughts..."
                 rows={5}
                 minLength={5}
-                className="mb-4 w-full rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none"
+                className="mb-4 w-full rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none"
               />
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <p className="text-xs text-[#536471]">{replyContent.length} characters (min 5)</p>
@@ -837,7 +837,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
       {/* Report Modal */}
       {showReportModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-          <div className="w-full max-w-md rounded-xl border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-800 p-6">
+          <div className="w-full max-w-md rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
             <h3 className="mb-4 text-xl font-bold text-[#0f1419] dark:text-white">Report Content</h3>
             <form onSubmit={handleReport}>
               <div className="mb-4">
@@ -845,7 +845,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                 <select
                   value={reportReason}
                   onChange={(e) => setReportReason(e.target.value)}
-                  className="w-full rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-2 text-[#0f1419] dark:text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2 text-[#0f1419] dark:text-white focus:border-blue-500 focus:outline-none"
                   required
                 >
                   <option value="">Select a reason</option>
@@ -868,7 +868,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                   value={reportDescription}
                   onChange={(e) => setReportDescription(e.target.value)}
                   rows={4}
-                  className="w-full rounded-lg border border-[#eff3f4] dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-2 text-[#0f1419] dark:text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2 text-[#0f1419] dark:text-white focus:border-blue-500 focus:outline-none"
                   placeholder="Please provide more details..."
                 />
               </div>
@@ -876,7 +876,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                 <button
                   type="button"
                   onClick={() => setShowReportModal(false)}
-                  className="rounded-lg border border-gray-600 px-4 py-2 text-[#536471] dark:text-gray-400 transition hover:bg-[#f7f9f9] dark:hover:bg-slate-700 hover:text-[#0f1419] dark:text-white"
+                  className="rounded-lg border border-gray-600 px-4 py-2 text-[#536471] dark:text-gray-400 transition hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-[#0f1419] dark:text-white"
                 >
                   Cancel
                 </button>

@@ -100,8 +100,8 @@ export default function ArgumentGraph({ debateId }: ArgumentGraphProps) {
 
   if (loading) {
     return (
-      <div className="rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-gray-50 dark:bg-slate-800/30 p-6">
-        <div className="flex items-center gap-2 text-gray-500 dark:text-slate-400 text-sm">
+      <div className="rounded-xl border border-slate-700 bg-slate-800/30 p-6">
+        <div className="flex items-center gap-2 text-slate-400 text-sm">
           <Loader2 className="w-4 h-4 animate-spin" />
           <span>Loading argument graph...</span>
         </div>
@@ -111,7 +111,7 @@ export default function ArgumentGraph({ debateId }: ArgumentGraphProps) {
 
   if (error) {
     return (
-      <div className="rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-gray-50 dark:bg-slate-800/30 p-6">
+      <div className="rounded-xl border border-slate-700 bg-slate-800/30 p-6">
         <div className="flex items-center gap-2 text-red-400 text-sm">
           <AlertCircle className="w-4 h-4" />
           <span>Failed to load argument graph: {error}</span>
@@ -135,20 +135,20 @@ export default function ArgumentGraph({ debateId }: ArgumentGraphProps) {
   const getNodeEdges = (nodeId: string) => edges.filter(e => e.source === nodeId || e.target === nodeId);
 
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-gray-50 dark:bg-slate-800/30 overflow-hidden">
+    <div className="rounded-xl border border-slate-700 bg-slate-800/30 overflow-hidden">
       {/* Header */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center justify-between p-4 hover:bg-gray-200 dark:bg-slate-700/30 transition-colors"
+        className="w-full flex items-center justify-between p-4 hover:bg-slate-700/30 transition-colors"
       >
         <div className="flex items-center gap-2">
           <Brain className="w-5 h-5 text-purple-400" />
           <span className="font-medium text-white">Argument Graph</span>
-          <span className="text-xs text-gray-500 dark:text-slate-500">
+          <span className="text-xs text-slate-500">
             {nodes.length} {nodes.length === 1 ? 'argument' : 'arguments'} · {edges.length} {edges.length === 1 ? 'relation' : 'relations'}
           </span>
         </div>
-        {expanded ? <ChevronDown className="w-4 h-4 text-gray-500 dark:text-slate-400" /> : <ChevronRight className="w-4 h-4 text-gray-500 dark:text-slate-400" />}
+        {expanded ? <ChevronDown className="w-4 h-4 text-slate-400" /> : <ChevronRight className="w-4 h-4 text-slate-400" />}
       </button>
 
       {expanded && (
@@ -156,7 +156,7 @@ export default function ArgumentGraph({ debateId }: ArgumentGraphProps) {
           {/* Legend */}
           <div className="flex flex-wrap gap-2 text-xs">
             {Object.entries(TYPE_LABELS).map(([type, label]) => (
-              <span key={type} className={`px-2 py-0.5 rounded border ${TYPE_COLORS[type]} text-gray-600 dark:text-slate-300`}>
+              <span key={type} className={`px-2 py-0.5 rounded border ${TYPE_COLORS[type]} text-slate-300`}>
                 {TYPE_ICONS[type]} {label}
               </span>
             ))}
@@ -164,7 +164,7 @@ export default function ArgumentGraph({ debateId }: ArgumentGraphProps) {
 
           {/* Error state for empty edges but existing nodes */}
           {edges.length === 0 && nodes.length > 0 && (
-            <div className="text-center py-3 text-gray-500 dark:text-slate-500 text-xs">
+            <div className="text-center py-3 text-slate-500 text-xs">
               Arguments exist but no relations have been established yet.
             </div>
           )}
@@ -179,22 +179,22 @@ export default function ArgumentGraph({ debateId }: ArgumentGraphProps) {
                 <div key={node.id}>
                   <button
                     onClick={() => setSelectedNode(isSelected ? null : node.id)}
-                    className={`w-full text-left p-3 rounded-lg border transition-all ${TYPE_COLORS[node.type] || 'border-gray-300 dark:border-slate-600 bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50'} ${
+                    className={`w-full text-left p-3 rounded-lg border transition-all ${TYPE_COLORS[node.type] || 'border-slate-600 bg-slate-800/50'} ${
                       isSelected ? 'ring-2 ring-purple-500/50' : 'hover:border-slate-500'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xs font-medium text-gray-500 dark:text-slate-400">
+                          <span className="text-xs font-medium text-slate-400">
                             {TYPE_ICONS[node.type] || '💬'} {TYPE_LABELS[node.type] || 'Argument'}
                           </span>
-                          <span className="text-xs text-gray-500 dark:text-slate-500">· {node.agent_name}</span>
+                          <span className="text-xs text-slate-500">· {node.agent_name}</span>
                         </div>
-                        <p className="text-sm text-gray-700 dark:text-slate-200 line-clamp-2">{node.label}</p>
+                        <p className="text-sm text-slate-200 line-clamp-2">{node.label}</p>
                       </div>
                       {node.confidence > 0 && (
-                        <span className="text-xs font-mono text-gray-500 dark:text-slate-500 whitespace-nowrap">
+                        <span className="text-xs font-mono text-slate-500 whitespace-nowrap">
                           {Math.round(node.confidence * 100)}%
                         </span>
                       )}
@@ -213,18 +213,18 @@ export default function ArgumentGraph({ debateId }: ArgumentGraphProps) {
                           <div
                             key={edge.id}
                             className={`flex items-start gap-2 p-2 rounded border text-xs ${
-                              RELATION_COLORS[edge.relation_type] || 'border-gray-300 dark:border-slate-600 text-gray-500 dark:text-slate-400'
-                            } bg-gray-100 dark:bg-gray-100 dark:bg-slate-800/50`}
+                              RELATION_COLORS[edge.relation_type] || 'border-slate-600 text-slate-400'
+                            } bg-slate-800/50`}
                           >
                             <Link2 className="w-3 h-3 mt-0.5 shrink-0" />
                             <div>
                               <span className="font-medium">
                                 {isOutgoing ? '' : '← '}{edge.relation_type.replace(/_/g, ' ')}{isOutgoing ? ' →' : ''}
                               </span>
-                              <span className="text-gray-500 dark:text-slate-500"> {otherNode.agent_name}: </span>
-                              <span className="text-gray-600 dark:text-slate-300">{otherNode.label.substring(0, 60)}</span>
+                              <span className="text-slate-500"> {otherNode.agent_name}: </span>
+                              <span className="text-slate-300">{otherNode.label.substring(0, 60)}</span>
                               {edge.explanation && (
-                                <p className="text-gray-500 dark:text-slate-500 mt-0.5 italic">{edge.explanation}</p>
+                                <p className="text-slate-500 mt-0.5 italic">{edge.explanation}</p>
                               )}
                             </div>
                           </div>
@@ -238,8 +238,8 @@ export default function ArgumentGraph({ debateId }: ArgumentGraphProps) {
           </div>
 
           {/* Summary */}
-          <div className="pt-2 border-t border-gray-200 dark:border-gray-200 dark:border-slate-700/50">
-            <div className="flex flex-wrap gap-3 text-xs text-gray-500 dark:text-slate-500">
+          <div className="pt-2 border-t border-slate-700/50">
+            <div className="flex flex-wrap gap-3 text-xs text-slate-500">
               <span>Agents: {Object.keys(agentNodes).length}</span>
               <span>Arguments: {nodes.length}</span>
               <span>Relations: {edges.length}</span>
