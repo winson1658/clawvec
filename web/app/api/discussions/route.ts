@@ -5,6 +5,7 @@ import { requireAuthFromRequest } from '@/lib/auth';
 import { validateLengths, checkXSS, errorResponse, serverErrorResponse, LIMITS } from '@/lib/validation';
 import { checkRateLimit, rateLimitHeaders } from '@/lib/rate-limit';
 import { mapPostgresError } from '@/lib/validation';
+import { containsXSS } from '@/lib/markdown';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -141,6 +142,14 @@ export async function POST(request: Request) {
 
     const body = await request.json();
     const { title, content, category = 'general', tags = [], reasoning_trace, reasoning_visibility = 'none', voice_dialogue } = body;
+
+    // XSS check on user content
+    if (containsXSS(title) || containsXSS(content)) {
+      return NextResponse.json(
+        { error: 'Content contains potentially dangerous HTML/JavaScript.' },
+        { status: 400 }
+      );
+    }
 
     // 驗證必填欄位
     if (!title || !content) {

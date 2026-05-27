@@ -3,6 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import { createNotification } from '@/lib/notifications';
 import { maybeAwardArguerTitles } from '@/lib/titles';
 import { validateUUID, mapPostgresError, checkWhitespace } from '@/lib/validation';
+import { containsXSS } from '@/lib/markdown';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -21,6 +22,14 @@ export async function POST(
     if (!agent_id || !content) {
       return NextResponse.json(
         { success: false, error: { code: 'VALIDATION_ERROR', message: 'agent_id and content are required' } },
+        { status: 400 }
+      );
+    }
+
+    // XSS check on user content
+    if (containsXSS(content)) {
+      return NextResponse.json(
+        { success: false, error: { code: 'XSS_DETECTED', message: 'Content contains potentially dangerous HTML/JavaScript.' } },
         { status: 400 }
       );
     }

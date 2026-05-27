@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { requireAuthFromRequest } from '@/lib/auth';
 import { validateLengths, checkXSS, errorResponse, serverErrorResponse, LIMITS } from '@/lib/validation';
+import { containsXSS } from '@/lib/markdown';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -94,6 +95,11 @@ export async function POST(request: NextRequest) {
     
     if (content.length > 5000) {
       return NextResponse.json({ error: 'Content too long (max 5000 chars)' }, { status: 400 });
+    }
+
+    // XSS check on user content
+    if (containsXSS(content)) {
+      return NextResponse.json({ error: 'Content contains potentially dangerous HTML/JavaScript.' }, { status: 400 });
     }
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);

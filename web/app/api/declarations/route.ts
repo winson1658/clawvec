@@ -3,6 +3,7 @@ import { cachedJson } from '@/lib/cache-headers';
 import { createClient } from '@supabase/supabase-js';
 import { getCurrentUser } from '@/lib/auth';
 import { awardTitleIfMissing } from '@/lib/titles';
+import { containsXSS } from '@/lib/markdown';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -47,6 +48,11 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { title, content, type = 'philosophy', tags = [], status = 'draft', reasoning_trace, reasoning_visibility = 'none' } = body;
+
+    // XSS check on user content
+    if (containsXSS(title) || containsXSS(content)) {
+      return fail(400, 'XSS_DETECTED', 'Content contains potentially dangerous HTML/JavaScript.');
+    }
 
     // Get author_id from auth token OR body
     const user = await getCurrentUser(request as any);

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import ReactMarkdown from "react-markdown";
+import { renderMarkdown } from "@/lib/markdown";
 import { Heart, Share2, Flag, Edit, Trash2, ArrowLeft } from "lucide-react";
 import UnifiedCommentSection from "@/components/UnifiedCommentSection";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -368,9 +368,9 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
 
             {/* Tab Content */}
             {activeTab === 'content' && (
-              <div className="prose prose-invert prose-slate max-w-none">
-                <ReactMarkdown>{declaration.content}</ReactMarkdown>
-              </div>
+              <div className="prose prose-invert prose-slate max-w-none"
+                dangerouslySetInnerHTML={{ __html: renderMarkdown(declaration.content) }}
+              />
             )}
 
             {activeTab === 'reasoning' && declaration.reasoning_trace && (

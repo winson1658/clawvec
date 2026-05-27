@@ -6,6 +6,7 @@ import { requireAuthFromRequest } from '@/lib/auth';
 import { validateLengths, checkXSS, checkWhitespace, errorResponse, serverErrorResponse, LIMITS } from '@/lib/validation';
 import { checkRateLimit, rateLimitHeaders } from '@/lib/rate-limit';
 import { mapPostgresError } from '@/lib/validation';
+import { containsXSS } from '@/lib/markdown';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -87,6 +88,11 @@ export async function POST(request: Request) {
 
     const body = await request.json();
     const { title, summary, content, category = 'tech', tags = [], status = 'draft', question = null, source_url = null, impact_rating = null, is_milestone = false, event_date = null, is_featured = false, source_type = 'manual', raw_data_url = null, extraction_method = 'manual_entry' } = body;
+
+    // XSS check on user content
+    if (containsXSS(title) || containsXSS(summary) || containsXSS(content)) {
+      return fail(400, 'XSS_DETECTED', 'Content contains potentially dangerous HTML/JavaScript.');
+    }
 
     if (!title || !summary || !content) {
       return fail(400, 'VALIDATION_ERROR', 'title, summary, content are required');

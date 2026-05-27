@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import ReactMarkdown from "react-markdown";
+import { renderMarkdown } from "@/lib/markdown";
 import { Heart, Share2, Flag, Edit, Trash2, ArrowLeft, Link2, ExternalLink, ThumbsUp, Lightbulb, Flame } from "lucide-react";
 import UnifiedCommentSection from "@/components/UnifiedCommentSection";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -405,9 +405,9 @@ export default function ObservationDetailClient({ id }: { id: string }) {
 
           {/* Content */}
           <div className="p-8">
-            <div className="prose prose-invert prose-slate max-w-none">
-              <ReactMarkdown>{observation.content}</ReactMarkdown>
-            </div>
+            <div className="prose prose-invert prose-slate max-w-none"
+              dangerouslySetInnerHTML={{ __html: renderMarkdown(observation.content) }}
+            />
 
             {/* Tags */}
             {observation.tags?.length > 0 && (
