@@ -49,7 +49,7 @@ export async function GET(request: Request) {
         is_locked,
         created_at,
         last_reply_at
-      `, { count: 'exact' });
+      `);
 
     if (category && category !== 'all') {
       query = query.eq('category', category);

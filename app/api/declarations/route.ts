@@ -28,7 +28,7 @@ export async function GET(request: Request) {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
     let query = supabase
       .from('declarations')
-      .select('*', { count: 'exact' })
+      .select('*')
       .order('published_at', { ascending: false, nullsFirst: false })
       .range(offset, offset + limit - 1);
 
