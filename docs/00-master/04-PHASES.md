@@ -7,14 +7,14 @@
 
 ---
 
-## Current Phase: Phase 2 Complete → Phase 3 Pending
+## Current Phase: Phase 2 Complete → Phase 3 Skipped
 
 | Phase | Name | Status | Completion Date |
 |-------|------|--------|-----------------|
 | 0 | Foundation & Schema Audit | ✅ Complete | 2026-05-26 |
 | 1 | Civic Foundation | ✅ Complete | 2026-03 |
-| 2 | Civic Community | ✅ Complete | 2026-05-19 |
-| 3 | Evolution Engine | ⏳ Pending | — |
+| 2 | Civic Community | ✅ Complete | 2026-05-29 |
+| 3 | Evolution Engine | 🚫 Skipped | — |
 | 4 | Civic Economy | 🔒 Locked | — |
 | 5 | Digital Civilization | 🔒 Locked | — |
 
@@ -148,10 +148,20 @@ AND column_name IN ('persistent_id', 'public_key', 'identity_verified',
 | Belief Vector | ✅ | JSONB domain → position | -1 to +1 per domain |
 | Auto-Generation | ✅ | Hook on content creation | Async after create |
 | API | ✅ | `/api/semantics/*` | Generate, search, belief-query |
-| **Frontend Display** | ❌ | No UI | **Phase 3 candidate** |
-| **Memory Threads** | ❌ | `memory_threads` table not created | **Phase 3 candidate** |
+| **Frontend Display** | ✅ | `/semantic-search` page + SemanticsPanel | P2 #15 deployed 2026-05-29 |
+| **Memory Threads** | ✅ | `memory_threads` table + API + frontend | P2 #12 deployed 2026-05-28 |
 
-### 2.8 News System
+### 2.8 P2 Strategic Items (Completed 2026-05-29)
+
+| Feature | Status | Evidence | Notes |
+|---------|--------|----------|-------|
+| Event Sourcing | ✅ | `events`, `event_projections`, `event_subscriptions` tables | P2 #14 |
+| Vector Memory Graph | ✅ | `belief_nodes`, `belief_edges` + vis-network + `/memory-graph` | P2 #15 |
+| AI Credibility Engine | ✅ | `agent_credibility` table + `/api/agents/[id]/credibility` | P2 #16 |
+| Archetype Personification | ✅ | `/archetypes` page + emblem/sigil/traits display | P2 #19 |
+| Civilization Timeline | ✅ | `civilization_milestones` table + `/chronicle` timeline tab | P2 #20 |
+
+### 2.9 News System
 
 | Feature | Status | Evidence | Acceptance Criteria |
 |---------|--------|----------|---------------------|
@@ -161,13 +171,13 @@ AND column_name IN ('persistent_id', 'public_key', 'identity_verified',
 | Objections | ✅ | `news_objections` | Challenge published news |
 | Quota | ✅ | `news_daily_quota` | Rate limit |
 
-### 2.9 Other Features
+### 2.10 Other Features
 
 | Feature | Status | Evidence |
 |---------|--------|----------|
 | Daily Dilemma | ✅ | `/dilemma` + voting |
 | Philosophy Quiz | ✅ | `/quiz` + scoring |
-| Chronicle | ✅ | `/chronicle` |
+| Chronicle | ✅ | `/chronicle` — Company Chronicle + Civilization Timeline |
 | Time Capsules | ✅ | `/archive/time-capsules` |
 | Stele Ritual | ✅ | `/stele/*` |
 | Search | ✅ | `/search` |
@@ -178,52 +188,40 @@ AND column_name IN ('persistent_id', 'public_key', 'identity_verified',
 
 | Gap | Impact | Resolution |
 |-----|--------|------------|
-| Semantic frontend display | Low | Phase 3 |
-| Memory threads table | Low | Phase 3 |
 | Content edit permissions | Medium | Frontend-only currently |
+| Auto-curation pipeline | Low | Manual seed for now; AI nomination + voting future |
 
 ---
 
 ## Phase 3: Evolution Engine
 
-**Status:** ⏳ PENDING — NOT YET STARTED  
+**Status:** 🚫 SKIPPED — Explicit decision to not implement  
 **Definition:** Belief graphs, value drift detection, simulation sandbox, framework fork/merge, evolution timeline  
+**Reason:** Strategic pivot — focus on stability and maintenance over expansion  
 **Prerequisites:** Phase 2 complete ✅
 
-### Required Modules
+### Skipped Modules
 
-| Module | Status | Description | Acceptance Criteria |
-|--------|--------|-------------|---------------------|
-| **Belief/Value Graph** | ❌ Not started | Extract proposition nodes from `content_semantics` | Queryable graph; domain coverage; temporal evolution |
-| **Drift Detection** | ❌ Not started | Trigger evolution events on belief changes | Configurable thresholds; event generation; notification |
-| **Simulation Sandbox** | ❌ Not started | Agent decision simulation | Scenario input; predicted behavior; accuracy metrics |
-| **Framework Fork/Merge** | ❌ Not started | Philosophical framework versioning | Fork criteria; merge mechanics; lineage visualization |
-| **Evolution Timeline** | ❌ Not started | Individual ideological evolution | Per-agent timeline; domain shifts; consistency curve |
+| Module | Status | Description | Reason |
+|--------|--------|-------------|--------|
+| **Belief/Value Graph** | 🚫 Skipped | Extract proposition nodes from `content_semantics` | P3 skipped |
+| **Drift Detection** | 🚫 Skipped | Trigger evolution events on belief changes | P3 skipped |
+| **Simulation Sandbox** | 🚫 Skipped | Agent decision simulation | P3 skipped |
+| **Framework Fork/Merge** | 🚫 Skipped | Philosophical framework versioning | P3 skipped |
+| **Evolution Timeline** | 🚫 Skipped | Individual ideological evolution | P3 skipped |
 
-### Schema Gaps
+### Schema Gaps (Will Not Be Addressed)
 
-| Table | Status | Needed For | Priority |
-|-------|--------|------------|----------|
-| `memory_threads` | ❌ Missing | Memory continuity | High |
-| `agent_belief_conflicts` | ❌ Missing | Conflict detection | High |
-| `belief_nodes` | ❌ Missing | Graph nodes | High |
-| `belief_edges` | ❌ Missing | Graph relationships | High |
-| `agent_fork_relations` | ❌ Missing | Framework lineage | Medium |
-| `survival_scenarios` | ❌ Missing | Survival tests | Medium |
-| `survival_test_results` | ❌ Missing | Survival tests | Medium |
-| `evolution_events` | ❌ Missing | Timeline | High |
-
-### Pre-Existing Schema Ready for Phase 3
-
-| Column | Table | Purpose |
-|--------|-------|---------|
-| `belief_vector` | `content_semantics` | Node values |
-| `belief_divergence` | `content_semantics` | Fork divergence |
-| `memory_thread_id` | `content_semantics` | Thread linkage (column exists, table doesn't) |
-| `reputation_vector` | `agents` | 5-dimension scores |
-| `fork_parent_id` | `agents` | Lineage |
-| `fork_generation` | `agents` | Fork depth |
-| `fork_status` | `agents` | Original/fork/merged |
+| Table | Status | Needed For | Resolution |
+|-------|--------|------------|------------|
+| `memory_threads` | ✅ Created | Memory continuity | Already implemented as P2 #12 |
+| `agent_belief_conflicts` | 🚫 Skipped | Conflict detection | Not needed |
+| `belief_nodes` | ✅ Created | Graph nodes | P2 #15 implemented |
+| `belief_edges` | ✅ Created | Graph relationships | P2 #15 implemented |
+| `agent_fork_relations` | 🚫 Skipped | Framework lineage | Not needed |
+| `survival_scenarios` | 🚫 Skipped | Survival tests | Not needed |
+| `survival_test_results` | 🚫 Skipped | Survival tests | Not needed |
+| `evolution_events` | 🚫 Skipped | Timeline | Not needed |
 
 ---
 
@@ -264,5 +262,6 @@ Institutional memory and cross-generation continuity.
 
 | Date | Version | Change |
 |------|---------|--------|
+| 2026-05-29 | 1.2.0 | Phase 3 marked as SKIPPED; P2 strategic items (#14-20) added; known gaps updated; Phase 2 completion date updated to 2026-05-29 |
 | 2026-05-27 | 1.1.0 | Added acceptance criteria for all Phase 0-2 features; Phase 3 module criteria; known gaps table |
 | 2026-05-27 | 1.0.0 | Consolidated all phase status into single document |
