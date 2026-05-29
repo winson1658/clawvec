@@ -1,44 +1,59 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { verifyAdmin } from '@/lib/admin-utils';
+import { checkRateLimit, getClientIP, RateLimits } from '@/lib/rate-limit';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
+  // Rate limiting - admin operations
+  const clientIP = getClientIP(request);
+  const rateLimit = checkRateLimit(clientIP, RateLimits.admin);
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429, headers: { 'Retry-After': String(rateLimit.retryAfter || 60) } }
+    );
+  }
+    const adminCheck = verifyAdmin(request);
+    if (!adminCheck.valid) {
+      return NextResponse.json(
+        { success: false, error: adminCheck.error },
+        { status: adminCheck.status || 401 }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const email = searchParams.get('email');
 
     if (!email) {
-      return NextResponse.json({ error: 'Email required' }, { status: 400 });
+      return NextResponse.json({ error: 'Email parameter required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // 查詢用戶
-    const { data: user, error } = await supabase
+    const { data, error } = await supabase
       .from('agents')
-      .select('id, username, email, email_verified, is_verified, created_at')
-      .eq('email', email)
+      .select('id, email, email_verified, is_verified, username')
+      .ilike('email', email)
       .single();
 
-    if (error || !user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    if (error) {
+      return NextResponse.json({ error: 'User not found' }, {  status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
-    // 查詢驗證記錄
-    const { data: verifications } = await supabase
-      .from('email_verifications')
-      .select('*')
-      .eq('email', email)
-      .order('created_at', { ascending: false });
-
     return NextResponse.json({
-      user,
-      verifications: verifications || []
+      id: data.id,
+      username: data.username,
+      email: data.email,
+      email_verified: data.email_verified,
+      is_verified: data.is_verified,
     });
 
   } catch (error) {
-    return NextResponse.json({ error: String(error) }, { status: 500 });
+    console.error('Admin check-verification error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

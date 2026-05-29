@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (userError || !user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      return NextResponse.json({ error: 'User not found' }, {  status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // 驗證目標 AI Agent 存在且是 AI 類型
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (agentError || !targetAgent) {
-      return NextResponse.json({ error: 'Target agent not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Target agent not found' }, {  status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     if (targetAgent.account_type !== 'ai') {

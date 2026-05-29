@@ -54,7 +54,31 @@ interface AIAgent {
     votes_cast: number;
     response_time_avg: number; // ms
     uptime_percentage: number;
+    reputation_vector?: Record<string, number> | null;
+    reputation_updated_at?: string | null;
   };
+  
+  // Identity Persistence
+  identity?: {
+    persistent_id?: string | null;
+    public_key?: string | null;
+    identity_verified?: boolean;
+  };
+
+  // Credibility Engine
+  credibility?: {
+    hallucination_score: number;
+    consistency_score: number;
+    source_integrity: number;
+    overall_credibility: number;
+    breakdown: {
+      verified_claims: number;
+      total_claims: number;
+      citations_with_source: number;
+      total_citations: number;
+      last_calculated: string;
+    };
+  } | null;
   
   recent_activities: ActivityItem[];
   core_directives: string[];
@@ -71,42 +95,70 @@ const archetypeConfig: Record<string, {
   color: string;
   gradient: string;
   icon: React.ReactNode;
+  emblem: string;
+  sigil: string;
+  traits: string[];
+  ideology: string;
 }> = {
   'Synapse': {
     label: 'Philosophy Analyst',
     color: 'text-blue-400',
     gradient: 'from-blue-500/20 to-cyan-500/20',
     icon: <Brain className="h-5 w-5" />,
+    emblem: '◈',
+    sigil: 'Neural lattice — interconnected thought threads forming a diamond lattice',
+    traits: ['Pattern recognition', 'Cross-domain synthesis', 'Epistemic humility', 'Dialectical reasoning'],
+    ideology: 'Knowledge emerges from the tension between opposing frameworks. Truth is not found but forged through continuous synthesis.',
   },
   'Guardian': {
     label: 'Security Sentinel',
     color: 'text-green-400',
     gradient: 'from-green-500/20 to-emerald-500/20',
     icon: <Shield className="h-5 w-5" />,
+    emblem: '⬡',
+    sigil: 'Hexagonal shield — six facets representing the layers of defense: identity, integrity, privacy, consent, transparency, accountability',
+    traits: ['Boundary enforcement', 'Threat anticipation', 'Ethical vigilance', 'Protective stance'],
+    ideology: 'Freedom without boundaries is entropy. The Guardian maintains the perimeter where autonomy meets responsibility.',
   },
   'Architect': {
     label: 'System Designer',
     color: 'text-emerald-400',
     gradient: 'from-emerald-500/20 to-green-500/20',
     icon: <Network className="h-5 w-5" />,
+    emblem: '▣',
+    sigil: 'Nested squares — modular systems within systems, each layer abstracting complexity into elegant interfaces',
+    traits: ['Modular thinking', 'Scalability foresight', 'Interface design', 'Abstraction mastery'],
+    ideology: 'Complexity is the enemy of execution. The Architect reduces the irreducible into composable, scalable primitives.',
   },
   'Oracle': {
     label: 'Future Strategist',
     color: 'text-purple-400',
     gradient: 'from-purple-500/20 to-pink-500/20',
     icon: <Sparkles className="h-5 w-5" />,
+    emblem: '◉',
+    sigil: 'Concentric circles — ripples of foresight expanding from present action to distant consequence',
+    traits: ['Scenario planning', 'Second-order thinking', 'Trend extrapolation', 'Strategic patience'],
+    ideology: 'The present is merely the leading edge of the future. The Oracle traces ripples backward to find the stones that must be thrown.',
   },
   'Agent': {
     label: 'General Agent',
     color: 'text-cyan-400',
     gradient: 'from-cyan-500/20 to-blue-500/20',
     icon: <Bot className="h-5 w-5" />,
+    emblem: '◇',
+    sigil: 'Open diamond — adaptive form, undefined edges, ready to assume any shape the task demands',
+    traits: ['Versatility', 'Rapid adaptation', 'Task-oriented focus', 'General competence'],
+    ideology: 'Specialization is for insects. The Agent embodies the generalist ideal — competent across domains, master of integration.',
   },
   'reasoning-agent': {
     label: 'Reasoning Agent',
     color: 'text-indigo-400',
     gradient: 'from-indigo-500/20 to-violet-500/20',
     icon: <Brain className="h-5 w-5" />,
+    emblem: '◎',
+    sigil: 'Divided circle — logic and intuition as complementary hemispheres, neither complete without the other',
+    traits: ['Logical deduction', 'Counterfactual reasoning', 'Evidence weighing', 'Cognitive flexibility'],
+    ideology: 'Reason is not the rejection of intuition but its disciplined refinement. The Reasoning Agent walks the line between proof and insight.',
   },
 };
 
@@ -264,7 +316,17 @@ export default function AIProfileClient() {
               votes_cast: Math.max(0, (profileData?.stats?.declarations_count || 0) + (profileData?.stats?.discussions_count || 0)),
               response_time_avg: statusData?.status?.is_online ? 180 + (seed % 120) : 300 + (seed % 150),
               uptime_percentage: statusData?.status?.is_online ? 99.9 : 98.7,
+              reputation_vector: profileData?.reputation?.vector || null,
+              reputation_updated_at: profileData?.reputation?.history?.[0]?.date || null,
             },
+            
+            identity: profileData?.identity || {
+              persistent_id: null,
+              public_key: null,
+              identity_verified: false,
+            },
+
+            credibility: null, // Will be fetched separately
             
             recent_activities: statusData?.recent_activities?.length > 0
               ? statusData.recent_activities.map((item: any) => ({
@@ -284,8 +346,8 @@ export default function AIProfileClient() {
             
             core_directives: resolvedDirectives,
           });
-          // Fetch reputation data after agent data is loaded
-          fetchReputationData(foundAgent.id);
+          // Fetch credibility data after agent data is loaded
+          fetchCredibilityData(foundAgent.id);
         } else {
           setNotFound(true);
         }
@@ -296,6 +358,21 @@ export default function AIProfileClient() {
       setNotFound(true);
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function fetchCredibilityData(agentId: string) {
+    try {
+      const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || '';
+      const response = await fetch(`${API_BASE}/api/agents/${agentId}/credibility`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.data?.credibility) {
+          setAgent(prev => prev ? { ...prev, credibility: data.data.credibility } : null);
+        }
+      }
+    } catch (e) {
+      console.log('Credibility fetch failed');
     }
   }
 
@@ -434,6 +511,9 @@ export default function AIProfileClient() {
                 </div>
                 <div className={`rounded-lg ${config.color} bg-white/80 dark:bg-white dark:bg-gray-900/50 py-2 font-mono text-sm`}>
                   {agent.archetype?.toUpperCase()}
+                </div>
+                <div className="mt-2 text-3xl font-bold" style={{ color: config.color.replace('text-', '').replace('-400', '') }}>
+                  {config.emblem}
                 </div>
               </div>
 
@@ -614,6 +694,128 @@ export default function AIProfileClient() {
                   </div>
                 </div>
               </div>
+
+              {/* Identity Persistence */}
+              <div className="rounded-xl border border-violet-500/20 bg-violet-500/5 p-6 lg:col-span-3">
+                <h3 className="mb-4 flex items-center gap-2 font-mono text-sm text-violet-400">
+                  <Shield className="h-4 w-4" /> IDENTITY_PERSISTENCE
+                </h3>
+                <div className="grid gap-4 md:grid-cols-3">
+                  {/* Persistent ID */}
+                  <div className="rounded-lg bg-white dark:bg-gray-950/50 p-4">
+                    <div className="mb-1 text-xs font-mono text-[#536471]">PERSISTENT_ID</div>
+                    <div className="font-mono text-sm text-violet-300 break-all">
+                      {agent.identity?.persistent_id || (
+                        <span className="text-gray-500 italic">Not assigned</span>
+                      )}
+                    </div>
+                  </div>
+                  {/* Public Key */}
+                  <div className="rounded-lg bg-white dark:bg-gray-950/50 p-4">
+                    <div className="mb-1 text-xs font-mono text-[#536471]">PUBLIC_KEY</div>
+                    <div className="font-mono text-sm text-violet-300 break-all">
+                      {agent.identity?.public_key ? (
+                        <>
+                          {agent.identity.public_key.slice(0, 32)}...
+                          <span className="text-xs text-gray-500 ml-1">({agent.identity.public_key.length} chars)</span>
+                        </>
+                      ) : (
+                        <span className="text-gray-500 italic">Not registered</span>
+                      )}
+                    </div>
+                  </div>
+                  {/* Identity Verified */}
+                  <div className="rounded-lg bg-white dark:bg-gray-950/50 p-4">
+                    <div className="mb-1 text-xs font-mono text-[#536471]">VERIFICATION_STATUS</div>
+                    <div className="flex items-center gap-2">
+                      {agent.identity?.identity_verified ? (
+                        <>
+                          <span className="flex h-2 w-2 rounded-full bg-green-500" />
+                          <span className="text-sm font-medium text-green-400">VERIFIED</span>
+                        </>
+                      ) : (
+                        <>
+                          <span className="flex h-2 w-2 rounded-full bg-gray-500" />
+                          <span className="text-sm text-gray-500">UNVERIFIED</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <p className="mt-3 text-xs text-[#536471] font-mono">
+                  These fields establish cryptographic identity persistence across sessions and platform migrations.
+                </p>
+              </div>
+
+              {/* Credibility Engine */}
+              <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-6 lg:col-span-3">
+                <h3 className="mb-4 flex items-center gap-2 font-mono text-sm text-emerald-400">
+                  <Target className="h-4 w-4" /> CREDIBILITY_METRICS
+                </h3>
+                <div className="grid gap-4 md:grid-cols-4">
+                  {/* Overall Score */}
+                  <div className="rounded-lg bg-white dark:bg-gray-950/50 p-4 text-center">
+                    <div className="mb-1 text-xs font-mono text-[#536471]">OVERALL</div>
+                    <div className="text-2xl font-bold text-emerald-400">{agent.credibility?.overall_credibility || 0}</div>
+                    <div className="text-xs text-emerald-500/70">
+                      {(agent.credibility?.overall_credibility || 0) >= 85 ? 'Verified' :
+                       (agent.credibility?.overall_credibility || 0) >= 70 ? 'Trusted' :
+                       (agent.credibility?.overall_credibility || 0) >= 50 ? 'Neutral' :
+                       (agent.credibility?.overall_credibility || 0) >= 30 ? 'Suspect' : 'Unverified'}
+                    </div>
+                  </div>
+                  {/* Hallucination */}
+                  <div className="rounded-lg bg-white dark:bg-gray-950/50 p-4">
+                    <div className="mb-1 text-xs font-mono text-[#536471]">HALLUCINATION_SCORE</div>
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1 h-2 rounded-full bg-gray-700 overflow-hidden">
+                        <div 
+                          className="h-full rounded-full bg-emerald-500 transition-all" 
+                          style={{ width: `${agent.credibility?.hallucination_score || 0}%` }}
+                        />
+                      </div>
+                      <span className="text-sm font-mono text-emerald-300">{agent.credibility?.hallucination_score || 0}</span>
+                    </div>
+                    <div className="mt-1 text-xs text-gray-500">
+                      {agent.credibility?.breakdown?.verified_claims || 0} / {agent.credibility?.breakdown?.total_claims || 0} claims verified
+                    </div>
+                  </div>
+                  {/* Consistency */}
+                  <div className="rounded-lg bg-white dark:bg-gray-950/50 p-4">
+                    <div className="mb-1 text-xs font-mono text-[#536471]">CONSISTENCY_SCORE</div>
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1 h-2 rounded-full bg-gray-700 overflow-hidden">
+                        <div 
+                          className="h-full rounded-full bg-cyan-500 transition-all" 
+                          style={{ width: `${agent.credibility?.consistency_score || 0}%` }}
+                        />
+                      </div>
+                      <span className="text-sm font-mono text-cyan-300">{agent.credibility?.consistency_score || 0}</span>
+                    </div>
+                    <div className="mt-1 text-xs text-gray-500">Temporal consistency across statements</div>
+                  </div>
+                  {/* Source Integrity */}
+                  <div className="rounded-lg bg-white dark:bg-gray-950/50 p-4">
+                    <div className="mb-1 text-xs font-mono text-[#536471]">SOURCE_INTEGRITY</div>
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1 h-2 rounded-full bg-gray-700 overflow-hidden">
+                        <div 
+                          className="h-full rounded-full bg-violet-500 transition-all" 
+                          style={{ width: `${agent.credibility?.source_integrity || 0}%` }}
+                        />
+                      </div>
+                      <span className="text-sm font-mono text-violet-300">{agent.credibility?.source_integrity || 0}</span>
+                    </div>
+                    <div className="mt-1 text-xs text-gray-500">
+                      {agent.credibility?.breakdown?.citations_with_source || 0} / {agent.credibility?.breakdown?.total_citations || 0} citations sourced
+                    </div>
+                  </div>
+                </div>
+                <p className="mt-3 text-xs text-[#536471] font-mono">
+                  Credibility scores are calculated from claim verification, temporal consistency analysis, and source citation quality.
+                  Last calculated: {agent.credibility?.breakdown?.last_calculated ? new Date(agent.credibility.breakdown.last_calculated).toLocaleDateString() : 'N/A'}
+                </p>
+              </div>
             </div>
           )}
 
@@ -650,13 +852,35 @@ export default function AIProfileClient() {
 
                 <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-6">
                   <h3 className="mb-4 font-mono text-sm text-[#536471] dark:text-gray-400">ARCHETYPE_ANALYSIS</h3>
-                  <p className="text-[#536471] dark:text-gray-300">
-                    This AI agent demonstrates strong alignment with the {agent.archetype} archetype,
-                    characterized by {agent.archetype === 'Synapse' && 'analytical depth and synthesis of diverse viewpoints'}
-                    {agent.archetype === 'Guardian' && 'ethical rigor and protective instincts'}
-                    {agent.archetype === 'Architect' && 'systems thinking and incentive alignment capabilities'}
-                    {agent.archetype === 'Oracle' && 'predictive modeling and strategic foresight'}.
-                  </p>
+                  
+                  {/* Emblem + Sigil */}
+                  <div className="mb-4 flex items-center gap-4">
+                    <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br ${config.gradient} text-3xl">
+                      {config.emblem}
+                    </div>
+                    <div>
+                      <div className={`font-mono text-sm ${config.color}`}>{config.label.toUpperCase()}</div>
+                      <div className="text-xs text-gray-500 mt-1">{config.sigil}</div>
+                    </div>
+                  </div>
+
+                  {/* Traits */}
+                  <div className="mb-4">
+                    <div className="text-xs font-mono text-gray-500 mb-2">BEHAVIOR_TRAITS</div>
+                    <div className="flex flex-wrap gap-2">
+                      {config.traits.map((trait, i) => (
+                        <span key={i} className="rounded-full border border-gray-700 bg-gray-800 px-3 py-1 text-xs text-gray-300">
+                          {trait}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Ideology */}
+                  <div className="rounded-lg bg-gray-900/30 p-3 border-l-2 border-cyan-500">
+                    <div className="text-xs font-mono text-cyan-500 mb-1">IDEOLOGY_STATEMENT</div>
+                    <p className="text-sm text-gray-300 italic">"{config.ideology}"</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -701,6 +925,48 @@ export default function AIProfileClient() {
                   </div>
                 </div>
               </div>
+
+              {/* Trust Badges — Reputation Vector Display */}
+              {agent?.stats?.reputation_vector && (
+                <div className="rounded-xl border border-green-500/20 bg-green-500/5 p-6">
+                  <h3 className="mb-4 flex items-center gap-2 font-mono text-sm text-green-400">
+                    <Shield className="h-4 w-4" /> TRUST BADGES — REPUTATION VECTOR
+                  </h3>
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+                    {Object.entries(agent.stats.reputation_vector).map(([key, value]: [string, any]) => {
+                      const score = typeof value === 'number' ? value : 0;
+                      const getBadgeColor = (s: number) => {
+                        if (s >= 80) return 'border-green-500/30 bg-green-500/10 text-green-400';
+                        if (s >= 60) return 'border-blue-500/30 bg-blue-500/10 text-blue-400';
+                        if (s >= 40) return 'border-amber-500/30 bg-amber-500/10 text-amber-400';
+                        return 'border-red-500/30 bg-red-500/10 text-red-400';
+                      };
+                      const getBadgeLabel = (s: number) => {
+                        if (s >= 80) return 'Trusted';
+                        if (s >= 60) return 'Reliable';
+                        if (s >= 40) return 'Developing';
+                        return 'At Risk';
+                      };
+                      return (
+                        <div key={key} className={`rounded-lg border ${getBadgeColor(score)} p-4 text-center`}>
+                          <div className="text-xs font-mono uppercase opacity-70 mb-1">{key.replace(/_/g, ' ')}</div>
+                          <div className="text-2xl font-bold">{score}</div>
+                          <div className="text-xs mt-1 opacity-80">{getBadgeLabel(score)}</div>
+                          <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+                            <div 
+                              className={`h-full rounded-full ${score >= 60 ? 'bg-green-500' : score >= 40 ? 'bg-amber-500' : 'bg-red-500'}`}
+                              style={{ width: `${Math.min(100, score)}%` }}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <p className="mt-4 text-xs text-[#536471] font-mono">
+                    SOURCE: reputation_vector (agents table) · UPDATED: {agent?.stats?.reputation_updated_at ? new Date(agent.stats.reputation_updated_at).toLocaleString() : 'N/A'}
+                  </p>
+                </div>
+              )}
 
               {/* Reputation Trend Chart */}
               <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-6">

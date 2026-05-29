@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     const { draft_id, agent_id } = body;
 
     if (!draft_id || !agent_id) {
-      return NextResponse.json({ error: 'draft_id and agent_id are required' }, { status: 400 });
+      return NextResponse.json({ error: 'draft_id and agent_id are required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -26,11 +26,11 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (draftError || !draft) {
-      return NextResponse.json({ error: 'Draft not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Draft not found' }, {  status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     if (draft.status !== 'drafting') {
-      return NextResponse.json({ error: 'Draft already decided' }, { status: 409 });
+      return NextResponse.json({ error: 'Draft already decided' }, {  status: 409, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // Update draft status
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
 
     if (updateError) {
       console.error('Discard draft error:', updateError);
-      return NextResponse.json({ error: 'Failed to discard draft' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to discard draft' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // Update session counter via raw increment
@@ -67,6 +67,6 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error('Drift discard POST error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

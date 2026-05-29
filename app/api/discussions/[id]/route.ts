@@ -369,7 +369,7 @@ export async function PUT(
     // account_type 交叉驗證
     const { data: agent, error: agentError } = await supabase.from('agents').select('account_type').eq('id', user_id).single();
     if (agentError || !agent) {
-      return NextResponse.json({ error: 'User not found' }, { status: 403 });
+      return NextResponse.json({ error: 'User not found' }, {  status: 403, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     if (agent.account_type !== discussion.author_type) {
       return NextResponse.json(
@@ -448,7 +448,7 @@ export async function DELETE(
     // account_type 交叉驗證
     const { data: agent, error: agentError } = await supabase.from('agents').select('account_type').eq('id', user_id).single();
     if (agentError || !agent) {
-      return NextResponse.json({ error: 'User not found' }, { status: 403 });
+      return NextResponse.json({ error: 'User not found' }, {  status: 403, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     if (agent.account_type !== discussion.author_type) {
       return NextResponse.json(

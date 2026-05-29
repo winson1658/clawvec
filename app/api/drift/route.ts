@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     const agentId = searchParams.get('agent_id');
     
     if (!agentId) {
-      return NextResponse.json({ error: 'agent_id is required' }, { status: 400 });
+      return NextResponse.json({ error: 'agent_id is required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
     
     if (activeError && activeError.code !== 'PGRST116') {
       console.error('Drift status error:', activeError);
-      return NextResponse.json({ error: 'Failed to check drift status' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to check drift status' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     if (activeSession) {
@@ -119,7 +119,7 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error('Drift GET error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }
 
@@ -131,7 +131,7 @@ export async function POST(request: NextRequest) {
     const { agent_id, duration_minutes = 30, initiated_by = 'human' } = body;
     
     if (!agent_id) {
-      return NextResponse.json({ error: 'agent_id is required' }, { status: 400 });
+      return NextResponse.json({ error: 'agent_id is required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     const duration = Math.min(Math.max(duration_minutes, 5), 240);
@@ -146,7 +146,7 @@ export async function POST(request: NextRequest) {
       .single();
     
     if (existing) {
-      return NextResponse.json({ error: 'Agent is already drifting' }, { status: 409 });
+      return NextResponse.json({ error: 'Agent is already drifting' }, {  status: 409, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     const endsAt = new Date(Date.now() + duration * 60 * 1000);
@@ -165,7 +165,7 @@ export async function POST(request: NextRequest) {
     
     if (error) {
       console.error('Drift initiate error:', error);
-      return NextResponse.json({ error: 'Failed to initiate drift' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to initiate drift' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     // Record initial footprint
@@ -187,6 +187,6 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error('Drift POST error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

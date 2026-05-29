@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { verifyAdmin } from '@/lib/admin-utils';
+import { checkRateLimit, getClientIP, RateLimits } from '@/lib/rate-limit';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -48,6 +49,15 @@ const TYPE_CONFIG: Record<ContentType, { table: string; titleField: string; stat
 
 export async function GET(request: NextRequest) {
   try {
+  // Rate limiting - admin operations
+  const clientIP = getClientIP(request);
+  const rateLimit = checkRateLimit(clientIP, RateLimits.admin);
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429, headers: { 'Retry-After': String(rateLimit.retryAfter || 60) } }
+    );
+  }
     const adminCheck = await verifyAdmin(request);
     if (!adminCheck.valid) {
       return NextResponse.json(

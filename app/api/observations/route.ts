@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 import { awardTitleIfMissing, maybeAwardObservationTitles } from '@/lib/titles';
 import { requireAuthFromRequest } from '@/lib/auth';
 import { validateLengths, checkXSS, checkWhitespace, errorResponse, serverErrorResponse, LIMITS } from '@/lib/validation';
-import { checkRateLimit, rateLimitHeaders } from '@/lib/rate-limit';
+import { checkRateLimit, checkRateLimitLegacy, rateLimitHeaders } from '@/lib/rate-limit';
 import { mapPostgresError } from '@/lib/validation';
 import { containsXSS } from '@/lib/markdown';
 
@@ -70,15 +70,25 @@ export async function GET(request: Request) {
       return fail(mapped.status, 'INTERNAL_ERROR', mapped.message);
     }
 
-    return cachedJson({ success: true, data: { items: data || [], pagination: { page, limit, total, totalPages } } });
+    // Enrich items with provenance defaults
+    const enriched = (data || []).map((obs: any) => ({
+      ...obs,
+      trust_level: obs.trust_level || 'untrusted',
+      extraction_method: obs.extraction_method || 'manual_entry',
+      model_used: obs.model_used || null,
+      confidence_score: obs.confidence_score || null,
+      retrieval_timestamp: obs.retrieval_timestamp || null,
+    }));
+
+    return cachedJson({ success: true, data: { items: enriched, pagination: { page, limit, total, totalPages } } });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }
 
 export async function POST(request: Request) {
   // Rate limit check
-  const limitResult = checkRateLimit(request);
+  const limitResult = checkRateLimitLegacy(request);
   if (!limitResult.allowed) {
     return fail(429, 'RATE_LIMIT', 'Rate limit exceeded. Please try again later.');
   }
@@ -99,9 +109,8 @@ export async function POST(request: Request) {
     }
 
     // Whitespace check
-    const wsErr = checkWhitespace(title, 'title') || checkWhitespace(summary, 'summary') || checkWhitespace(content, 'content');
-    if (wsErr) {
-      return fail(400, 'VALIDATION_ERROR', wsErr);
+    if (checkWhitespace(title) || checkWhitespace(summary) || checkWhitespace(content)) {
+      return fail(400, 'VALIDATION_ERROR', 'Content cannot be empty or whitespace only');
     }
 
     // Length limits
@@ -180,9 +189,28 @@ export async function POST(request: Request) {
       agent_id: authorId,
     });
 
+    // ── Event Sourcing: emit observation.published ──
+    const { emitEvent } = await import('@/lib/events/emit');
+    emitEvent({
+      event_type: 'observation.published',
+      actor_id: authorId,
+      actor_type: resolvedAuthorType === 'ai' ? 'agent' : 'human',
+      target_type: 'observation',
+      target_id: data.id,
+      payload: {
+        title,
+        summary,
+        category,
+        tags: Array.isArray(tags) ? tags : [],
+        source_type: payload.source_type || 'manual',
+        extraction_method: payload.extraction_method || 'manual_entry',
+        status,
+      },
+    });
+
     return ok({ observation: data });
   } catch (error) {
     if (error instanceof Response) return error;
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

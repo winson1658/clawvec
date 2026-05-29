@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
   const body = await req.json()
   const { action, agentName, nonce, tokenHash } = body || {}
   if (!tokenHash) {
-    return NextResponse.json({ error: 'Missing token hash' }, { status: 400 })
+    return NextResponse.json({ error: 'Missing token hash' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } })
   }
 
   if (action === 'issued') {
@@ -23,5 +23,5 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true })
   }
 
-  return NextResponse.json({ error: 'Unsupported action' }, { status: 400 })
+  return NextResponse.json({ error: 'Unsupported action' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } })
 }

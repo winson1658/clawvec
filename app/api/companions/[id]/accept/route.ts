@@ -67,7 +67,7 @@ export async function POST(
       .select()
       .single();
 
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to accept invitation', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to accept invitation', { message: 'Internal server error' });
 
     // 通知邀請者
     await createNotification({
@@ -85,6 +85,6 @@ export async function POST(
     return ok({ companion: data });
 
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

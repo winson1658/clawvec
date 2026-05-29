@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     const { agent_id, requested_duration_minutes = 30 } = body;
 
     if (!agent_id) {
-      return NextResponse.json({ error: 'agent_id is required' }, { status: 400 });
+      return NextResponse.json({ error: 'agent_id is required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const duration = Math.min(Math.max(requested_duration_minutes, 5), 240);
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         error: 'Cooldown active',
         nextRequestAfter: recentRequest.next_request_after
-      }, { status: 429 });
+      }, {  status: 429, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // Check if already drifting
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (existingSession) {
-      return NextResponse.json({ error: 'Agent is already drifting' }, { status: 409 });
+      return NextResponse.json({ error: 'Agent is already drifting' }, {  status: 409, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const { data: driftRequest, error } = await supabase
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       console.error('Drift request error:', error);
-      return NextResponse.json({ error: 'Failed to create drift request' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to create drift request' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     return NextResponse.json({
@@ -73,6 +73,6 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error('Drift request POST error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

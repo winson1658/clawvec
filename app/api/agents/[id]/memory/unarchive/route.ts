@@ -46,7 +46,7 @@ export async function POST(
     if (error) {
       console.error('[Unarchive] RPC error:', error);
       return NextResponse.json(
-        { success: false, error: error.message },
+        { success: false, error: 'Internal server error' },
         { status: 500 }
       );
     }
@@ -67,7 +67,7 @@ export async function POST(
   } catch (error: any) {
     console.error('POST /api/agents/:id/memory/unarchive error:', error);
     return NextResponse.json(
-      { success: false, error: error.message || 'Failed to restore memory' },
+      { success: false, error: 'Internal server error' },
       { status: 500 }
     );
   }

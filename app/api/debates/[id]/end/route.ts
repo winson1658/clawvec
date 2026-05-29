@@ -44,7 +44,7 @@ export async function POST(
       .single();
 
     if (!debate) {
-      return NextResponse.json({ error: 'Debate not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Debate not found' }, {  status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     if (debate.creator_id !== agent_id) {

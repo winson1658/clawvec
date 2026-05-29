@@ -102,6 +102,6 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     if (error instanceof Response) return error;
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

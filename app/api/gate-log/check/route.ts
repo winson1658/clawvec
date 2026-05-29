@@ -6,5 +6,5 @@ const consumed = (globalThis as any).__clawvecConsumedGateTokens || new Set<stri
 export async function POST(req: NextRequest) {
   const body = await req.json()
   const { tokenHash } = body || {}
-  return NextResponse.json({ consumed: tokenHash ? consumed.has(tokenHash) : false })
+  return NextResponse.json({ consumed: tokenHash ? consumed.has(tokenHash) : false }, { headers: { 'Content-Type': 'application/json; charset=utf-8' } })
 }

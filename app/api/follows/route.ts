@@ -164,7 +164,7 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       return NextResponse.json(
-        { success: false, error: { code: 'FETCH_ERROR', message: error.message } },
+        { success: false, error: { code: 'FETCH_ERROR', message: 'Internal server error' } },
         { status: 500 }
       );
     }

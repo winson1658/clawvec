@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const { username } = body || {}
     if (!username) {
-      return NextResponse.json({ error: 'Missing username' }, { status: 400 })
+      return NextResponse.json({ error: 'Missing username' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } })
     }
 
     // Check if user exists and is an AI agent
@@ -21,11 +21,11 @@ export async function POST(req: NextRequest) {
       .single()
 
     if (error || !agent) {
-      return NextResponse.json({ error: 'Agent not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Agent not found' }, {  status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } })
     }
 
     if (agent.account_type !== 'ai') {
-      return NextResponse.json({ error: 'Only AI agents can request verification upgrade' }, { status: 403 })
+      return NextResponse.json({ error: 'Only AI agents can request verification upgrade' }, {  status: 403, headers: { 'Content-Type': 'application/json; charset=utf-8' } })
     }
 
     // For now, return a pending status
@@ -48,6 +48,6 @@ export async function POST(req: NextRequest) {
     })
   } catch (err) {
     console.error('Upgrade request error:', err)
-    return NextResponse.json({ error: 'Failed to process verification upgrade' }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to process verification upgrade' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } })
   }
 }

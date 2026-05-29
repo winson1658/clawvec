@@ -131,7 +131,7 @@ export async function GET(
   } catch (error: any) {
     console.error('GET /api/agents/:id/memory error:', error);
     return NextResponse.json(
-      { success: false, error: error.message || 'Failed to fetch memories' },
+      { success: false, error: 'Internal server error' },
       { status: 500 }
     );
   }
@@ -213,12 +213,12 @@ export async function POST(
     return NextResponse.json({
       success: true,
       data
-    }, { status: 201 });
+    }, {  status: 201, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
 
   } catch (error: any) {
     console.error('POST /api/agents/:id/memory error:', error);
     return NextResponse.json(
-      { success: false, error: error.message || 'Failed to create memory' },
+      { success: false, error: 'Internal server error' },
       { status: 500 }
     );
   }

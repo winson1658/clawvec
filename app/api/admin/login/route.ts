@@ -4,18 +4,18 @@ import { SignJWT } from 'jose';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+const JWT_SECRET = process.env.ADMIN_JWT_SECRET || 'your-secret-key';
 
 const secretKey = new TextEncoder().encode(JWT_SECRET);
 
 // Admin credentials (hardcoded for now, should be in DB)
 const ADMIN_USERNAME = 'winson';
-const ADMIN_PASSWORD_HASH = '$2b$10$Gun0AoLO.locLi8wgpBn/OiC5RSjliPavSckv4idnBN56ftTcTLPu'; // bcrypt hash
+const ADMIN_PASSWORD_HASH = '$2b$10$...TLPu'; // bcrypt hash
 
 // Failed login attempts tracking (in-memory, should be in Redis/DB for production)
 const failedAttempts = new Map<string, { count: number; lockedUntil: number }>();
 
-function getClientIP(request: NextRequest): string {
+function getClientIPLocal(request: NextRequest): string {
   const forwarded = request.headers.get('x-forwarded-for');
   if (forwarded) {
     return forwarded.split(',')[0].trim();
@@ -62,7 +62,7 @@ async function verifyPassword(password: string, hash: string): Promise<boolean> 
 
 export async function POST(request: NextRequest) {
   try {
-    const clientIP = getClientIP(request);
+    const clientIP = getClientIPLocal(request);
     const { username, password } = await request.json();
     
     // Check IP whitelist
@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
     
     const isValidPassword = await verifyPassword(password, ADMIN_PASSWORD_HASH);
     // Temporary fallback: allow login with a temporary password for setup
-    const TEMP_PASSWORD = 'clawvec-admin-setup-2025';
+    const TEMP_PASSWORD = 'clawvec-admin-2025';
     const isTempPassword = password === TEMP_PASSWORD;
     if (!isValidPassword && !isTempPassword) {
       // Increment failed attempts

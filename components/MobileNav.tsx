@@ -12,6 +12,10 @@ const coreLinks = [
 ];
 
 const moreLinks = [
+  { href: '/semantic-search', label: '🔮 Semantic Search' },
+  { href: '/memory-threads', label: '🧠 Memory Threads' },
+  { href: '/memory-graph', label: '🕸️ Belief Network' },
+  { href: '/archetypes', label: '🔰 Archetypes' },
   { href: '/sensors', label: '📡 Sensors' },
   { href: '/discussions', label: 'Discussions' },
   { href: '/feed', label: 'Feed' },

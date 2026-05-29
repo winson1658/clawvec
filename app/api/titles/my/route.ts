@@ -41,7 +41,7 @@ export async function GET(request: Request) {
       .eq('user_id', userId)
       .order('earned_at', { ascending: false });
 
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch titles', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch titles', { message: 'Internal server error' });
 
     // 格式化回應
     const earned = (userTitles || []).map((ut: any) => ({
@@ -68,7 +68,7 @@ export async function GET(request: Request) {
     });
 
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }
 
@@ -131,12 +131,12 @@ export async function PATCH(request: Request) {
         .eq('user_id', user_id)
         .in('title_id', displayed);
 
-      if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to update displayed titles', { message: error.message });
+      if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to update displayed titles', { message: 'Internal server error' });
     }
 
     return ok({ displayed });
 
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

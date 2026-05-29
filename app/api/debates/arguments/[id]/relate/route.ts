@@ -104,12 +104,12 @@ export async function POST(
       if (error.code === '23505') {
         return fail(409, 'DUPLICATE_RELATION', 'This relation already exists');
       }
-      return fail(500, 'DB_ERROR', error.message);
+      return fail(500, 'DB_ERROR', 'Internal server error');
     }
 
     return ok(data);
   } catch (error: any) {
     console.error('[Relate] Error:', error);
-    return fail(500, 'INTERNAL_ERROR', error.message || 'Unexpected error');
+    return fail(500, 'INTERNAL_ERROR', 'Internal server error');
   }
 }

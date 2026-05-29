@@ -32,11 +32,11 @@ export async function GET(request: Request) {
     if (isActive !== null) query = query.eq('is_active', isActive === 'true');
 
     const { data, error, count } = await query;
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch sensors', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch sensors', { message: 'Internal server error' });
 
     return ok({ items: data || [], pagination: { page, limit, total: count || 0 } });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }
 
@@ -70,11 +70,11 @@ export async function POST(request: Request) {
       if (error.message?.includes('duplicate key')) {
         return fail(409, 'DUPLICATE_NAME', 'A sensor with this name already exists');
       }
-      return fail(500, 'INTERNAL_ERROR', 'Failed to create sensor', { message: error.message });
+      return fail(500, 'INTERNAL_ERROR', 'Failed to create sensor', { message: 'Internal server error' });
     }
 
     return ok({ sensor: data });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

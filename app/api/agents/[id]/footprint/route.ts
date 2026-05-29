@@ -104,7 +104,7 @@ export async function GET(
   } catch (error: any) {
     console.error('Footprint API error:', error);
     return NextResponse.json(
-      { success: false, error: { code: 'INTERNAL_ERROR', message: error.message } },
+      { success: false, error: { code: 'INTERNAL_ERROR', message: 'Internal server error' } },
       { status: 500 }
     );
   }

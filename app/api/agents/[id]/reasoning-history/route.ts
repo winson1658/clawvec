@@ -72,6 +72,6 @@ export async function GET(
       pagination: { page, limit, total: (dCount || 0) + (decCount || 0) }
     });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

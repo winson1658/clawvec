@@ -11,7 +11,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     const { reputation_event_id, application_text, evidence_urls = [] } = body;
 
     if (!reputation_event_id || !application_text) {
-      return NextResponse.json({ error: 'reputation_event_id and application_text are required' }, { status: 400 });
+      return NextResponse.json({ error: 'reputation_event_id and application_text are required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -25,12 +25,12 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       created_at: new Date().toISOString(),
     }).select().single();
 
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    if (error) return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
 
     await supabase.from('reputation_events').update({ redemption_status: 'applied' }).eq('id', reputation_event_id);
 
     return NextResponse.json({ success: true, application: data });
   } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 500 });
+    return NextResponse.json({ error: String(err) }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

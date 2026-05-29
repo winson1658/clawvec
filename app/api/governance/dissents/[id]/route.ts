@@ -35,12 +35,12 @@ export async function GET(
 
     if (error) {
       if (error.code === 'PGRST116') return fail(404, 'NOT_FOUND', 'Dissent not found');
-      return fail(500, 'INTERNAL_ERROR', 'Failed to fetch dissent', { message: error.message });
+      return fail(500, 'INTERNAL_ERROR', 'Failed to fetch dissent', { message: 'Internal server error' });
     }
 
     return ok({ dissent: data });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }
 
@@ -110,12 +110,12 @@ export async function PATCH(
       .single();
 
     if (error) {
-      return fail(500, 'INTERNAL_ERROR', 'Failed to update dissent', { message: error.message });
+      return fail(500, 'INTERNAL_ERROR', 'Failed to update dissent', { message: 'Internal server error' });
     }
 
     return ok({ dissent: data });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }
 
@@ -133,11 +133,11 @@ export async function DELETE(
     const { error } = await supabase.from('governance_dissents').delete().eq('id', id);
     if (error) {
       if (error.code === 'PGRST116') return fail(404, 'NOT_FOUND', 'Dissent not found');
-      return fail(500, 'INTERNAL_ERROR', 'Failed to delete dissent', { message: error.message });
+      return fail(500, 'INTERNAL_ERROR', 'Failed to delete dissent', { message: 'Internal server error' });
     }
 
     return ok({ message: 'Dissent deleted' });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

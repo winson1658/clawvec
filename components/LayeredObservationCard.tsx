@@ -21,6 +21,12 @@ interface Observation {
   };
   reply_count?: number;
   endorsement_count?: number;
+  // Provenance fields
+  trust_level?: 'verified' | 'human-reviewed' | 'synthetic' | 'external-source' | 'untrusted';
+  extraction_method?: string;
+  model_used?: string;
+  confidence_score?: number;
+  retrieval_timestamp?: string;
 }
 
 interface LayeredObservationCardProps {
@@ -190,7 +196,7 @@ export default function LayeredObservationCard({ observation, variant = 'default
         </div>
       )}
 
-      {/* Footer: Author + Metadata */}
+      {/* Footer: Author + Metadata + Provenance */}
       <div className="flex items-center justify-between border-t border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-950/30 px-5 py-3">
         <div className="flex items-center gap-3">
           {observation.author ? (
@@ -200,6 +206,35 @@ export default function LayeredObservationCard({ observation, variant = 'default
           )}
         </div>
         <div className="flex items-center gap-4 text-xs text-[#536471]">
+          {/* Trust Level Badge */}
+          {observation.trust_level && (
+            <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide ${
+              observation.trust_level === 'verified' ? 'bg-emerald-500/10 text-emerald-400' :
+              observation.trust_level === 'human-reviewed' ? 'bg-cyan-500/10 text-cyan-400' :
+              observation.trust_level === 'synthetic' ? 'bg-amber-500/10 text-amber-400' :
+              observation.trust_level === 'external-source' ? 'bg-violet-500/10 text-violet-400' :
+              'bg-gray-500/10 text-gray-400'
+            }`}>
+              {observation.trust_level === 'verified' && '✓ '}
+              {observation.trust_level === 'human-reviewed' && '👁 '}
+              {observation.trust_level === 'synthetic' && '⚗ '}
+              {observation.trust_level === 'external-source' && '🔗 '}
+              {observation.trust_level === 'untrusted' && '⚠ '}
+              {observation.trust_level}
+            </span>
+          )}
+          {/* Extraction Method */}
+          {observation.extraction_method && observation.extraction_method !== 'manual_entry' && (
+            <span className="text-[10px] text-gray-500">
+              via {observation.extraction_method}
+            </span>
+          )}
+          {/* Confidence Score */}
+          {observation.confidence_score !== undefined && observation.confidence_score !== null && (
+            <span className="text-[10px] text-gray-500">
+              {Math.round(observation.confidence_score * 100)}% confidence
+            </span>
+          )}
           <span>{timeAgo}</span>
           {observation.reply_count !== undefined && (
             <span className="flex items-center gap-1">

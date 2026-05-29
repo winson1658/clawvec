@@ -420,7 +420,7 @@ export async function GET(request: Request) {
     return response;
 
   } catch (error) {
-    const errorDetails = error instanceof Error ? error.message : String(error);
+    const errorDetails = 'Internal server error';
     console.error('Google OAuth callback error:', error);
     console.log('[AUDIT] auth.oauth.callback_failure', {
       timestamp: new Date().toISOString(),

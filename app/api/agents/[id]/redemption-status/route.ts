@@ -17,7 +17,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
       .in('redemption_status', ['eligible', 'applied'])
       .order('created_at', { ascending: false });
 
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    if (error) return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
 
     const eligible = (events || []).map(e => ({
       event_id: e.id,
@@ -31,6 +31,6 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
     return NextResponse.json({ success: true, eligible_events: eligible });
   } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 500 });
+    return NextResponse.json({ error: String(err) }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

@@ -19,7 +19,7 @@ export async function GET() {
       .select('id, display_name, description, rarity, hint, is_hidden, family_id')
       .order('rarity', { ascending: true });
 
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch titles', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch titles', { message: 'Internal server error' });
 
     const items = (data || []).map((title: any) => ({
       id: title.id,
@@ -33,6 +33,6 @@ export async function GET() {
 
     return ok({ items });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

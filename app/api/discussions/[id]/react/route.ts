@@ -27,9 +27,9 @@ export async function POST(
       .upsert({ target_type: 'discussion', target_id: id, user_id, reaction_type, created_at: new Date().toISOString() }, { onConflict: 'target_type,target_id,user_id,reaction_type' })
       .select();
 
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to react to discussion', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to react to discussion', { message: 'Internal server error' });
     return ok({ reactions: data || [] });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

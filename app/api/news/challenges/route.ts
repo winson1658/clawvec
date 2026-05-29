@@ -38,7 +38,7 @@ export const GET = withAuth(
 
     if (error) {
       console.error('List challenge votes error:', error);
-      return NextResponse.json({ error: 'Failed to list challenge votes' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to list challenge votes' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     return NextResponse.json({

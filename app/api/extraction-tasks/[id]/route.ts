@@ -28,11 +28,11 @@ export async function GET(
 
     if (error) {
       if (error.code === 'PGRST116') return fail(404, 'NOT_FOUND', 'Task not found');
-      return fail(500, 'INTERNAL_ERROR', 'Failed to fetch task', { message: error.message });
+      return fail(500, 'INTERNAL_ERROR', 'Failed to fetch task', { message: 'Internal server error' });
     }
 
     return ok({ task: data });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

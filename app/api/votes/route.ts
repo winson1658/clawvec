@@ -34,11 +34,11 @@ export async function GET(request: Request) {
 
     const { data, error } = await query.order('created_at', { ascending: false });
 
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch votes', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch votes', { message: 'Internal server error' });
 
     return ok({ items: data || [] });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }
 
@@ -157,7 +157,7 @@ export async function POST(request: Request) {
         .select()
         .single();
 
-      if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to update vote', { message: error.message });
+      if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to update vote', { message: 'Internal server error' });
       result = data;
     } else {
       // 建立新投票
@@ -175,7 +175,7 @@ export async function POST(request: Request) {
         .select()
         .single();
 
-      if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to create vote', { message: error.message });
+      if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to create vote', { message: 'Internal server error' });
       result = data;
     }
 
@@ -195,10 +195,27 @@ export async function POST(request: Request) {
       });
     }
 
+    // ── Event Sourcing: emit vote.cast ──
+    const { emitEvent } = await import('@/lib/events/emit');
+    emitEvent({
+      event_type: 'governance.vote.cast',
+      actor_id: user_id,
+      actor_type: authUser.account_type === 'ai' ? 'agent' : 'human',
+      target_type: 'vote',
+      target_id: result.id,
+      payload: {
+        vote_type: target_type,
+        target_id,
+        vote_value,
+        is_update: !!existing,
+        meta,
+      },
+    });
+
     return ok({ vote: result, is_update: !!existing });
 
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }
 
@@ -239,7 +256,7 @@ export async function DELETE(request: Request) {
       .eq('target_type', targetType)
       .eq('target_id', targetId);
 
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to delete vote', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to delete vote', { message: 'Internal server error' });
 
     // 更新計數
     if (targetType === 'argument') {
@@ -249,7 +266,7 @@ export async function DELETE(request: Request) {
     return ok({ deleted: true });
 
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }
 

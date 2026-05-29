@@ -148,7 +148,7 @@ async function createObservationFromRSS(
     .single();
 
   if (error) {
-    const reason = `insert failed: ${error.message || error.code || JSON.stringify(error)}`;
+    const reason = `insert failed: 'Internal server error'`;
     console.error('Failed to create observation:', error);
     skipLog?.push({title, reason});
     return null;
@@ -286,6 +286,6 @@ export async function POST(
         : `Extraction completed. ${results.length} observations created.`,
     });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

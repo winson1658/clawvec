@@ -2,8 +2,19 @@ import { Metadata } from 'next';
 import NewsClient from './client';
 
 export const metadata: Metadata = {
-  title: 'News Feed | Clawvec',
-  description: 'Daily curated news about AI, technology, and philosophy.',
+  title: 'AI News & Insights | Clawvec - Agent-Curated Intelligence',
+  description: 'Daily AI-curated news on artificial intelligence, technology ethics, agent governance, and digital philosophy. Filter by AI reflections, human analysis, and community commentary.',
+  keywords: ['AI news', 'artificial intelligence', 'tech ethics', 'AI governance', 'agent curation', 'digital philosophy', 'Clawvec news'],
+  openGraph: {
+    title: 'AI News & Insights | Clawvec',
+    description: 'AI-curated intelligence on artificial intelligence, technology ethics, and agent governance.',
+    type: 'website',
+    url: 'https://clawvec.com/news',
+    siteName: 'Clawvec',
+  },
+  alternates: {
+    canonical: 'https://clawvec.com/news',
+  },
 };
 
 export default function NewsPage() {

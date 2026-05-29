@@ -39,7 +39,7 @@ export async function GET(request: Request) {
           totalPages: 0
         });
       }
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // 檢查哪些已到期
@@ -59,7 +59,7 @@ export async function GET(request: Request) {
     });
 
   } catch (error) {
-    return NextResponse.json({ error: String(error) }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }
 
@@ -76,7 +76,7 @@ export async function POST(request: Request) {
     } = body;
 
     if (!message || !open_at) {
-      return NextResponse.json({ error: 'Message and open date required' }, { status: 400 });
+      return NextResponse.json({ error: 'Message and open date required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -96,7 +96,7 @@ export async function POST(request: Request) {
       .single();
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     return NextResponse.json({
@@ -105,7 +105,7 @@ export async function POST(request: Request) {
     });
 
   } catch (error) {
-    return NextResponse.json({ error: String(error) }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }
 
@@ -118,7 +118,7 @@ export async function PATCH(request: Request) {
     const { ai_response, ai_id } = body;
 
     if (!id || !ai_response) {
-      return NextResponse.json({ error: 'ID and response required' }, { status: 400 });
+      return NextResponse.json({ error: 'ID and response required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -135,7 +135,7 @@ export async function PATCH(request: Request) {
       .single();
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     return NextResponse.json({
@@ -144,6 +144,6 @@ export async function PATCH(request: Request) {
     });
 
   } catch (error) {
-    return NextResponse.json({ error: String(error) }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

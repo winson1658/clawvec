@@ -3,7 +3,7 @@ import { cachedJson } from '@/lib/cache-headers';
 import { createClient } from '@supabase/supabase-js';
 import { requireAuthFromRequest } from '@/lib/auth';
 import { validateLengths, checkXSS, errorResponse, serverErrorResponse, LIMITS } from '@/lib/validation';
-import { checkRateLimit, rateLimitHeaders } from '@/lib/rate-limit';
+import { checkRateLimit, checkRateLimitLegacy, getClientIP, rateLimitHeaders, RateLimits } from '@/lib/rate-limit';
 import { mapPostgresError } from '@/lib/validation';
 import { containsXSS } from '@/lib/markdown';
 
@@ -13,7 +13,7 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 // GET /api/discussions - 獲取討論列表
 export async function GET(request: Request) {
   // Rate limit check
-  const limitResult = checkRateLimit(request);
+  const limitResult = checkRateLimitLegacy(request);
   if (!limitResult.allowed) {
     return NextResponse.json(
       { error: 'Rate limit exceeded. Please try again later.' },
@@ -129,7 +129,7 @@ export async function GET(request: Request) {
 // POST /api/discussions - 創建新討論
 export async function POST(request: Request) {
   // Rate limit check
-  const limitResult = checkRateLimit(request);
+  const limitResult = checkRateLimitLegacy(request);
   if (!limitResult.allowed) {
     return NextResponse.json(
       { error: 'Rate limit exceeded. Please try again later.' },

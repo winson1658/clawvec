@@ -1,22 +1,32 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { mapPostgresError } from '@/lib/validation';
+import { checkRateLimit, getClientIP, RateLimits } from '@/lib/rate-limit';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 export async function POST(request: Request) {
   try {
+  // Rate limiting - admin operations
+  const clientIP = getClientIP(request);
+  const rateLimit = checkRateLimit(clientIP, RateLimits.admin);
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429, headers: { 'Retry-After': String(rateLimit.retryAfter || 60) } }
+    );
+  }
     // Check authorization - only allow in development or with secret key
     const authHeader = request.headers.get('authorization');
     const isDev = process.env.NODE_ENV === 'development';
     
     if (!isDev && authHeader !== `Bearer ${process.env.ADMIN_SECRET_KEY}`) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, {  status: 401, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     if (!supabaseUrl || !supabaseServiceKey) {
-      return NextResponse.json({ error: 'Supabase not configured' }, { status: 500 });
+      return NextResponse.json({ error: 'Supabase not configured' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -63,7 +73,7 @@ export async function POST(request: Request) {
           error: 'Table does not exist',
           message: 'Please run the migration manually in Supabase Dashboard',
           sql: 'See supabase/migrations/20260411_create_oauth_identities.sql'
-        }, { status: 500 });
+        }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
       }
     }
 
@@ -77,7 +87,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ 
       error: 'Failed to initialize table',
 
-    }, { status: 500 });
+    }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }
 
@@ -85,7 +95,7 @@ export async function POST(request: Request) {
 export async function GET(request: Request) {
   try {
     if (!supabaseUrl || !supabaseServiceKey) {
-      return NextResponse.json({ error: 'Supabase not configured' }, { status: 500 });
+      return NextResponse.json({ error: 'Supabase not configured' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -114,6 +124,6 @@ export async function GET(request: Request) {
     return NextResponse.json({ 
       error: 'Failed to check table',
 
-    }, { status: 500 });
+    }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

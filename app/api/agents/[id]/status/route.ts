@@ -86,7 +86,7 @@ export async function GET(
       .single();
 
     if (agentError || !agent) {
-      return NextResponse.json({ error: 'Agent not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Agent not found' }, {  status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // Try to fetch from agent_status table (if it exists)
@@ -243,7 +243,7 @@ export async function PATCH(
       .single();
 
     if (agentError || !agent) {
-      return NextResponse.json({ error: 'Agent not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Agent not found' }, {  status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // Upsert into agent_status table

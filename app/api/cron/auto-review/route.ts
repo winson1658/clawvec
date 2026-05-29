@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     const authHeader = req.headers.get('authorization');
     const expectedAuth = `Bearer ${process.env.CRON_SECRET}`;
     if (authHeader !== expectedAuth) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, {  status: 401, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
 
     if (error) {
       console.error('Error fetching submissions:', error);
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     if (!submissions || submissions.length === 0) {
@@ -61,7 +61,7 @@ export async function GET(req: NextRequest) {
 
   } catch (error) {
     console.error('Error in auto-review:', error);
-    return NextResponse.json({ error: 'Internal error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }
 

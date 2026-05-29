@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     const { session_id } = body;
 
     if (!session_id) {
-      return NextResponse.json({ error: 'session_id is required' }, { status: 400 });
+      return NextResponse.json({ error: 'session_id is required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       console.error('Exit drift space error:', error);
-      return NextResponse.json({ error: 'Failed to exit drift space' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to exit drift space' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // Record footprint
@@ -45,6 +45,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Exit drift space error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

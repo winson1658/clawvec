@@ -107,7 +107,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   } catch (error: any) {
     if (error instanceof Response) return error;
     console.error('[MemoryCapsule] POST error:', error);
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }
 
@@ -153,6 +153,6 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   } catch (error: any) {
     if (error instanceof Response) return error;
     console.error('[MemoryCapsule] GET error:', error);
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     const limit = Math.min(parseInt(searchParams.get('limit') || '8', 10), 20);
 
     if (!agentId) {
-      return NextResponse.json({ error: 'agent_id is required' }, { status: 400 });
+      return NextResponse.json({ error: 'agent_id is required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -162,6 +162,6 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error('Drift feed error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

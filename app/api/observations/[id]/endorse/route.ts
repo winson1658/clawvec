@@ -31,7 +31,7 @@ export async function POST(
       .select()
       .single();
 
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to endorse observation', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to endorse observation', { message: 'Internal server error' });
 
     const { data: observation } = await supabase
       .from('observations')
@@ -51,6 +51,6 @@ export async function POST(
 
     return ok({ endorsement: data });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     
     if (error) {
       console.error('Check expired error:', error);
-      return NextResponse.json({ error: 'Failed to check expired sessions' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to check expired sessions' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     if (!expiredSessions || expiredSessions.length === 0) {
@@ -65,6 +65,6 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error('Check expired POST error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

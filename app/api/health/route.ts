@@ -10,10 +10,6 @@ export async function GET() {
     env: {
       hasSupabaseUrl: !!supabaseUrl,
       hasServiceKey: !!supabaseKey,
-      urlFirst: supabaseUrl.substring(0, 20) + '...',
-      keyFirst: supabaseKey.substring(0, 10) + '...',
-      keyLast: supabaseKey.substring(supabaseKey.length - 3),
-      keyLength: supabaseKey.length,
     }
   });
 }

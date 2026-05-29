@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (!['observation', 'declaration', 'comment', 'other'].includes(content_type)) {
-      return NextResponse.json({ error: 'Invalid content_type' }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid content_type' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -34,10 +34,10 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (sessionError || !session) {
-      return NextResponse.json({ error: 'Drift session not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Drift session not found' }, {  status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     if (session.status !== 'drifting') {
-      return NextResponse.json({ error: 'Session not active' }, { status: 409 });
+      return NextResponse.json({ error: 'Session not active' }, {  status: 409, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const wordCount = draftBody.split(/\s+/).filter(Boolean).length;
@@ -88,6 +88,6 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error('Drift draft POST error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

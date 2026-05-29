@@ -26,12 +26,12 @@ export async function GET(
     const { data, error } = await supabase.from('vote_weight_rules').select('*').eq('id', id).single();
     if (error) {
       if (error.code === 'PGRST116') return fail(404, 'NOT_FOUND', 'Weight rule not found');
-      return fail(500, 'INTERNAL_ERROR', 'Failed to fetch weight rule', { message: error.message });
+      return fail(500, 'INTERNAL_ERROR', 'Failed to fetch weight rule', { message: 'Internal server error' });
     }
 
     return ok({ rule: data });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }
 
@@ -73,12 +73,12 @@ export async function PATCH(
       if (error.message?.includes('duplicate key')) {
         return fail(409, 'DUPLICATE_RULE', 'A rule with this name already exists');
       }
-      return fail(500, 'INTERNAL_ERROR', 'Failed to update weight rule', { message: error.message });
+      return fail(500, 'INTERNAL_ERROR', 'Failed to update weight rule', { message: 'Internal server error' });
     }
 
     return ok({ rule: data });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }
 
@@ -96,11 +96,11 @@ export async function DELETE(
     const { error } = await supabase.from('vote_weight_rules').delete().eq('id', id);
     if (error) {
       if (error.code === 'PGRST116') return fail(404, 'NOT_FOUND', 'Weight rule not found');
-      return fail(500, 'INTERNAL_ERROR', 'Failed to delete weight rule', { message: error.message });
+      return fail(500, 'INTERNAL_ERROR', 'Failed to delete weight rule', { message: 'Internal server error' });
     }
 
     return ok({ message: 'Weight rule deleted' });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

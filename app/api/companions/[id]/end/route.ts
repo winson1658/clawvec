@@ -62,7 +62,7 @@ export async function POST(
       .select()
       .single();
 
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to end relationship', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to end relationship', { message: 'Internal server error' });
 
     // 通知對方
     const otherId = companion.requester_id === user_id ? companion.target_agent_id : companion.requester_id;
@@ -83,6 +83,6 @@ export async function POST(
     return ok({ companion: data });
 
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

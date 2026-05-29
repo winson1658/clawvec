@@ -32,10 +32,10 @@ export async function GET(request: Request) {
     if (status) query = query.eq('status', status);
 
     const { data, error, count } = await query;
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch tasks', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch tasks', { message: 'Internal server error' });
 
     return ok({ items: data || [], pagination: { page, limit, total: count || 0 } });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

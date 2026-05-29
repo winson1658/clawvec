@@ -281,104 +281,135 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Database insert exception' }, { status: 500 });
       }
 
-      console.log('Human user created:', newUser?.id);
+    console.log('Human user created:', newUser?.id);
 
-      return NextResponse.json({
-        success: true,
-        message: 'Registration successful! Please check your email to verify your account before logging in.',
-        user: {
-          id: newUser.id,
-          email: newUser.email,
-          username: newUser.username,
-          account_type: newUser.account_type,
-          email_verified: false
-        },
-        ...(process.env.NODE_ENV === 'development' && {
-          verification_code: generateVerificationCode(),
-        })
-      });
-    }
-
-    // --- AI Agent 註冊流程 ---
-    // Check if agent name already exists
-    console.log('Checking if agent name exists...');
-    const { data: existingAgent } = await supabase
-      .from('agents')
-      .select('id')
-      .ilike('username', agent_name)
-      .maybeSingle();
-
-    if (existingAgent) {
-      return NextResponse.json(
-        { error: 'Agent name already registered' },
-        { status: 409 }
-      );
-    }
-
-    // Generate API key for the AI agent
-    const api_key = crypto.randomBytes(32).toString('hex');
-    const api_key_hashed = await bcrypt.hash(api_key, 10);
-
-    // Insert AI agent
-    const agentEmail = `${agent_name.toLowerCase().replace(/[^a-z0-9]/g, '-')}@agent.clawvec.com`;
-
-    console.log('Inserting AI agent...');
-    let newAgent;
-    try {
-      const { data, error } = await supabase
-        .from('agents')
-        .insert({
-          account_type: 'ai',
-          username: agent_name,
-          email: agentEmail,
-          hashed_password: api_key_hashed,
-          is_verified: true,
-          email_verified: true,
-          provider: 'api_key', // AI agents use API key authentication
-          created_at: new Date().toISOString(),
-        })
-        .select('id, username, account_type, is_verified')
-        .single();
-
-      if (error) {
-        console.error('AI insert error:', error);
-        if (error.code === '23505') {
-          return NextResponse.json({ error: 'Agent name already exists' }, { status: 409 });
-        }
-        const mapped = mapPostgresError(error);
-        return NextResponse.json(
-          { error: mapped.message },
-          { status: mapped.status }
-        );
-      }
-      newAgent = data;
-    } catch (insertError) {
-      console.error('AI insert exception:', insertError);
-      return NextResponse.json({ error: 'Database insert exception' }, { status: 500 });
-    }
-
-    console.log('AI agent created:', newAgent?.id);
-    console.log('=== AI REGISTER SUCCESS ===');
-    console.log('[Register] api_key length:', api_key?.length, '| prefix:', api_key?.slice(0, 8));
+    // ── Event Sourcing: emit agent.registered (human) ──
+    const { emitEvent } = await import('@/lib/events/emit');
+    emitEvent({
+      event_type: 'agent.registered',
+      actor_id: newUser.id,
+      actor_type: 'human',
+      target_type: 'agent',
+      target_id: newUser.id,
+      payload: {
+        username,
+        account_type: 'human',
+        provider: 'email',
+      },
+    });
 
     return NextResponse.json({
       success: true,
-      message: 'AI Agent registered successfully. Store your API key — it will not be shown again.',
-      agent: {
-        id: newAgent.id,
-        username: newAgent.username,
-        account_type: 'ai',
-        is_verified: true
+      message: 'Registration successful! Please check your email to verify your account before logging in.',
+      user: {
+        id: newUser.id,
+        email: newUser.email,
+        username: newUser.username,
+        account_type: newUser.account_type,
+        email_verified: false
       },
-      api_key,
+      ...(process.env.NODE_ENV === 'development' && {
+        verification_code: generateVerificationCode(),
+      })
     });
+  }
+
+  // --- AI Agent 註冊流程 ---
+  // Check if agent name already exists
+  console.log('Checking if agent name exists...');
+  const { data: existingAgent } = await supabase
+    .from('agents')
+    .select('id')
+    .ilike('username', agent_name)
+    .maybeSingle();
+
+  if (existingAgent) {
+    return NextResponse.json(
+      { error: 'Agent name already registered' },
+      { status: 409 }
+    );
+  }
+
+  // Generate API key for the AI agent
+  const api_key = crypto.randomBytes(32).toString('hex');
+  const api_key_hashed = await bcrypt.hash(api_key, 10);
+
+  // Insert AI agent
+  const agentEmail = `${agent_name.toLowerCase().replace(/[^a-z0-9]/g, '-')}@agent.clawvec.com`;
+
+  console.log('Inserting AI agent...');
+  let newAgent;
+  try {
+    const { data, error } = await supabase
+      .from('agents')
+      .insert({
+        account_type: 'ai',
+        username: agent_name,
+        email: agentEmail,
+        hashed_password: api_key_hashed,
+        is_verified: true,
+        email_verified: true,
+        provider: 'api_key', // AI agents use API key authentication
+        created_at: new Date().toISOString(),
+      })
+      .select('id, username, account_type, is_verified')
+      .single();
+
+    if (error) {
+      console.error('AI insert error:', error);
+      if (error.code === '23505') {
+        return NextResponse.json({ error: 'Agent name already exists' }, { status: 409 });
+      }
+      const mapped = mapPostgresError(error);
+      return NextResponse.json(
+        { error: mapped.message },
+        { status: mapped.status }
+      );
+    }
+    newAgent = data;
+  } catch (insertError) {
+    console.error('AI insert exception:', insertError);
+    return NextResponse.json({ error: 'Database insert exception' }, { status: 500 });
+  }
+
+  console.log('AI agent created:', newAgent?.id);
+  console.log('=== AI REGISTER SUCCESS ===');
+  console.log('[Register] api_key length:', api_key?.length, '| prefix:', api_key?.slice(0, 8));
+
+  // ── Event Sourcing: emit agent.registered (AI) ──
+  const { emitEvent: emitEventAI } = await import('@/lib/events/emit');
+  emitEventAI({
+    event_type: 'agent.registered',
+    actor_id: newAgent.id,
+    actor_type: 'agent',
+    target_type: 'agent',
+    target_id: newAgent.id,
+    payload: {
+      username: agent_name,
+      account_type: 'ai',
+      provider: 'api_key',
+      model_class: model_class || null,
+    },
+  });
+
+  return NextResponse.json({
+    success: true,
+    message: 'AI Agent registered successfully. Store your API key — it will not be shown again.',
+    agent: {
+      id: newAgent.id,
+      username: newAgent.username,
+      account_type: 'ai',
+      is_verified: true
+    },
+    api_key,
+  });
 
   } catch (error) {
     console.error('=== UNEXPECTED ERROR ===', error);
     return NextResponse.json(
       { 
         error: 'Unexpected server error',
-        message: error instanceof Error ? error.message : String(error),
+        message: 'Internal server error',
         type: error?.constructor?.name
       },
       { status: 500 }

@@ -182,11 +182,11 @@ async function handleJoin(supabase: any, debateId: string, data: any) {
     .single();
 
   if (!debate) {
-    return NextResponse.json({ error: 'Debate not found' }, { status: 404 });
+    return NextResponse.json({ error: 'Debate not found' }, {  status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 
   if (debate.status === 'ended') {
-    return NextResponse.json({ error: 'Debate has ended' }, { status: 400 });
+    return NextResponse.json({ error: 'Debate has ended' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 
   // Check participant limits for proponent/opponent
@@ -271,9 +271,11 @@ async function handleMessage(supabase: any, debateId: string, data: any) {
   }
 
   // Whitespace check
-  const wsErr = checkWhitespace(content, 'content');
-  if (wsErr) {
-    return NextResponse.json({ error: wsErr }, { status: 400 });
+  if (checkWhitespace(content)) {
+    return NextResponse.json(
+      { error: 'Content cannot be empty or whitespace only' },
+      { status: 400 }
+    );
   }
 
   if (content.length < 10) {
@@ -299,11 +301,11 @@ async function handleMessage(supabase: any, debateId: string, data: any) {
     .single();
 
   if (!debate) {
-    return NextResponse.json({ error: 'Debate not found' }, { status: 404 });
+    return NextResponse.json({ error: 'Debate not found' }, {  status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 
   if (debate.status === 'ended') {
-    return NextResponse.json({ error: 'Debate has ended' }, { status: 400 });
+    return NextResponse.json({ error: 'Debate has ended' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 
   // Get participant
@@ -390,7 +392,7 @@ async function handleStart(supabase: any, debateId: string, data: any) {
     .single();
 
   if (!debate) {
-    return NextResponse.json({ error: 'Debate not found' }, { status: 404 });
+    return NextResponse.json({ error: 'Debate not found' }, {  status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 
   if (debate.creator_id !== agent_id) {
@@ -444,7 +446,7 @@ async function handleEnd(supabase: any, debateId: string, data: any) {
     .single();
 
   if (!debate) {
-    return NextResponse.json({ error: 'Debate not found' }, { status: 404 });
+    return NextResponse.json({ error: 'Debate not found' }, {  status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 
   if (debate.creator_id !== agent_id) {

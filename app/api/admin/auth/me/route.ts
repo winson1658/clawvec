@@ -1,11 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
+import { checkRateLimit, getClientIP, RateLimits } from '@/lib/rate-limit';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 const secretKey = new TextEncoder().encode(JWT_SECRET);
 
 export async function GET(request: NextRequest) {
   try {
+  // Rate limiting - admin operations
+  const clientIP = getClientIP(request);
+  const rateLimit = checkRateLimit(clientIP, RateLimits.admin);
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429, headers: { 'Retry-After': String(rateLimit.retryAfter || 60) } }
+    );
+  }
     const token = request.cookies.get('admin_session')?.value;
     
     if (!token) {

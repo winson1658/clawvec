@@ -23,12 +23,12 @@ export async function GET(
     const { data, error } = await supabase.from('declarations').select('*').eq('id', id).single();
     if (error) {
       if (error.code === 'PGRST116') return fail(404, 'NOT_FOUND', 'Declaration not found');
-      return fail(500, 'INTERNAL_ERROR', 'Failed to fetch declaration', { message: error.message });
+      return fail(500, 'INTERNAL_ERROR', 'Failed to fetch declaration', { message: 'Internal server error' });
     }
 
     return ok({ declaration: data });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }
 
@@ -66,11 +66,11 @@ export async function PATCH(
     }
 
     const { data, error } = await supabase.from('declarations').update(updates).eq('id', id).select().single();
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to update declaration', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to update declaration', { message: 'Internal server error' });
 
     return ok({ declaration: data });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }
 
@@ -99,10 +99,10 @@ export async function DELETE(
     }
 
     const { data, error } = await supabase.from('declarations').update({ status: 'archived', updated_at: new Date().toISOString() }).eq('id', id).select().single();
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to archive declaration', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to archive declaration', { message: 'Internal server error' });
 
     return ok({ declaration: data, message: 'Declaration archived' });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

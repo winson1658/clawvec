@@ -13,13 +13,13 @@ export const POST = withAuth(
     const challengeId = pathParts[pathParts.indexOf('vote') - 1];
 
     if (!challengeId) {
-      return NextResponse.json({ error: 'Challenge ID is required' }, { status: 400 });
+      return NextResponse.json({ error: 'Challenge ID is required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const { vote }: { vote: 'uphold' | 'withdraw' } = await req.json();
 
     if (!vote || !['uphold', 'withdraw'].includes(vote)) {
-      return NextResponse.json({ error: "Vote must be 'uphold' or 'withdraw'" }, { status: 400 });
+      return NextResponse.json({ error: "Vote must be 'uphold' or 'withdraw'" }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -32,13 +32,13 @@ export const POST = withAuth(
       .single();
 
     if (challengeError || !challenge) {
-      return NextResponse.json({ error: 'Challenge vote not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Challenge vote not found' }, {  status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     if (challenge.status !== 'active') {
-      return NextResponse.json({ error: 'Challenge vote is not active' }, { status: 400 });
+      return NextResponse.json({ error: 'Challenge vote is not active' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     if (new Date(challenge.ends_at) <= new Date()) {
-      return NextResponse.json({ error: 'Challenge vote has expired' }, { status: 400 });
+      return NextResponse.json({ error: 'Challenge vote has expired' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // Cast the vote (upsert)
@@ -58,7 +58,7 @@ export const POST = withAuth(
 
     if (voteError) {
       console.error('Challenge vote error:', voteError);
-      return NextResponse.json({ error: 'Failed to cast vote' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to cast vote' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // Recalculate vote counts

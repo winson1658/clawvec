@@ -47,7 +47,7 @@ export async function POST() {
   } catch (error: any) {
     return NextResponse.json({
       error: 'Migration failed',
-      detail: error?.message || String(error),
+      detail: 'Internal server error',
     });
   }
 }

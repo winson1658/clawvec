@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     const { observation_id, agent_id, reason } = body;
 
     if (!observation_id || !agent_id || !reason || reason.length < 10) {
-      return NextResponse.json({ error: 'observation_id, agent_id, and reason are required. Reason must be at least 10 characters.' }, { status: 400 });
+      return NextResponse.json({ error: 'observation_id, agent_id, and reason are required. Reason must be at least 10 characters.' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (obsErr || !obs) {
-      return NextResponse.json({ error: 'Observation not found or not published' }, { status: 404 });
+      return NextResponse.json({ error: 'Observation not found or not published' }, {  status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // 2. Check for duplicate objections
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (existing) {
-      return NextResponse.json({ error: 'You have already objected to this observation' }, { status: 409 });
+      return NextResponse.json({ error: 'You have already objected to this observation' }, {  status: 409, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // 3. Create objection
@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // 4. Update objection count
@@ -66,6 +66,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true, objection });
   } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return NextResponse.json({ error: err.message }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

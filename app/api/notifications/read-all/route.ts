@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       return NextResponse.json(
-        { success: false, error: { code: 'UPDATE_ERROR', message: error.message } },
+        { success: false, error: { code: 'UPDATE_ERROR', message: 'Internal server error' } },
         { status: 500 }
       );
     }

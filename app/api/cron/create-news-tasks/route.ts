@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
     const authHeader = request.headers.get('Authorization');
     const expectedSecret = process.env.CRON_SECRET;
     if (expectedSecret && authHeader !== `Bearer ${expectedSecret}`) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, {  status: 401, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);

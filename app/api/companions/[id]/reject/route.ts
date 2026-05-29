@@ -58,7 +58,7 @@ export async function POST(
       .select()
       .single();
 
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to reject invitation', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to reject invitation', { message: 'Internal server error' });
 
     await createNotification({
       user_id: invitation.requester_id,
@@ -75,6 +75,6 @@ export async function POST(
     return ok({ companion: data });
 
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

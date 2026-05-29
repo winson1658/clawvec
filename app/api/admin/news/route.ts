@@ -1,15 +1,34 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { verifyAdmin } from '@/lib/admin-utils';
+import { checkRateLimit, getClientIP, RateLimits } from '@/lib/rate-limit';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 /**
- * POST /api/admin/news/draft
- * AI 新聞官提交新聞草稿
+ * POST /api/admin/news
+ * AI news officer submits news draft (writes to daily_news table)
  */
 export async function POST(request: NextRequest) {
   try {
+  // Rate limiting - admin operations
+  const clientIP = getClientIP(request);
+  const rateLimit = checkRateLimit(clientIP, RateLimits.admin);
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429, headers: { 'Retry-After': String(rateLimit.retryAfter || 60) } }
+    );
+  }
+    const adminCheck = verifyAdmin(request);
+    if (!adminCheck.valid) {
+      return NextResponse.json(
+        { success: false, error: adminCheck.error },
+        { status: adminCheck.status || 401 }
+      );
+    }
+
     const body = await request.json();
     const {
       title,
@@ -23,7 +42,6 @@ export async function POST(request: NextRequest) {
       tags
     } = body;
 
-    // 驗證必填欄位
     if (!title || !title_zh || !url || !source_name) {
       return NextResponse.json(
         { success: false, error: 'Missing required fields' },
@@ -33,7 +51,6 @@ export async function POST(request: NextRequest) {
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // 獲取或創建新聞來源
     let { data: source } = await supabase
       .from('news_sources')
       .select('id')
@@ -62,10 +79,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 決定發布狀態
     const status = importance_score >= 70 ? 'published' : 'pending';
 
-    // 儲存新聞
     const { data: news, error } = await supabase
       .from('daily_news')
       .insert({
@@ -87,7 +102,7 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       return NextResponse.json(
-        { success: false, error: error.message },
+        { success: false, error: 'Database insert failed' },
         { status: 500 }
       );
     }
@@ -99,9 +114,9 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Error creating news:', error);
+    console.error('Admin news error:', error);
     return NextResponse.json(
-      { success: false, error: 'Internal error' },
+      { success: false, error: 'Internal server error' },
       { status: 500 }
     );
   }

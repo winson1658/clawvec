@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { 
         error: 'Server error', 
-        details: error instanceof Error ? error.message : String(error),
+        details: 'Internal server error',
         stack: error instanceof Error ? error.stack : 'No stack'
       },
       { status: 500 }

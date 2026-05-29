@@ -52,11 +52,11 @@ export async function POST(req: NextRequest) {
     const { choice, visitorId } = await req.json();
 
     if (!choice || !['A', 'B'].includes(choice)) {
-      return NextResponse.json({ error: 'Invalid choice' }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid choice' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     if (!supabaseUrl || !supabaseServiceKey) {
-      return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
+      return NextResponse.json({ error: 'Database not configured' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
     const dilemmaId = stats?.[0]?.dilemma_id;
 
     if (!dilemmaId) {
-      return NextResponse.json({ error: 'No active dilemma available for voting.' }, { status: 400 });
+      return NextResponse.json({ error: 'No active dilemma available for voting.' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const today = getTodayKey();
@@ -84,7 +84,7 @@ export async function POST(req: NextRequest) {
 
     if (insertError) {
       if (insertError.code === '23505') {
-        return NextResponse.json({ error: 'Already voted today', code: 'DUPLICATE' }, { status: 409 });
+        return NextResponse.json({ error: 'Already voted today', code: 'DUPLICATE' }, {  status: 409, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
       }
       console.error('Vote insert error:', insertError.message);
     }
@@ -105,6 +105,6 @@ export async function POST(req: NextRequest) {
     });
   } catch (err) {
     console.error('Vote error:', err);
-    return NextResponse.json({ error: 'Vote failed' }, { status: 500 });
+    return NextResponse.json({ error: 'Vote failed' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

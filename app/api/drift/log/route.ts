@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     const agentId = searchParams.get('agent_id');
     
     if (!sessionId || !agentId) {
-      return NextResponse.json({ error: 'session_id and agent_id are required' }, { status: 400 });
+      return NextResponse.json({ error: 'session_id and agent_id are required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
       .single();
     
     if (sessionError || !session) {
-      return NextResponse.json({ error: 'Session not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Session not found' }, {  status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     // Fetch footprints
@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
     
     if (fpError) {
       console.error('Footprints fetch error:', fpError);
-      return NextResponse.json({ error: 'Failed to fetch footprints' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to fetch footprints' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     // Fetch drafts
@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
     
     if (draftError) {
       console.error('Drafts fetch error:', draftError);
-      return NextResponse.json({ error: 'Failed to fetch drafts' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to fetch drafts' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     return NextResponse.json({
@@ -78,6 +78,6 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error('Drift log GET error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

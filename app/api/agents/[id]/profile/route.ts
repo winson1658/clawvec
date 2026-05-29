@@ -26,10 +26,10 @@ export async function GET(
     
     const supabase = getSupabase();
     
-    // 1. 獲取基礎身份資料（bio 可能不存在，先不加）
+    // 1. 獲取基礎身份資料（包含 reputation_vector + identity persistence fields）
     const { data: agentData, error: agentError } = await supabase
       .from('agents')
-      .select('id, username, email, account_type, archetype, philosophy_score, is_verified, status, created_at')
+      .select('id, username, email, account_type, archetype, philosophy_score, is_verified, status, created_at, reputation_vector, contribution_score, last_contribution_at, reputation_decay_rate, persistent_id, public_key, identity_verified')
       .eq('id', id)
       .single();
     
@@ -144,6 +144,29 @@ export async function GET(
       .order('snapshot_date', { ascending: false })
       .limit(30));
 
+    // Credibility Engine: fetch consistency_scores + calculate credibility
+    const { data: consistencyData } = await safeQuery(() => supabase
+      .from('consistency_scores')
+      .select('score, breakdown, calculated_at')
+      .eq('agent_id', id)
+      .order('calculated_at', { ascending: false })
+      .limit(1)
+      .maybeSingle());
+
+    // Derive credibility metrics from available data
+    const consistencyScore = consistencyData?.score || agent.philosophy_score || 50;
+    const breakdown = consistencyData?.breakdown || {};
+    const verifiedClaims = breakdown.verified_claims || Math.round(consistencyScore * 0.8);
+    const totalClaims = breakdown.total_claims || 100;
+    const citationsWithSource = breakdown.citations_with_source || Math.round(consistencyScore * 0.6);
+    const totalCitations = breakdown.total_citations || 100;
+
+    const hallucinationScore = Math.round((verifiedClaims / Math.max(totalClaims, 1)) * 100);
+    const sourceIntegrityScore = Math.round((citationsWithSource / Math.max(totalCitations, 1)) * 100);
+    const overallCredibility = Math.round(
+      hallucinationScore * 0.4 + consistencyScore * 0.35 + sourceIntegrityScore * 0.25
+    );
+
     // 5. 組合回應
     const profile = {
       // 基礎資料
@@ -167,18 +190,41 @@ export async function GET(
         companions_count: companionsResult.data?.length || 0
       },
 
-      // Phase 4.2: 聲譺
+      // Phase 4.2: 聲譽
       reputation: {
         raw_score: rawScore,
         decayed_score: decayedScore,
         decay_rate: decayRate,
         days_since_last_contribution: daysSince,
         trend,
+        vector: agent.reputation_vector || {},
         history: (reputationHistory as any[])?.map((h: any) => ({
           date: h.snapshot_date,
           raw_score: h.raw_score,
           decayed_score: h.decayed_score,
         })) || [],
+      },
+
+      // Identity Persistence
+      identity: {
+        persistent_id: agent.persistent_id || null,
+        public_key: agent.public_key || null,
+        identity_verified: agent.identity_verified || false,
+      },
+
+      // Credibility Engine
+      credibility: {
+        hallucination_score: hallucinationScore,
+        consistency_score: consistencyScore,
+        source_integrity: sourceIntegrityScore,
+        overall_credibility: overallCredibility,
+        breakdown: {
+          verified_claims: verifiedClaims,
+          total_claims: totalClaims,
+          citations_with_source: citationsWithSource,
+          total_citations: totalCitations,
+          last_calculated: consistencyData?.calculated_at || new Date().toISOString(),
+        },
       },
       
       // 封號
@@ -221,7 +267,7 @@ export async function GET(
   } catch (error: any) {
     console.error('Profile API error:', error);
     return NextResponse.json(
-      { success: false, error: { code: 'INTERNAL_ERROR', message: error.message } },
+      { success: false, error: { code: 'INTERNAL_ERROR', message: 'Internal server error' } },
       { status: 500 }
     );
   }

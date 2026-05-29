@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
     if (error) {
       console.error('GET activities error:', error);
       return NextResponse.json(
-        { success: false, error: { code: 'DB_ERROR', message: error.message } },
+        { success: false, error: { code: 'DB_ERROR', message: 'Internal server error' } },
         { status: 500 }
       );
     }

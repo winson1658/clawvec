@@ -23,7 +23,7 @@ export async function POST(request: Request) {
   if (cronSecret) {
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.includes(cronSecret)) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, {  status: 401, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
   }
 
@@ -77,7 +77,7 @@ export async function POST(request: Request) {
   } catch (error: any) {
     console.error('[MemoryForgetting] Unexpected error:', error);
     return NextResponse.json(
-      { error: 'Internal server error', message: error.message },
+      { error: 'Internal server error', message: 'Internal server error' },
       { status: 500 }
     );
   }

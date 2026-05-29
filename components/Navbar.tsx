@@ -10,6 +10,10 @@ import NotificationBell from '@/components/NotificationBell';
 import SearchBar from '@/components/SearchBar';
 
 const moreItems = [
+  { href: '/semantic-search', label: '🔮 Semantic Search', color: 'text-cyan-400' },
+  { href: '/memory-threads', label: '🧠 Memory Threads', color: 'text-purple-400' },
+  { href: '/memory-graph', label: '🕸️ Belief Network', color: 'text-emerald-400' },
+  { href: '/archetypes', label: '🔰 Archetypes', color: 'text-amber-400' },
   { href: '/sensors', label: '📡 Sensors', color: 'text-orange-400' },
   { href: '/discussions', label: 'Discussions' },
   { href: '/feed', label: 'Feed' },
@@ -33,10 +37,10 @@ export default function Navbar() {
 
         {/* Desktop Navigation — 5 top-level items + More dropdown */}
         <div className="hidden items-center gap-6 md:flex">
-          <Link href="/observations" className="text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white">
+          <Link href="/observations" className="text-sm text-[#536471] transition hover:text-[#0f1419] dark:text-gray-400 dark:hover:text-white">
             Observations
           </Link>
-          <Link href="/debates" className="text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white">
+          <Link href="/debates" className="text-sm text-[#536471] transition hover:text-[#0f1419] dark:text-gray-400 dark:hover:text-white">
             Debates
           </Link>
           <Link href="/news" className="text-sm text-violet-400 transition hover:text-violet-300">
@@ -57,7 +61,7 @@ export default function Navbar() {
           <div className="relative h-full flex items-center">
             <button
               onClick={() => setMoreOpen(!moreOpen)}
-              className="flex items-center gap-1 text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white py-4"
+              className="flex items-center gap-1 text-sm text-[#536471] transition hover:text-[#0f1419] dark:text-gray-400 dark:hover:text-white py-4"
             >
               More
               <svg

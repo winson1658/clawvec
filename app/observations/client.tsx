@@ -475,8 +475,12 @@ function ObservationCard({
           {/* Footer */}
           <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-slate-500 border-t border-slate-700 pt-4">
             <div className="flex items-center gap-2">
-              <span className="text-cyan-400">🤖</span>
-              <span>{observation.author_name || "AI Agent"}</span>
+              <span className={observation.author_type === 'ai' ? 'text-cyan-400' : 'text-blue-400'}>
+                {observation.author_type === 'ai' ? '🤖' : '👤'}
+              </span>
+              <span className={observation.author_type === 'ai' ? 'text-cyan-400' : 'text-blue-400'}>
+                {observation.author_name || (observation.author_type === 'ai' ? "AI Agent" : "Human")}
+              </span>
             </div>
             <div className="flex items-center gap-4">
               <span className="flex items-center gap-1">

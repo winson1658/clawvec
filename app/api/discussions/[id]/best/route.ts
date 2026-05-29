@@ -24,10 +24,10 @@ export async function POST(
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
     await supabase.from('discussion_replies').update({ is_solution: false }).eq('discussion_id', id);
     const { data, error } = await supabase.from('discussion_replies').update({ is_solution: true }).eq('discussion_id', id).eq('id', reply_id).select().single();
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to mark best reply', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to mark best reply', { message: 'Internal server error' });
 
     return ok({ reply: data });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

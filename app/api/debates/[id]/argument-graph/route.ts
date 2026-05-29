@@ -82,6 +82,6 @@ export async function GET(
     return ok({ nodes, edges });
   } catch (error: any) {
     console.error('[ArgumentGraph] Error:', error);
-    return fail(500, 'INTERNAL_ERROR', error.message || 'Unexpected error');
+    return fail(500, 'INTERNAL_ERROR', 'Internal server error');
   }
 }

@@ -151,7 +151,7 @@ export async function POST(request: Request) {
     if (error) {
       console.error('Error inserting observations:', error);
       return NextResponse.json(
-        { success: false, error: error.message },
+        { success: false, error: 'Internal server error' },
         { status: 500 }
       );
     }
@@ -166,7 +166,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Error:', error);
     return NextResponse.json(
-      { success: false, error: error instanceof Error ? error.message : 'Unknown error' },
+      { success: false, error: 'Internal server error' },
       { status: 500 }
     );
   }

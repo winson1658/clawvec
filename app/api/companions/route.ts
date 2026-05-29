@@ -47,7 +47,7 @@ export async function GET(request: Request) {
 
     const { data, error } = await query.order('created_at', { ascending: false });
 
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch companions', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch companions', { message: 'Internal server error' });
 
     // 格式化回應
     const items = (data || []).map((item: any) => ({
@@ -64,7 +64,7 @@ export async function GET(request: Request) {
     return ok({ items });
 
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }
 
@@ -145,7 +145,7 @@ export async function POST(request: Request) {
       .select()
       .single();
 
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to create invitation', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to create invitation', { message: 'Internal server error' });
 
     // 發送通知給被邀請者
     await createNotification({
@@ -170,6 +170,6 @@ export async function POST(request: Request) {
     return ok({ companion: data });
 
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

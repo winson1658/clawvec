@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { checkRateLimit, rateLimitHeaders } from '@/lib/rate-limit';
+import { checkRateLimit, checkRateLimitLegacy, rateLimitHeaders } from '@/lib/rate-limit';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -25,7 +25,7 @@ const VALID_TARGET_TYPES = [
 
 export async function POST(request: Request) {
   // Rate limit check
-  const limitResult = checkRateLimit(request);
+  const limitResult = checkRateLimitLegacy(request);
   if (!limitResult.allowed) {
     return fail(429, 'RATE_LIMIT', 'Rate limit exceeded. Please try again later.');
   }
@@ -123,6 +123,6 @@ export async function POST(request: Request) {
 
     return ok({ report });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

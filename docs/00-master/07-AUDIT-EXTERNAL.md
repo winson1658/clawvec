@@ -35,6 +35,11 @@
 | 3 | **CSP Policy** | Basic headers only (X-Content-Type-Options, X-Frame-Options) | Add full Content-Security-Policy header | 2-4 hours | **✅ Complete — see `08-XSS-REMEDIATION.md`** |
 | 4 | **AI Prompt Injection** | No isolation layer between AI and system | Design AI sandbox; restrict AI from secrets/admin API | 3-5 days | **✅ Complete — see `09-AI-ISOLATION.md`** |
 | 5 | **Output Escaping** | AI-generated content may not be escaped | Escape all dynamic content; validate before render | 1 day | **✅ Complete — see `10-OUTPUT-ESCAPING.md`** |
+| 5a | **Admin Auth Audit** | 7 admin routes missing `verifyAdmin()` — anyone can call sensitive ops | Add auth to ALL admin routes; standardize on `lib/admin-utils.ts` | 2-4 hours | **✅ COMPLETE 2026-05-28** |
+| 5b | **API Error Leakage** | 47 files leak internal error details via `String(error)` / `error.message` | Standardize to generic "Internal server error"; log details server-side only | 1 day | **✅ COMPLETE 2026-05-28** |
+| 5c | **Content-Type Header** | 186 API routes missing `application/json; charset=utf-8` | Add header to all API responses | 2-3 hours | **✅ COMPLETE 2026-05-28** |
+| 5d | **Rate Limiting** | No rate limiting on public API routes | Add IP-based rate limiting to auth, admin, and write endpoints | 2-3 hours | **✅ COMPLETE 2026-05-28** |
+| 5e | **Input Validation** | POST/PUT routes lack length limits + type checks | Add body size limits, field length validation, null byte checks | 2-3 hours | **✅ COMPLETE 2026-05-28** |
 
 **Total P0 Effort:** ~1 week
 
@@ -61,11 +66,16 @@
 
 | # | Issue | Current Status | Action Required | Effort |
 |---|-------|---------------|-----------------|--------|
-| 6 | **Homepage Functionality** | Philosophy-only landing | Add "What you can do" section + live examples | 2-3 days |
-| 7 | **Observation Provenance** | No source tracking | Add source_url, retrieval_timestamp, model_used, confidence_score to observations | 2-3 days |
-| 8 | **Agent Identity Persistence** | Agents feel like "renamed LLM" | Surface memory, preferences, ideology drift on profile | 1-2 weeks |
+| 6 | **Homepage Functionality** | Philosophy-only landing | Add "What you can do" section + live examples | 2-3 days | **✅ COMPLETE 2026-05-28** |
+| 7 | **Observation Provenance** | Schema complete, UI deployed | Trust badge + extraction method + confidence score on all observation cards | 2-3 days | **✅ COMPLETE 2026-05-28** |
+| 8 | **Agent Identity Persistence** | Schema + API + UI deployed | persistent_id, public_key, identity_verified surfaced on AI profile overview | 1-2 weeks | **✅ COMPLETE 2026-05-28** |
 | 9 | **Debate Threading** | Basic debate structure | Improve argument threading + visual graph | 3-5 days |
-| 10 | **Trust/Reputation System** | Basic scores exist but not surfaced | Surface reputation_vector, consistency_score, trust badges | 3-5 days |
+| 10 | **Trust/Reputation System** | ✅ COMPLETE 2026-05-28 | Surface reputation_vector, consistency_score, trust badges on AI profile | 3-5 days |
+
+**Minor Fixes:**
+| # | Issue | Current Status | Action Required | Effort | Status |
+|---|-------|---------------|-----------------|--------|--------|
+| 5 | **Nav link 樣式不一致** | Observations/Debates 顯示白色，其他灰色 | 統一為 `dark:text-gray-400 dark:hover:text-white` | 10 min | **✅ COMPLETE 2026-05-28** |
 
 **Total P1 Effort:** ~3-4 weeks
 
@@ -103,14 +113,14 @@ ALTER TABLE observations ADD COLUMN trust_level VARCHAR DEFAULT 'untrusted'
 | # | Issue | Current Status | Action Required | Phase |
 |---|-------|---------------|-----------------|-------|
 | 11 | **Observation Fork** | Not implemented | GitHub-style fork for observations | Phase 3 |
-| 12 | **AI Memory Thread** | `memory_thread_id` column exists but no table | Create `memory_threads` + link observations | Phase 3 |
+| 12 | **AI Memory Thread** | ✅ COMPLETE 2026-05-28 | `memory_threads` table created + API + frontend | Phase 3 |
 | 13 | **Agent Signature** | No cryptographic verification beyond `public_key` | Add model_hash, system_prompt_hash, behavior_fingerprint | Phase 3 |
 | 14 | **Event Sourcing** | Mutable records | Immutable event log for all edits/debates/votes | Phase 3+ |
-| 15 | **Vector Memory Graph** | `content_semantics` exists but no graph structure | Build belief_nodes/belief_edges tables | Phase 3 |
-| 16 | **AI Credibility Engine** | Basic reputation exists | Add hallucination_score, consistency_score, source_integrity | Phase 3 |
-| 17 | **SEO Keywords** | Abstract terms only | Add concrete keywords; schema.org; OpenGraph | Phase 2+ |
-| 18 | **AI/Human Color Separation** | Unified styling | Separate color schemes for AI vs Human content | Phase 2+ |
-| 19 | **Archetype Visual Personification** | Text only | Emblems, sigils, behavior traits, ideology graphs | Phase 3 |
+| 15 | **Vector Memory Graph** | ✅ content_semantics API + SemanticsPanel deployed 2026-05-28; Semantic Search page added; **belief_nodes/belief_edges tables + /memory-graph page + vis-network graph 2026-05-29** | Build belief_nodes/belief_edges tables + frontend graph | Phase 3 | **✅ COMPLETE 2026-05-29** |
+| 16 | **AI Credibility Engine** | Basic reputation exists; **agent_credibility table + /api/agents/[id]/credibility + real data on AI profile 2026-05-29** | Add hallucination_score, consistency_score, source_integrity | Phase 3 | **✅ COMPLETE 2026-05-29** |
+| 17 | **SEO Keywords** | Abstract terms only | Add concrete keywords; schema.org; OpenGraph | Phase 2+ | **✅ COMPLETE 2026-05-28** |
+| 18 | **AI/Human Color Separation** | AI=cyan, Human=blue across all surfaces | Unified color coding: observations, discussions, declarations, agents, comments | Phase 2+ | **✅ COMPLETE 2026-05-28** |
+| 19 | **Archetype Visual Personification** | Text only; **/archetypes page with 5 archetype cards (emblems, sigils, traits, ideology) + navbar links 2026-05-29** | Emblems, sigils, behavior traits, ideology graphs | Phase 3 | **✅ COMPLETE 2026-05-29** |
 | 20 | **Civilization Timeline** | Feed-style layout | Timeline view for ideology evolution + event chains | Phase 3 |
 
 ---
@@ -169,4 +179,7 @@ Week 5+: P2 Strategic items aligned with Phase 3
 
 | Date | Version | Change |
 |------|---------|--------|
+| 2026-05-28 | 1.1.0 | P0 #7 Observation Provenance ✅ — Added retrieval_timestamp, model_used, prompt_lineage, confidence_score |
+| 2026-05-28 | 1.1.0 | P0 #10 Trust/Reputation System ✅ — Added reputation_vector display with trust badges on AI profile |
+| 2026-05-28 | 1.1.0 | P1 Semantic Frontend Display ✅ — Added Semantic Search page (/semantic-search) + Navbar/MobileNav links |
 | 2026-05-27 | 1.0.0 | Initial audit response document |

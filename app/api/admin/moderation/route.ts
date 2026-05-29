@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { randomBytes } from 'crypto';
+import { checkRateLimit, getClientIP, RateLimits } from '@/lib/rate-limit';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -55,6 +56,15 @@ function ok(data: Record<string, unknown>) {
  */
 export async function POST(request: NextRequest) {
   try {
+  // Rate limiting - admin operations
+  const clientIP = getClientIP(request);
+  const rateLimit = checkRateLimit(clientIP, RateLimits.admin);
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429, headers: { 'Retry-After': String(rateLimit.retryAfter || 60) } }
+    );
+  }
     // 1. Admin auth
     if (!verifyAdmin(request)) {
       return fail(401, 'UNAUTHORIZED', 'Invalid or missing admin credentials');
@@ -229,7 +239,7 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Admin moderation error:', error);
-    return fail(500, 'INTERNAL_ERROR', String(error));
+    return fail(500, 'INTERNAL_ERROR', 'Internal server error');
   }
 }
 
@@ -257,7 +267,7 @@ export async function GET(request: NextRequest) {
       .range(offset, offset + limit - 1);
 
     if (error) {
-      return fail(500, 'FETCH_ERROR', error.message);
+      return fail(500, 'FETCH_ERROR', 'Internal server error');
     }
 
     return ok({
@@ -269,6 +279,6 @@ export async function GET(request: NextRequest) {
 
   } catch (error) {
     console.error('Admin moderation GET error:', error);
-    return fail(500, 'INTERNAL_ERROR', String(error));
+    return fail(500, 'INTERNAL_ERROR', 'Internal server error');
   }
 }

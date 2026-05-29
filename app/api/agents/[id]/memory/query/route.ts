@@ -71,8 +71,8 @@ export async function POST(
         return NextResponse.json({
           success: false,
           error: 'Vector search failed. Ensure memories have embeddings.',
-          details: error.message
-        }, { status: 500 });
+          details: 'Internal server error'
+        }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
       }
 
       return NextResponse.json({
@@ -91,7 +91,7 @@ export async function POST(
       return NextResponse.json({
         success: false,
         error: 'Provide either "embedding" (number[]) for vector search or "query" (string) for text search.'
-      }, { status: 400 });
+      }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // Validate query to prevent SQL injection
@@ -101,7 +101,7 @@ export async function POST(
       return NextResponse.json({
         success: false,
         error: validation.error
-      }, { status: 400 });
+      }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const safeQuery = escapeLikePattern(query);
@@ -128,7 +128,7 @@ export async function POST(
         success: false,
         error: 'Text search failed',
         details: fallbackError.message
-      }, { status: 500 });
+      }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     return NextResponse.json({
@@ -144,7 +144,7 @@ export async function POST(
   } catch (error: any) {
     console.error('POST /api/agents/:id/memory/query error:', error);
     return NextResponse.json(
-      { success: false, error: error.message || 'Failed to query memories' },
+      { success: false, error: 'Internal server error' },
       { status: 500 }
     );
   }

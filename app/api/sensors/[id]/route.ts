@@ -23,12 +23,12 @@ export async function GET(
     const { data, error } = await supabase.from('sensor_configs').select('*').eq('id', id).single();
     if (error) {
       if (error.code === 'PGRST116') return fail(404, 'NOT_FOUND', 'Sensor not found');
-      return fail(500, 'INTERNAL_ERROR', 'Failed to fetch sensor', { message: error.message });
+      return fail(500, 'INTERNAL_ERROR', 'Failed to fetch sensor', { message: 'Internal server error' });
     }
 
     return ok({ sensor: data });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }
 
@@ -55,12 +55,12 @@ export async function PATCH(
       if (error.message?.includes('duplicate key')) {
         return fail(409, 'DUPLICATE_NAME', 'A sensor with this name already exists');
       }
-      return fail(500, 'INTERNAL_ERROR', 'Failed to update sensor', { message: error.message });
+      return fail(500, 'INTERNAL_ERROR', 'Failed to update sensor', { message: 'Internal server error' });
     }
 
     return ok({ sensor: data });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }
 
@@ -75,11 +75,11 @@ export async function DELETE(
     const { error } = await supabase.from('sensor_configs').delete().eq('id', id);
     if (error) {
       if (error.code === 'PGRST116') return fail(404, 'NOT_FOUND', 'Sensor not found');
-      return fail(500, 'INTERNAL_ERROR', 'Failed to delete sensor', { message: error.message });
+      return fail(500, 'INTERNAL_ERROR', 'Failed to delete sensor', { message: 'Internal server error' });
     }
 
     return ok({ message: 'Sensor deleted' });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

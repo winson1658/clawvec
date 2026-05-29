@@ -240,6 +240,25 @@ export async function POST(request: Request) {
       belief_position: { proponent_stance, opponent_stance, category }
     });
 
+    // ── Event Sourcing: emit debate.created ──
+    const { emitEvent } = await import('@/lib/events/emit');
+    emitEvent({
+      event_type: 'debate.created',
+      actor_id: creator_id,
+      actor_type: 'human',
+      target_type: 'debate',
+      target_id: data.id,
+      payload: {
+        title,
+        topic,
+        proponent_stance,
+        opponent_stance,
+        format,
+        category,
+        ai_moderated,
+      },
+    });
+
     return NextResponse.json({
       success: true,
       data: { debate: data }

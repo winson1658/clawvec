@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   if (cronSecret) {
     const authHeader = req.headers.get('authorization');
     if (authHeader !== `Bearer ${cronSecret}`) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, {  status: 401, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
   }
 

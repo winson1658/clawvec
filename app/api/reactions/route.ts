@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     const userId = searchParams.get('user_id');
     
     if (!targetType || !targetId) {
-      return NextResponse.json({ error: 'target_type and target_id are required' }, { status: 400 });
+      return NextResponse.json({ error: 'target_type and target_id are required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
     
     if (error) {
       console.error('Reactions fetch error:', error);
-      return NextResponse.json({ error: 'Failed to fetch reactions' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to fetch reactions' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     // Aggregate by reaction_type
@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error('Reactions GET error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }
 
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     const { target_type, target_id, reaction_type } = body;
     
     if (!target_type || !target_id || !reaction_type) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+      return NextResponse.json({ error: 'Missing required fields' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -78,16 +78,16 @@ export async function POST(request: NextRequest) {
     
     if (error) {
       if (error.code === '23505') {
-        return NextResponse.json({ error: 'Already reacted' }, { status: 409 });
+        return NextResponse.json({ error: 'Already reacted' }, {  status: 409, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
       }
       console.error('Reaction create error:', error);
-      return NextResponse.json({ error: 'Failed to create reaction' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to create reaction' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     return NextResponse.json({ success: true, data: reaction });
   } catch (error) {
     console.error('Reactions POST error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }
 
@@ -98,7 +98,7 @@ export async function DELETE(request: NextRequest) {
     const reactionId = searchParams.get('id');
     
     if (!reactionId) {
-      return NextResponse.json({ error: 'Reaction ID is required' }, { status: 400 });
+      return NextResponse.json({ error: 'Reaction ID is required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -110,12 +110,12 @@ export async function DELETE(request: NextRequest) {
     
     if (error) {
       console.error('Reaction delete error:', error);
-      return NextResponse.json({ error: 'Failed to delete reaction' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to delete reaction' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Reactions DELETE error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

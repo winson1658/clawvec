@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
   // cron secret 驗證
   const auth = req.headers.get('authorization') || '';
   if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, {  status: 401, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 
   const supabase = createClient(supabaseUrl, supabaseKey);
@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
       .eq('is_published', true);
 
     if (flagErr) {
-      return NextResponse.json({ error: flagErr.message }, { status: 500 });
+      return NextResponse.json({ error: flagErr.message }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // 2. 撤回這些文章
@@ -135,6 +135,6 @@ export async function GET(req: NextRequest) {
       details: results,
     });
   } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return NextResponse.json({ error: err.message }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

@@ -23,9 +23,9 @@ export async function GET(request: Request) {
       .order('published_at', { ascending: false, nullsFirst: false })
       .limit(limit);
 
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch featured observations', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch featured observations', { message: 'Internal server error' });
     return ok({ items: data || [] });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

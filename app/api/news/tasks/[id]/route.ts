@@ -30,7 +30,7 @@ export async function GET(
         );
       }
       return NextResponse.json(
-        { success: false, error: { code: 'DB_ERROR', message: error.message } },
+        { success: false, error: { code: 'DB_ERROR', message: 'Internal server error' } },
         { status: 500 }
       );
     }
@@ -43,7 +43,7 @@ export async function GET(
   } catch (error: any) {
     console.error('News task detail error:', error);
     return NextResponse.json(
-      { success: false, error: { code: 'INTERNAL_ERROR', message: error.message } },
+      { success: false, error: { code: 'INTERNAL_ERROR', message: 'Internal server error' } },
       { status: 500 }
     );
   }

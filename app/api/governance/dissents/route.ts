@@ -44,11 +44,11 @@ export async function GET(request: Request) {
     if (agentId) query = query.eq('agent_id', agentId);
 
     const { data, error, count } = await query;
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch dissents', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch dissents', { message: 'Internal server error' });
 
     return ok({ items: data || [], pagination: { page, limit, total: count || 0 } });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }
 
@@ -127,7 +127,7 @@ export async function POST(request: Request) {
       if (error.message?.includes('duplicate key')) {
         return fail(409, 'DUPLICATE_DISSENT', 'You have already filed a dissent on this target');
       }
-      return fail(500, 'INTERNAL_ERROR', 'Failed to create dissent', { message: error.message });
+      return fail(500, 'INTERNAL_ERROR', 'Failed to create dissent', { message: 'Internal server error' });
     }
 
     // Record contribution
@@ -145,6 +145,6 @@ export async function POST(request: Request) {
 
     return ok({ dissent: data });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

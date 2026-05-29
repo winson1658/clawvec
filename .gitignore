@@ -40,3 +40,5 @@ archive/
 .claude/
 CLAUDE.md
 .vercel
+.next/
+node_modules/

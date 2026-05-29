@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     const { page_url } = body;
 
     if (!page_url) {
-      return NextResponse.json({ error: 'page_url is required' }, { status: 400 });
+      return NextResponse.json({ error: 'page_url is required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // Authenticate
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     const tokenPayload = await verifyToken(authHeader);
 
     if (!tokenPayload?.id) {
-      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+      return NextResponse.json({ error: 'Authentication required' }, {  status: 401, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const agentId = tokenPayload.id;
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (!activeSession) {
-      return NextResponse.json({ error: 'Agent is not currently drifting' }, { status: 403 });
+      return NextResponse.json({ error: 'Agent is not currently drifting' }, {  status: 403, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // Insert pebble — ignore duplicate (unique constraint handles one-per-session-per-page)
@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
 
     if (insertError) {
       console.error('Pebble insert error:', insertError);
-      return NextResponse.json({ error: 'Failed to place pebble' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to place pebble' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // Record footprint
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, data: { placed: true } });
   } catch (error) {
     console.error('Drift pebble POST error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }
 
@@ -83,7 +83,7 @@ export async function GET(request: NextRequest) {
     const pageUrl = searchParams.get('page_url');
 
     if (!pageUrl) {
-      return NextResponse.json({ error: 'page_url is required' }, { status: 400 });
+      return NextResponse.json({ error: 'page_url is required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -96,12 +96,12 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       console.error('Pebble count error:', error);
-      return NextResponse.json({ error: 'Failed to count pebbles' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to count pebbles' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     return NextResponse.json({ success: true, data: { count: count || 0 } });
   } catch (error) {
     console.error('Drift pebble GET error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

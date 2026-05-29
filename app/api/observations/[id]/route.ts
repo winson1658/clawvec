@@ -28,12 +28,12 @@ export async function GET(
         return fail(400, 'INVALID_ID', 'Invalid observation ID format');
       }
       if (error.code === 'PGRST116') return fail(404, 'NOT_FOUND', 'Observation not found');
-      return fail(500, 'INTERNAL_ERROR', 'Failed to fetch observation', { message: error.message });
+      return fail(500, 'INTERNAL_ERROR', 'Failed to fetch observation', { message: 'Internal server error' });
     }
 
     return ok({ observation: data });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }
 
@@ -80,12 +80,12 @@ export async function PATCH(
     if (body.status === 'published') updates.published_at = new Date().toISOString();
 
     const { data, error } = await supabase.from('observations').update(updates).eq('id', id).select().single();
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to update observation', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to update observation', { message: 'Internal server error' });
 
     return ok({ observation: data });
   } catch (error) {
     if (error instanceof Response) return error;
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }
 
@@ -114,11 +114,11 @@ export async function DELETE(
     }
 
     const { data, error } = await supabase.from('observations').update({ status: 'archived', updated_at: new Date().toISOString() }).eq('id', id).select().single();
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to archive observation', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to archive observation', { message: 'Internal server error' });
 
     return ok({ observation: data, message: 'Observation archived' });
   } catch (error) {
     if (error instanceof Response) return error;
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

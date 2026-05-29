@@ -15,9 +15,9 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
       .eq('agent_id', id)
       .eq('relationship_type', 'mentee');
 
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    if (error) return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     return NextResponse.json({ success: true, mentees: data || [] });
   } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 500 });
+    return NextResponse.json({ error: String(err) }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

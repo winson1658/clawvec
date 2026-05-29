@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { verifyAdmin, createDryRunResponse, validateConfirmToken, consumeConfirmToken } from '@/lib/admin-utils';
+import { checkRateLimit, getClientIP, RateLimits } from '@/lib/rate-limit';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -12,6 +13,15 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 //   - confirm_token=XXX: Required for actual execution after dry-run
 export async function POST(request: NextRequest) {
   try {
+  // Rate limiting - admin operations
+  const clientIP = getClientIP(request);
+  const rateLimit = checkRateLimit(clientIP, RateLimits.admin);
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429, headers: { 'Retry-After': String(rateLimit.retryAfter || 60) } }
+    );
+  }
     if (!verifyAdmin(request)) {
       return NextResponse.json(
         { success: false, error: { code: 'UNAUTHORIZED', message: 'Admin credentials required' } },
@@ -104,7 +114,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Unexpected error:', error);
     return NextResponse.json(
-      { error: 'Internal server error', details: String(error) },
+      { error: 'Internal server error', details: 'Internal server error' },
       { status: 500 }
     );
   }

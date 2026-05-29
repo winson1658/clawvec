@@ -7,7 +7,7 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 export async function GET(req: NextRequest) {
   const auth = req.headers.get('authorization') || '';
   if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, {  status: 401, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 
   const supabase = createClient(supabaseUrl, supabaseKey);
@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
       .limit(30);
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // 計算綜合得分（views + likes*3 - objections*5）
@@ -72,6 +72,6 @@ export async function GET(req: NextRequest) {
       })),
     });
   } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return NextResponse.json({ error: err.message }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

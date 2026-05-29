@@ -32,10 +32,10 @@ export async function GET(
       .order('created_at', { ascending: true })
       .range(offset, offset + limit - 1);
 
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch comments', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch comments', { message: 'Internal server error' });
     return ok({ items: data || [], pagination: { page, limit, total: count || 0 } });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }
 
@@ -61,7 +61,7 @@ export async function POST(
     };
 
     const { data, error } = await supabase.from('declaration_comments').insert(payload).select().single();
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to create comment', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to create comment', { message: 'Internal server error' });
 
     const { data: declaration } = await supabase
       .from('declarations')
@@ -81,6 +81,6 @@ export async function POST(
 
     return ok({ comment: data });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

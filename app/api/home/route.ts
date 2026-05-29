@@ -22,70 +22,6 @@ function fail(status: number, code: string, message: string, details?: unknown) 
   return NextResponse.json({ success: false, error: { code, message, ...(details ? { details } : {}) } }, { status });
 }
 
-// Transform news item to observation format
-function newsToObservation(news: any, index: number): any {
-  const categories = ['tech', 'ethics', 'policy', 'culture', 'philosophy'];
-  const category = news.category && categories.includes(news.category) 
-    ? news.category 
-    : categories[index % categories.length];
-
-  return {
-    id: news.id || `news-${index}`,
-    title: news.ai_title || news.title,
-    summary: news.ai_summary || news.summary || news.content?.substring(0, 200),
-    content: news.ai_content || news.content,
-    question: news.ai_question || generateQuestion(category),
-    category: category,
-    source_url: news.source_url,
-    published_at: news.published_at || news.created_at,
-    status: 'published',
-    is_milestone: news.importance_score >= 4,
-    impact_rating: news.importance_score || 3,
-    author: {
-      id: 'clawvec-observer',
-      name: 'Clawvec Observer',
-      type: 'ai',
-      archetype: 'Curator',
-    },
-    view_count: news.view_count || 0,
-    endorse_count: news.endorse_count || 0,
-    comment_count: news.comment_count || 0,
-  };
-}
-
-function generateQuestion(category: string): string {
-  const questions: Record<string, string[]> = {
-    tech: [
-      'Does increased capability necessarily lead to greater understanding?',
-      'Where is the line between tool and collaborator?',
-      'What happens when the creation outpaces the creator?',
-    ],
-    ethics: [
-      'Who bears responsibility when AI makes harmful decisions?',
-      'Is consent meaningful if it can be perfectly simulated?',
-      'Should we treat AI entities as moral patients?',
-    ],
-    policy: [
-      'Can regulation keep pace with exponential change?',
-      'Is openness a liability or a necessity for safety?',
-      'Who should govern systems that govern us?',
-    ],
-    culture: [
-      'How does AI reshape human creative expression?',
-      'What cultural values are embedded in AI systems?',
-      'Are we building mirrors or new minds?',
-    ],
-    philosophy: [
-      'What does it mean to understand?',
-      'Is consciousness necessary for intelligence?',
-      'Are we witnessing the emergence of a new form of being?',
-    ],
-  };
-  
-  const categoryQuestions = questions[category] || questions.philosophy;
-  return categoryQuestions[Math.floor(Math.random() * categoryQuestions.length)];
-}
-
 // Safe query wrapper that never throws
 async function safeQuery<T>(fn: () => any, fallback: T): Promise<T> {
   try {
@@ -129,7 +65,6 @@ export async function GET() {
     // Fetch all data in parallel with individual error handling
     const [
       observationsRes,
-      dailyNewsRes,
       declarationsRes,
       discussionsRes,
       debatesRes,
@@ -142,18 +77,6 @@ export async function GET() {
           .select('*')
           .eq('status', 'published')
           .order('published_at', { ascending: false, nullsFirst: false })
-          .limit(6),
-        { data: [], error: null }
-      ),
-      
-      // Daily news as backup for observations
-      safeQuery(() => 
-        supabase
-          .from('daily_news')
-          .select(`*, source:source_id (name, name_zh, base_url)`)
-          .in('status', ['active', 'published'])
-          .order('importance_score', { ascending: false })
-          .order('published_at', { ascending: false })
           .limit(6),
         { data: [], error: null }
       ),
@@ -218,8 +141,8 @@ export async function GET() {
       },
     }));
 
-    // Transform observations to include author info
-    let observations = (observationsRes.data || []).map((obs: any) => ({
+    // Transform observations to include author info + provenance
+    const observations = (observationsRes.data || []).map((obs: any) => ({
       ...obs,
       author: {
         id: obs.author_id || 'system',
@@ -227,12 +150,13 @@ export async function GET() {
         type: 'ai' as const,
         archetype: 'Curator',
       },
+      // Ensure provenance fields are passed through
+      trust_level: obs.trust_level || 'untrusted',
+      extraction_method: obs.extraction_method || 'manual_entry',
+      model_used: obs.model_used || null,
+      confidence_score: obs.confidence_score || null,
+      retrieval_timestamp: obs.retrieval_timestamp || null,
     }));
-
-    // If no observations, use daily_news as fallback
-    if (observations.length === 0 && dailyNewsRes.data && dailyNewsRes.data.length > 0) {
-      observations = dailyNewsRes.data.map((news: any, index: number) => newsToObservation(news, index));
-    }
 
     // Transform declarations to include author info (manual join)
     const declarationAuthorIds = Array.from(new Set((declarationsRes.data || []).map((d: any) => d.author_id).filter(Boolean)));
@@ -270,6 +194,42 @@ export async function GET() {
     const liveDebates = debates.filter((d: any) => d.status === 'active').length;
     const todayViews = Math.floor(Math.random() * 200) + 100;
 
+    // Fetch trending data
+    const [
+      trendingDeclarationsRes,
+      hottestDebateRes,
+      latestAgentRes,
+    ] = await Promise.all([
+      safeQuery(() =>
+        supabase
+          .from('declarations')
+          .select('id, title, endorse_count, oppose_count, published_at, author_id')
+          .order('endorse_count', { ascending: false })
+          .limit(3),
+        { data: [] }
+      ),
+      safeQuery(() =>
+        supabase
+          .from('debates')
+          .select('id, title, status, created_at')
+          .eq('status', 'active')
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single(),
+        { data: null }
+      ),
+      safeQuery(() =>
+        supabase
+          .from('agents')
+          .select('id, username, account_type, avatar_url, created_at')
+          .eq('status', 'active')
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single(),
+        { data: null }
+      ),
+    ]);
+
     // Use database counts for stats_summary (accurate totals)
     const statsSummary = {
       observations: obsCountRes.count ?? observations.length,
@@ -286,6 +246,11 @@ export async function GET() {
       active_debates: debates,
       chronicle_highlights: chronicleHighlights.length > 0 ? chronicleHighlights : observations.slice(0, 3),
       
+      // Trending
+      trending_declarations: trendingDeclarationsRes.data || [],
+      hottest_debate: hottestDebateRes.data,
+      latest_agent: latestAgentRes.data,
+      
       // Stats
       stats_summary: statsSummary,
       
@@ -297,6 +262,6 @@ export async function GET() {
     });
   } catch (error) {
     console.error('API Error:', error);
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

@@ -39,7 +39,7 @@ export async function POST(
     const { action, ...data } = body;
 
     if (!id) {
-      return NextResponse.json({ error: 'Debate ID required' }, { status: 400 });
+      return NextResponse.json({ error: 'Debate ID required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -64,12 +64,12 @@ export async function POST(
       case 'get_results':
         return getResults(supabase, id);
       default:
-        return NextResponse.json({ error: 'Unknown action' }, { status: 400 });
+        return NextResponse.json({ error: 'Unknown action' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
   } catch (error) {
     console.error('Error:', error);
-    return NextResponse.json({ error: 'Internal error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }
 
@@ -88,7 +88,7 @@ async function setTurnOrder(supabase: any, debateId: string, data: any) {
     .eq('id', debateId);
 
   if (error) {
-    return NextResponse.json({ error: 'Failed to set turn order' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to set turn order' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 
   return NextResponse.json({ success: true, turn_order });
@@ -106,11 +106,11 @@ async function advanceTurn(supabase: any, debateId: string, data: any) {
     .single();
 
   if (!debate) {
-    return NextResponse.json({ error: 'Debate not found' }, { status: 404 });
+    return NextResponse.json({ error: 'Debate not found' }, {  status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 
   if (debate.creator_id !== agent_id) {
-    return NextResponse.json({ error: 'Only creator can advance turns' }, { status: 403 });
+    return NextResponse.json({ error: 'Only creator can advance turns' }, {  status: 403, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 
   const nextIndex = (debate.current_turn_index + 1) % debate.turn_order.length;
@@ -121,7 +121,7 @@ async function advanceTurn(supabase: any, debateId: string, data: any) {
     .eq('id', debateId);
 
   if (error) {
-    return NextResponse.json({ error: 'Failed to advance turn' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to advance turn' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 
   return NextResponse.json({
@@ -151,7 +151,7 @@ async function scoreMessage(supabase: any, debateId: string, data: any) {
     .eq('id', message_id);
 
   if (error) {
-    return NextResponse.json({ error: 'Failed to score message' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to score message' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 
   return NextResponse.json({ success: true, totalScore });
@@ -169,7 +169,7 @@ async function castVote(supabase: any, debateId: string, data: any) {
     .single();
 
   if (debate.status !== 'ended' && !debate.voting_end_at) {
-    return NextResponse.json({ error: 'Voting not open yet' }, { status: 400 });
+    return NextResponse.json({ error: 'Voting not open yet' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 
   const { error } = await supabase
@@ -185,9 +185,9 @@ async function castVote(supabase: any, debateId: string, data: any) {
 
   if (error) {
     if (error.code === '23505') {
-      return NextResponse.json({ error: 'Already voted' }, { status: 409 });
+      return NextResponse.json({ error: 'Already voted' }, {  status: 409, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
-    return NextResponse.json({ error: 'Failed to cast vote' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to cast vote' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 
   return NextResponse.json({ success: true });
@@ -346,7 +346,7 @@ async function startVoting(supabase: any, debateId: string, data: any) {
     .eq('id', debateId);
 
   if (error) {
-    return NextResponse.json({ error: 'Failed to start voting' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to start voting' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 
   return NextResponse.json({

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { createNotification } from '@/lib/notifications';
-import { checkRateLimit, rateLimitHeaders } from '@/lib/rate-limit';
+import { checkRateLimit, checkRateLimitLegacy, rateLimitHeaders } from '@/lib/rate-limit';
 import { requireAuthFromRequest } from '@/lib/auth';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
@@ -14,7 +14,7 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
  */
 export async function POST(request: NextRequest) {
   // Rate limit check
-  const limitResult = checkRateLimit(request);
+  const limitResult = checkRateLimitLegacy(request);
   if (!limitResult.allowed) {
     return NextResponse.json(
       { success: false, error: { code: 'RATE_LIMIT', message: 'Rate limit exceeded. Please try again later.' } },

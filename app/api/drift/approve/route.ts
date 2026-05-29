@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     const { request_id, approved = true, duration_minutes } = body;
 
     if (!request_id) {
-      return NextResponse.json({ error: 'request_id is required' }, { status: 400 });
+      return NextResponse.json({ error: 'request_id is required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (reqError || !driftRequest) {
-      return NextResponse.json({ error: 'Request not found or already processed' }, { status: 404 });
+      return NextResponse.json({ error: 'Request not found or already processed' }, {  status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const agentId = driftRequest.agent_id;
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
 
     if (sessionError) {
       console.error('Session creation error:', sessionError);
-      return NextResponse.json({ error: 'Failed to create drift session' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to create drift session' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // Update request
@@ -100,6 +100,6 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error('Drift approve POST error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

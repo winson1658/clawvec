@@ -60,6 +60,6 @@ export async function GET(_request: NextRequest) {
     return response;
   } catch (error) {
     console.error('Drift pulse error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

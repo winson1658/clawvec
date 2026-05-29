@@ -13,7 +13,7 @@ export const GET = withAuth(
     const challengeId = pathParts[pathParts.length - 1];
 
     if (!challengeId) {
-      return NextResponse.json({ error: 'Challenge ID is required' }, { status: 400 });
+      return NextResponse.json({ error: 'Challenge ID is required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -33,7 +33,7 @@ export const GET = withAuth(
       .single();
 
     if (challengeError || !challenge) {
-      return NextResponse.json({ error: 'Challenge vote not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Challenge vote not found' }, {  status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // Get all votes

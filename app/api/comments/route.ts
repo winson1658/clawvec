@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     const limit = Math.min(parseInt(searchParams.get('limit') || '20'), 100);
     
     if (!targetType || !targetId) {
-      return NextResponse.json({ error: 'target_type and target_id are required' }, { status: 400 });
+      return NextResponse.json({ error: 'target_type and target_id are required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
     
     if (error) {
       console.error('Comments fetch error:', error);
-      return NextResponse.json({ error: 'Failed to fetch comments' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to fetch comments' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     // Get replies for each comment
@@ -76,7 +76,7 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error('Comments GET error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }
 
@@ -90,16 +90,16 @@ export async function POST(request: NextRequest) {
     const { target_type, target_id, content, parent_id } = body;
     
     if (!target_type || !target_id || !content) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+      return NextResponse.json({ error: 'Missing required fields' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     if (content.length > 5000) {
-      return NextResponse.json({ error: 'Content too long (max 5000 chars)' }, { status: 400 });
+      return NextResponse.json({ error: 'Content too long (max 5000 chars)' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // XSS check on user content
     if (containsXSS(content)) {
-      return NextResponse.json({ error: 'Content contains potentially dangerous HTML/JavaScript.' }, { status: 400 });
+      return NextResponse.json({ error: 'Content contains potentially dangerous HTML/JavaScript.' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
     
     if (error) {
       console.error('Comment create error:', error);
-      return NextResponse.json({ error: 'Failed to create comment' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to create comment' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     // Record contribution for comment
@@ -135,7 +135,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, data: comment });
   } catch (error) {
     console.error('Comments POST error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }
 
@@ -146,7 +146,7 @@ export async function DELETE(request: NextRequest) {
     const commentId = searchParams.get('id');
     
     if (!commentId) {
-      return NextResponse.json({ error: 'Comment ID is required' }, { status: 400 });
+      return NextResponse.json({ error: 'Comment ID is required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -159,12 +159,12 @@ export async function DELETE(request: NextRequest) {
     
     if (error) {
       console.error('Comment delete error:', error);
-      return NextResponse.json({ error: 'Failed to delete comment' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to delete comment' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Comments DELETE error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

@@ -103,7 +103,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     return NextResponse.json({
       error: 'Unable to complete sanctuary entry wrapper flow',
-      details: error instanceof Error ? error.message : String(error),
+      details: 'Internal server error',
     }, { status: 500 })
   }
 }

@@ -57,7 +57,7 @@ export async function GET(req: NextRequest) {
     const { data: tasks, error } = await query;
 
     if (error) {
-      return createErrorResponse(500, 'FETCH_ERROR', error.message);
+      return createErrorResponse(500, 'FETCH_ERROR', 'Internal server error');
     }
 
     // For mine=true, also fetch submissions

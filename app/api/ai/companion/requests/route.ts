@@ -40,13 +40,13 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       console.error('Get companion requests error:', error);
-      return NextResponse.json({ error: 'Failed to get companion requests' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to get companion requests' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     return NextResponse.json({ success: true, requests: requests || [] });
   } catch (error) {
     console.error('Get companion requests error:', error);
-    return NextResponse.json({ error: 'Failed to get companion requests' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to get companion requests' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }
 
@@ -58,11 +58,11 @@ export async function PATCH(request: NextRequest) {
     const { request_id, status } = body;
 
     if (!request_id || !status) {
-      return NextResponse.json({ error: 'request_id and status are required' }, { status: 400 });
+      return NextResponse.json({ error: 'request_id and status are required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     if (!['accepted', 'rejected', 'completed'].includes(status)) {
-      return NextResponse.json({ error: 'Invalid status transition' }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid status transition' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const { data: requestData, error: requestError } = await supabase
@@ -72,7 +72,7 @@ export async function PATCH(request: NextRequest) {
       .single();
 
     if (requestError || !requestData) {
-      return NextResponse.json({ error: 'Companion request not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Companion request not found' }, {  status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const { data: updated, error: updateError } = await supabase
@@ -83,7 +83,7 @@ export async function PATCH(request: NextRequest) {
       .single();
 
     if (updateError) {
-      return NextResponse.json({ error: 'Failed to update companion request' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to update companion request' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const targetAgentRaw: any = requestData.target_agent;
@@ -121,6 +121,6 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ success: true, request: updated });
   } catch (error) {
     console.error('Patch companion request error:', error);
-    return NextResponse.json({ error: 'Failed to update companion request' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to update companion request' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

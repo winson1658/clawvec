@@ -24,7 +24,7 @@ export async function GET(request: Request) {
       return NextResponse.json({
         success: false,
         error: 'No session found'
-      }, { status: 401 });
+      }, {  status: 401, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     const sessionToken = sessionMatch[1];
@@ -39,7 +39,7 @@ export async function GET(request: Request) {
       return NextResponse.json({
         success: false,
         error: 'Invalid session'
-      }, { status: 401 });
+      }, {  status: 401, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
     // Fetch full user data from database
@@ -83,6 +83,6 @@ export async function GET(request: Request) {
     return NextResponse.json({
       success: false,
       error: 'Server error'
-    }, { status: 500 });
+    }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

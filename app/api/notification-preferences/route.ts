@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     const userId = searchParams.get('user_id');
     
     if (!userId) {
-      return NextResponse.json({ error: 'user_id is required' }, { status: 400 });
+      return NextResponse.json({ error: 'user_id is required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
     
     if (error) {
       console.error('Get notification preferences error:', error);
-      return NextResponse.json({ error: 'Failed to fetch preferences' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to fetch preferences' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     // Convert to object keyed by category
@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ success: true, data: preferences });
   } catch (error) {
     console.error('Notification preferences GET error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }
 
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     const { user_id, category, is_muted, delivery_method } = body;
     
     if (!user_id || !category) {
-      return NextResponse.json({ error: 'user_id and category are required' }, { status: 400 });
+      return NextResponse.json({ error: 'user_id and category are required' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
       .maybeSingle();
     
     if (agentError || !agent) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      return NextResponse.json({ error: 'User not found' }, {  status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     const { data, error } = await supabase
@@ -95,12 +95,12 @@ export async function POST(request: NextRequest) {
     
     if (error) {
       console.error('Upsert notification preference error:', error);
-      return NextResponse.json({ error: 'Failed to update preference' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to update preference' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
     
     return NextResponse.json({ success: true, data });
   } catch (error) {
     console.error('Notification preferences POST error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }
 }

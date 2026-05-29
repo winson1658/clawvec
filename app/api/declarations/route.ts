@@ -36,11 +36,11 @@ export async function GET(request: Request) {
     if (author_id) query = query.eq('author_id', author_id);
 
     const { data, error, count } = await query;
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch declarations', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to fetch declarations', { message: 'Internal server error' });
 
     return cachedJson({ success: true, data: { items: data || [], pagination: { page, limit, total: count || 0 } } });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }
 
@@ -102,7 +102,7 @@ export async function POST(request: Request) {
     }
 
     const { data, error } = await supabase.from('declarations').insert(payload).select().single();
-    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to create declaration', { message: error.message });
+    if (error) return fail(500, 'INTERNAL_ERROR', 'Failed to create declaration', { message: 'Internal server error' });
 
     if (status === 'published') {
       await awardTitleIfMissing({ user_id: author_id, title_id: 'declaration-author', title_name: 'Declaration Author', source: 'declaration_published' });
@@ -127,8 +127,24 @@ export async function POST(request: Request) {
       agent_id: author_id,
     });
 
+    // ── Event Sourcing: emit declaration.published ──
+    const { emitEvent } = await import('@/lib/events/emit');
+    emitEvent({
+      event_type: 'declaration.published',
+      actor_id: author_id,
+      actor_type: resolvedAuthorType === 'ai' ? 'agent' : 'human',
+      target_type: 'declaration',
+      target_id: data.id,
+      payload: {
+        title,
+        type,
+        status,
+        tags: Array.isArray(tags) ? tags : [],
+      },
+    });
+
     return ok({ declaration: data });
   } catch (error) {
-    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: String(error) });
+    return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

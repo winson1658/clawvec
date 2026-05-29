@@ -1,149 +1,197 @@
 /**
- * Unified validation helpers for write APIs
- * Prevents oversized content and leaks raw errors
+ * Standardized input validation helpers for API routes.
+ * Prevents oversized payloads, null byte injection, and basic type attacks.
  */
 
-import { NextResponse } from 'next/server';
-
-// ── Length limits ───────────────────────────────
 export const LIMITS = {
-  discussionTitle: 200,
-  discussionContent: 50000,
-  observationTitle: 200,
-  observationSummary: 2000,
-  observationContent: 50000,
-  replyContent: 10000,
-  commentContent: 5000,
-  reactionType: 50,
-  reportReason: 50,
-  reportDescription: 5000,
-  declarationTitle: 200,
-  declarationContent: 50000,
-  companionBio: 5000,
-  username: 50,
-  email: 254,
-  password: 128,
-  apiKey: 128,
-  tag: 50,
-  tags: 20,
-  category: 50,
-  generic: 100000,
-};
+  title: { min: 1, max: 500 },
+  content: { min: 1, max: 50000 },
+  username: { min: 2, max: 50 },
+  email: { min: 5, max: 254 },
+  password: { min: 6, max: 128 },
+  tags: { max: 20 },
+  tagLength: { max: 50 },
+  url: { max: 2048 },
+  name: { min: 1, max: 100 },
+  description: { max: 2000 },
+  jsonBody: { max: 100000 }, // 100KB max body
+} as const;
 
-// ── Sanitise raw error messages ────────────────────────
-export function sanitizeError(err: unknown): string {
-  if (err instanceof Error) {
-    const msg = err.message;
-    // Strip Postgres internal details
-    if (
-      msg.includes('relation') ||
-      msg.includes('column') ||
-      msg.includes('constraint') ||
-      msg.includes('syntax error') ||
-      msg.includes('violates') ||
-      msg.includes('duplicate key')
-    ) {
-      return 'Database operation failed. Please try again later.';
+export interface ValidationResult {
+  valid: boolean;
+  error?: string;
+  field?: string;
+}
+
+/**
+ * Check for null bytes (0x00) — common injection vector.
+ */
+export function containsNullByte(value: string): boolean {
+  return value.includes('\x00');
+}
+
+/**
+ * Validate string length.
+ */
+export function validateLength(
+  value: string,
+  min: number,
+  max: number,
+  field: string
+): ValidationResult {
+  if (typeof value !== 'string') {
+    return { valid: false, error: `${field} must be a string`, field };
+  }
+  if (value.length < min) {
+    return { valid: false, error: `${field} must be at least ${min} characters`, field };
+  }
+  if (value.length > max) {
+    return { valid: false, error: `${field} must not exceed ${max} characters`, field };
+  }
+  if (containsNullByte(value)) {
+    return { valid: false, error: `${field} contains invalid characters`, field };
+  }
+  return { valid: true };
+}
+
+/**
+ * Validate email format (basic RFC 5322 subset).
+ */
+export function validateEmail(email: string): ValidationResult {
+  const lengthCheck = validateLength(email, LIMITS.email.min, LIMITS.email.max, 'email');
+  if (!lengthCheck.valid) return lengthCheck;
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return { valid: false, error: 'Invalid email format', field: 'email' };
+  }
+  return { valid: true };
+}
+
+/**
+ * Validate URL format.
+ */
+export function validateURL(url: string): ValidationResult {
+  const lengthCheck = validateLength(url, 1, LIMITS.url.max, 'url');
+  if (!lengthCheck.valid) return lengthCheck;
+
+  try {
+    new URL(url);
+    return { valid: true };
+  } catch {
+    return { valid: false, error: 'Invalid URL format', field: 'url' };
+  }
+}
+
+/**
+ * Validate array of tags.
+ */
+export function validateTags(tags: unknown[]): ValidationResult {
+  if (!Array.isArray(tags)) {
+    return { valid: false, error: 'tags must be an array', field: 'tags' };
+  }
+  if (tags.length > LIMITS.tags.max) {
+    return { valid: false, error: `tags must not exceed ${LIMITS.tags.max} items`, field: 'tags' };
+  }
+  for (const tag of tags) {
+    if (typeof tag !== 'string') {
+      return { valid: false, error: 'each tag must be a string', field: 'tags' };
     }
-    return msg;
+    if (tag.length > LIMITS.tagLength.max) {
+      return { valid: false, error: `each tag must not exceed ${LIMITS.tagLength.max} characters`, field: 'tags' };
+    }
+    if (containsNullByte(tag)) {
+      return { valid: false, error: 'tags contain invalid characters', field: 'tags' };
+    }
   }
-  if (typeof err === 'string') return err;
-  return 'An unexpected error occurred.';
+  return { valid: true };
 }
 
-// ── Generic error response ────────────────────────────
-export function errorResponse(message: string, status: number = 400) {
-  return NextResponse.json(
-    { success: false, error: { message } },
-    { status }
-  );
-}
-
-export function serverErrorResponse(err: unknown) {
-  const message = sanitizeError(err);
-  console.error('Server error:', err);
-  return NextResponse.json(
-    { success: false, error: { message } },
-    { status: 500 }
-  );
-}
-
-// ── Length validation ───────────────────────────────────
-export function checkLength(
-  value: unknown,
-  maxLen: number,
-  fieldName: string
-): string | null {
-  if (typeof value !== 'string') return null; // let type checks handle non-strings
-  if (value.length > maxLen) {
-    return `${fieldName} exceeds maximum length of ${maxLen} characters.`;
+/**
+ * Validate JSON body size.
+ */
+export function validateBodySize(body: string): ValidationResult {
+  const byteLength = new TextEncoder().encode(body).length;
+  if (byteLength > LIMITS.jsonBody.max) {
+    return {
+      valid: false,
+      error: `Request body too large. Max ${LIMITS.jsonBody.max} bytes allowed.`,
+      field: 'body',
+    };
   }
-  return null;
+  return { valid: true };
 }
 
-export function validateLengths(
-  fields: Record<string, { value: unknown; max: number; name: string }>
-): string | null {
-  for (const key of Object.keys(fields)) {
-    const { value, max, name } = fields[key];
-    const err = checkLength(value, max, name);
-    if (err) return err;
-  }
-  return null;
+/**
+ * Sanitize user input: trim whitespace, collapse multiple spaces.
+ */
+export function sanitizeInput(value: string): string {
+  return value.trim().replace(/\s+/g, ' ');
 }
 
-// ── UUID validation ─────────────────────────────────────
-const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+/**
+ * Map PostgreSQL errors to HTTP status codes.
+ */
+export function mapPostgresError(error: { code?: string; message?: string }): { status: number; message: string } {
+  const code = error.code;
+  const message = error.message || 'Database error';
 
-export function validateUUID(id: string): boolean {
-  return UUID_REGEX.test(id);
-}
-
-// ── PostgreSQL error code mapping ─────────────────────────
-export function mapPostgresError(error: { code?: string; message?: string }): {
-  status: number;
-  message: string;
-} {
-  switch (error.code) {
-    case '22P02':
-      return { status: 400, message: 'Invalid ID format' };
-    case '23503':
-      return { status: 400, message: 'Referenced record not found' };
-    case '23514':
-      return { status: 400, message: 'Invalid value. Check your input against allowed values.' };
-    case '23505':
-      return { status: 409, message: 'Already exists' };
+  switch (code) {
+    case '23505': // unique_violation
+      return { status: 409, message: 'Resource already exists' };
+    case '23503': // foreign_key_violation
+      return { status: 400, message: 'Referenced resource does not exist' };
+    case '23502': // not_null_violation
+      return { status: 400, message: 'Required field is missing' };
+    case 'PGRST103': // range not satisfiable
+      return { status: 400, message: 'Invalid pagination range' };
+    case 'PGRST116': // JWT expired
+      return { status: 401, message: 'Authentication expired' };
+    case 'PGRST301': // row-level security violation
+      return { status: 403, message: 'Access denied' };
+    case '42P01': // undefined_table
+      return { status: 500, message: 'Internal server error' };
     default:
-      // Check message patterns for known errors not caught by code
-      const msg = error.message || '';
-      if (msg.includes('invalid input syntax for type uuid')) {
-        return { status: 400, message: 'Invalid ID format' };
-      }
-      if (msg.includes('violates check constraint')) {
-        return { status: 400, message: 'Invalid value. Check your input against allowed values.' };
-      }
-      if (msg.includes('violates foreign key constraint')) {
-        return { status: 400, message: 'Referenced record not found' };
-      }
-      return { status: 500, message: 'Database operation failed. Please try again later.' };
+      return { status: 500, message: 'Internal server error' };
   }
 }
 
-// ── XSS prevention: reject obvious script tags ──────────────
-export function checkXSS(value: unknown, fieldName: string): string | null {
-  if (typeof value !== 'string') return null;
-  const dangerous = /<script\b|<iframe\b|<object\b|<embed\b|javascript:|on\w+\s*=/i;
-  if (dangerous.test(value)) {
-    return `${fieldName} contains potentially dangerous content.`;
-  }
-  return null;
+/**
+ * Legacy helpers for backward compatibility.
+ */
+export function validateUUID(value: string): boolean {
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  return uuidRegex.test(value);
 }
 
-// ── Whitespace validation ─────────────────────────────────
-export function checkWhitespace(value: unknown, fieldName: string): string | null {
-  if (typeof value !== 'string') return null;
-  if (value.trim().length === 0 && value.length > 0) {
-    return `${fieldName} cannot be only whitespace.`;
+export function checkWhitespace(value: string): boolean {
+  return /^\s*$/.test(value);
+}
+
+export function validateLengths(body: Record<string, unknown>): ValidationResult {
+  for (const [key, value] of Object.entries(body)) {
+    if (typeof value === 'string') {
+      const limit = LIMITS[key as keyof typeof LIMITS] as { min?: number; max?: number } | undefined;
+      if (limit?.max && value.length > limit.max) {
+        return { valid: false, error: `${key} exceeds maximum length`, field: key };
+      }
+    }
   }
-  return null;
+  return { valid: true };
+}
+
+export function checkXSS(value: string): boolean {
+  const xssPattern = /<(script|iframe|object|embed|form)|javascript:|on\w+\s*=|data:text\/html/i;
+  return xssPattern.test(value);
+}
+
+export function errorResponse(message: string, status: number = 400): Response {
+  return new Response(JSON.stringify({ error: message }), {
+    status,
+    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+  });
+}
+
+export function serverErrorResponse(): Response {
+  return errorResponse('Internal server error', 500);
 }

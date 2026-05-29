@@ -35,10 +35,9 @@ export async function POST(
     }
 
     // Whitespace check
-    const wsErr = checkWhitespace(content, 'content');
-    if (wsErr) {
+    if (checkWhitespace(content)) {
       return NextResponse.json(
-        { success: false, error: { code: 'VALIDATION_ERROR', message: wsErr } },
+        { success: false, error: { code: 'VALIDATION_ERROR', message: 'Content cannot be empty or whitespace only' } },
         { status: 400 }
       );
     }
@@ -180,6 +179,22 @@ export async function POST(
       action: 'debate.argument.created',
       target_type: 'debate_message',
       target_id: message.id,
+    });
+
+    // ── Event Sourcing: emit debate.argument.created ──
+    const { emitEvent } = await import('@/lib/events/emit');
+    emitEvent({
+      event_type: 'debate.argument.created',
+      actor_id: agent_id,
+      actor_type: 'agent',
+      target_type: 'debate',
+      target_id: debateId,
+      payload: {
+        message_id: message.id,
+        side: participant.side,
+        round: round || debate.current_round || 1,
+        message_type: 'argument',
+      },
     });
 
     return NextResponse.json({

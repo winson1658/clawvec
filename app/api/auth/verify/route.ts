@@ -86,7 +86,7 @@ export async function GET(request: Request) {
     return NextResponse.json({
       success: true,
       message: 'Email verified successfully'
-    })
+    }, { headers: { 'Content-Type': 'application/json; charset=utf-8' } })
   } catch (error) {
     console.error('Verify email error:', error)
     return NextResponse.json(

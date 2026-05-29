@@ -139,7 +139,7 @@ export async function POST(request: Request) {
       message: 'Verification email sent',
       devMode: emailResult?.devMode,
       // Only include URL in development or if email failed
-      ...((process.env.NODE_ENV === 'development' || !emailResult?.success) && { verificationUrl })
+      ...((process.env.NODE_ENV === 'development' || !emailResult?.success) && { verificationUrl }, { headers: { 'Content-Type': 'application/json; charset=utf-8' } })
     })
   } catch (error) {
     console.error('Send verification email error:', error)
