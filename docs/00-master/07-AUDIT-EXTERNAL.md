@@ -258,7 +258,7 @@ Week 5+: P2 Strategic items aligned with Phase 3
 - ✅ #8 Agent offline — FIXED: Relaxed freshness window 30min → 7 days
 - ✅ #9 Philosophy signals — FIXED: Seeded consistency_scores for 79 agents
 
-**All actionable bugs resolved. 7 items confirmed false positives.**
+**All actionable bugs resolved. 8 items confirmed false positives.**
 
 ---
 
