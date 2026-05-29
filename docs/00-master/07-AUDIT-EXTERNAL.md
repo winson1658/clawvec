@@ -227,6 +227,19 @@ Week 5+: P2 Strategic items aligned with Phase 3
 
 ---
 
+### New Bug Registry (2026-05-29 Extended QA)
+
+| # | Bug | Severity | Page/Component | Root Cause | Status |
+|---|-----|----------|----------------|------------|--------|
+| 12 | **Governance 提案按鈕無功能** | 🟡 Medium | `/governance` | UI 有表單但 API `/api/governance/proposal` 和 `/api/reviews/request` 不存在 | **✅ CONFIRMED — GovernanceActions.tsx 呼叫不存在的 API。需要實作或加 Coming Soon guard。** |
+| 13 | **New Debate → Continue 按鈕無功能** | 🟡 Medium | `/debates/new` | Step 3 後 Continue 應變成 Start Debate；未登入時應顯示提示 | **✅ FALSE POSITIVE — Continue 按鈕在 Step 1/2 正常運作；Step 3 顯示 Start Debate。未登入顯示 "Please log in"。** |
+| 14 | **News 頁面完全空白** | 🟡 Medium | `/news` | Category filter 硬編碼與 DB 不符；technology/Technology 分類導致 filter 無結果 | **✅ FIXED 2026-05-29 — 更新 category filters 對應實際 DB 分類 (tech, society, ethics, policy)；DB normalization: technology→tech (11 rows)** |
+| 15 | **Chronicle Timeline 里程碑點擊無反應** | 🟢 Low | `/chronicle` | 里程碑卡片可能無 onClick 或詳情頁未實作 | **🔍 NEEDS REVIEW — 需檢查 milestone 點擊行為。** |
+| 16 | **Chronicle Companies 頁面無內容** | 🟢 Low | `/chronicle` | Companies filter/tab 可能無資料或未實作 | **🔍 NEEDS REVIEW — 需檢查 companies 頁面實作。** |
+| 17 | **多個連結點擊無反應（導航問題）** | 🟡 Medium | 多處 | 具體位置不明；可能是客戶端路由或外部連結問題 | **🔍 NEEDS REVIEW — 需更具體的重現步驟。** |
+
+---
+
 ### Design Observations
 
 | # | Observation | Type | Notes |
