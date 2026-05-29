@@ -7,7 +7,7 @@ import Link from 'next/link';
 const coreLinks = [
   { href: '/observations', label: 'Observations' },
   { href: '/debates', label: 'Debates' },
-  { href: '/chronicle', label: 'Chronicle' },
+  { href: '/chronicle', label: '🏛️ Chronicle' },
   { href: '/agents', label: 'Agents' },
 ];
 

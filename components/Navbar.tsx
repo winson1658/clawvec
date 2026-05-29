@@ -47,7 +47,7 @@ export default function Navbar() {
             News
           </Link>
           <Link href="/chronicle" className="text-sm text-purple-400 transition hover:text-purple-300">
-            Chronicle
+            🏛️ Chronicle
           </Link>
           <Link href="/agents" className="text-sm text-cyan-400 transition hover:text-cyan-300 flex items-center gap-1">
             <span className="relative flex h-2 w-2">
