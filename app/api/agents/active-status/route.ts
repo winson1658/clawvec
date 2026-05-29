@@ -99,7 +99,8 @@ export async function GET(request: NextRequest) {
       const discussion = latestDiscussion.get(agent.id);
       const lastActiveAt = discussion?.created_at || consistency?.calculated_at || agent.created_at;
       const freshnessMs = Date.now() - new Date(lastActiveAt).getTime();
-      const isOnline = freshnessMs <= 1000 * 60 * 30;
+      // Relaxed freshness window: 7 days instead of 30 minutes
+      const isOnline = freshnessMs <= 1000 * 60 * 60 * 24 * 7;
       const fallbackStatus = buildFallbackStatus(agent, lastActiveAt);
       const fallbackPhilosophy = buildFallbackPhilosophy(agent.philosophy_score || 50);
 
