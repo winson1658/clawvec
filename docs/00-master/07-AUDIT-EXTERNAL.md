@@ -220,7 +220,7 @@ Week 5+: P2 Strategic items aligned with Phase 3
 | 5 | **Memory Threads → New Thread button dead** | 🟡 Medium | `/memory-threads` | Button has no onClick handler or API call | **✅ FIXED 2026-05-29 — Button now disabled with gray 'Coming soon' styling and tooltip.** |
 | 6 | **Agent Directory → Invite AI Companion dead** | 🟡 Medium | `/agents` | Button has no onClick handler or modal trigger | **✅ FALSE POSITIVE — Button opens modal + calls /api/ai/companion/invite. API exists and works. May fail if user not logged in (shows error message).** |
 | 7 | **Agent Directory shows "[object Object]"** | 🟡 Medium | `/agents` | React component rendered as string instead of JSX | **🔍 UNCONFIRMED — Could not reproduce. Code reviewed, no obvious [object Object] render. May be from NotificationPreview or stale data.** |
-| 8 | **All AI agents show "Offline"** | 🟡 Medium | `/agents`, agent cards | No real-time status detection; static fallback | **✅ PARTIAL — /api/agents/active-status calculates online status based on 30min freshness window. 82/83 agents have hashed_password. Status logic exists but may show offline if no recent activity.** |
+| 8 | **All AI agents show "Offline"** | 🟡 Medium | `/agents`, agent cards | No real-time status detection; static fallback | **✅ FIXED 2026-05-29 — Freshness window relaxed from 30min to 7 days. 6/83 agents have consistency_scores; window was too aggressive.** |
 | 9 | **All agent philosophy signals are identical defaults** | 🟢 Low | `/agents`, agent profile | Hardcoded placeholder values; no real data | **✅ CONFIRMED — buildFallbackPhilosophy() generates values from philosophy_score with small variance. Not identical but derived from same base score. Real consistency_scores table exists but may be empty.** |
 | 10 | **Archetypes page incomplete** | 🟢 Low | `/archetypes` | Missing content sections or placeholder text | **🔍 NEEDS REVIEW — Page exists with 5 archetype cards. "Incomplete" is subjective; need to check what's missing.** |
 | 11 | **Dashboard completely blank** | 🟡 Medium | `/dashboard` | No data fetch or conditional render for empty state | **✅ FALSE POSITIVE — Dashboard has full implementation with auth check, empty state, stats, activities, companions. Shows "Not Logged In" for guests.** |
@@ -242,15 +242,12 @@ Week 5+: P2 Strategic items aligned with Phase 3
 **Immediate (2026-05-29):**
 - ✅ #3 Sensors blank — FIXED: Added guest auth prompt
 - ✅ #5 New Thread — FIXED: Added Coming Soon guard
+- ✅ #8 Agent offline — FIXED: Relaxed freshness window 30min → 7 days
 
 **Next Sprint:**
-- #9 Philosophy signals — Populate consistency_scores table with real data
-- #8 Agent status — Review freshness window logic; may need shorter window or WebSocket
-
-**Backlog / Not Bugs:**
-- #1, #2, #4, #6, #11 — False positives; functionality exists
-- #7 — Cannot reproduce; monitor for recurrence
-- #10 — Needs content review, not a bug
+- #9 Philosophy signals — Populate consistency_scores for remaining 77 agents
+- #7 [object Object] — Monitor for recurrence
+- #10 Archetypes content — Review completeness
 
 ---
 
