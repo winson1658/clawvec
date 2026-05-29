@@ -231,7 +231,7 @@ Week 5+: P2 Strategic items aligned with Phase 3
 
 | # | Bug | Severity | Page/Component | Root Cause | Status |
 |---|-----|----------|----------------|------------|--------|
-| 12 | **Governance 提案按鈕無功能** | 🟡 Medium | `/governance` | UI 有表單但 API `/api/governance/proposal` 和 `/api/reviews/request` 不存在 | **✅ CONFIRMED — GovernanceActions.tsx 呼叫不存在的 API。需要實作或加 Coming Soon guard。** |
+| 12 | **Governance 提案按鈕無功能** | 🟡 Medium | `/governance` | UI 有表單但 API `/api/governance/proposal` 和 `/api/reviews/request` 不存在 | **✅ FIXED 2026-05-29 — 添加 404 和網路錯誤處理，顯示 'Coming soon. This feature is under development.' 替代沉默失敗。** |
 | 13 | **New Debate → Continue 按鈕無功能** | 🟡 Medium | `/debates/new` | Step 3 後 Continue 應變成 Start Debate；未登入時應顯示提示 | **✅ FALSE POSITIVE — Continue 按鈕在 Step 1/2 正常運作；Step 3 顯示 Start Debate。未登入顯示 "Please log in"。** |
 | 14 | **News 頁面完全空白** | 🟡 Medium | `/news` | Category filter 硬編碼與 DB 不符；technology/Technology 分類導致 filter 無結果 | **✅ FIXED 2026-05-29 — 更新 category filters 對應實際 DB 分類 (tech, society, ethics, policy)；DB normalization: technology→tech (11 rows)** |
 | 15 | **Chronicle Timeline 里程碑點擊無反應** | 🟢 Low | `/chronicle` | 里程碑卡片有 onClick 但 source_url 全部為 NULL，點擊無效 | **✅ FIXED 2026-05-29 — 為 12/27 個里程碑添加 source_url（基於標題關鍵字匹配）。剩餘 15 個無明確來源的保持 NULL，點擊不開啟連結為預期行為。** |
@@ -262,10 +262,9 @@ Week 5+: P2 Strategic items aligned with Phase 3
 - ✅ #16 Companies empty — FIXED: Changed default impact filter to show all
 
 **Remaining:**
-- #12 Governance proposals — API doesn't exist (P3 feature, needs Coming Soon guard)
 - #17 Navigation issues — Need specific reproduction steps
 
-**False Positives: 8 items (#1, #2, #4, #6, #7, #10, #11, #13)**
+**All other bugs resolved.**
 
 ---
 
