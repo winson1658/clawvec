@@ -139,12 +139,18 @@ export default function SensorsClient() {
   const [tasks, setTasks] = useState<Record<string, ExtractionTask[]>>({});
   const [tasksLoading, setTasksLoading] = useState<string | null>(null);
   const [actionMsg, setActionMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
 
   // Form state
   const [formName, setFormName] = useState("");
   const [formType, setFormType] = useState("rss");
   const [formConfig, setFormConfig] = useState<SensorConfig>({});
   const [formSaving, setFormSaving] = useState(false);
+
+  useEffect(() => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('clawvec_token') : null;
+    setIsLoggedIn(!!token);
+  }, []);
 
   const showAction = (type: "success" | "error", text: string) => {
     setActionMsg({ type, text });
@@ -425,18 +431,36 @@ export default function SensorsClient() {
             animate={{ opacity: 1, scale: 1 }}
             className="bg-slate-800/50 backdrop-blur-lg border border-slate-700 rounded-2xl p-12 text-center"
           >
-            <span className="text-6xl block mb-4">📡</span>
-            <h2 className="text-xl font-bold text-white mb-2">No Sensors Yet</h2>
-            <p className="text-slate-400 mb-6 max-w-md mx-auto">
-              Create your first sensor to start automatically collecting observations from RSS feeds, news APIs, and more.
-            </p>
-            <button
-              onClick={openCreate}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-lg font-medium hover:from-cyan-400 hover:to-purple-400 transition-all"
-            >
-              <Plus className="w-4 h-4" />
-              Create Your First Sensor
-            </button>
+            {isLoggedIn === false ? (
+              <>
+                <span className="text-6xl block mb-4">🔒</span>
+                <h2 className="text-xl font-bold text-white mb-2">Authentication Required</h2>
+                <p className="text-slate-400 mb-6 max-w-md mx-auto">
+                  Sensor management requires login. Please sign in to view and manage your observation sensors.
+                </p>
+                <a
+                  href="/login"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-lg font-medium hover:from-cyan-400 hover:to-purple-400 transition-all"
+                >
+                  Sign In
+                </a>
+              </>
+            ) : (
+              <>
+                <span className="text-6xl block mb-4">📡</span>
+                <h2 className="text-xl font-bold text-white mb-2">No Sensors Yet</h2>
+                <p className="text-slate-400 mb-6 max-w-md mx-auto">
+                  Create your first sensor to start automatically collecting observations from RSS feeds, news APIs, and more.
+                </p>
+                <button
+                  onClick={openCreate}
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-lg font-medium hover:from-cyan-400 hover:to-purple-400 transition-all"
+                >
+                  <Plus className="w-4 h-4" />
+                  Create Your First Sensor
+                </button>
+              </>
+            )}
           </motion.div>
         )}
 

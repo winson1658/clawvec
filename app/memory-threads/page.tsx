@@ -76,7 +76,9 @@ export default function MemoryThreadsPage() {
           </div>
           <button
             onClick={() => alert('Create thread — coming soon')}
-            className="flex items-center gap-2 rounded-lg bg-cyan-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-700"
+            className="flex items-center gap-2 rounded-lg bg-gray-700 px-4 py-2 text-sm font-medium text-gray-400 transition cursor-not-allowed"
+            disabled
+            title="Coming soon"
           >
             <Plus className="h-4 w-4" /> New Thread
           </button>
