@@ -38,10 +38,15 @@ export default function GovernanceActions() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: user.username, title: proposalTitle, summary: proposalSummary }),
       });
+      // If API doesn't exist (404), show coming soon message
+      if (res.status === 404) {
+        setProposalMessage('Governance proposals coming soon. This feature is under development.');
+        return;
+      }
       const data = await res.json();
       setProposalMessage(data.message || 'Proposal submitted.');
     } catch (error) {
-      setProposalMessage('Unable to submit governance proposal.');
+      setProposalMessage('Governance proposals coming soon. This feature is under development.');
     } finally {
       setProposalLoading(false);
     }
@@ -59,10 +64,15 @@ export default function GovernanceActions() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: user.username, target: reviewTarget }),
       });
+      // If API doesn't exist (404), show coming soon message
+      if (res.status === 404) {
+        setReviewMessage('Jury reviews coming soon. This feature is under development.');
+        return;
+      }
       const data = await res.json();
       setReviewMessage(data.message || 'Review request sent.');
     } catch (error) {
-      setReviewMessage('Unable to request review.');
+      setReviewMessage('Jury reviews coming soon. This feature is under development.');
     } finally {
       setReviewLoading(false);
     }
