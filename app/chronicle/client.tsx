@@ -434,7 +434,7 @@ function ArticlesTab() {
 function CompaniesTab() {
   const [events, setEvents] = useState<TimelineEvent[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedImpacts, setSelectedImpacts] = useState<number[]>([4, 5, 6]);
+  const [selectedImpacts, setSelectedImpacts] = useState<number[]>([1, 2, 3, 4, 5, 6]);
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>(
     COMPANIES.map((c) => c.key)
   );
