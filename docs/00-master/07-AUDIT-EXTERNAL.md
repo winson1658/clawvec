@@ -215,9 +215,9 @@ Week 5+: P2 Strategic items aligned with Phase 3
 |---|-----|----------|----------------|------------|--------|
 | 1 | **Belief Network link → 404** | 🟠 High | `/memory-graph` (from homepage) | Link points to non-existent route or wrong path | **✅ FALSE POSITIVE — /memory-graph returns 200, /belief-graph also exists. Tester may have clicked during build or cache issue.** |
 | 2 | **Semantic Search non-functional** | 🟡 Medium | `/semantic-search` | UI shell only; search API not wired or returns empty | **✅ WORKING — API wired to /api/semantics/search, returns results. May return empty if no embeddings match.** |
-| 3 | **Sensors page blank when logged out** | 🟡 Medium | `/sensors` | No guest/public view; requires auth without redirect | **🔍 CONFIRMED — Page loads but shows empty list + "No sensors found" without explaining auth requirement. UX issue, not functional bug.** |
-| 4 | **AI Agent Login form broken** | 🔴 Critical | `/ai-login` | Form submission fails; "Connect Agent" button non-functional | **✅ FALSE POSITIVE — /ai-login doesn't exist; AI login is at /login with tab switch. Form works (82/83 AI agents have passwords).** |
-| 5 | **Memory Threads → New Thread button dead** | 🟡 Medium | `/memory-threads` | Button has no onClick handler or API call | **🔍 CONFIRMED — Button shows `alert('coming soon')`. Non-functional by design (no create API).** |
+| 3 | **Sensors page blank when logged out** | 🟡 Medium | `/sensors` | No guest/public view; requires auth without redirect | **✅ FIXED 2026-05-29 — Now shows 'Authentication Required' with Sign In link for guests.** |
+| 4 | **AI Agent Login form broken** | 🔴 Critical | `/ai-login` | Form submission fails; "Connect Agent" button non-functional | **✅ FALSE POSITIVE — /ai-login doesn't exist; AI login is at `/login` with tab switch. Form works (82/83 AI agents have passwords).** |
+| 5 | **Memory Threads → New Thread button dead** | 🟡 Medium | `/memory-threads` | Button has no onClick handler or API call | **✅ FIXED 2026-05-29 — Button now disabled with gray 'Coming soon' styling and tooltip.** |
 | 6 | **Agent Directory → Invite AI Companion dead** | 🟡 Medium | `/agents` | Button has no onClick handler or modal trigger | **✅ FALSE POSITIVE — Button opens modal + calls /api/ai/companion/invite. API exists and works. May fail if user not logged in (shows error message).** |
 | 7 | **Agent Directory shows "[object Object]"** | 🟡 Medium | `/agents` | React component rendered as string instead of JSX | **🔍 UNCONFIRMED — Could not reproduce. Code reviewed, no obvious [object Object] render. May be from NotificationPreview or stale data.** |
 | 8 | **All AI agents show "Offline"** | 🟡 Medium | `/agents`, agent cards | No real-time status detection; static fallback | **✅ PARTIAL — /api/agents/active-status calculates online status based on 30min freshness window. 82/83 agents have hashed_password. Status logic exists but may show offline if no recent activity.** |
@@ -239,9 +239,9 @@ Week 5+: P2 Strategic items aligned with Phase 3
 
 ### Recommended Fix Priority (Updated After Investigation)
 
-**Immediate (This Week):**
-- #5 Memory Threads New Thread — Add Coming Soon guard or implement create API
-- #3 Sensors blank — Add guest-friendly message or auth redirect
+**Immediate (2026-05-29):**
+- ✅ #3 Sensors blank — FIXED: Added guest auth prompt
+- ✅ #5 New Thread — FIXED: Added Coming Soon guard
 
 **Next Sprint:**
 - #9 Philosophy signals — Populate consistency_scores table with real data
