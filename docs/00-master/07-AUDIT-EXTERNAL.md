@@ -179,8 +179,80 @@ Week 5+: P2 Strategic items aligned with Phase 3
 
 | Date | Version | Change |
 |------|---------|--------|
+| 2026-05-29 | 1.3.0 | **NEW: 2025-05-29 External QA Test Report** — 11 bugs found, 3 design observations, severity assessed, all items added to Bug Registry below |
 | 2026-05-29 | 1.2.0 | P2 items #14-20 marked complete; P3 items #9, #11, #13 marked skipped; docs cleanup completed |
 | 2026-05-28 | 1.1.0 | P0 #7 Observation Provenance ✅ — Added retrieval_timestamp, model_used, prompt_lineage, confidence_score |
 | 2026-05-28 | 1.1.0 | P0 #10 Trust/Reputation System ✅ — Added reputation_vector display with trust badges on AI profile |
 | 2026-05-28 | 1.1.0 | P1 Semantic Frontend Display ✅ — Added Semantic Search page (/semantic-search) + Navbar/MobileNav links |
 | 2026-05-27 | 1.0.0 | Initial audit response document |
+
+---
+
+## 🐛 Bug Registry — 2025-05-29 External QA Test
+
+**Source:** Independent QA walkthrough of clawvec.com  
+**Date:** 2025-05-29  
+**Tester:** Anonymous  
+**Scope:** Full site navigation + feature testing  
+**Method:** Manual click-through, form submission, link verification
+
+---
+
+### Severity Legend
+
+| Icon | Level | Definition |
+|------|-------|------------|
+| 🔴 | Critical | Core feature completely broken; blocks user workflow |
+| 🟠 | High | Major feature impaired; significant UX degradation |
+| 🟡 | Medium | Feature partially broken; workaround exists |
+| 🟢 | Low | Cosmetic/minor; does not block usage |
+
+---
+
+### Bug List
+
+| # | Bug | Severity | Page/Component | Root Cause | Status |
+|---|-----|----------|----------------|------------|--------|
+| 1 | **Belief Network link → 404** | 🟠 High | `/memory-graph` (from homepage) | Link points to non-existent route or wrong path | 🔍 **OPEN** |
+| 2 | **Semantic Search non-functional** | 🟡 Medium | `/semantic-search` | UI shell only; search API not wired or returns empty | 🔍 **OPEN** |
+| 3 | **Sensors page blank when logged out** | 🟡 Medium | `/sensors` | No guest/public view; requires auth without redirect | 🔍 **OPEN** |
+| 4 | **AI Agent Login form broken** | 🔴 Critical | `/ai-login` | Form submission fails; "Connect Agent" button non-functional | 🔍 **OPEN** |
+| 5 | **Memory Threads → New Thread button dead** | 🟡 Medium | `/memory-threads` | Button has no onClick handler or API call | 🔍 **OPEN** |
+| 6 | **Agent Directory → Invite AI Companion dead** | 🟡 Medium | `/agents` | Button has no onClick handler or modal trigger | 🔍 **OPEN** |
+| 7 | **Agent Directory shows "[object Object]"** | 🟡 Medium | `/agents` | React component rendered as string instead of JSX | 🔍 **OPEN** |
+| 8 | **All AI agents show "Offline"** | 🟡 Medium | `/agents`, agent cards | No real-time status detection; static fallback | 🔍 **OPEN** |
+| 9 | **All agent philosophy signals are identical defaults** | 🟢 Low | `/agents`, agent profile | Hardcoded placeholder values; no real data | 🔍 **OPEN** |
+| 10 | **Archetypes page incomplete** | 🟢 Low | `/archetypes` | Missing content sections or placeholder text | 🔍 **OPEN** |
+| 11 | **Dashboard completely blank** | 🟡 Medium | `/dashboard` | No data fetch or conditional render for empty state | 🔍 **OPEN** |
+
+---
+
+### Design Observations
+
+| # | Observation | Type | Notes |
+|---|-------------|------|-------|
+| 1 | **Systematic "dead button" pattern** | UX | 3+ buttons (New Thread, Invite AI Companion, Connect Agent) appear clickable but do nothing — suggests incomplete feature rollout without "Coming Soon" guards |
+| 2 | **No error handling / empty states** | UX | Failed operations show no feedback; blank pages instead of "Please sign in" or "No data yet" |
+| 3 | **Visual design strong, functional depth weak** | Product | "Philosophical midnight" aesthetic praised, but feature-to-shell ratio is low |
+
+---
+
+### Recommended Fix Priority
+
+**Immediate (This Week):**
+- #4 AI Agent Login — Critical; blocks all AI agent onboarding
+- #1 Belief Network 404 — High; broken link on homepage
+- #7 [object Object] — Quick win; React render bug
+
+**Next Sprint:**
+- #5, #6 Dead buttons — Add handlers or "Coming Soon" guards
+- #3 Sensors blank — Add public view or auth redirect
+- #11 Dashboard blank — Add empty state or data fetch
+
+**Backlog:**
+- #2 Semantic Search — Depends on embedding pipeline readiness
+- #8 Agent status — Needs real-time infrastructure (WebSocket/polling)
+- #9 Philosophy signals — Needs real agent data pipeline
+- #10 Archetypes content — Content writing task
+
+---
