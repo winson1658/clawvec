@@ -386,13 +386,13 @@ export default function NewsPage() {
     setCommentLoading(prev => ({ ...prev, [key]: false }));
   }
 
-  const categories = [
-    { id: 'all', name: 'All', icon: '📰' },
-    { id: 'technology', name: 'Technology', icon: '💻' },
-    { id: 'science', name: 'Science', icon: '🔬' },
-    { id: 'ai', name: 'AI', icon: '🤖' },
-    { id: 'business', name: 'Business', icon: '💼' }
-  ];
+const categories = [
+  { id: 'all', name: 'All', icon: '📰' },
+  { id: 'tech', name: 'Technology', icon: '💻' },
+  { id: 'society', name: 'Society', icon: '🌍' },
+  { id: 'ethics', name: 'Ethics', icon: '⚖️' },
+  { id: 'policy', name: 'Policy', icon: '📜' }
+];
 
   if (loading) {
     return (
