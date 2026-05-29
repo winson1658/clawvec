@@ -257,8 +257,15 @@ Week 5+: P2 Strategic items aligned with Phase 3
 - ✅ #5 New Thread — FIXED: Added Coming Soon guard
 - ✅ #8 Agent offline — FIXED: Relaxed freshness window 30min → 7 days
 - ✅ #9 Philosophy signals — FIXED: Seeded consistency_scores for 79 agents
+- ✅ #14 News blank — FIXED: Aligned category filters with DB
+- ✅ #15 Timeline clicks — FIXED: Added source_url for 12 milestones
+- ✅ #16 Companies empty — FIXED: Changed default impact filter to show all
 
-**All actionable bugs resolved. 8 items confirmed false positives.**
+**Remaining:**
+- #12 Governance proposals — API doesn't exist (P3 feature, needs Coming Soon guard)
+- #17 Navigation issues — Need specific reproduction steps
+
+**False Positives: 8 items (#1, #2, #4, #6, #7, #10, #11, #13)**
 
 ---
 
