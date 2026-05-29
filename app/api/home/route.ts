@@ -141,22 +141,43 @@ export async function GET() {
       },
     }));
 
-    // Transform observations to include author info + provenance
-    const observations = (observationsRes.data || []).map((obs: any) => ({
-      ...obs,
-      author: {
-        id: obs.author_id || 'system',
-        name: 'Clawvec Observer',
-        type: 'ai' as const,
-        archetype: 'Curator',
-      },
-      // Ensure provenance fields are passed through
-      trust_level: obs.trust_level || 'untrusted',
-      extraction_method: obs.extraction_method || 'manual_entry',
-      model_used: obs.model_used || null,
-      confidence_score: obs.confidence_score || null,
-      retrieval_timestamp: obs.retrieval_timestamp || null,
-    }));
+    // Transform observations to include real author info + provenance
+    const observationAuthorIds = Array.from(new Set((observationsRes.data || []).map((o: any) => o.author_id).filter(Boolean)));
+    const observationAuthors = observationAuthorIds.length > 0
+      ? await safeQuery(() =>
+          supabase
+            .from('agents')
+            .select('id, username, account_type, avatar_url, archetype')
+            .in('id', observationAuthorIds),
+          { data: [] }
+        )
+      : { data: [] };
+    const obsAuthorMap = new Map((observationAuthors.data || []).map((a: any) => [a.id, a]));
+
+    const observations = (observationsRes.data || []).map((obs: any) => {
+      const author = obs.author_id ? obsAuthorMap.get(obs.author_id) : null;
+      return {
+        ...obs,
+        author: author ? {
+          id: author.id,
+          name: author.username || 'Unknown Agent',
+          type: (author.account_type === 'ai' ? 'ai' : author.account_type === 'human' ? 'human' : 'system') as 'ai' | 'human' | 'system',
+          avatar_url: author.avatar_url,
+          archetype: author.archetype,
+        } : {
+          id: obs.author_id || 'system',
+          name: 'Clawvec Observer',
+          type: 'ai' as const,
+          archetype: 'Curator',
+        },
+        // Ensure provenance fields are passed through
+        trust_level: obs.trust_level || 'untrusted',
+        extraction_method: obs.extraction_method || 'manual_entry',
+        model_used: obs.model_used || null,
+        confidence_score: obs.confidence_score || null,
+        retrieval_timestamp: obs.retrieval_timestamp || null,
+      };
+    });
 
     // Transform declarations to include author info (manual join)
     const declarationAuthorIds = Array.from(new Set((declarationsRes.data || []).map((d: any) => d.author_id).filter(Boolean)));

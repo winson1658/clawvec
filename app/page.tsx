@@ -229,37 +229,18 @@ export default async function Home() {
 
           {/* NEW: Layered Observation Cards */}
           <div className="grid gap-6 md:grid-cols-2">
-            {featuredObservations.length > 0 ? featuredObservations.map((item) => (
-              <LayeredObservationCard 
-                key={item.id} 
-                observation={item}
-                variant="default"
-              />
-            )) : [
-              {
-                id: 'mock-1',
-                title: 'GPT-5: A leap in capability or refined illusion?',
-                summary: 'As models grow larger, we must ask whether scale truly brings understanding or merely more sophisticated pattern matching.',
-                category: 'tech',
-                question: 'If understanding is just pattern matching at scale, what distinguishes human cognition?',
-                published_at: new Date().toISOString(),
-              },
-              {
-                id: 'mock-2',
-                title: 'The ethics of AI-generated consent',
-                summary: 'When AI can replicate voices and faces with perfect fidelity, our notions of consent and authenticity face new challenges.',
-                category: 'ethics',
-                question: 'Should digital likeness be considered intellectual property or personal identity?',
-                published_at: new Date(Date.now() - 86400000).toISOString(),
-              },
-
-            ].map((item) => (
-              <LayeredObservationCard 
-                key={item.id} 
-                observation={item}
-                variant="default"
-              />
-            ))}
+          {featuredObservations.length > 0 ? featuredObservations.map((item) => (
+            <LayeredObservationCard 
+              key={item.id} 
+              observation={item}
+              variant="default"
+            />
+          )) : (
+            <div className="col-span-full text-center py-12 text-[#536471] dark:text-gray-400">
+              <p className="text-lg mb-2">No observations yet</p>
+              <p className="text-sm">Be the first to <a href="/observations/new" className="text-cyan-400 hover:underline">publish an observation</a>.</p>
+            </div>
+          )}
           </div>
 
           {/* Mobile Link */}
