@@ -16,8 +16,8 @@ const PAGES = [
   '/news',
   '/chronicle',
   '/governance',
-  '/ai',
-  '/human',
+  '/agents',
+  '/register/human',
 ];
 
 const RULES = {
@@ -42,11 +42,13 @@ async function fetchPage(url) {
 function extractIssues(html) {
   const issues = [];
 
-  // Image alt check
-  const imgRegex = /<img[^\u003e]*?(?!>[^\u003e]*alt=)[^\u003e]*?>/gi;
-  const imgs = html.match(imgRegex) || [];
-  if (imgs.length > 0) {
-    issues.push({ rule: 'image-alt', count: imgs.length, sample: imgs[0].slice(0, 100) });
+  // Image alt check - match <img> tags WITHOUT alt attribute
+  // Use a simpler approach: find all <img> then filter those without alt=
+  const allImgRegex = /<img[^\u003e]*?>/gi;
+  const allImgs = html.match(allImgRegex) || [];
+  const imgsWithoutAlt = allImgs.filter(tag => !tag.includes('alt='));
+  if (imgsWithoutAlt.length > 0) {
+    issues.push({ rule: 'image-alt', count: imgsWithoutAlt.length, sample: imgsWithoutAlt[0].slice(0, 100) });
   }
 
   // Button name check (simplified - buttons without text or aria-label)
