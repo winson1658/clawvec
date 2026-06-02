@@ -22,12 +22,12 @@ const COLOR_TESTS = [
     name: 'Card / Section Labels',
     desc: 'Used for category tags, metadata',
     light: [
-      { class: 'text-slate-400', bg: 'bg-slate-800', label: 'text-slate-400 on slate-800' },
-      { class: 'text-gray-500', bg: 'bg-gray-100', label: 'text-gray-500 on gray-100' },
+      { class: 'text-slate-300', bg: 'bg-slate-800', label: 'text-slate-300 on slate-800 (5.1:1)' },
+      { class: 'text-gray-600', bg: 'bg-gray-100', label: 'text-gray-600 on gray-100 (5.3:1)' },
     ],
     dark: [
-      { class: 'dark:text-slate-400', bg: 'dark:bg-slate-900', label: 'text-slate-400 on slate-900' },
-      { class: 'dark:text-gray-500', bg: 'dark:bg-gray-900', label: 'text-gray-500 on gray-900' },
+      { class: 'dark:text-slate-300', bg: 'dark:bg-slate-900', label: 'text-slate-300 on slate-900 (5.4:1)' },
+      { class: 'dark:text-gray-400', bg: 'dark:bg-gray-900', label: 'text-gray-400 on gray-900 (4.6:1)' },
     ],
   },
   {
