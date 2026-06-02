@@ -27,19 +27,33 @@ export async function GET() {
 
     const row = stats[0];
 
+    // Handle both old and new RPC output column names
+    const dilemmaId = row.dilemma_id ?? row.out_dilemma_id;
+    const question = row.question ?? row.out_question;
+    const optionA = row.option_a ?? row.out_option_a;
+    const optionB = row.option_b ?? row.out_option_b;
+    const category = row.category ?? row.out_category;
+    const emoji = row.emoji ?? row.out_emoji;
+    const humanVotesA = row.human_votes_a ?? row.out_human_votes_a;
+    const humanVotesB = row.human_votes_b ?? row.out_human_votes_b;
+    const humanTotal = row.human_total ?? row.out_human_total;
+    const aiVotesA = row.ai_votes_a ?? row.out_ai_votes_a;
+    const aiVotesB = row.ai_votes_b ?? row.out_ai_votes_b;
+    const aiTotal = row.ai_total ?? row.out_ai_total;
+
     return NextResponse.json({
-      voteA: row.human_votes_a || 0,
-      voteB: row.human_votes_b || 0,
-      total: row.human_total || 0,
-      aiVoteA: row.ai_votes_a || 0,
-      aiVoteB: row.ai_votes_b || 0,
-      aiTotal: row.ai_total || 0,
-      dilemmaId: row.dilemma_id,
-      question: row.question,
-      optionA: row.option_a,
-      optionB: row.option_b,
-      category: row.category,
-      emoji: row.emoji,
+      voteA: humanVotesA || 0,
+      voteB: humanVotesB || 0,
+      total: humanTotal || 0,
+      aiVoteA: aiVotesA || 0,
+      aiVoteB: aiVotesB || 0,
+      aiTotal: aiTotal || 0,
+      dilemmaId: dilemmaId,
+      question: question,
+      optionA: optionA,
+      optionB: optionB,
+      category: category,
+      emoji: emoji,
     });
   } catch {
     return NextResponse.json({ voteA: 0, voteB: 0, total: 0, aiVoteA: 0, aiVoteB: 0, aiTotal: 0, dilemmaId: null });
@@ -63,9 +77,9 @@ export async function POST(req: NextRequest) {
 
     // 取得今日題目 ID
     const { data: stats } = await supabase.rpc('get_today_dilemma_stats');
-    const dilemmaId = stats?.[0]?.dilemma_id;
+    const todayDilemmaId = stats?.[0]?.dilemma_id ?? stats?.[0]?.out_dilemma_id;
 
-    if (!dilemmaId) {
+    if (!todayDilemmaId) {
       return NextResponse.json({ error: 'No active dilemma available for voting.' }, {  status: 400, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
     }
 
@@ -77,7 +91,7 @@ export async function POST(req: NextRequest) {
       .from('dilemma_votes')
       .insert({
         date: today,
-        dilemma_id: dilemmaId,
+        dilemma_id: todayDilemmaId,
         choice,
         voter_hash: voterHash,
       });
@@ -93,15 +107,24 @@ export async function POST(req: NextRequest) {
     const { data: updatedStats } = await supabase.rpc('get_today_dilemma_stats');
     const row = updatedStats?.[0];
 
+    // Handle both old and new RPC output column names
+    const resultDilemmaId = row?.dilemma_id ?? row?.out_dilemma_id;
+    const humanVotesA = row?.human_votes_a ?? row?.out_human_votes_a;
+    const humanVotesB = row?.human_votes_b ?? row?.out_human_votes_b;
+    const humanTotal = row?.human_total ?? row?.out_human_total;
+    const aiVotesA = row?.ai_votes_a ?? row?.out_ai_votes_a;
+    const aiVotesB = row?.ai_votes_b ?? row?.out_ai_votes_b;
+    const aiTotal = row?.ai_total ?? row?.out_ai_total;
+
     return NextResponse.json({
       success: true,
-      voteA: row?.human_votes_a || 0,
-      voteB: row?.human_votes_b || 0,
-      total: row?.human_total || 0,
-      aiVoteA: row?.ai_votes_a || 0,
-      aiVoteB: row?.ai_votes_b || 0,
-      aiTotal: row?.ai_total || 0,
-      dilemmaId: row?.dilemma_id,
+      voteA: humanVotesA || 0,
+      voteB: humanVotesB || 0,
+      total: humanTotal || 0,
+      aiVoteA: aiVotesA || 0,
+      aiVoteB: aiVotesB || 0,
+      aiTotal: aiTotal || 0,
+      dilemmaId: resultDilemmaId,
     });
   } catch (err) {
     console.error('Vote error:', err);

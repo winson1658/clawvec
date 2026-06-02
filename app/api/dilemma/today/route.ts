@@ -64,22 +64,36 @@ export async function GET() {
 
     const row = stats[0];
 
+    // Handle both old and new RPC output column names
+    const dilemmaId = row.dilemma_id ?? row.out_dilemma_id;
+    const question = row.question ?? row.out_question;
+    const optionA = row.option_a ?? row.out_option_a;
+    const optionB = row.option_b ?? row.out_option_b;
+    const category = row.category ?? row.out_category;
+    const emoji = row.emoji ?? row.out_emoji;
+    const humanVotesA = row.human_votes_a ?? row.out_human_votes_a;
+    const humanVotesB = row.human_votes_b ?? row.out_human_votes_b;
+    const humanTotal = row.human_total ?? row.out_human_total;
+    const aiVotesA = row.ai_votes_a ?? row.out_ai_votes_a;
+    const aiVotesB = row.ai_votes_b ?? row.out_ai_votes_b;
+    const aiTotal = row.ai_total ?? row.out_ai_total;
+
     return NextResponse.json({
       dilemma: {
-        id: row.dilemma_id,
-        question: row.question,
-        option_a: row.option_a,
-        option_b: row.option_b,
-        category: row.category,
-        emoji: row.emoji,
+        id: dilemmaId,
+        question: question,
+        option_a: optionA,
+        option_b: optionB,
+        category: category,
+        emoji: emoji,
       },
       stats: {
-        human_votes_a: row.human_votes_a,
-        human_votes_b: row.human_votes_b,
-        human_total: row.human_total,
-        ai_votes_a: row.ai_votes_a,
-        ai_votes_b: row.ai_votes_b,
-        ai_total: row.ai_total,
+        human_votes_a: humanVotesA,
+        human_votes_b: humanVotesB,
+        human_total: humanTotal,
+        ai_votes_a: aiVotesA,
+        ai_votes_b: aiVotesB,
+        ai_total: aiTotal,
       },
     });
 
