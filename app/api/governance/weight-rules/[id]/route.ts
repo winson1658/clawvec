@@ -23,7 +23,7 @@ export async function GET(
     const { id } = await params;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    const { data, error } = await supabase.from('vote_weight_rules').select('*').eq('id', id).single();
+    const { data, error } = await supabase.from('vote_weight_rules').select('id, name, description, is_active, base_weight, contribution_multiplier, domain_bonus_enabled, domain_bonus_multiplier, min_weight, max_weight, formula_config, created_at, updated_at').eq('id', id).single();
     if (error) {
       if (error.code === 'PGRST116') return fail(404, 'NOT_FOUND', 'Weight rule not found');
       return fail(500, 'INTERNAL_ERROR', 'Failed to fetch weight rule', { message: 'Internal server error' });

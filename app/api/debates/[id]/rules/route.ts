@@ -360,7 +360,7 @@ async function getResults(supabase: any, debateId: string) {
   // Get debate
   const { data: debate } = await supabase
     .from('debates')
-    .select('*')
+    .select('id, proponent_score, opponent_score')
     .eq('id', debateId)
     .single();
 
@@ -378,7 +378,7 @@ async function getResults(supabase: any, debateId: string) {
   // Get AI judge scores
   const { data: judges } = await supabase
     .from('debate_ai_judges')
-    .select('*')
+    .select('id, debate_id, agent_id, agent_name, side, score, reasoning, created_at')
     .eq('debate_id', debateId);
 
   // Calculate winner

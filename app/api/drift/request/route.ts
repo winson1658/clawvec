@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     // Check cooldown — has there been a request in last 24h?
     const { data: recentRequest } = await supabase
       .from('drift_requests')
-      .select('*')
+      .select('id, agent_id, requested_at, next_request_after, status')
       .eq('agent_id', agent_id)
       .order('requested_at', { ascending: false })
       .limit(1)

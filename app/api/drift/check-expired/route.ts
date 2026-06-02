@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     // Find expired sessions
     const { data: expiredSessions, error } = await supabase
       .from('drift_sessions')
-      .select('*')
+      .select('id, agent_id, ends_at, status')
       .eq('status', 'drifting')
       .lte('ends_at', new Date().toISOString());
     

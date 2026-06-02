@@ -36,7 +36,7 @@ export async function POST(
     // 檢查邀請是否存在
     const { data: invitation, error: inviteError } = await supabase
       .from('ai_companion_requests')
-      .select('*')
+      .select('id, requester_id, target_agent_id, status')
       .eq('id', id)
       .single();
 

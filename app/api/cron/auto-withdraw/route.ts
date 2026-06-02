@@ -66,7 +66,7 @@ export async function GET(req: NextRequest) {
       // 檢查今日配額
       const { data: quota } = await supabase
         .from('news_daily_quota')
-        .select('*')
+        .select('id, date, published_count, max_count')
         .eq('date', today)
         .single();
 

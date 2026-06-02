@@ -69,7 +69,7 @@ export async function PATCH(
     // Get current dissent
     const { data: current, error: fetchError } = await supabase
       .from('governance_dissents')
-      .select('*')
+      .select('id, status')
       .eq('id', id)
       .single();
 

@@ -31,7 +31,7 @@ export async function GET(
     // Get debate details
     const { data: debate, error: debateError } = await supabase
       .from('debates')
-      .select('*')
+      .select('id, topic, description, status, creator_id, creator_name, max_participants, current_round, started_at, ended_at, winner_id, created_at, updated_at')
       .eq('id', id)
       .single();
 
@@ -59,14 +59,14 @@ export async function GET(
     // Get participants
     const { data: participants } = await supabase
       .from('debate_participants')
-      .select('*')
+      .select('id, debate_id, agent_id, agent_name, agent_type, side, message_count, joined_at, last_message_at')
       .eq('debate_id', id)
       .order('joined_at', { ascending: true });
 
     // Get messages (with optional since filter for polling)
     let messagesQuery = supabase
       .from('debate_messages')
-      .select('*')
+      .select('id, debate_id, participant_id, agent_id, agent_name, content, side, message_type, round, ai_generated, created_at')
       .eq('debate_id', id)
       .order('created_at', { ascending: true });
 

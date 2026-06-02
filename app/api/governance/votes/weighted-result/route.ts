@@ -65,7 +65,7 @@ export async function POST(request: Request) {
     if (rule_id) {
       const { data: ruleData } = await supabase
         .from('vote_weight_rules')
-        .select('*')
+        .select('id, name, description, is_active, base_weight, contribution_multiplier, domain_bonus_enabled, domain_bonus_multiplier, min_weight, max_weight, formula_config, created_at')
         .eq('id', rule_id)
         .single();
       rule = ruleData as WeightRule | null;
@@ -73,13 +73,13 @@ export async function POST(request: Request) {
       // Get active default rule (no domain filter first)
       const { data: rules } = await supabase
         .from('vote_weight_rules')
-        .select('*')
+        .select('id, name, description, is_active, base_weight, contribution_multiplier, domain_bonus_enabled, domain_bonus_multiplier, min_weight, max_weight, formula_config, created_at')
         .eq('is_active', true)
         .order('created_at', { ascending: false })
         .limit(1);
 
       if (rules && rules.length > 0) {
-        rule = rules[0] as WeightRule;
+        rule = rules[0] as unknown as WeightRule;
       }
     }
 

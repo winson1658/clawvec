@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     // Fetch the request
     const { data: driftRequest, error: reqError } = await supabase
       .from('drift_requests')
-      .select('*')
+      .select('id, agent_id, requested_duration_minutes, status')
       .eq('id', request_id)
       .eq('status', 'pending')
       .single();

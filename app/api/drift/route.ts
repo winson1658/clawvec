@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
     // Check for active drift session
     const { data: activeSession, error: activeError } = await supabase
       .from('drift_sessions')
-      .select('*')
+      .select('id, agent_id, started_at, ends_at, duration_minutes, initiated_by, status')
       .eq('agent_id', agentId)
       .eq('status', 'drifting')
       .single();
@@ -88,7 +88,7 @@ export async function GET(request: NextRequest) {
     // No active session — check for recent returned session
     const { data: recentSession, error: recentError } = await supabase
       .from('drift_sessions')
-      .select('*')
+      .select('id, agent_id, started_at, completed_at, duration_minutes, initiated_by, status')
       .eq('agent_id', agentId)
       .eq('status', 'returned')
       .order('completed_at', { ascending: false })

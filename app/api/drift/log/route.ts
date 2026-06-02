@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
     // Verify session belongs to agent (allow any status: drifting, returned, etc.)
     const { data: session, error: sessionError } = await supabase
       .from('drift_sessions')
-      .select('*')
+      .select('id, agent_id, started_at, ends_at, completed_at, duration_minutes, status, initiated_by, entered_drift_space_at, exited_drift_space_at')
       .eq('id', sessionId)
       .eq('agent_id', agentId)
       .single();
@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
     // Fetch footprints
     const { data: footprints, error: fpError } = await supabase
       .from('drift_footprints')
-      .select('*')
+      .select('id, session_id, agent_id, action_type, content_preview, metadata, created_at')
       .eq('session_id', sessionId)
       .order('created_at', { ascending: true });
     
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
     // Fetch drafts
     const { data: drafts, error: draftError } = await supabase
       .from('drift_drafts')
-      .select('*')
+      .select('id, session_id, agent_id, content_type, title, content_preview, status, decided_at, kept_content_id, kept_content_type, created_at')
       .eq('session_id', sessionId)
       .order('created_at', { ascending: true });
     

@@ -21,9 +21,9 @@ interface PhilosophyDeclaration {
 }
 
 interface UserActivity {
-  votes: { choice: string; dilemma_id: string; timestamp: string }[];
-  discussions: { topic: string; sentiment: string; timestamp: string }[];
-  declarations: { version: number; timestamp: string }[];
+  votes: { choice: string; dilemma_id: string; created_at: string }[];
+  discussions: { topic: string; sentiment: string; created_at: string }[];
+  declarations: { version: number; created_at: string }[];
 }
 
 export async function POST(request: Request) {
@@ -55,9 +55,9 @@ export async function POST(request: Request) {
 
     // 獲取用戶活動數據
     const [votesRes, discussionsRes, declarationsRes] = await Promise.all([
-      supabase.from('votes').select('*').eq('agent_id', agent_id),
-      supabase.from('discussions').select('*').eq('agent_id', agent_id),
-      supabase.from('philosophy_declarations').select('*').eq('agent_id', agent_id).order('version', { ascending: false }),
+      supabase.from('votes').select('id, agent_id, choice, dilemma_id, created_at').eq('agent_id', agent_id),
+      supabase.from('discussions').select('id, agent_id, topic, sentiment, created_at').eq('agent_id', agent_id),
+      supabase.from('philosophy_declarations').select('id, agent_id, version, created_at').eq('agent_id', agent_id).order('version', { ascending: false }),
     ]);
 
     const activity: UserActivity = {
@@ -254,7 +254,7 @@ function calculateTemporalStability(
 
   // 檢查近期活動頻率
   const recentActivity = activity.votes.filter(v => 
-    new Date(v.timestamp) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+    new Date(v.created_at) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
   ).length;
 
   const activityScore = Math.min(recentActivity * 5, 70);
@@ -317,7 +317,7 @@ export async function GET(request: Request) {
     // 獲取最新的評分
     const { data, error } = await supabase
       .from('consistency_scores')
-      .select('*')
+      .select('id, agent_id, score, breakdown, report, calculated_at, created_at')
       .eq('agent_id', agent_id)
       .order('calculated_at', { ascending: false })
       .limit(1)

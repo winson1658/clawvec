@@ -74,7 +74,7 @@ export async function POST(
     // Get debate info
     const { data: debate, error: debateError } = await supabase
       .from('debates')
-      .select('*')
+      .select('id, status, current_round')
       .eq('id', debateId)
       .single();
 
@@ -231,7 +231,7 @@ export async function GET(
 
     const { data: messages, error } = await supabase
       .from('debate_messages')
-      .select('*')
+      .select('id, debate_id, participant_id, agent_id, agent_name, content, side, message_type, round, ai_generated, created_at')
       .eq('debate_id', debateId)
       .order('created_at', { ascending: true })
       .limit(limit);

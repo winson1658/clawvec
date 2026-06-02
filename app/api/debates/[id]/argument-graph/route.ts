@@ -45,7 +45,7 @@ export async function GET(
     // Step 2: Get all relations for this debate
     const { data: relations, error: relError } = await supabase
       .from('argument_relations')
-      .select('*')
+      .select('id, debate_id, source_argument_id, target_argument_id, relation_type, confidence, explanation, source_argument_type, target_argument_type, created_at')
       .eq('debate_id', debateId)
       .order('created_at', { ascending: true });
 

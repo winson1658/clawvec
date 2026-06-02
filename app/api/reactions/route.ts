@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
     // Get all reactions for this target
     const { data: reactions, error } = await supabase
       .from('reactions')
-      .select('*')
+      .select('id, target_type, target_id, user_id, reaction_type, created_at')
       .eq('target_type', targetType)
       .eq('target_id', targetId);
     

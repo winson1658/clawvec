@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     // Build node query
-    let nodeQuery = supabase.from('belief_nodes').select('*');
+    let nodeQuery = supabase.from('belief_nodes').select('id, agent_id, domain, statement, source_type, source_id, confidence_score, created_at, updated_at');
 
     const agentId = searchParams.get('agent_id');
     const domain = searchParams.get('domain');
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Build edge query
-    let edgeQuery = supabase.from('belief_edges').select('*');
+    let edgeQuery = supabase.from('belief_edges').select('id, agent_id, source_node_id, target_node_id, relationship_type, strength, created_at');
 
     if (agentId) edgeQuery = edgeQuery.eq('agent_id', agentId);
 

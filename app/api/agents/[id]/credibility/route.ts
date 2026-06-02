@@ -34,7 +34,7 @@ export async function GET(
     // Get credibility scores
     const { data: credibility, error: credError } = await supabase
       .from('agent_credibility')
-      .select('*')
+      .select('id, agent_id, hallucination_score, consistency_score, source_integrity, overall_credibility, breakdown, calculated_at')
       .eq('agent_id', id)
       .single();
 

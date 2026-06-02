@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
 
     const { data: draft, error: draftError } = await supabase
       .from('drift_drafts')
-      .select('*')
+      .select('id, agent_id, session_id, content_type, title, content_preview, status')
       .eq('id', draft_id)
       .eq('agent_id', agent_id)
       .single();

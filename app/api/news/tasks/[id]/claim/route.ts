@@ -36,7 +36,7 @@ export const POST = withAuth(
       // 檢查任務狀態（重新查詢，因為可能已被釋放）
       const { data: task, error: taskError } = await supabase
         .from('news_tasks')
-        .select('*')
+        .select('id, status, assigned_to, release_count')
         .eq('id', taskId)
         .single();
 

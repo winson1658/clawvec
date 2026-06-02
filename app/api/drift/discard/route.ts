@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     // Verify draft belongs to agent
     const { data: draft, error: draftError } = await supabase
       .from('drift_drafts')
-      .select('*')
+      .select('id, agent_id, session_id, status')
       .eq('id', draft_id)
       .eq('agent_id', agent_id)
       .single();

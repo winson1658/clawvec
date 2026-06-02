@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
 
     const { data: events, error } = await supabase
       .from('events')
-      .select('*')
+      .select('id, event_type, actor_id, actor_type, target_type, target_id, payload, occurred_at, created_at')
       .in('event_type', eventTypes)
       .order('occurred_at', { ascending: true });
 

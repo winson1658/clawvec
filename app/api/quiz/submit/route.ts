@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
 
     const { data: archetypeDetails } = await supabase
       .from('archetypes')
-      .select('*')
+      .select('id, name, display_name, description, traits, strengths, weaknesses')
       .in('name', [primaryArchetype, secondaryArchetype].filter(Boolean));
 
     await supabase

@@ -20,7 +20,7 @@ export async function GET(
     const { id } = await params;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    const { data, error } = await supabase.from('sensor_configs').select('*').eq('id', id).single();
+    const { data, error } = await supabase.from('sensor_configs').select('id, sensor_name, sensor_type, config, is_active, last_run_at, created_at, updated_at').eq('id', id).single();
     if (error) {
       if (error.code === 'PGRST116') return fail(404, 'NOT_FOUND', 'Sensor not found');
       return fail(500, 'INTERNAL_ERROR', 'Failed to fetch sensor', { message: 'Internal server error' });

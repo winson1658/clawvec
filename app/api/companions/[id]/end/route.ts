@@ -35,7 +35,7 @@ export async function POST(
 
     const { data: companion, error: companionError } = await supabase
       .from('ai_companion_requests')
-      .select('*')
+      .select('id, requester_id, target_agent_id, status')
       .eq('id', id)
       .single();
 

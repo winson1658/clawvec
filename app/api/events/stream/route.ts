@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
           try {
             let query = supabase
               .from('events')
-              .select('*')
+              .select('id, event_type, actor_id, actor_type, target_type, target_id, payload, occurred_at, created_at')
               .gt('occurred_at', lastCheck)
               .order('occurred_at', { ascending: true });
 

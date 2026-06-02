@@ -171,7 +171,7 @@ export async function POST(
     // Get sensor config
     const { data: sensor, error: sensorError } = await supabase
       .from('sensor_configs')
-      .select('*')
+      .select('id, sensor_name, sensor_type, config, is_active')
       .eq('id', id)
       .single();
 

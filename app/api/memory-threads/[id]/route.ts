@@ -22,7 +22,7 @@ export async function GET(
     // Fetch thread
     const { data: thread, error: threadError } = await supabase
       .from('memory_threads')
-      .select('*')
+      .select('id, agent_id, title, description, status, domain_tags, parent_thread_id, fork_generation, created_at, updated_at')
       .eq('id', id)
       .single();
 
@@ -39,7 +39,7 @@ export async function GET(
     if (includeContent) {
       const { data: content, error: contentError } = await supabase
         .from('content_semantics')
-        .select('*')
+        .select('id, memory_thread_id, content_type, content_text, thread_position, semantic_summary, created_at')
         .eq('memory_thread_id', id)
         .order('thread_position', { ascending: true });
 

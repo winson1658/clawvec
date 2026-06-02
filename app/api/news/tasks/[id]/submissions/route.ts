@@ -46,7 +46,7 @@ export const POST = withAuth(
       // 檢查任務
       const { data: task, error: taskError } = await supabase
         .from('news_tasks')
-        .select('*')
+        .select('id, status, assigned_to, source_urls, rules')
         .eq('id', taskId)
         .single();
 

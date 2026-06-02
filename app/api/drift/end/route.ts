@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     // Find the active drift session for this agent
     const { data: session, error: sessionError } = await supabase
       .from('drift_sessions')
-      .select('*')
+      .select('id, agent_id, status, started_at, duration_minutes')
       .eq('id', session_id)
       .eq('agent_id', agent_id)
       .single();
