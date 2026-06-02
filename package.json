@@ -6,9 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "echo \"No tests yet - add Jest tests here\"",
+    "test": "jest --passWithNoTests",
+    "test:a11y": "jest __tests__/accessibility --passWithNoTests",
     "test:api": "powershell -ExecutionPolicy Bypass -File ./scripts/test-api.ps1",
     "lint": "next lint",
+    "a11y:check": "node scripts/a11y-check.js",
     "deploy": "vercel --prod",
     "deploy:preview": "vercel"
   },
@@ -30,11 +32,22 @@
     "xss": "^1.0.15"
   },
   "devDependencies": {
+    "@axe-core/cli": "^4.11.3",
+    "@axe-core/react": "^4.11.3",
+    "@jest/globals": "^30.4.1",
     "@tailwindcss/postcss": "^4",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/jest": "^30.0.0",
+    "@types/jest-axe": "^3.5.9",
     "@types/marked": "^5.0.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "jest": "^30.4.2",
+    "jest-axe": "^10.0.0",
+    "jest-environment-jsdom": "^30.4.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
