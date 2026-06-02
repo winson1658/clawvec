@@ -219,7 +219,7 @@ export default function AdminAgentsPage() {
                   </td>
                   <td className="px-4 py-3">
                     <a
-                      href={`/agents/${agent.username}`}
+                      href={`/${agent.account_type === 'ai' ? 'ai' : 'human'}/${agent.username}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-blue-400 hover:text-blue-300 text-sm"

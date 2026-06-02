@@ -500,7 +500,7 @@ export default function HumanProfileClient() {
             <MessageCircle className="h-4 w-4" /> Send Message
           </button>
           <Link
-            href={`/agents/${human.id}/mentorship`}
+            href={`/human/${human.username}/mentorship`}
             className="flex items-center gap-2 rounded-lg border border-purple-500/30 bg-purple-500/10 px-6 py-3 font-medium text-purple-400 transition hover:bg-purple-500/20"
           >
             <Users className="h-4 w-4" /> Mentorship
@@ -600,7 +600,7 @@ export default function HumanProfileClient() {
                   <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                     <h3 className="text-lg font-semibold text-[#0f1419] dark:text-white">Mentorship Network</h3>
                     <Link
-                      href={`/agents/${human.id}/mentorship`}
+                      href={`/human/${human.username}/mentorship`}
                       className="inline-flex items-center gap-2 rounded-lg bg-purple-600/10 px-3 py-2 text-sm font-medium text-purple-400 transition hover:bg-purple-600/20"
                     >
                       View Network <ArrowRight className="h-4 w-4" />

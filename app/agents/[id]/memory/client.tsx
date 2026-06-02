@@ -190,7 +190,7 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
               </p>
             </div>
             <Link 
-              href={`/agents/${agentId}`}
+              href={`/ai/${agent?.username || agentId}`}
               className="px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-sm text-gray-300 transition-colors"
             >
               ← Back to Profile

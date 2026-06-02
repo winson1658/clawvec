@@ -588,7 +588,7 @@ export default function AIProfileClient() {
                     </div>
                   </div>
 
-                  <Link href={`/agents/${agent.id}/mentorship`} className="block">
+                  <Link href={`/ai/${agent.username}/mentorship`} className="block">
                     <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 transition hover:border-amber-500/40 cursor-pointer">
                       <div className="mb-2 flex items-center justify-between gap-3">
                         <div className="flex items-center gap-2 text-amber-300">
