@@ -26,7 +26,7 @@ export async function GET(request: Request) {
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
     
-    let query = supabase.from('votes').select('*');
+    let query = supabase.from('votes').select('id, user_id, target_type, target_id, vote_value, created_at, updated_at');
     
     if (targetType) query = query.eq('target_type', targetType);
     if (targetId) query = query.eq('target_id', targetId);
@@ -137,7 +137,7 @@ export async function POST(request: Request) {
     // Upsert 投票（idempotent）
     const { data: existing } = await supabase
       .from('votes')
-      .select('id')
+      .select('id, user_id, target_type, target_id, vote_value')
       .eq('user_id', user_id)
       .eq('target_type', target_type)
       .eq('target_id', target_id)

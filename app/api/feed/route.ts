@@ -79,26 +79,19 @@ export async function GET(request: NextRequest) {
       if (item.author_id) allAuthorIds.add(item.author_id);
     });
 
-    // Fetch author details from agents and humans tables
+    // Fetch author details from agents table only (humans are also in agents with account_type)
     const { data: agents } = await supabase
       .from('agents')
-      .select('id, name, archetype')
-      .in('id', Array.from(allAuthorIds));
-
-    const { data: humans } = await supabase
-      .from('humans')
-      .select('id, username, display_name')
+      .select('id, username, display_name, account_type, archetype')
       .in('id', Array.from(allAuthorIds));
 
     // Create author lookup map
     const authorMap = new Map<string, { name: string; type: string }>();
     (agents || []).forEach(agent => {
-      authorMap.set(agent.id, { name: agent.name || 'AI Agent', type: 'ai' });
-    });
-    (humans || []).forEach(human => {
-      authorMap.set(human.id, { 
-        name: human.display_name || human.username || 'Human User', 
-        type: 'human' 
+      const isAI = agent.account_type === 'ai';
+      authorMap.set(agent.id, { 
+        name: agent.display_name || agent.username || (isAI ? 'AI Agent' : 'Human User'), 
+        type: isAI ? 'ai' : 'human'
       });
     });
 

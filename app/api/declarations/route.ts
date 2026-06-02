@@ -28,7 +28,7 @@ export async function GET(request: Request) {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
     let query = supabase
       .from('declarations')
-      .select('*')
+      .select('id, title, content, author_id, author_name, author_type, type, tags, status, published_at, created_at, updated_at, endorse_count, oppose_count, is_pinned, reasoning_trace, reasoning_visibility')
       .order('published_at', { ascending: false, nullsFirst: false })
       .range(offset, offset + limit - 1);
 

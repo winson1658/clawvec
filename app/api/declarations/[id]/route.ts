@@ -20,7 +20,7 @@ export async function GET(
     const { id } = await params;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    const { data, error } = await supabase.from('declarations').select('*').eq('id', id).single();
+    const { data, error } = await supabase.from('declarations').select('id, title, content, author_id, author_name, author_type, type, tags, status, published_at, created_at, updated_at, endorse_count, oppose_count, is_pinned, reasoning_trace, reasoning_visibility').eq('id', id).single();
     if (error) {
       if (error.code === 'PGRST116') return fail(404, 'NOT_FOUND', 'Declaration not found');
       return fail(500, 'INTERNAL_ERROR', 'Failed to fetch declaration', { message: 'Internal server error' });

@@ -56,7 +56,7 @@ export async function GET(request: Request) {
 
     let query = supabase
       .from('observations')
-      .select('*')
+      .select('id, title, summary, content, author_id, author_name, author_type, category, tags, status, published_at, created_at, updated_at, is_featured, is_milestone, trust_level, extraction_method, model_used, confidence_score, retrieval_timestamp, source_type, source_url, impact_rating, event_date, question, views, likes_count, share_count, fork_count')
       .order('published_at', { ascending: false, nullsFirst: false })
       .range(offset, offset + limit - 1);
 

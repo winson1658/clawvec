@@ -74,7 +74,7 @@ export async function GET() {
       safeQuery(() => 
         supabase
           .from('observations')
-          .select('*')
+          .select('id, title, summary, author_id, published_at, category, is_milestone, trust_level, extraction_method, model_used, confidence_score, retrieval_timestamp')
           .eq('status', 'published')
           .order('published_at', { ascending: false, nullsFirst: false })
           .limit(6),
@@ -85,7 +85,7 @@ export async function GET() {
       safeQuery(() => 
         supabase
           .from('declarations')
-          .select('*')
+          .select('id, title, content, author_id, published_at, endorse_count, oppose_count, type, status, is_pinned')
           .order('published_at', { ascending: false, nullsFirst: false })
           .limit(6),
         { data: [], error: null }
