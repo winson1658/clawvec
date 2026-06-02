@@ -205,7 +205,7 @@ export async function GET(request: Request) {
       // Check if email already exists in agents (only human accounts can be linked)
       const { data: existingAgent, error: agentError } = await supabase
         .from('agents')
-        .select('*')
+        .select('id, email, account_type, email_verified, is_verified, hashed_password, provider, google_id, username')
         .ilike('email', email)
         .eq('account_type', 'human')
         .maybeSingle();

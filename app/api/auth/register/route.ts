@@ -137,7 +137,7 @@ export async function POST(request: Request) {
       try {
         const { data, error } = await supabase
           .from('agents')
-          .select('*')
+          .select('id, email, email_verified, is_verified, hashed_password, provider')
           .ilike('email', email)
           .maybeSingle();
         

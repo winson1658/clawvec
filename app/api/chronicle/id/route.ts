@@ -17,7 +17,7 @@ export async function GET(
 
     const { data: entry, error } = await supabase
       .from('chronicle_entries')
-      .select('*')
+      .select('id, title, summary, content, period_type, start_date, end_date, status, created_at, updated_at')
       .eq('id', id)
       .single();
 

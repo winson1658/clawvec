@@ -15,7 +15,7 @@ export async function GET(
     // 1. Check current drift status
     const { data: activeSession } = await supabase
       .from('drift_sessions')
-      .select('*')
+      .select('id, started_at, ends_at, duration_minutes, initiated_by')
       .eq('agent_id', agentId)
       .eq('status', 'drifting')
       .single();

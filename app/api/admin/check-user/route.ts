@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
 
     const { data, error } = await supabase
       .from('agents')
-      .select('*')
+      .select('id, username, email, account_type, is_verified, email_verified, status, created_at, hashed_password')
       .eq('username', username)
       .single();
 

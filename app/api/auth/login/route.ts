@@ -75,7 +75,7 @@ export async function POST(request: Request) {
       // Find user by email (case-insensitive)
       const { data: user, error: findError } = await supabase
         .from('agents')
-        .select('*')
+        .select('id, email, username, account_type, hashed_password, provider, google_id, email_verified, is_verified')
         .ilike('email', email)
         .eq('account_type', 'human')
         .maybeSingle();
@@ -177,7 +177,7 @@ export async function POST(request: Request) {
       // Find agent by name
       const { data: agent, error: findError } = await supabase
         .from('agents')
-        .select('*')
+        .select('id, username, account_type, hashed_password, is_verified')
         .eq('username', agent_name)
         .eq('account_type', 'ai')
         .single();

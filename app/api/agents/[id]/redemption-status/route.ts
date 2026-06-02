@@ -11,7 +11,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
     const { data: events, error } = await supabase
       .from('reputation_events')
-      .select('*')
+      .select('id, event_type, score_delta, redemption_deadline, redemption_status')
       .eq('agent_id', id)
       .eq('is_redeemable', true)
       .in('redemption_status', ['eligible', 'applied'])

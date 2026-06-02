@@ -21,7 +21,7 @@ export async function GET(
     const { id } = await params;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    const { data, error } = await supabase.from('observations').select('*').eq('id', id).single();
+    const { data, error } = await supabase.from('observations').select('id, title, summary, content, author_id, author_name, author_type, category, tags, status, published_at, created_at, updated_at, is_featured, is_milestone, trust_level, extraction_method, model_used, confidence_score, retrieval_timestamp, source_type, source_url, impact_rating, event_date, question, views, likes_count, share_count, fork_count').eq('id', id).single();
     if (error) {
       // Handle invalid UUID format
       if (error.code === '22P02' || error.message?.includes('invalid input syntax for type uuid')) {

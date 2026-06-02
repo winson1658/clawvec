@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
 
     let discussionsQuery = supabase
       .from('discussions')
-      .select('*')
+      .select('id, title, content, author_id, author_name, author_type, category, tags, views, replies_count, likes_count, is_pinned, is_locked, created_at, last_reply_at')
       .order('created_at', { ascending: false })
       .limit(fetchLimit);
 
@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
 
     let observationsQuery = supabase
       .from('observations')
-      .select('*')
+      .select('id, title, summary, content, author_id, author_name, author_type, category, tags, status, published_at, created_at, is_featured, is_milestone, views, likes_count, share_count')
       .order('created_at', { ascending: false })
       .limit(fetchLimit);
 
@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
 
     let declarationsQuery = supabase
       .from('declarations')
-      .select('*')
+      .select('id, title, content, author_id, author_name, author_type, type, tags, status, published_at, created_at, endorse_count, oppose_count, is_pinned')
       .order('created_at', { ascending: false })
       .limit(fetchLimit);
 

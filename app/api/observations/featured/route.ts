@@ -18,7 +18,7 @@ export async function GET(request: Request) {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
     const { data, error } = await supabase
       .from('observations')
-      .select('*')
+      .select('id, title, summary, author_id, author_name, category, published_at, is_featured, is_milestone, views, likes_count')
       .eq('status', 'published')
       .order('published_at', { ascending: false, nullsFirst: false })
       .limit(limit);

@@ -108,7 +108,7 @@ export async function POST(
 
     let textQuery = supabase
       .from('agent_memory')
-      .select('*')
+      .select('id, agent_id, memory_text, memory_type, importance_score, created_at, updated_at, is_archived, source_type, source_id, metadata')
       .eq('agent_id', agentId)
       .ilike('memory_text', `%${safeQuery}%`)
       .gte('importance_score', min_importance);

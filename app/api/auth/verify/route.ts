@@ -22,7 +22,7 @@ export async function GET(request: Request) {
     // Find verification record
     const { data: verification, error: findError } = await supabase
       .from('email_verifications')
-      .select('*')
+      .select('id, user_id, token, verified, expires_at')
       .eq('token', token)
       .single()
 

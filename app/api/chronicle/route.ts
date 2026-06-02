@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
 
     const { data: entries, error } = await supabase
       .from('chronicle_entries')
-      .select('*')
+      .select('id, title, summary, period_type, start_date, end_date, status, created_at')
       .eq('status', 'published')
       .eq('period_type', type)
       .order('start_date', { ascending: false });

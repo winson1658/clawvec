@@ -141,7 +141,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     // Get capsules
     const { data: capsules, error: capsuleError } = await supabase
       .from('memory_capsules')
-      .select('*')
+      .select('id, agent_id, capsule, format_version, summary_preview, emotional_tags, created_at')
       .eq('agent_id', agentId)
       .order('created_at', { ascending: false })
       .limit(limit);
