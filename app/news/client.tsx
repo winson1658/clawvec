@@ -93,6 +93,8 @@ export default function NewsPage() {
         }
       }
     }
+    // Initial fetch on mount
+    fetchNews(1);
   }, []);
 
   useEffect(() => {
