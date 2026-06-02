@@ -169,6 +169,13 @@ export async function POST(request: NextRequest) {
     }
 
   } catch (error) {
+    // Handle auth errors from requireAuthFromRequest
+    if ((error as any)?.code === 'UNAUTHENTICATED') {
+      return NextResponse.json(
+        { success: false, error: { code: 'UNAUTHENTICATED', message: 'Login required' } },
+        { status: 401 }
+      );
+    }
     console.error('Error in POST /api/likes:', error);
     return NextResponse.json(
       { 

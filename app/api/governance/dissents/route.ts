@@ -145,6 +145,10 @@ export async function POST(request: Request) {
 
     return ok({ dissent: data });
   } catch (error) {
+    // Handle auth errors from requireAuthFromRequest
+    if ((error as any)?.code === 'UNAUTHENTICATED') {
+      return fail(401, 'UNAUTHENTICATED', 'Login required');
+    }
     return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

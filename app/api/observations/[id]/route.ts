@@ -84,6 +84,10 @@ export async function PATCH(
 
     return ok({ observation: data });
   } catch (error) {
+    // Handle auth errors from requireAuthFromRequest
+    if ((error as any)?.code === 'UNAUTHENTICATED') {
+      return fail(401, 'UNAUTHENTICATED', 'Login required');
+    }
     if (error instanceof Response) return error;
     return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
@@ -118,6 +122,10 @@ export async function DELETE(
 
     return ok({ observation: data, message: 'Observation archived' });
   } catch (error) {
+    // Handle auth errors from requireAuthFromRequest
+    if ((error as any)?.code === 'UNAUTHENTICATED') {
+      return fail(401, 'UNAUTHENTICATED', 'Login required');
+    }
     if (error instanceof Response) return error;
     return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }

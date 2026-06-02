@@ -101,6 +101,10 @@ export async function GET(request: Request) {
       },
     });
   } catch (error) {
+    // Handle auth errors from requireAuthFromRequest
+    if ((error as any)?.code === 'UNAUTHENTICATED') {
+      return fail(401, 'UNAUTHENTICATED', 'Login required');
+    }
     if (error instanceof Response) return error;
     return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }

@@ -146,6 +146,13 @@ export async function POST(
     });
 
   } catch (error) {
+    // Handle auth errors from requireAuthFromRequest
+    if ((error as any)?.code === 'UNAUTHENTICATED') {
+      return NextResponse.json(
+        { error: 'Login required' },
+        { status: 401 }
+      );
+    }
     console.error('Unexpected error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },

@@ -134,6 +134,13 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json({ success: true, data: comment });
   } catch (error) {
+    // Handle auth errors from requireAuthFromRequest
+    if ((error as any)?.code === 'UNAUTHENTICATED') {
+      return NextResponse.json(
+        { error: 'Login required' },
+        { status: 401, headers: { 'Content-Type': 'application/json; charset=utf-8' } }
+      );
+    }
     console.error('Comments POST error:', error);
     return NextResponse.json({ error: 'Internal server error' }, {  status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
   }

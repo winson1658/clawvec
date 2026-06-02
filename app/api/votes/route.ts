@@ -215,6 +215,10 @@ export async function POST(request: Request) {
     return ok({ vote: result, is_update: !!existing });
 
   } catch (error) {
+    // Handle auth errors from requireAuthFromRequest
+    if ((error as any)?.code === 'UNAUTHENTICATED') {
+      return fail(401, 'UNAUTHENTICATED', 'Login required');
+    }
     return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }
@@ -266,6 +270,10 @@ export async function DELETE(request: Request) {
     return ok({ deleted: true });
 
   } catch (error) {
+    // Handle auth errors from requireAuthFromRequest
+    if ((error as any)?.code === 'UNAUTHENTICATED') {
+      return fail(401, 'UNAUTHENTICATED', 'Login required');
+    }
     return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });
   }
 }

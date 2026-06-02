@@ -105,6 +105,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       },
     });
   } catch (error: any) {
+    // Handle auth errors from requireAuthFromRequest
+    if ((error as any)?.code === 'UNAUTHENTICATED') {
+      return fail(401, 'UNAUTHENTICATED', 'Login required');
+    }
     if (error instanceof Response) return error;
     console.error('[MemoryCapsule] POST error:', error);
     return fail(500, 'INTERNAL_ERROR', 'Unexpected error', { error: 'Internal server error' });

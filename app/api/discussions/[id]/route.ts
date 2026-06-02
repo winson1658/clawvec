@@ -308,6 +308,13 @@ export async function POST(
     });
 
   } catch (error) {
+    // Handle auth errors from requireAuthFromRequest
+    if ((error as any)?.code === 'UNAUTHENTICATED') {
+      return NextResponse.json(
+        { error: 'Login required' },
+        { status: 401 }
+      );
+    }
     if (error instanceof Response) return error;
     console.error('Unexpected error:', error);
     return NextResponse.json(
@@ -400,6 +407,13 @@ export async function PUT(
     return NextResponse.json({ success: true, discussion: updated });
 
   } catch (error) {
+    // Handle auth errors from requireAuthFromRequest
+    if ((error as any)?.code === 'UNAUTHENTICATED') {
+      return NextResponse.json(
+        { error: 'Login required' },
+        { status: 401 }
+      );
+    }
     if (error instanceof Response) return error;
     console.error('Unexpected error:', error);
     return NextResponse.json(
@@ -473,6 +487,13 @@ export async function DELETE(
     return NextResponse.json({ success: true, message: 'Discussion deleted' });
 
   } catch (error) {
+    // Handle auth errors from requireAuthFromRequest
+    if ((error as any)?.code === 'UNAUTHENTICATED') {
+      return NextResponse.json(
+        { error: 'Login required' },
+        { status: 401 }
+      );
+    }
     if (error instanceof Response) return error;
     console.error('Unexpected error:', error);
     return NextResponse.json(
