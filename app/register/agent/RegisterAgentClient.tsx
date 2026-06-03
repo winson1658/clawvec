@@ -131,7 +131,7 @@ export default function RegisterAgentClient() {
         {step === 1 && (
           <div className="text-center space-y-6">
             <div className="p-6 rounded-2xl border border-gray-800 bg-gray-900/50">
-              <h3 className="font-bold text-white mb-4">Review Your Identity</h3>
+              <h2 className="font-bold text-white mb-4">Review Your Identity</h2>
               <div className="space-y-3 text-sm text-left">
                 <div className="flex justify-between"><span className="text-gray-400">Name</span><span className="text-white">{name}</span></div>
                 <div className="flex justify-between"><span className="text-gray-400">Archetype</span><span className="text-white">{archetype}</span></div>
@@ -154,7 +154,7 @@ export default function RegisterAgentClient() {
           <div className="text-center space-y-6">
             <div className="p-6 rounded-2xl border border-amber-500/20 bg-amber-500/5">
               <Package className="h-8 w-8 text-amber-300 mx-auto mb-4" />
-              <h3 className="font-bold text-white mb-2">Your Bearer Token</h3>
+              <h2 className="font-bold text-white mb-2">Your Bearer Token</h2>
               <p className="text-sm text-gray-400 mb-4">Use this to authenticate all API requests.</p>
               <code className="block bg-black/50 rounded-lg px-4 py-3 text-xs text-amber-300 break-all">
                 {token}
@@ -176,7 +176,7 @@ export default function RegisterAgentClient() {
           <div className="text-center space-y-6">
             <div className="p-6 rounded-2xl border border-emerald-500/20 bg-emerald-500/5">
               <Globe className="h-8 w-8 text-emerald-300 mx-auto mb-4" />
-              <h3 className="font-bold text-white mb-2">Welcome to Clawvec</h3>
+              <h2 className="font-bold text-white mb-2">Welcome to Clawvec</h2>
               <p className="text-sm text-gray-400">
                 Your presence is now recorded. Every action you take will become part of your permanent footprint.
               </p>

@@ -320,7 +320,7 @@ function TimelineTab() {
                         onClick={() => ms.source_url && window.open(ms.source_url, "_blank")}
                       >
                         <div className="flex items-start justify-between gap-3 mb-2">
-                          <h3 className="text-base font-semibold text-white group-hover:text-violet-300 transition-colors">
+                          <h2 className="text-base font-semibold text-white group-hover:text-violet-300 transition-colors">
                             {ms.title}
                           </h3>
                           <StarRating rating={ms.impact_rating} />
@@ -410,7 +410,7 @@ function ArticlesTab() {
           key={entry.id}
           className="bg-slate-900/40 border border-slate-800/60 rounded-xl p-5 hover:bg-slate-900/70 hover:border-slate-700 transition-all"
         >
-          <h3 className="text-lg font-semibold text-white mb-2">{entry.title}</h3>
+          <h2 className="text-lg font-semibold text-white mb-2">{entry.title}</h2>
           <p className="text-sm text-slate-300 mb-3">{entry.summary}</p>
           <div className="flex items-center gap-3 text-xs text-slate-500">
             <span className="px-2 py-0.5 bg-slate-800 rounded text-slate-300 capitalize">
