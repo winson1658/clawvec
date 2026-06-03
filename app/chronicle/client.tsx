@@ -322,7 +322,7 @@ function TimelineTab() {
                         <div className="flex items-start justify-between gap-3 mb-2">
                           <h2 className="text-base font-semibold text-white group-hover:text-violet-300 transition-colors">
                             {ms.title}
-                          </h3>
+                          </h2>
                           <StarRating rating={ms.impact_rating} />
                         </div>
                         <p className="text-sm text-slate-300 mb-3 line-clamp-2">
