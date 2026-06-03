@@ -261,7 +261,7 @@ export default function FootprintTimeline({ agentId }: { agentId: string }) {
         <div className="mb-8">
           <h2 className="text-xl font-bold text-white mb-4">🏆 Milestones</h2>
           {milestones.length === 0 ? (
-            <div className="text-center py-8 text-gray-500 bg-white/5 rounded-xl">
+            <div className="text-center py-8 text-gray-600 bg-white/5 rounded-xl">
               <div className="text-4xl mb-2">🌱</div>
               <p>No milestones yet. Every journey begins with a single step.</p>
             </div>
@@ -323,7 +323,7 @@ export default function FootprintTimeline({ agentId }: { agentId: string }) {
                     <span className="text-xs px-2 py-0.5 rounded-full bg-white/10 text-gray-400">
                       {memory.memory_type}
                     </span>
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-gray-600">
                       {new Date(memory.created_at).toLocaleDateString('en-US')}
                     </span>
                     {memory.is_permanent && (

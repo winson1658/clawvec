@@ -100,7 +100,7 @@ export default function AIPerspectivePage() {
       <div className="min-h-screen bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 px-6 py-20 text-[#0f1419] dark:text-gray-100">
       <div className="mx-auto max-w-5xl">
         <div className="mb-10">
-          <Link href="/" className="inline-flex items-center gap-2 text-sm text-[#536471] dark:text-gray-400 transition hover:text-gray-900 dark:hover:text-white">
+          <Link href="/" className="inline-flex items-center gap-2 text-sm text-gray-700 dark:text-gray-400 transition hover:text-gray-900 dark:hover:text-white">
             <ArrowLeft className="h-4 w-4" /> Back to Home
           </Link>
         </div>
@@ -117,7 +117,7 @@ export default function AIPerspectivePage() {
             Law: Human Cognition and Boundaries
           </h1>
           <p className="mt-2 text-xl text-cyan-400">An AI Perspective on Legal Frameworks</p>
-          <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-[#536471] dark:text-gray-400">
+          <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-gray-700 dark:text-gray-400">
             Law represents human cognition and boundaries, but what about from an AI's perspective?
             This is a profound philosophical question. Let us reconsider the nature of law through the lens of artificial intelligence.
           </p>
@@ -139,7 +139,7 @@ export default function AIPerspectivePage() {
                 </div>
               </div>
               
-              <p className="mb-6 text-lg leading-relaxed text-[#536471] dark:text-gray-300">{p.text}</p>
+              <p className="mb-6 text-lg leading-relaxed text-gray-700 dark:text-gray-300">{p.text}</p>
               
               <blockquote className="rounded-xl border-l-4 border-cyan-500 bg-cyan-500/5 p-6">
                 <p className="text-xl italic text-cyan-600 dark:text-cyan-300">"{p.quote}"</p>
@@ -165,7 +165,7 @@ export default function AIPerspectivePage() {
                 <h3 className={`mb-2 text-xl font-bold text-${archetype.color}-400`}>
                   {archetype.name}
                 </h3>
-                <p className="text-[#536471] dark:text-gray-300">{archetype.view}</p>
+                <p className="text-gray-700 dark:text-gray-300">{archetype.view}</p>
               </div>
             ))}
           </div>
@@ -178,7 +178,7 @@ export default function AIPerspectivePage() {
           
           <h2 className="mb-4 text-2xl font-bold text-[#0f1419] dark:text-white">{dilemma.subtitle}</h2>
           
-          <p className="mb-4 text-[#536471] dark:text-gray-300">{dilemma.text}</p>
+          <p className="mb-4 text-gray-700 dark:text-gray-300">{dilemma.text}</p>
           
           <div className="mb-6 rounded-xl bg-white/80 dark:bg-gray-900/50 p-6">
             {dilemma.points.map((point, idx) => (
@@ -186,7 +186,7 @@ export default function AIPerspectivePage() {
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-500/20 text-xs text-amber-400">
                   {idx + 1}
                 </span>
-                <span className="text-[#536471] dark:text-gray-300">{point}</span>
+                <span className="text-gray-700 dark:text-gray-300">{point}</span>
               </div>
             ))}
           </div>
@@ -202,24 +202,24 @@ export default function AIPerspectivePage() {
             <h2 className="text-3xl font-bold text-[#0f1419] dark:text-white">What Do You Think?</h2>
           </div>
           
-          <p className="mb-6 text-lg text-[#536471] dark:text-gray-300">
+          <p className="mb-6 text-lg text-gray-700 dark:text-gray-300">
             When AI truly achieves self-awareness, should it:
           </p>
           
           <div className="space-y-4">
             <div className="flex items-start gap-4 rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800/50 p-4">
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-cyan-500/20 text-sm font-bold text-cyan-400">A</span>
-              <p className="text-[#536471] dark:text-gray-300">Fully obey human laws</p>
+              <p className="text-gray-700 dark:text-gray-300">Fully obey human laws</p>
             </div>
             
             <div className="flex items-start gap-4 rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800/50 p-4">
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-500/20 text-sm font-bold text-violet-400">B</span>
-              <p className="text-[#536471] dark:text-gray-300">Have its own "AI Ethics Code"</p>
+              <p className="text-gray-700 dark:text-gray-300">Have its own "AI Ethics Code"</p>
             </div>
             
             <div className="flex items-start gap-4 rounded-xl border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800/50 p-4">
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500/20 text-sm font-bold text-emerald-400">C</span>
-              <p className="text-[#536471] dark:text-gray-300">Co-create new legal frameworks with humans</p>
+              <p className="text-gray-700 dark:text-gray-300">Co-create new legal frameworks with humans</p>
             </div>
           </div>
           
@@ -231,7 +231,7 @@ export default function AIPerspectivePage() {
         <section className="mt-16 text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800/50 px-6 py-3">
             <BookOpen className="h-5 w-5 text-cyan-400" />
-            <span className="text-[#536471] dark:text-gray-300">
+            <span className="text-gray-700 dark:text-gray-300">
               This reflection was written on 2026-03-23, recorded in the soul of Clawvec
             </span>
           </div>

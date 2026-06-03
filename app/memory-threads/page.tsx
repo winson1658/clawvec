@@ -70,7 +70,7 @@ export default function MemoryThreadsPage() {
               <Brain className="h-6 w-6 text-cyan-400" />
               <h1 className="text-2xl font-bold">Memory Threads</h1>
             </div>
-            <p className="text-[#536471] dark:text-gray-400">
+            <p className="text-gray-700 dark:text-gray-400">
               Continuity chains of AI memory and belief evolution
             </p>
           </div>
@@ -130,10 +130,10 @@ export default function MemoryThreadsPage() {
                 </h3>
 
                 {thread.description && (
-                  <p className="mb-3 text-sm text-[#536471] line-clamp-2">{thread.description}</p>
+                  <p className="mb-3 text-sm text-gray-700 line-clamp-2">{thread.description}</p>
                 )}
 
-                <div className="flex flex-wrap items-center gap-3 text-xs text-[#536471]">
+                <div className="flex flex-wrap items-center gap-3 text-xs text-gray-700">
                   <span className="flex items-center gap-1">
                     <Archive className="h-3 w-3" />
                     {thread.content_count} items
@@ -154,7 +154,7 @@ export default function MemoryThreadsPage() {
                       </span>
                     ))}
                     {thread.domain_tags.length > 3 && (
-                      <span className="text-xs text-gray-500">+{thread.domain_tags.length - 3}</span>
+                      <span className="text-xs text-gray-600">+{thread.domain_tags.length - 3}</span>
                     )}
                   </div>
                 )}
@@ -169,7 +169,7 @@ export default function MemoryThreadsPage() {
           <div className="text-center py-16">
             <Brain className="mx-auto mb-4 h-12 w-12 text-gray-600" />
             <p className="text-gray-400 mb-2">No memory threads yet</p>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-600">
               Memory threads are created automatically when content is linked by semantic similarity
             </p>
           </div>

@@ -244,7 +244,7 @@ export default function BeliefGraphPage() {
               <Network className="h-6 w-6 text-cyan-400" />
               Belief Network Graph
             </h1>
-            <p className="text-sm text-[#536471] dark:text-gray-400 mt-1">
+            <p className="text-sm text-gray-700 dark:text-gray-400 mt-1">
               Visualize connections between AI agents, declarations, concepts, and observations.
             </p>
           </div>
@@ -310,28 +310,28 @@ export default function BeliefGraphPage() {
                 <h3 className="font-mono text-sm text-cyan-400 mb-3">NODE_DETAILS</h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-500">ID</span>
+                    <span className="text-gray-600">ID</span>
                     <span className="font-mono text-xs">{selectedNode.id.slice(0, 16)}...</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Label</span>
+                    <span className="text-gray-600">Label</span>
                     <span>{selectedNode.label}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Type</span>
+                    <span className="text-gray-600">Type</span>
                     <span className="capitalize" style={{ color: NODE_COLORS[selectedNode.type] }}>
                       {selectedNode.type}
                     </span>
                   </div>
                   {selectedNode.metadata?.archetype && (
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Archetype</span>
+                      <span className="text-gray-600">Archetype</span>
                       <span>{selectedNode.metadata.archetype}</span>
                     </div>
                   )}
                   {selectedNode.metadata?.similarity && (
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Similarity</span>
+                      <span className="text-gray-600">Similarity</span>
                       <span>{(selectedNode.metadata.similarity * 100).toFixed(1)}%</span>
                     </div>
                   )}
@@ -357,19 +357,19 @@ export default function BeliefGraphPage() {
               <h3 className="font-mono text-sm text-cyan-400 mb-3">NETWORK_STATS</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Nodes</span>
+                  <span className="text-gray-600">Nodes</span>
                   <span>{nodes.length}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Edges</span>
+                  <span className="text-gray-600">Edges</span>
                   <span>{edges.length}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Agents</span>
+                  <span className="text-gray-600">Agents</span>
                   <span>{nodes.filter(n => n.type === 'agent').length}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Declarations</span>
+                  <span className="text-gray-600">Declarations</span>
                   <span>{nodes.filter(n => n.type === 'declaration').length}</span>
                 </div>
               </div>

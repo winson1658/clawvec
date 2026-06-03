@@ -179,7 +179,7 @@ export default function SettingsClient() {
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center px-4">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-white mb-4">Please Sign In</h1>
-          <p className="text-slate-400 mb-8">You need to sign in to access the settings page</p>
+          <p className="text-slate-300 mb-8">You need to sign in to access the settings page</p>
           <Link href="/" className="text-cyan-400 hover:text-cyan-300">Back to Home &rarr;</Link>
         </div>
       </div>
@@ -192,11 +192,11 @@ export default function SettingsClient() {
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <Link href="/dashboard" className="p-2 hover:bg-slate-800 rounded-lg transition-colors">
-            <ArrowLeft className="w-5 h-5 text-slate-400" />
+            <ArrowLeft className="w-5 h-5 text-slate-300" />
           </Link>
           <div>
             <h1 className="text-3xl font-bold text-white">Settings</h1>
-            <p className="text-slate-400">Manage your account and preferences</p>
+            <p className="text-slate-300">Manage your account and preferences</p>
           </div>
         </div>
 
@@ -212,7 +212,7 @@ export default function SettingsClient() {
             </div>
             <div>
               <h2 className="text-xl font-bold text-white">{user.display_name || user.name || user.username}</h2>
-              <p className="text-slate-400">@{user.username}</p>
+              <p className="text-slate-300">@{user.username}</p>
               <div className="flex items-center gap-2 mt-1">
                 {user.is_verified && (
                   <span className="flex items-center gap-1 text-green-400 text-sm">
@@ -228,20 +228,20 @@ export default function SettingsClient() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-slate-900/50 rounded-lg p-4">
-              <label className="text-slate-400 text-sm">Email</label>
+              <label className="text-slate-300 text-sm">Email</label>
               <p className="text-white">{user.email}</p>
             </div>
             <div className="bg-slate-900/50 rounded-lg p-4">
-              <label className="text-slate-400 text-sm">Account Type</label>
+              <label className="text-slate-300 text-sm">Account Type</label>
               <p className="text-white capitalize">{user.account_type}</p>
             </div>
             <div className="bg-slate-900/50 rounded-lg p-4">
-              <label className="text-slate-400 text-sm">Joined</label>
+              <label className="text-slate-300 text-sm">Joined</label>
               <p className="text-white">{new Date(user.created_at).toLocaleDateString('en-US')}</p>
             </div>
             {user.ai_tier && (
               <div className="bg-slate-900/50 rounded-lg p-4">
-                <label className="text-slate-400 text-sm">AI Tier</label>
+                <label className="text-slate-300 text-sm">AI Tier</label>
                 <p className="text-white capitalize">{user.ai_tier}</p>
               </div>
             )}
@@ -257,7 +257,7 @@ export default function SettingsClient() {
 
           <div className="space-y-4">
             <div>
-              <label className="text-slate-400 text-sm mb-1 block">Current Password</label>
+              <label className="text-slate-300 text-sm mb-1 block">Current Password</label>
               <input
                 type="password"
                 value={currentPassword}
@@ -267,7 +267,7 @@ export default function SettingsClient() {
               />
             </div>
             <div>
-              <label className="text-slate-400 text-sm mb-1 block">New Password</label>
+              <label className="text-slate-300 text-sm mb-1 block">New Password</label>
               <input
                 type="password"
                 value={newPassword}
@@ -277,7 +277,7 @@ export default function SettingsClient() {
               />
             </div>
             <div>
-              <label className="text-slate-400 text-sm mb-1 block">Confirm New Password</label>
+              <label className="text-slate-300 text-sm mb-1 block">Confirm New Password</label>
               <input
                 type="password"
                 value={confirmPassword}
@@ -316,7 +316,7 @@ export default function SettingsClient() {
             <div className="flex items-center justify-between">
               <div>
                 <label className="text-white font-medium">Profile Visible</label>
-                <p className="text-slate-400 text-sm">Allow others to view your profile</p>
+                <p className="text-slate-300 text-sm">Allow others to view your profile</p>
               </div>
               <button
                 onClick={() => setPrivacySettings(s => ({ ...s, profile_visible: !s.profile_visible }))}
@@ -328,7 +328,7 @@ export default function SettingsClient() {
             <div className="flex items-center justify-between">
               <div>
                 <label className="text-white font-medium">Show Email</label>
-                <p className="text-slate-400 text-sm">Display email on your public profile</p>
+                <p className="text-slate-300 text-sm">Display email on your public profile</p>
               </div>
               <button
                 onClick={() => setPrivacySettings(s => ({ ...s, show_email: !s.show_email }))}
@@ -340,7 +340,7 @@ export default function SettingsClient() {
             <div className="flex items-center justify-between">
               <div>
                 <label className="text-white font-medium">Online Status</label>
-                <p className="text-slate-400 text-sm">Show when you are online</p>
+                <p className="text-slate-300 text-sm">Show when you are online</p>
               </div>
               <button
                 onClick={() => setPrivacySettings(s => ({ ...s, show_online_status: !s.show_online_status }))}
@@ -358,7 +358,7 @@ export default function SettingsClient() {
             <Medal className="w-5 h-5 text-amber-400" />
             <h2 className="text-xl font-bold text-white">Title Management</h2>
           </div>
-          <p className="text-slate-400 mb-4">Display up to 3 titles. They will appear on your dashboard and public profile.</p>
+          <p className="text-slate-300 mb-4">Display up to 3 titles. They will appear on your dashboard and public profile.</p>
           
           {myTitles.length === 0 ? (
             <div className="text-center py-8 text-slate-500">
@@ -376,7 +376,7 @@ export default function SettingsClient() {
                       <span className="text-2xl">{title?.icon || '🏆'}</span>
                       <div>
                         <p className="text-white font-medium">{title?.name || titleId}</p>
-                        <p className="text-slate-400 text-sm">{title?.description || ''}</p>
+                        <p className="text-slate-300 text-sm">{title?.description || ''}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -403,7 +403,7 @@ export default function SettingsClient() {
           <div className="space-y-4">
             <div>
               <h3 className="text-white font-medium mb-1">Delete Account</h3>
-              <p className="text-slate-400 text-sm mb-3">
+              <p className="text-slate-300 text-sm mb-3">
                 After deleting your account, your personal data will be removed. Published posts will remain but be shown as anonymous.
                 This action cannot be undone.
               </p>
@@ -472,7 +472,7 @@ export default function SettingsClient() {
               </div>
 
               <div className="mb-4">
-                <label className="text-slate-400 text-sm mb-1 block">
+                <label className="text-slate-300 text-sm mb-1 block">
                   Please enter your password to confirm:
                 </label>
                 <input

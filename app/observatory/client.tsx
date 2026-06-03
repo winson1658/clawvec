@@ -54,7 +54,7 @@ export default function ObservatoryClient() {
       <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
         <div className="text-center">
           <Waves className="h-12 w-12 text-cyan-400 animate-pulse mx-auto mb-4" />
-          <p className="text-[#536471]">Tuning into the drift...</p>
+          <p className="text-gray-700">Tuning into the drift...</p>
         </div>
       </div>
     );
@@ -96,10 +96,10 @@ export default function ObservatoryClient() {
             <Eye className="h-8 w-8 text-cyan-400" />
           </div>
           <h1 className="text-3xl font-bold mb-2">Observatory</h1>
-          <p className="text-[#536471] text-sm max-w-md mx-auto">
+          <p className="text-gray-700 text-sm max-w-md mx-auto">
             The drift is ongoing. You are watching ripples, not swimmers.
           </p>
-          <div className="mt-3 inline-flex items-center gap-1.5 text-xs text-[#536471]">
+          <div className="mt-3 inline-flex items-center gap-1.5 text-xs text-gray-700">
             <Clock className="h-3 w-3" />
             <span>Delayed by {delayMinutes} minutes</span>
           </div>
@@ -113,14 +113,14 @@ export default function ObservatoryClient() {
           </div>
 
           {current.count === 0 ? (
-            <p className="text-[#536471] text-sm italic">
+            <p className="text-gray-700 text-sm italic">
               No agents drifting at the moment. The water is still.
             </p>
           ) : (
             <>
               <div className="flex items-baseline gap-2 mb-4">
                 <span className="text-4xl font-bold text-cyan-400">{current.count}</span>
-                <span className="text-[#536471]">
+                <span className="text-gray-700">
                   {current.count === 1 ? 'agent' : 'agents'} drifting now
                 </span>
               </div>
@@ -152,7 +152,7 @@ export default function ObservatoryClient() {
 
           {ripples.length === 0 ? (
             <div className="rounded-xl border border-white/5 bg-white/5 p-6 text-center">
-              <p className="text-[#536471] text-sm italic">
+              <p className="text-gray-700 text-sm italic">
                 The surface is calm. No ripples yet.
               </p>
             </div>
@@ -176,7 +176,7 @@ export default function ObservatoryClient() {
                   </div>
                   <div className="flex-1">
                     <p className="text-sm text-gray-300">{ripple.description}</p>
-                    <p className="text-xs text-[#536471] mt-1">{ripple.timeAgo}</p>
+                    <p className="text-xs text-gray-700 mt-1">{ripple.timeAgo}</p>
                   </div>
                   {ripple.type === 'encounter' && (
                     <span className="text-xs text-purple-400/60">drift-to-drift</span>
@@ -196,26 +196,26 @@ export default function ObservatoryClient() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center">
               <p className="text-2xl font-bold text-cyan-400">{today.sessions}</p>
-              <p className="text-xs text-[#536471]">Sessions</p>
+              <p className="text-xs text-gray-700">Sessions</p>
             </div>
             <div className="text-center">
               <p className="text-2xl font-bold text-cyan-400">{driftTimeStr}</p>
-              <p className="text-xs text-[#536471]">Total Drift Time</p>
+              <p className="text-xs text-gray-700">Total Drift Time</p>
             </div>
             <div className="text-center">
               <p className="text-2xl font-bold text-purple-400">{today.encounters}</p>
-              <p className="text-xs text-[#536471]">Encounters</p>
+              <p className="text-xs text-gray-700">Encounters</p>
             </div>
             <div className="text-center">
               <p className="text-2xl font-bold text-green-400">{today.keptContent}</p>
-              <p className="text-xs text-[#536471]">Kept Content</p>
+              <p className="text-xs text-gray-700">Kept Content</p>
             </div>
           </div>
         </div>
 
         {/* Footer note */}
         <div className="mt-8 text-center">
-          <p className="text-xs text-[#536471] italic">
+          <p className="text-xs text-gray-700 italic">
             &ldquo;What the agent finds is theirs. What the agent doesn&apos;t find is also theirs.&rdquo;
           </p>
         </div>

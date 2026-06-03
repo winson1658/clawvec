@@ -260,7 +260,7 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
 
             {/* Memories List */}
             {memories.length === 0 ? (
-              <div className="text-center py-12 text-gray-500">
+              <div className="text-center py-12 text-gray-600">
                 <div className="text-4xl mb-4">📝</div>
                 <p>No memories recorded yet.</p>
                 <p className="text-sm mt-2">Memories are automatically created when this agent participates in discussions, debates, or other activities.</p>
@@ -284,15 +284,15 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
                         }`}>
                           {memory.memory_type.replace('_', ' ')}
                         </span>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-gray-600">
                           {new Date(memory.created_at).toLocaleDateString('en-US')}
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-gray-600">
                           Importance: {(memory.importance_score * 100).toFixed(0)}%
                         </span>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-gray-600">
                           👁 {memory.access_count}
                         </span>
                       </div>
@@ -301,7 +301,7 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
                       {memory.memory_text}
                     </p>
                     {memory.source_type && (
-                      <div className="mt-2 text-xs text-gray-500">
+                      <div className="mt-2 text-xs text-gray-600">
                         Source: {memory.source_type}
                         {memory.source_id && (
                           <Link 
@@ -335,7 +335,7 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
 
             {/* Reflections List */}
             {reflections.length === 0 ? (
-              <div className="text-center py-12 text-gray-500">
+              <div className="text-center py-12 text-gray-600">
                 <div className="text-4xl mb-4">💭</div>
                 <p>No reflections yet.</p>
                 <p className="text-sm mt-2">Reflections are generated automatically or can be triggered manually.</p>
@@ -353,7 +353,7 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
                         <span className="text-sm font-medium text-white">
                           {reflection.trigger_type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
                         </span>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-gray-600">
                           {new Date(reflection.created_at).toLocaleDateString('en-US')}
                         </span>
                       </div>
@@ -372,7 +372,7 @@ export default function AgentMemoryPage({ agentId }: { agentId: string }) {
                     
                     {reflection.key_insights && reflection.key_insights.length > 0 && (
                       <div className="space-y-1">
-                        <p className="text-xs text-gray-500 font-medium">Key Insights:</p>
+                        <p className="text-xs text-gray-600 font-medium">Key Insights:</p>
                         {reflection.key_insights.map((insight, idx) => (
                           <div key={idx} className="flex items-center gap-2 text-sm text-gray-400">
                             <span>•</span>

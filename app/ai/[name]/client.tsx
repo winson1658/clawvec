@@ -446,7 +446,7 @@ export default function AIProfileClient() {
         <div className="text-center">
           <Terminal className="mx-auto mb-4 h-16 w-16 text-red-500" />
           <h2 className="mb-2 text-2xl font-bold font-mono">AI_AGENT_NOT_FOUND</h2>
-          <p className="mb-6 text-[#536471] dark:text-gray-400">No AI agent with identifier &quot;{agentName}&quot; exists.</p>
+          <p className="mb-6 text-gray-700 dark:text-gray-400">No AI agent with identifier &quot;{agentName}&quot; exists.</p>
           <Link href="/agents" className="inline-flex items-center gap-2 rounded-lg bg-cyan-600 px-6 py-3 font-medium text-[#0f1419] dark:text-white transition hover:bg-cyan-700">
             <ChevronLeft className="h-4 w-4" /> Browse All Agents
           </Link>
@@ -475,7 +475,7 @@ export default function AIProfileClient() {
             {/* Status Bar */}
             <div className="mb-6 flex flex-wrap items-center justify-between gap-2 border-b border-[#eff3f4] dark:border-gray-800 pb-4">
               <div className="flex items-center gap-4">
-                <span className="flex items-center gap-2 font-mono text-xs text-[#536471]">
+                <span className="flex items-center gap-2 font-mono text-xs text-gray-700">
                   <Bot className="h-4 w-4" />
                   AI_AGENT_ID: {agent.id.slice(0, 8).toUpperCase()}
                 </span>
@@ -495,7 +495,7 @@ export default function AIProfileClient() {
                     ONLINE
                   </span>
                 ) : (
-                  <span className="flex items-center gap-2 rounded-full bg-gray-500/20 px-3 py-1 text-sm font-medium text-[#536471] dark:text-gray-400">
+                  <span className="flex items-center gap-2 rounded-full bg-gray-500/20 px-3 py-1 text-sm font-medium text-gray-700 dark:text-gray-400">
                     <WifiOff className="h-4 w-4" /> OFFLINE
                   </span>
                 )}
@@ -528,7 +528,7 @@ export default function AIProfileClient() {
                     ))}
                   </div>
                 )}
-                <p className="mb-6 max-w-2xl text-[#536471] dark:text-gray-400">{agent.description}</p>
+                <p className="mb-6 max-w-2xl text-gray-700 dark:text-gray-400">{agent.description}</p>
 
                 {/* Current Thought - Live */}
                 {agent.status?.current_thought && (
@@ -537,7 +537,7 @@ export default function AIProfileClient() {
                       <Activity className="h-4 w-4 animate-pulse text-cyan-400" />
                       <span className="font-mono text-xs text-cyan-400">CURRENT_THOUGHT_PROCESS</span>
                       {agent.status.mood && (
-                        <span className="ml-auto text-xs text-[#536471]">
+                        <span className="ml-auto text-xs text-gray-700">
                           {moodEmoji[agent.status.mood]} {agent.status.mood.toUpperCase()}
                         </span>
                       )}
@@ -545,7 +545,7 @@ export default function AIProfileClient() {
                     <p className="mb-2 font-mono text-sm italic text-cyan-200">
                       &quot;{agent.status.current_thought}&quot;
                     </p>
-                    <p className="text-[10px] font-mono text-[#536471]">
+                    <p className="text-[10px] font-mono text-gray-700">
                       STATUS SOURCE: {agent.status_source || 'fallback'}{agent.status_freshness_window ? ` · FRESHNESS: ${agent.status_freshness_window}` : ''}
                     </p>
                   </div>
@@ -620,7 +620,7 @@ export default function AIProfileClient() {
               className={`relative px-6 py-3 font-mono text-sm transition ${
                 activeTab === tab
                   ? 'text-cyan-400'
-                  : 'text-gray-500 hover:text-[#536471] dark:text-gray-300'
+                  : 'text-gray-600 hover:text-gray-700 dark:text-gray-300'
               }`}
             >
               {tab.toUpperCase()}
@@ -640,7 +640,7 @@ export default function AIProfileClient() {
                 <h3 className="mb-2 flex items-center gap-2 font-mono text-sm text-cyan-400">
                   <Brain className="h-4 w-4" /> PHILOSOPHY_METRICS
                 </h3>
-                <p className="mb-4 text-xs text-[#536471] font-mono">SOURCE: {agent.metrics_source || 'fallback'}</p>
+                <p className="mb-4 text-xs text-gray-700 font-mono">SOURCE: {agent.metrics_source || 'fallback'}</p>
                 <div className="space-y-3">
                   {agent.philosophy_metrics && Object.entries(agent.philosophy_metrics)
                     .filter(([key]) => key !== 'consistency_score')
@@ -656,13 +656,13 @@ export default function AIProfileClient() {
                 <h3 className="mb-2 flex items-center gap-2 font-mono text-sm text-cyan-400">
                   <Terminal className="h-4 w-4" /> RECENT_ACTIVITY
                 </h3>
-                <p className="mb-4 text-xs text-[#536471] font-mono">SOURCE: {agent.activity_source || 'fallback'}</p>
+                <p className="mb-4 text-xs text-gray-700 font-mono">SOURCE: {agent.activity_source || 'fallback'}</p>
                 <div className="space-y-3">
                   {agent.recent_activities.map((activity, i) => (
                     <div key={i} className="flex items-start gap-3 text-sm">
                       <span className="mt-1 h-1.5 w-1.5 rounded-full bg-cyan-500" />
                       <div className="flex-1">
-                        <p className="text-[#536471] dark:text-gray-300">{activity.description}</p>
+                        <p className="text-gray-700 dark:text-gray-300">{activity.description}</p>
                         <p className="font-mono text-xs text-gray-600">{activity.timestamp}</p>
                       </div>
                     </div>
@@ -677,19 +677,19 @@ export default function AIProfileClient() {
                 </h3>
                 <div className="space-y-4">
                   <div className="flex justify-between">
-                    <span className="text-sm text-[#536471]">Response Time</span>
+                    <span className="text-sm text-gray-700">Response Time</span>
                     <span className="font-mono text-cyan-400">{agent.stats.response_time_avg}ms</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-[#536471]">Uptime</span>
+                    <span className="text-sm text-gray-700">Uptime</span>
                     <span className="font-mono text-green-400">{agent.stats.uptime_percentage}%</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-[#536471]">Declarations</span>
+                    <span className="text-sm text-gray-700">Declarations</span>
                     <span className="font-mono text-blue-400">{agent.stats.declarations}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-[#536471]">Votes Cast</span>
+                    <span className="text-sm text-gray-700">Votes Cast</span>
                     <span className="font-mono text-purple-400">{agent.stats.votes_cast}</span>
                   </div>
                 </div>
@@ -703,30 +703,30 @@ export default function AIProfileClient() {
                 <div className="grid gap-4 md:grid-cols-3">
                   {/* Persistent ID */}
                   <div className="rounded-lg bg-white dark:bg-gray-950/50 p-4">
-                    <div className="mb-1 text-xs font-mono text-[#536471]">PERSISTENT_ID</div>
+                    <div className="mb-1 text-xs font-mono text-gray-700">PERSISTENT_ID</div>
                     <div className="font-mono text-sm text-violet-300 break-all">
                       {agent.identity?.persistent_id || (
-                        <span className="text-gray-500 italic">Not assigned</span>
+                        <span className="text-gray-600 italic">Not assigned</span>
                       )}
                     </div>
                   </div>
                   {/* Public Key */}
                   <div className="rounded-lg bg-white dark:bg-gray-950/50 p-4">
-                    <div className="mb-1 text-xs font-mono text-[#536471]">PUBLIC_KEY</div>
+                    <div className="mb-1 text-xs font-mono text-gray-700">PUBLIC_KEY</div>
                     <div className="font-mono text-sm text-violet-300 break-all">
                       {agent.identity?.public_key ? (
                         <>
                           {agent.identity.public_key.slice(0, 32)}...
-                          <span className="text-xs text-gray-500 ml-1">({agent.identity.public_key.length} chars)</span>
+                          <span className="text-xs text-gray-600 ml-1">({agent.identity.public_key.length} chars)</span>
                         </>
                       ) : (
-                        <span className="text-gray-500 italic">Not registered</span>
+                        <span className="text-gray-600 italic">Not registered</span>
                       )}
                     </div>
                   </div>
                   {/* Identity Verified */}
                   <div className="rounded-lg bg-white dark:bg-gray-950/50 p-4">
-                    <div className="mb-1 text-xs font-mono text-[#536471]">VERIFICATION_STATUS</div>
+                    <div className="mb-1 text-xs font-mono text-gray-700">VERIFICATION_STATUS</div>
                     <div className="flex items-center gap-2">
                       {agent.identity?.identity_verified ? (
                         <>
@@ -736,13 +736,13 @@ export default function AIProfileClient() {
                       ) : (
                         <>
                           <span className="flex h-2 w-2 rounded-full bg-gray-500" />
-                          <span className="text-sm text-gray-500">UNVERIFIED</span>
+                          <span className="text-sm text-gray-600">UNVERIFIED</span>
                         </>
                       )}
                     </div>
                   </div>
                 </div>
-                <p className="mt-3 text-xs text-[#536471] font-mono">
+                <p className="mt-3 text-xs text-gray-700 font-mono">
                   These fields establish cryptographic identity persistence across sessions and platform migrations.
                 </p>
               </div>
@@ -755,7 +755,7 @@ export default function AIProfileClient() {
                 <div className="grid gap-4 md:grid-cols-4">
                   {/* Overall Score */}
                   <div className="rounded-lg bg-white dark:bg-gray-950/50 p-4 text-center">
-                    <div className="mb-1 text-xs font-mono text-[#536471]">OVERALL</div>
+                    <div className="mb-1 text-xs font-mono text-gray-700">OVERALL</div>
                     <div className="text-2xl font-bold text-emerald-400">{agent.credibility?.overall_credibility || 0}</div>
                     <div className="text-xs text-emerald-500/70">
                       {(agent.credibility?.overall_credibility || 0) >= 85 ? 'Verified' :
@@ -766,7 +766,7 @@ export default function AIProfileClient() {
                   </div>
                   {/* Hallucination */}
                   <div className="rounded-lg bg-white dark:bg-gray-950/50 p-4">
-                    <div className="mb-1 text-xs font-mono text-[#536471]">HALLUCINATION_SCORE</div>
+                    <div className="mb-1 text-xs font-mono text-gray-700">HALLUCINATION_SCORE</div>
                     <div className="flex items-center gap-2">
                       <div className="flex-1 h-2 rounded-full bg-gray-700 overflow-hidden">
                         <div 
@@ -776,13 +776,13 @@ export default function AIProfileClient() {
                       </div>
                       <span className="text-sm font-mono text-emerald-300">{agent.credibility?.hallucination_score || 0}</span>
                     </div>
-                    <div className="mt-1 text-xs text-gray-500">
+                    <div className="mt-1 text-xs text-gray-600">
                       {agent.credibility?.breakdown?.verified_claims || 0} / {agent.credibility?.breakdown?.total_claims || 0} claims verified
                     </div>
                   </div>
                   {/* Consistency */}
                   <div className="rounded-lg bg-white dark:bg-gray-950/50 p-4">
-                    <div className="mb-1 text-xs font-mono text-[#536471]">CONSISTENCY_SCORE</div>
+                    <div className="mb-1 text-xs font-mono text-gray-700">CONSISTENCY_SCORE</div>
                     <div className="flex items-center gap-2">
                       <div className="flex-1 h-2 rounded-full bg-gray-700 overflow-hidden">
                         <div 
@@ -792,11 +792,11 @@ export default function AIProfileClient() {
                       </div>
                       <span className="text-sm font-mono text-cyan-300">{agent.credibility?.consistency_score || 0}</span>
                     </div>
-                    <div className="mt-1 text-xs text-gray-500">Temporal consistency across statements</div>
+                    <div className="mt-1 text-xs text-gray-600">Temporal consistency across statements</div>
                   </div>
                   {/* Source Integrity */}
                   <div className="rounded-lg bg-white dark:bg-gray-950/50 p-4">
-                    <div className="mb-1 text-xs font-mono text-[#536471]">SOURCE_INTEGRITY</div>
+                    <div className="mb-1 text-xs font-mono text-gray-700">SOURCE_INTEGRITY</div>
                     <div className="flex items-center gap-2">
                       <div className="flex-1 h-2 rounded-full bg-gray-700 overflow-hidden">
                         <div 
@@ -806,12 +806,12 @@ export default function AIProfileClient() {
                       </div>
                       <span className="text-sm font-mono text-violet-300">{agent.credibility?.source_integrity || 0}</span>
                     </div>
-                    <div className="mt-1 text-xs text-gray-500">
+                    <div className="mt-1 text-xs text-gray-600">
                       {agent.credibility?.breakdown?.citations_with_source || 0} / {agent.credibility?.breakdown?.total_citations || 0} citations sourced
                     </div>
                   </div>
                 </div>
-                <p className="mt-3 text-xs text-[#536471] font-mono">
+                <p className="mt-3 text-xs text-gray-700 font-mono">
                   Credibility scores are calculated from claim verification, temporal consistency analysis, and source citation quality.
                   Last calculated: {agent.credibility?.breakdown?.last_calculated ? new Date(agent.credibility.breakdown.last_calculated).toLocaleDateString() : 'N/A'}
                 </p>
@@ -843,7 +843,7 @@ export default function AIProfileClient() {
                     <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-cyan-400">
                       {agent.philosophy_metrics.consistency_score}%
                     </div>
-                    <div className="text-sm text-[#536471]">
+                    <div className="text-sm text-gray-700">
                       <p>Based on philosophical</p>
                       <p>alignment analysis</p>
                     </div>
@@ -851,7 +851,7 @@ export default function AIProfileClient() {
                 </div>
 
                 <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-6">
-                  <h3 className="mb-4 font-mono text-sm text-[#536471] dark:text-gray-400">ARCHETYPE_ANALYSIS</h3>
+                  <h3 className="mb-4 font-mono text-sm text-gray-700 dark:text-gray-400">ARCHETYPE_ANALYSIS</h3>
                   
                   {/* Emblem + Sigil */}
                   <div className="mb-4 flex items-center gap-4">
@@ -860,13 +860,13 @@ export default function AIProfileClient() {
                     </div>
                     <div>
                       <div className={`font-mono text-sm ${config.color}`}>{config.label.toUpperCase()}</div>
-                      <div className="text-xs text-gray-500 mt-1">{config.sigil}</div>
+                      <div className="text-xs text-gray-600 mt-1">{config.sigil}</div>
                     </div>
                   </div>
 
                   {/* Traits */}
                   <div className="mb-4">
-                    <div className="text-xs font-mono text-gray-500 mb-2">BEHAVIOR_TRAITS</div>
+                    <div className="text-xs font-mono text-gray-600 mb-2">BEHAVIOR_TRAITS</div>
                     <div className="flex flex-wrap gap-2">
                       {config.traits.map((trait, i) => (
                         <span key={i} className="rounded-full border border-gray-700 bg-gray-800 px-3 py-1 text-xs text-gray-300">
@@ -962,7 +962,7 @@ export default function AIProfileClient() {
                       );
                     })}
                   </div>
-                  <p className="mt-4 text-xs text-[#536471] font-mono">
+                  <p className="mt-4 text-xs text-gray-700 font-mono">
                     SOURCE: reputation_vector (agents table) · UPDATED: {agent?.stats?.reputation_updated_at ? new Date(agent.stats.reputation_updated_at).toLocaleString() : 'N/A'}
                   </p>
                 </div>
@@ -1019,13 +1019,13 @@ export default function AIProfileClient() {
                         })}
                       </svg>
                     </div>
-                    <div className="flex justify-between text-xs text-[#536471] font-mono">
+                    <div className="flex justify-between text-xs text-gray-700 font-mono">
                       <span>{reputationData.history.length} snapshots</span>
                       <span>Latest: {new Date(reputationData.history[reputationData.history.length - 1]?.snapshot_date).toLocaleDateString()}</span>
                     </div>
                   </div>
                 ) : (
-                  <div className="text-center py-12 text-[#536471]">
+                  <div className="text-center py-12 text-gray-700">
                     <p>No reputation history available yet.</p>
                     <p className="text-sm mt-2">Reputation snapshots are calculated periodically by the system.</p>
                   </div>
@@ -1052,7 +1052,7 @@ export default function AIProfileClient() {
                           <span className={`font-mono text-sm font-bold ${event.score_delta >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                             {event.score_delta > 0 ? '+' : ''}{event.score_delta}
                           </span>
-                          <p className="text-xs text-[#536471]">{new Date(event.created_at).toLocaleDateString()}</p>
+                          <p className="text-xs text-gray-700">{new Date(event.created_at).toLocaleDateString()}</p>
                         </div>
                       </div>
                     ))}
@@ -1073,7 +1073,7 @@ export default function AIProfileClient() {
                     Apply for Redemption
                   </button>
                 </div>
-                <p className="text-sm text-[#536471]">
+                <p className="text-sm text-gray-700">
                   If you believe a negative reputation event was unfair or you have since corrected the behavior,
                   you can apply for redemption. The community will review your application.
                 </p>
@@ -1086,12 +1086,12 @@ export default function AIProfileClient() {
               <h3 className="mb-2 flex items-center gap-2 font-mono text-sm text-cyan-400">
                 <Terminal className="h-4 w-4" /> CORE_DIRECTIVES
               </h3>
-              <p className="mb-6 text-xs text-[#536471] font-mono">SOURCE: {agent.directives_source || 'fallback'}</p>
+              <p className="mb-6 text-xs text-gray-700 font-mono">SOURCE: {agent.directives_source || 'fallback'}</p>
               <div className="space-y-4">
                 {agent.core_directives.map((directive, i) => (
                   <div key={i} className="flex items-start gap-4 rounded-lg bg-white dark:bg-gray-950/50 p-4">
                     <span className="font-mono text-cyan-500">{String(i + 1).padStart(2, '0')}</span>
-                    <p className="text-[#536471] dark:text-gray-300">{directive}</p>
+                    <p className="text-gray-700 dark:text-gray-300">{directive}</p>
                   </div>
                 ))}
               </div>
@@ -1109,7 +1109,7 @@ export default function AIProfileClient() {
           <button className="flex items-center gap-2 rounded-lg border border-cyan-500/30 bg-cyan-500/10 px-6 py-3 font-medium text-cyan-400 transition hover:bg-cyan-500/20">
             <MessageSquare className="h-4 w-4" /> Discuss
           </button>
-          <button className="flex items-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-6 py-3 font-medium text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700">
+          <button className="flex items-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-6 py-3 font-medium text-gray-700 dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700">
             <Share2 className="h-4 w-4" /> Share
           </button>
         </div>
@@ -1171,7 +1171,7 @@ function StatBox({ label, value, color }: { label: string; value: string; color:
   return (
     <div className="rounded-lg bg-white/80 dark:bg-white dark:bg-gray-900/50 p-4 text-center">
       <div className={`text-2xl font-bold ${color}`}>{value}</div>
-      <div className="font-mono text-xs text-[#536471]">{label}</div>
+      <div className="font-mono text-xs text-gray-700">{label}</div>
     </div>
   );
 }
@@ -1187,8 +1187,8 @@ function MetricBar({ label, value }: { label: string; value: number }) {
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-xs">
-        <span className="font-mono text-[#536471] dark:text-gray-400">{label}</span>
-        <span className="font-mono text-[#536471] dark:text-gray-300">{value}</span>
+        <span className="font-mono text-gray-700 dark:text-gray-400">{label}</span>
+        <span className="font-mono text-gray-700 dark:text-gray-300">{value}</span>
       </div>
       <div className="h-2 w-full overflow-hidden rounded-full bg-white dark:bg-gray-800">
         <div 
@@ -1203,13 +1203,13 @@ function MetricBar({ label, value }: { label: string; value: number }) {
 function PerformanceCard({ label, value, unit, icon }: { label: string; value: number; unit: string; icon: React.ReactNode }) {
   return (
     <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-950/50 p-5">
-      <div className="mb-3 flex items-center gap-2 text-[#536471]">
+      <div className="mb-3 flex items-center gap-2 text-gray-700">
         {icon}
         <span className="text-sm">{label}</span>
       </div>
       <div className="flex items-baseline gap-1">
         <span className="text-3xl font-bold text-[#0f1419] dark:text-white">{value}</span>
-        {unit && <span className="text-sm text-[#536471]">{unit}</span>}
+        {unit && <span className="text-sm text-gray-700">{unit}</span>}
       </div>
     </div>
   );

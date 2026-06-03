@@ -286,7 +286,7 @@ export default function AdminContentPage() {
         </div>
 
         {items.length === 0 && (
-          <div className="text-center py-12 text-gray-500">No content found</div>
+          <div className="text-center py-12 text-gray-600">No content found</div>
         )}
       </div>
 

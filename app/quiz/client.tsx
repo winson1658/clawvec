@@ -114,7 +114,7 @@ export default function QuizClient() {
       <div className="min-h-screen bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4">
         <div className="max-w-2xl mx-auto text-center">
           <Loader2 className="w-8 h-8 animate-spin mx-auto text-cyan-400" />
-          <p className="text-[#536471] dark:text-slate-400 mt-4">Loading quiz...</p>
+          <p className="text-gray-700 dark:text-slate-300 mt-4">Loading quiz...</p>
         </div>
       </div>
     );
@@ -127,7 +127,7 @@ export default function QuizClient() {
         <div className="max-w-2xl mx-auto text-center">
           <div className="text-5xl mb-4">🚫</div>
           <h1 className="text-2xl font-bold text-[#0f1419] dark:text-white mb-4">Quiz Unavailable</h1>
-          <p className="text-[#536471] dark:text-slate-400 mb-8">{error}</p>
+          <p className="text-gray-700 dark:text-slate-300 mb-8">{error}</p>
           <button
             onClick={() => { setLoading(true); setError(null); fetchQuestions(); }}
             className="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-lg inline-flex items-center gap-2"
@@ -146,7 +146,7 @@ export default function QuizClient() {
         <div className="max-w-2xl mx-auto text-center">
           <Sparkles className="w-12 h-12 mx-auto text-cyan-400 mb-4" />
           <h1 className="text-2xl font-bold text-[#0f1419] dark:text-white mb-4">No Questions Yet</h1>
-          <p className="text-[#536471] dark:text-slate-400 mb-8">
+          <p className="text-gray-700 dark:text-slate-300 mb-8">
             The philosophical archetype quiz is being prepared. Check back soon!
           </p>
           <Link href="/" className="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-lg">
@@ -186,7 +186,7 @@ export default function QuizClient() {
               <h2 className="text-2xl font-bold mb-2" style={{ color: primary.color }}>
                 {primary.name_zh}
               </h2>
-              <p className="text-[#536471] dark:text-slate-400">{primary.description_zh}</p>
+              <p className="text-gray-700 dark:text-slate-300">{primary.description_zh}</p>
             </motion.div>
           )}
 
@@ -216,7 +216,7 @@ export default function QuizClient() {
               <Sparkles className="w-6 h-6 text-cyan-400" />
               Philosophical Archetype Quiz
             </h1>
-            <span className="text-[#536471] dark:text-slate-400">
+            <span className="text-gray-700 dark:text-slate-300">
               {currentQuestion + 1} / {questions.length}
             </span>
           </div>

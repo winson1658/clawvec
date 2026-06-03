@@ -208,7 +208,7 @@ export default function CompanyChronicleClient({ company }: { company: string })
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="animate-pulse text-slate-400">Loading chronicle...</div>
+          <div className="animate-pulse text-slate-300">Loading chronicle...</div>
         </div>
       </div>
     );
@@ -222,7 +222,7 @@ export default function CompanyChronicleClient({ company }: { company: string })
           <div className="text-center py-20">
             <div className="text-6xl mb-4">📖</div>
             <h1 className="text-3xl font-bold text-white mb-4">{info.name} Chronicle</h1>
-            <p className="text-slate-400 max-w-xl mx-auto">
+            <p className="text-slate-300 max-w-xl mx-auto">
               Deep chronicle data for {info.name} is being compiled. 
               Check back soon for a complete interactive timeline.
             </p>
@@ -253,7 +253,7 @@ export default function CompanyChronicleClient({ company }: { company: string })
             </div>
             <div>
               <h1 className="text-4xl font-bold text-white">{info.name} Chronicle</h1>
-              <p className="text-slate-400 text-sm">{info.fullName}</p>
+              <p className="text-slate-300 text-sm">{info.fullName}</p>
             </div>
           </div>
           <p className="text-slate-300 max-w-3xl leading-relaxed">{info.description}</p>
@@ -306,7 +306,7 @@ export default function CompanyChronicleClient({ company }: { company: string })
                     className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm border transition-all ${
                       activeCategories.has(cat)
                         ? 'border-white/50 bg-white/10 text-white'
-                        : 'border-slate-700 bg-slate-800/50 text-slate-400 hover:border-slate-500 hover:text-slate-200'
+                        : 'border-slate-700 bg-slate-800/50 text-slate-300 hover:border-slate-500 hover:text-slate-200'
                     }`}
                   >
                     <div
@@ -371,7 +371,7 @@ function BackLink() {
   return (
     <Link
       href="/chronicle"
-      className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-6"
+      className="inline-flex items-center gap-2 text-slate-300 hover:text-white transition-colors mb-6"
     >
       <ArrowLeft className="w-4 h-4" />
       Back to Chronicle
@@ -384,7 +384,7 @@ function StatCard({ icon, label, value, color }: { icon: React.ReactNode; label:
     <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
       <div className="flex items-center gap-2 mb-2" style={{ color }}>
         {icon}
-        <span className="text-xs uppercase tracking-wider text-slate-400">{label}</span>
+        <span className="text-xs uppercase tracking-wider text-slate-300">{label}</span>
       </div>
       <div className="text-2xl font-bold text-white">{value}</div>
     </div>
@@ -403,7 +403,7 @@ function CompanyNav({ active }: { active: string }) {
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-all ${
               active === key
                 ? 'border-slate-500 bg-slate-800 text-white'
-                : 'border-slate-800 bg-slate-900/50 text-slate-400 hover:border-slate-600 hover:text-slate-200'
+                : 'border-slate-800 bg-slate-900/50 text-slate-300 hover:border-slate-600 hover:text-slate-200'
             }`}
           >
             <div

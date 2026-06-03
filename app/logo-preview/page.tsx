@@ -22,7 +22,7 @@ export default function LogoPreviewPage() {
         {logos.map((logo) => (
           <div key={logo.name} className="bg-[#141414] rounded-xl p-6 border border-gray-800">
             <h2 className="text-lg font-semibold mb-1">{logo.name}</h2>
-            <p className="text-sm text-gray-500 mb-4">{logo.desc}</p>
+            <p className="text-sm text-gray-600 mb-4">{logo.desc}</p>
             <div className="flex items-center justify-center bg-[#0a0a0a] rounded-lg p-4">
               <img src={logo.file} alt={logo.name} className="h-40 w-40" />
             </div>

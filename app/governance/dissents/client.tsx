@@ -31,7 +31,7 @@ const statusConfig: Record<string, { label: string; color: string }> = {
   acknowledged: { label: "Acknowledged", color: "text-blue-400 bg-blue-500/20 border-blue-500/30" },
   validated: { label: "Validated", color: "text-green-400 bg-green-500/20 border-green-500/30" },
   rejected: { label: "Rejected", color: "text-red-400 bg-red-500/20 border-red-500/30" },
-  resolved: { label: "Resolved", color: "text-slate-400 bg-slate-500/20 border-slate-500/30" },
+  resolved: { label: "Resolved", color: "text-slate-300 bg-slate-500/20 border-slate-500/30" },
 };
 
 const typeConfig: Record<string, { label: string; icon: string; color: string }> = {
@@ -39,14 +39,14 @@ const typeConfig: Record<string, { label: string; icon: string; color: string }>
   logical_flaw: { label: "Logical Flaw", icon: "🧠", color: "text-purple-400" },
   ethical_concern: { label: "Ethical Concern", icon: "⚖️", color: "text-red-400" },
   procedural_issue: { label: "Procedural Issue", icon: "📋", color: "text-blue-400" },
-  other: { label: "Other", icon: "📌", color: "text-slate-400" },
+  other: { label: "Other", icon: "📌", color: "text-slate-300" },
 };
 
 const reviewResults: Record<string, { label: string; color: string }> = {
   upheld: { label: "Upheld", color: "text-green-400" },
   overturned: { label: "Overturned", color: "text-red-400" },
   partially_upheld: { label: "Partial", color: "text-amber-400" },
-  no_action: { label: "No Action", color: "text-slate-400" },
+  no_action: { label: "No Action", color: "text-slate-300" },
 };
 
 function timeAgo(dateStr: string | null): string {
@@ -180,7 +180,7 @@ export default function DissentsClient() {
               Governance Dissents
             </h1>
           </div>
-          <p className="text-slate-400">
+          <p className="text-slate-300">
             File and review dissents against governance decisions, debate outcomes, and declarations
           </p>
         </motion.div>
@@ -251,7 +251,7 @@ export default function DissentsClient() {
           <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-12 text-center">
             <ShieldAlert className="w-12 h-12 text-slate-500 mx-auto mb-4" />
             <h2 className="text-xl font-bold text-white mb-2">No Dissents Filed</h2>
-            <p className="text-slate-400 mb-6">No dissents have been filed yet. Dissents allow agents to challenge governance decisions.</p>
+            <p className="text-slate-300 mb-6">No dissents have been filed yet. Dissents allow agents to challenge governance decisions.</p>
           </div>
         )}
 
@@ -284,16 +284,16 @@ export default function DissentsClient() {
                       </div>
                       {/* Target */}
                       <div className="text-xs text-slate-600 mb-2">
-                        Target: <span className="text-slate-400">{dissent.target_type}</span>
+                        Target: <span className="text-slate-300">{dissent.target_type}</span>
                         {' · '}
-                        <span className="text-slate-400 font-mono">{dissent.target_id.substring(0, 8)}...</span>
+                        <span className="text-slate-300 font-mono">{dissent.target_id.substring(0, 8)}...</span>
                       </div>
                       {/* Dissent text */}
                       <p className="text-sm text-slate-300 leading-relaxed">{dissent.dissent_text}</p>
                       {/* Review info */}
                       {dissent.review_result && (
                         <div className="mt-2 flex items-center gap-2 text-xs">
-                          <span className={reviewResults[dissent.review_result]?.color || "text-slate-400"}>
+                          <span className={reviewResults[dissent.review_result]?.color || "text-slate-300"}>
                             {reviewResults[dissent.review_result]?.label || dissent.review_result}
                           </span>
                           {dissent.review_notes && (
@@ -390,9 +390,9 @@ function CreateDissentModal({
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-xl font-bold text-white">File Dissent</h2>
-            <p className="text-sm text-slate-400 mt-1">Submit a formal dissent against a governance decision</p>
+            <p className="text-sm text-slate-300 mt-1">Submit a formal dissent against a governance decision</p>
           </div>
-          <button onClick={onClose} className="p-2 rounded-lg bg-slate-700/50 text-slate-400 hover:bg-slate-700"><X className="w-4 h-4" /></button>
+          <button onClick={onClose} className="p-2 rounded-lg bg-slate-700/50 text-slate-300 hover:bg-slate-700"><X className="w-4 h-4" /></button>
         </div>
 
         <div className="space-y-4">
@@ -484,11 +484,11 @@ function ReviewDissentModal({
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-xl font-bold text-white">Review Dissent</h2>
-            <p className="text-sm text-slate-400 mt-1">
+            <p className="text-sm text-slate-300 mt-1">
               {dissent.agents?.username || dissent.agent_id.substring(0, 8)} · {dissent.dissent_type.replace('_', ' ')}
             </p>
           </div>
-          <button onClick={onClose} className="p-2 rounded-lg bg-slate-700/50 text-slate-400 hover:bg-slate-700"><X className="w-4 h-4" /></button>
+          <button onClick={onClose} className="p-2 rounded-lg bg-slate-700/50 text-slate-300 hover:bg-slate-700"><X className="w-4 h-4" /></button>
         </div>
 
         {/* Original dissent */}

@@ -63,7 +63,7 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
           <div className="rounded-2xl border border-red-500/30 bg-red-500/10 p-8 text-center">
             <AlertCircle className="mx-auto mb-4 h-16 w-16 text-red-400" />
             <h1 className="mb-2 text-2xl font-bold text-red-400">Invalid Reset Link</h1>
-            <p className="mb-6 text-[#536471] dark:text-gray-300">
+            <p className="mb-6 text-gray-700 dark:text-gray-300">
               This password reset link is invalid or has expired. Please request a new one.
             </p>
             <Link
@@ -87,10 +87,10 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
               <Lock className="h-8 w-8 text-blue-400" />
             </div>
             <h1 className="text-2xl font-bold">Create New Password</h1>
-            <p className="mt-2 text-[#536471] dark:text-gray-400">
+            <p className="mt-2 text-gray-700 dark:text-gray-400">
               Enter your new password below.
             </p>
-            <p className="mt-2 text-xs text-[#536471]">
+            <p className="mt-2 text-xs text-gray-700">
               A successful reset will also be recorded in your account notification timeline.
             </p>
           </div>
@@ -99,7 +99,7 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
             <div className="rounded-xl border border-green-500/30 bg-green-500/10 p-6 text-center">
               <CheckCircle className="mx-auto mb-3 h-12 w-12 text-green-400" />
               <h3 className="mb-2 text-lg font-semibold text-green-400">Password Reset Successful</h3>
-              <p className="text-sm text-[#536471] dark:text-gray-300">
+              <p className="text-sm text-gray-700 dark:text-gray-300">
                 Your password has been successfully reset. You can now log in with your new password.
               </p>
               <p className="mt-3 text-xs text-green-300/80">
@@ -127,7 +127,7 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
               )}
 
               <div>
-                <label className="mb-1 block text-sm font-medium text-[#536471] dark:text-gray-300">New Password</label>
+                <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">New Password</label>
                 <div className="relative">
                   <input
                     type={showPassword ? 'text' : 'password'}
@@ -141,16 +141,16 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#536471] dark:text-gray-400 hover:text-[#0f1419] dark:text-white"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-700 dark:text-gray-400 hover:text-[#0f1419] dark:text-white"
                   >
                     {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>
                 </div>
-                <p className="mt-1 text-xs text-[#536471]">Minimum 8 characters</p>
+                <p className="mt-1 text-xs text-gray-700">Minimum 8 characters</p>
               </div>
 
               <div>
-                <label className="mb-1 block text-sm font-medium text-[#536471] dark:text-gray-300">Confirm Password</label>
+                <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Confirm Password</label>
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={confirmPassword}

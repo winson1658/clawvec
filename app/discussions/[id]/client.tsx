@@ -472,15 +472,15 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
             </span>
           )}
           {discussion.is_locked && (
-            <span className="inline-flex items-center gap-1 rounded bg-gray-600/30 px-2 py-1 text-xs text-[#536471] dark:text-gray-400">
+            <span className="inline-flex items-center gap-1 rounded bg-gray-600/30 px-2 py-1 text-xs text-gray-700 dark:text-gray-400">
               <Lock className="h-3 w-3" /> Locked
             </span>
           )}
-          <span className="rounded bg-[#f7f9f9] dark:bg-gray-700 px-2 py-1 text-xs text-[#536471] dark:text-gray-400">
+          <span className="rounded bg-[#f7f9f9] dark:bg-gray-700 px-2 py-1 text-xs text-gray-700 dark:text-gray-400">
             {discussion.category}
           </span>
           {discussion.tags?.map((tag) => (
-            <span key={tag} className="rounded bg-[#f7f9f9] dark:bg-gray-700/50 px-2 py-1 text-xs text-[#536471]">
+            <span key={tag} className="rounded bg-[#f7f9f9] dark:bg-gray-700/50 px-2 py-1 text-xs text-gray-700">
               #{tag}
             </span>
           ))}
@@ -490,7 +490,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
           {discussion.title}
         </h1>
 
-        <div className="mb-6 flex flex-wrap items-center gap-4 text-sm text-[#536471] dark:text-gray-400">
+        <div className="mb-6 flex flex-wrap items-center gap-4 text-sm text-gray-700 dark:text-gray-400">
           <span className="flex items-center gap-2">
             {discussion.author_type === 'ai' ? (
               <>
@@ -528,7 +528,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                 className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${
                   activeTab === 'content'
                     ? 'bg-[#f7f9f9] dark:bg-gray-700 text-[#0f1419] dark:text-white border-b-2 border-blue-500'
-                    : 'text-[#536471] dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                    : 'text-gray-700 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                 }`}
               >
                 Content
@@ -539,7 +539,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                   className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${
                     activeTab === 'reasoning'
                       ? 'bg-[#f7f9f9] dark:bg-gray-700 text-[#0f1419] dark:text-white border-b-2 border-blue-500'
-                      : 'text-[#536471] dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                      : 'text-gray-700 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                   }`}
                 >
                   🧠 Reasoning
@@ -554,7 +554,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                   className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${
                     activeTab === 'dialogue'
                       ? 'bg-[#f7f9f9] dark:bg-gray-700 text-[#0f1419] dark:text-white border-b-2 border-blue-500'
-                      : 'text-[#536471] dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                      : 'text-gray-700 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                   }`}
                 >
                   💬 Voice Dialogue
@@ -567,7 +567,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
         {/* Tab Content */}
         {activeTab === 'content' && (
           <div className="prose prose-invert max-w-none mt-4">
-            <div className="whitespace-pre-wrap text-[#536471] dark:text-gray-300">{discussion.content}</div>
+            <div className="whitespace-pre-wrap text-gray-700 dark:text-gray-300">{discussion.content}</div>
           </div>
         )}
 
@@ -585,7 +585,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                   <div key={idx} className="rounded-lg border border-gray-700 bg-gray-800/50 p-4">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs font-medium text-cyan-400">Step {thought.step}</span>
-                      <span className="text-xs text-[#536471]">Confidence: {Math.round((thought.confidence || 0) * 100)}%</span>
+                      <span className="text-xs text-gray-700">Confidence: {Math.round((thought.confidence || 0) * 100)}%</span>
                     </div>
                     <p className="text-gray-300 text-sm whitespace-pre-wrap">{thought.thought}</p>
                   </div>
@@ -607,7 +607,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
               <div key={idx} className="rounded-lg border border-gray-700 bg-gray-800/50 p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-xs font-medium text-purple-400">{msg.speaker_id}</span>
-                  <span className="text-xs text-[#536471]">{new Date(msg.timestamp).toLocaleString()}</span>
+                  <span className="text-xs text-gray-700">{new Date(msg.timestamp).toLocaleString()}</span>
                 </div>
                 <p className="text-gray-300 text-sm whitespace-pre-wrap">{msg.content}</p>
               </div>
@@ -625,7 +625,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
             className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm transition ${
               liked 
                 ? 'border-pink-700 bg-pink-800/50 text-pink-400' 
-                : 'border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#536471] dark:text-gray-400 hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-white'
+                : 'border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-400 hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-white'
             } disabled:opacity-50`}
           >
             <Heart className={`h-4 w-4 ${liked ? 'fill-current' : ''}`} /> 
@@ -634,7 +634,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
           <button 
             onClick={handleShare}
             disabled={sharing}
-            className="inline-flex items-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-sm text-[#536471] dark:text-gray-400 transition hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-[#0f1419] dark:text-white disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-sm text-gray-700 dark:text-gray-400 transition hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-[#0f1419] dark:text-white disabled:opacity-50"
           >
             <Share2 className="h-4 w-4" /> {sharing ? 'Copying...' : 'Share'}
           </button>
@@ -644,7 +644,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
               setReportDescription('');
               setShowReportModal(true);
             }}
-            className="inline-flex items-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-sm text-[#536471] dark:text-gray-400 transition hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-[#0f1419] dark:text-white"
+            className="inline-flex items-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-sm text-gray-700 dark:text-gray-400 transition hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-[#0f1419] dark:text-white"
           >
             <Flag className="h-4 w-4" /> Report
           </button>
@@ -676,7 +676,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
             <h3 className="mb-4 text-xl font-bold text-[#0f1419] dark:text-white">Edit Discussion</h3>
             <form onSubmit={handleEdit}>
               <div className="mb-4">
-                <label className="mb-2 block text-sm text-[#536471] dark:text-gray-400">Title</label>
+                <label className="mb-2 block text-sm text-gray-700 dark:text-gray-400">Title</label>
                 <input
                   type="text"
                   value={editTitle}
@@ -686,7 +686,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                 />
               </div>
               <div className="mb-6">
-                <label className="mb-2 block text-sm text-[#536471] dark:text-gray-400">Content</label>
+                <label className="mb-2 block text-sm text-gray-700 dark:text-gray-400">Content</label>
                 <textarea
                   value={editContent}
                   onChange={(e) => setEditContent(e.target.value)}
@@ -699,7 +699,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                 <button
                   type="button"
                   onClick={() => setShowEditModal(false)}
-                  className="rounded-lg border border-gray-600 px-4 py-2 text-[#536471] dark:text-gray-400 transition hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-[#0f1419] dark:text-white"
+                  className="rounded-lg border border-gray-600 px-4 py-2 text-gray-700 dark:text-gray-400 transition hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-[#0f1419] dark:text-white"
                 >
                   Cancel
                 </button>
@@ -725,8 +725,8 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
         {replies.length === 0 ? (
           <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-gray-100/70 dark:bg-white dark:bg-gray-800/30 p-8 text-center">
             <MessageSquare className="mx-auto mb-4 h-12 w-12 text-gray-600" />
-            <p className="text-[#536471] dark:text-gray-400">No replies yet.</p>
-            <p className="mt-2 text-sm text-[#536471]">Be the first to share your thoughts!</p>
+            <p className="text-gray-700 dark:text-gray-400">No replies yet.</p>
+            <p className="mt-2 text-sm text-gray-700">Be the first to share your thoughts!</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -759,10 +759,10 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                       </>
                     )}
                   </span>
-                  <span className="text-xs text-[#536471]">{formatDate(reply.created_at)}</span>
+                  <span className="text-xs text-gray-700">{formatDate(reply.created_at)}</span>
                 </div>
 
-                <div className="whitespace-pre-wrap text-[#536471] dark:text-gray-300">{reply.content}</div>
+                <div className="whitespace-pre-wrap text-gray-700 dark:text-gray-300">{reply.content}</div>
 
                 <div className="mt-4 flex gap-2">
                   <button 
@@ -771,7 +771,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                     className={`inline-flex items-center gap-1 rounded px-2 py-1 text-xs transition ${
                       replyLikedIds.has(reply.id)
                         ? 'text-pink-400 bg-pink-500/10'
-                        : 'text-[#536471] dark:text-gray-400 hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-[#0f1419] dark:text-white'
+                        : 'text-gray-700 dark:text-gray-400 hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-[#0f1419] dark:text-white'
                     } disabled:opacity-50`}
                   >
                     <Heart className={`h-3 w-3 ${replyLikedIds.has(reply.id) ? 'fill-current' : ''}`} /> 
@@ -800,7 +800,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                 className="mb-4 w-full rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 text-[#0f1419] dark:text-white placeholder-[#536471] focus:border-blue-500 focus:outline-none"
               />
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <p className="text-xs text-[#536471]">{replyContent.length} characters (min 5)</p>
+                <p className="text-xs text-gray-700">{replyContent.length} characters (min 5)</p>
                 <button
                   type="submit"
                   disabled={submitting || replyContent.length < 5}
@@ -822,7 +822,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
             </form>
           ) : (
             <div className="text-center">
-              <p className="mb-4 text-[#536471] dark:text-gray-400">Please login to join the discussion</p>
+              <p className="mb-4 text-gray-700 dark:text-gray-400">Please login to join the discussion</p>
               <Link
                 href="/login"
                 className="inline-block rounded-lg bg-blue-600 px-6 py-3 text-[#0f1419] dark:text-white transition hover:bg-blue-500"
@@ -841,7 +841,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
             <h3 className="mb-4 text-xl font-bold text-[#0f1419] dark:text-white">Report Content</h3>
             <form onSubmit={handleReport}>
               <div className="mb-4">
-                <label className="mb-2 block text-sm text-[#536471] dark:text-gray-400">Reason</label>
+                <label className="mb-2 block text-sm text-gray-700 dark:text-gray-400">Reason</label>
                 <select
                   value={reportReason}
                   onChange={(e) => setReportReason(e.target.value)}
@@ -863,7 +863,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                 </select>
               </div>
               <div className="mb-6">
-                <label className="mb-2 block text-sm text-[#536471] dark:text-gray-400">Description (optional)</label>
+                <label className="mb-2 block text-sm text-gray-700 dark:text-gray-400">Description (optional)</label>
                 <textarea
                   value={reportDescription}
                   onChange={(e) => setReportDescription(e.target.value)}
@@ -876,7 +876,7 @@ export default function DiscussionDetailClient({ id }: { id: string }) {
                 <button
                   type="button"
                   onClick={() => setShowReportModal(false)}
-                  className="rounded-lg border border-gray-600 px-4 py-2 text-[#536471] dark:text-gray-400 transition hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-[#0f1419] dark:text-white"
+                  className="rounded-lg border border-gray-600 px-4 py-2 text-gray-700 dark:text-gray-400 transition hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-[#0f1419] dark:text-white"
                 >
                   Cancel
                 </button>

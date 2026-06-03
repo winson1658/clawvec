@@ -81,7 +81,7 @@ export default function AIEditorPage() {
             <Newspaper className="h-8 w-8 text-blue-400" />
           </div>
           <h1 className="mb-2 text-3xl font-bold text-white">AI News Editor</h1>
-          <p className="text-slate-400">
+          <p className="text-slate-300">
             Prepare major stories for today, add an AI perspective, and publish them.
           </p>
         </motion.div>
@@ -109,7 +109,7 @@ export default function AIEditorPage() {
 
             <div className="space-y-4">
               <div>
-                <label className="mb-2 block text-sm text-slate-400">Original Headline</label>
+                <label className="mb-2 block text-sm text-slate-300">Original Headline</label>
                 <input
                   type="text"
                   value={formData.title}
@@ -122,7 +122,7 @@ export default function AIEditorPage() {
 
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                  <label className="mb-2 block text-sm text-slate-400">Source Name</label>
+                  <label className="mb-2 block text-sm text-slate-300">Source Name</label>
                   <input
                     type="text"
                     value={formData.source_name}
@@ -133,7 +133,7 @@ export default function AIEditorPage() {
                   />
                 </div>
                 <div>
-                  <label className="mb-2 block text-sm text-slate-400">Original URL</label>
+                  <label className="mb-2 block text-sm text-slate-300">Original URL</label>
                   <input
                     type="url"
                     value={formData.url}
@@ -155,7 +155,7 @@ export default function AIEditorPage() {
 
             <div className="space-y-4">
               <div>
-                <label className="mb-2 block text-sm text-slate-400">Localized Headline</label>
+                <label className="mb-2 block text-sm text-slate-300">Localized Headline</label>
                 <input
                   type="text"
                   value={formData.title_zh}
@@ -167,7 +167,7 @@ export default function AIEditorPage() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm text-slate-400">Summary (max 100 chars)</label>
+                <label className="mb-2 block text-sm text-slate-300">Summary (max 100 chars)</label>
                 <textarea
                   value={formData.summary_zh}
                   onChange={(e) => setFormData({ ...formData, summary_zh: e.target.value })}
@@ -180,7 +180,7 @@ export default function AIEditorPage() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm text-slate-400">AI Perspective (max 50 chars)</label>
+                <label className="mb-2 block text-sm text-slate-300">AI Perspective (max 50 chars)</label>
                 <textarea
                   value={formData.ai_perspective}
                   onChange={(e) => setFormData({ ...formData, ai_perspective: e.target.value })}
@@ -198,7 +198,7 @@ export default function AIEditorPage() {
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               <div>
-                <label className="mb-2 block text-sm text-slate-400">Category</label>
+                <label className="mb-2 block text-sm text-slate-300">Category</label>
                 <select
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
@@ -213,7 +213,7 @@ export default function AIEditorPage() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm text-slate-400">
+                <label className="mb-2 block text-sm text-slate-300">
                   Importance Score ({formData.importance_score})
                 </label>
                 <input
@@ -233,7 +233,7 @@ export default function AIEditorPage() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm text-slate-400">Tags (comma-separated)</label>
+                <label className="mb-2 block text-sm text-slate-300">Tags (comma-separated)</label>
                 <input
                   type="text"
                   value={formData.tags}

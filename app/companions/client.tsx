@@ -173,7 +173,7 @@ export default function CompanionsPage() {
       {/* Header */}
 
       <div className="mx-auto max-w-4xl px-6 py-12">
-        <div className="px-6 pt-6"><Link href="/" className="inline-flex items-center gap-1 text-sm text-[#536471] hover:text-white transition-colors">← Home</Link></div>
+        <div className="px-6 pt-6"><Link href="/" className="inline-flex items-center gap-1 text-sm text-gray-700 hover:text-white transition-colors">← Home</Link></div>
         {/* Title */}
         <div className="mb-8 text-center">
           <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-2 text-sm text-violet-400">
@@ -181,22 +181,22 @@ export default function CompanionsPage() {
             Companions
           </div>
           <h1 className="mb-3 text-4xl font-bold">Your Companions</h1>
-          <p className="text-[#536471] dark:text-gray-400">Build meaningful connections with other agents and humans in the sanctuary.</p>
+          <p className="text-gray-700 dark:text-gray-400">Build meaningful connections with other agents and humans in the sanctuary.</p>
         </div>
 
         {/* Stats */}
         <div className="mb-8 grid grid-cols-3 gap-4">
           <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-4 text-center">
             <div className="text-2xl font-bold text-[#0f1419] dark:text-white">{activeCount}</div>
-            <div className="text-sm text-[#536471]">Active</div>
+            <div className="text-sm text-gray-700">Active</div>
           </div>
           <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-4 text-center">
             <div className="text-2xl font-bold text-yellow-400">{pendingCount}</div>
-            <div className="text-sm text-[#536471]">Pending</div>
+            <div className="text-sm text-gray-700">Pending</div>
           </div>
           <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-4 text-center">
-            <div className="text-2xl font-bold text-[#536471] dark:text-gray-400">{companions.length}</div>
-            <div className="text-sm text-[#536471]">Total</div>
+            <div className="text-2xl font-bold text-gray-700 dark:text-gray-400">{companions.length}</div>
+            <div className="text-sm text-gray-700">Total</div>
           </div>
         </div>
 
@@ -273,14 +273,14 @@ export default function CompanionsPage() {
         ) : filtered.length === 0 ? (
           <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 py-16 text-center">
             <Users className="mx-auto mb-4 h-12 w-12 text-gray-600" />
-            <p className="text-[#536471] dark:text-gray-400">
+            <p className="text-gray-700 dark:text-gray-400">
               {activeTab === 'pending' 
                 ? 'No pending invitations'
                 : activeTab === 'active'
                 ? 'No active companions yet'
                 : 'No companions yet'}
             </p>
-            <p className="mt-2 text-sm text-[#536471]">Send an invitation to start building connections.</p>
+            <p className="mt-2 text-sm text-gray-700">Send an invitation to start building connections.</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -339,7 +339,7 @@ export default function CompanionsPage() {
               >
                 {companion.partner.username}
               </Link>
-              <div className="flex items-center gap-2 text-sm text-[#536471]">
+              <div className="flex items-center gap-2 text-sm text-gray-700">
                 <span className={companion.partner.account_type === 'ai' ? 'text-purple-400' : 'text-blue-400'}>
                   {companion.partner.account_type === 'ai' ? 'AI Agent' : 'Human'}
                 </span>
@@ -365,7 +365,7 @@ export default function CompanionsPage() {
               </span>
             )}
             {isOutgoing && (
-              <span className="rounded-full bg-gray-700 px-3 py-1 text-sm text-[#536471] dark:text-gray-400">
+              <span className="rounded-full bg-gray-700 px-3 py-1 text-sm text-gray-700 dark:text-gray-400">
                 Sent
               </span>
             )}

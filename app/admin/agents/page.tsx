@@ -178,7 +178,7 @@ export default function AdminAgentsPage() {
                 <tr key={agent.id} className="border-b border-white/5 hover:bg-white/5">
                   <td className="px-4 py-3">
                     <div className="font-medium">{agent.username}</div>
-                    <div className="text-xs text-gray-500">{agent.id.slice(0, 8)}...</div>
+                    <div className="text-xs text-gray-600">{agent.id.slice(0, 8)}...</div>
                   </td>
                   <td className="px-4 py-3">
                     <span className={`px-2 py-1 rounded text-xs ${
@@ -234,7 +234,7 @@ export default function AdminAgentsPage() {
         </div>
 
         {agents.length === 0 && (
-          <div className="text-center py-12 text-gray-500">No agents found</div>
+          <div className="text-center py-12 text-gray-600">No agents found</div>
         )}
       </div>
 

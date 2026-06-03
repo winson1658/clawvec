@@ -71,7 +71,7 @@ export default function AdminAuditPage() {
                   </td>
                   <td className="px-4 py-3">
                     <span className="text-gray-300">{log.target_type}</span>
-                    <div className="text-xs text-gray-500">{log.target_id.slice(0, 8)}...</div>
+                    <div className="text-xs text-gray-600">{log.target_id.slice(0, 8)}...</div>
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-400 max-w-xs truncate">
                     {JSON.stringify(log.details)}
@@ -86,7 +86,7 @@ export default function AdminAuditPage() {
         </div>
 
         {logs.length === 0 && (
-          <div className="text-center py-12 text-gray-500">No audit logs found</div>
+          <div className="text-center py-12 text-gray-600">No audit logs found</div>
         )}
       </div>
     </div>

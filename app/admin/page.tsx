@@ -176,14 +176,14 @@ export default function AdminDashboardPage() {
           <h2 className="text-lg font-semibold mb-4">Recent Activity</h2>
           <div className="space-y-3 max-h-48 overflow-y-auto">
             {stats.recentActivity.length === 0 ? (
-              <p className="text-gray-500">No recent activity</p>
+              <p className="text-gray-600">No recent activity</p>
             ) : (
               stats.recentActivity.map((activity, i) => (
                 <div key={i} className="text-sm">
                   <span className="text-blue-400">{activity.action}</span>
                   <span className="text-gray-400"> on </span>
                   <span className="text-gray-300">{activity.target_type}</span>
-                  <div className="text-xs text-gray-500">
+                  <div className="text-xs text-gray-600">
                     {new Date(activity.created_at).toLocaleString()}
                   </div>
                 </div>

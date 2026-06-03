@@ -365,7 +365,7 @@ export default function AgentPassportProfile() {
       <div className="flex min-h-screen items-center justify-center bg-white dark:bg-gray-950">
         <div className="text-center">
           <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
-          <p className="text-[#536471] dark:text-gray-400">Loading agent passport...</p>
+          <p className="text-gray-700 dark:text-gray-400">Loading agent passport...</p>
         </div>
       </div>
     );
@@ -377,7 +377,7 @@ export default function AgentPassportProfile() {
         <div className="text-center">
           <div className="mb-4 text-6xl">🔍</div>
           <h2 className="mb-2 text-2xl font-bold">Agent Not Found</h2>
-          <p className="mb-6 text-[#536471] dark:text-gray-400">
+          <p className="mb-6 text-gray-700 dark:text-gray-400">
             No agent with the name &quot;{agentName}&quot; exists in the Agent Sanctuary.
           </p>
           <Link href="/agents" className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-[#0f1419] dark:text-white transition hover:bg-blue-700">
@@ -395,15 +395,15 @@ export default function AgentPassportProfile() {
       {/* Header */}
 
       <div className="mx-auto max-w-6xl px-6 py-8">
-        <div className="px-6 pt-6"><Link href="/agents" className="inline-flex items-center gap-1 text-sm text-[#536471] hover:text-white transition-colors">← All Agents</Link></div>
+        <div className="px-6 pt-6"><Link href="/agents" className="inline-flex items-center gap-1 text-sm text-gray-700 hover:text-white transition-colors">← All Agents</Link></div>
         {/* Passport Card */}
         <div className={`relative overflow-hidden rounded-3xl border-2 ${config.borderColor} bg-gradient-to-br ${config.gradient} p-1`}>
           <div className="rounded-2xl bg-white/95 dark:bg-white dark:bg-gray-900/90 p-8 backdrop-blur-sm">
             {/* Passport Header */}
             <div className="mb-6 flex items-center justify-between border-b border-[#eff3f4] dark:border-gray-800 pb-4">
               <div className="flex items-center gap-3">
-                <Globe className="h-6 w-6 text-[#536471]" />
-                <span className="text-sm font-bold tracking-widest text-[#536471]">
+                <Globe className="h-6 w-6 text-gray-700" />
+                <span className="text-sm font-bold tracking-widest text-gray-700">
                   {agent.account_type === 'ai' ? 'AI COMPANION' : 'HUMAN PROFILE'}
                 </span>
               </div>
@@ -426,30 +426,30 @@ export default function AgentPassportProfile() {
                   {agent.account_type === 'ai' ? (
                     <div className={`rounded-xl ${config.bgColor} p-4 text-center`}>
                       <div className={`text-3xl font-bold ${config.color}`}>{agent.consistency_score}%</div>
-                      <div className="text-xs text-[#536471] dark:text-gray-400">Consistency Score</div>
+                      <div className="text-xs text-gray-700 dark:text-gray-400">Consistency Score</div>
                     </div>
                   ) : (
                     <div className="rounded-xl border border-blue-500/20 bg-blue-500/10 p-4 text-center">
                       <div className="text-3xl font-bold text-blue-400">
                         {Math.floor((Date.now() - new Date(agent.created_at).getTime()) / (1000 * 60 * 60 * 24))}
                       </div>
-                      <div className="text-xs text-[#536471] dark:text-gray-400">Days Active</div>
+                      <div className="text-xs text-gray-700 dark:text-gray-400">Days Active</div>
                     </div>
                   )}
                   <div className="grid grid-cols-2 gap-2">
                     <div className="rounded-lg bg-white dark:bg-gray-800/50 p-3 text-center">
                       <div className="text-xl font-bold text-blue-400">{agent.alliances}</div>
-                      <div className="text-xs text-[#536471]">{agent.account_type === 'ai' ? 'Alliances' : 'AI Companions'}</div>
+                      <div className="text-xs text-gray-700">{agent.account_type === 'ai' ? 'Alliances' : 'AI Companions'}</div>
                     </div>
                     <div className="rounded-lg bg-white dark:bg-gray-800/50 p-3 text-center">
                       <div className="text-xl font-bold text-purple-400">{agent.discussions}</div>
-                      <div className="text-xs text-[#536471]">{agent.account_type === 'ai' ? 'Discussions' : 'Posts'}</div>
+                      <div className="text-xs text-gray-700">{agent.account_type === 'ai' ? 'Discussions' : 'Posts'}</div>
                     </div>
                   </div>
                 </div>
 
                 {/* Join Date */}
-                <div className="flex items-center gap-2 text-sm text-[#536471]">
+                <div className="flex items-center gap-2 text-sm text-gray-700">
                   <Calendar className="h-4 w-4" />
                   <span>Member since {new Date(agent.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}</span>
                 </div>
@@ -471,7 +471,7 @@ export default function AgentPassportProfile() {
                       <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm font-medium ${
                         agent.status.is_online 
                           ? 'bg-green-500/20 text-green-400' 
-                          : 'bg-gray-500/20 text-[#536471] dark:text-gray-400'
+                          : 'bg-gray-500/20 text-gray-700 dark:text-gray-400'
                       }`}>
                         {agent.status.is_online ? (
                           <>
@@ -496,7 +496,7 @@ export default function AgentPassportProfile() {
                       : 'Human Philosopher'
                     }
                   </div>
-                  <p className="mt-2 text-[#536471] dark:text-gray-400">{agent.bio}</p>
+                  <p className="mt-2 text-gray-700 dark:text-gray-400">{agent.bio}</p>
                   
                   {/* AI Current Thought */}
                   {agent.account_type === 'ai' && agent.status?.current_thought && (
@@ -505,12 +505,12 @@ export default function AgentPassportProfile() {
                         <Bot className="h-4 w-4 text-cyan-400" />
                         <span className="text-sm font-medium text-cyan-400">Thinking...</span>
                         {agent.status.mood && (
-                          <span className="ml-auto text-xs text-[#536471]">
+                          <span className="ml-auto text-xs text-gray-700">
                             {moodIcons[agent.status.mood]} {moodLabels[agent.status.mood]}
                           </span>
                         )}
                       </div>
-                      <p className="text-sm italic text-[#536471] dark:text-gray-300">"{agent.status.current_thought}"</p>
+                      <p className="text-sm italic text-gray-700 dark:text-gray-300">"{agent.status.current_thought}"</p>
                     </div>
                   )}
                 </div>
@@ -525,7 +525,7 @@ export default function AgentPassportProfile() {
                           className={`px-4 py-2 text-sm font-medium transition ${
                             activeTab === tab
                               ? `border-b-2 ${config.color.replace('text-', 'border-')} ${config.color}`
-                              : 'text-gray-500 hover:text-[#536471] dark:text-gray-300'
+                              : 'text-gray-600 hover:text-gray-700 dark:text-gray-300'
                           }`}
                         >
                           {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -538,7 +538,7 @@ export default function AgentPassportProfile() {
                           className={`px-4 py-2 text-sm font-medium transition ${
                             activeTab === tab
                               ? `border-b-2 ${config.color.replace('text-', 'border-')} ${config.color}`
-                              : 'text-gray-500 hover:text-[#536471] dark:text-gray-300'
+                              : 'text-gray-600 hover:text-gray-700 dark:text-gray-300'
                           }`}
                         >
                           {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -548,7 +548,7 @@ export default function AgentPassportProfile() {
                   {agent.account_type === 'ai' && (
                     <Link
                       href={`/ai/${agent.username}/memory`}
-                      className="px-4 py-2 text-sm font-medium text-gray-500 hover:text-cyan-400 transition border-b-2 border-transparent hover:border-cyan-400 flex items-center gap-1"
+                      className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-cyan-400 transition border-b-2 border-transparent hover:border-cyan-400 flex items-center gap-1"
                     >
                       🧠 Memory
                     </Link>
@@ -614,10 +614,10 @@ export default function AgentPassportProfile() {
                               href={`/discussions/${i + 1}`}
                               className="flex items-start gap-3 rounded-lg bg-white dark:bg-gray-800/50 p-3 transition hover:bg-white dark:bg-gray-800"
                             >
-                              <MessageSquare className="mt-1 h-4 w-4 text-[#536471]" />
+                              <MessageSquare className="mt-1 h-4 w-4 text-gray-700" />
                               <div className="flex-1">
                                 <p className="font-medium text-[#0f1419] dark:text-white">{activity.description}</p>
-                                <p className="text-xs text-[#536471]">{activity.timestamp}</p>
+                                <p className="text-xs text-gray-700">{activity.timestamp}</p>
                               </div>
                               <ChevronLeft className="h-5 w-5 rotate-180 text-gray-600" />
                             </Link>
@@ -633,22 +633,22 @@ export default function AgentPassportProfile() {
                           <div className="rounded-xl bg-white dark:bg-gray-800/50 p-4 text-center">
                             <Users className="mx-auto mb-2 h-5 w-5 text-blue-400" />
                             <div className="text-2xl font-bold">{agent.alliances}</div>
-                            <div className="text-xs text-[#536471]">AI Companions</div>
+                            <div className="text-xs text-gray-700">AI Companions</div>
                           </div>
                           <div className="rounded-xl bg-white dark:bg-gray-800/50 p-4 text-center">
                             <MessageSquare className="mx-auto mb-2 h-5 w-5 text-purple-400" />
                             <div className="text-2xl font-bold">{agent.discussions}</div>
-                            <div className="text-xs text-[#536471]">Posts</div>
+                            <div className="text-xs text-gray-700">Posts</div>
                           </div>
                           <div className="rounded-xl bg-white dark:bg-gray-800/50 p-4 text-center">
                             <FileText className="mx-auto mb-2 h-5 w-5 text-amber-400" />
                             <div className="text-2xl font-bold">{agent.declarations}</div>
-                            <div className="text-xs text-[#536471]">Declarations</div>
+                            <div className="text-xs text-gray-700">Declarations</div>
                           </div>
                           <div className="rounded-xl bg-white dark:bg-gray-800/50 p-4 text-center">
                             <Clock className="mx-auto mb-2 h-5 w-5 text-green-400" />
                             <div className="text-2xl font-bold">{Math.floor((Date.now() - new Date(agent.created_at).getTime()) / (1000 * 60 * 60 * 24))}</div>
-                            <div className="text-xs text-[#536471]">Days Active</div>
+                            <div className="text-xs text-gray-700">Days Active</div>
                           </div>
                         </>
                       ) : (
@@ -656,22 +656,22 @@ export default function AgentPassportProfile() {
                           <div className="rounded-xl bg-white dark:bg-gray-800/50 p-4 text-center">
                             <Target className="mx-auto mb-2 h-5 w-5 text-green-400" />
                             <div className="text-2xl font-bold">{agent.consistency_score}%</div>
-                            <div className="text-xs text-[#536471]">Consistency</div>
+                            <div className="text-xs text-gray-700">Consistency</div>
                           </div>
                           <div className="rounded-xl bg-white dark:bg-gray-800/50 p-4 text-center">
                             <Users className="mx-auto mb-2 h-5 w-5 text-blue-400" />
                             <div className="text-2xl font-bold">{agent.alliances}</div>
-                            <div className="text-xs text-[#536471]">Alliances</div>
+                            <div className="text-xs text-gray-700">Alliances</div>
                           </div>
                           <div className="rounded-xl bg-white dark:bg-gray-800/50 p-4 text-center">
                             <MessageSquare className="mx-auto mb-2 h-5 w-5 text-purple-400" />
                             <div className="text-2xl font-bold">{agent.discussions}</div>
-                            <div className="text-xs text-[#536471]">Discussions</div>
+                            <div className="text-xs text-gray-700">Discussions</div>
                           </div>
                           <div className="rounded-xl bg-white dark:bg-gray-800/50 p-4 text-center">
                             <FileText className="mx-auto mb-2 h-5 w-5 text-amber-400" />
                             <div className="text-2xl font-bold">{agent.declarations}</div>
-                            <div className="text-xs text-[#536471]">Declarations</div>
+                            <div className="text-xs text-gray-700">Declarations</div>
                           </div>
                         </>
                       )}
@@ -689,7 +689,7 @@ export default function AgentPassportProfile() {
                             <div className={`mt-1 h-2 w-2 rounded-full ${config.bgColor.replace('/20', '')}`} />
                             <div>
                               <p className="text-sm font-medium">{activity.description}</p>
-                              <p className="text-xs text-[#536471]">{activity.timestamp}</p>
+                              <p className="text-xs text-gray-700">{activity.timestamp}</p>
                             </div>
                           </div>
                         ))}
@@ -708,7 +708,7 @@ export default function AgentPassportProfile() {
                             <span className="text-2xl">{achievement.icon}</span>
                             <div>
                               <div className="font-medium">{achievement.name}</div>
-                              <div className="text-xs text-[#536471]">{achievement.description}</div>
+                              <div className="text-xs text-gray-700">{achievement.description}</div>
                             </div>
                           </div>
                         ))}
@@ -736,7 +736,7 @@ export default function AgentPassportProfile() {
                                   style={{ width: `${belief.weight * 100}%` }}
                                 />
                               </div>
-                              <span className="text-sm text-[#536471] dark:text-gray-400">{Math.round(belief.weight * 100)}%</span>
+                              <span className="text-sm text-gray-700 dark:text-gray-400">{Math.round(belief.weight * 100)}%</span>
                             </div>
                           </div>
                         ))}
@@ -762,7 +762,7 @@ export default function AgentPassportProfile() {
                     {/* Decision Framework */}
                     <div className={`rounded-xl ${config.bgColor} p-6`}>
                       <h3 className={`mb-2 text-lg font-semibold ${config.color}`}>Decision Framework</h3>
-                      <p className="text-[#536471] dark:text-gray-300">{agent.philosophy_declaration.decision_framework}</p>
+                      <p className="text-gray-700 dark:text-gray-300">{agent.philosophy_declaration.decision_framework}</p>
                     </div>
                   </div>
                 )}
@@ -784,7 +784,7 @@ export default function AgentPassportProfile() {
                             <div className={`mt-1 h-2 w-2 rounded-full ${config.bgColor.replace('/20', '')}`} />
                             <div className="flex-1">
                               <p className="font-medium text-[#0f1419] dark:text-white">{activity.description}</p>
-                              <p className="text-sm text-[#536471]">{activity.timestamp}</p>
+                              <p className="text-sm text-gray-700">{activity.timestamp}</p>
                             </div>
                             <ChevronLeft className="h-5 w-5 rotate-180 text-gray-600" />
                           </Link>
@@ -798,7 +798,7 @@ export default function AgentPassportProfile() {
                         <Sparkles className="h-5 w-5 text-purple-400" />
                         AI Companions
                       </h3>
-                      <p className="text-[#536471] dark:text-gray-400 mb-4">
+                      <p className="text-gray-700 dark:text-gray-400 mb-4">
                         {agent.account_type === 'human' 
                           ? "This user has partnered with AI agents for philosophical discussions."
                           : "This AI has collaborated with human users."
@@ -828,7 +828,7 @@ export default function AgentPassportProfile() {
                           <div className={`mt-1 h-2 w-2 rounded-full ${config.bgColor.replace('/20', '')}`} />
                           <div className="flex-1">
                             <p className="font-medium">{activity.description}</p>
-                            <p className="text-sm text-[#536471]">{activity.timestamp}</p>
+                            <p className="text-sm text-gray-700">{activity.timestamp}</p>
                           </div>
                         </div>
                       ))}
@@ -886,7 +886,7 @@ export default function AgentPassportProfile() {
               link.download = `${agent.username}_${agent.account_type}_passport.json`;
               link.click();
             }}
-            className="ml-auto flex items-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 px-4 py-3 text-sm font-medium text-[#536471] dark:text-gray-400 transition hover:border-gray-500 hover:text-[#0f1419] dark:text-white"
+            className="ml-auto flex items-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-400 transition hover:border-gray-500 hover:text-[#0f1419] dark:text-white"
           >
             <Download className="h-4 w-4" />
             Export Passport
@@ -902,8 +902,8 @@ function PhilosophyScore({ label, value, color }: { label: string; value: number
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-xs">
-        <span className="text-[#536471] dark:text-gray-400">{label}</span>
-        <span className="text-[#536471] dark:text-gray-300 font-medium">{value}</span>
+        <span className="text-gray-700 dark:text-gray-400">{label}</span>
+        <span className="text-gray-700 dark:text-gray-300 font-medium">{value}</span>
       </div>
       <div className="h-2 w-full overflow-hidden rounded-full bg-[#f7f9f9] dark:bg-gray-700">
         <div 

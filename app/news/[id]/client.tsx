@@ -247,7 +247,7 @@ export default function NewsDetailClient({ id }: { id: string }) {
           >
             <div className="text-6xl mb-4">📰</div>
             <h2 className="text-2xl font-bold text-white mb-2">{error || 'News Not Found'}</h2>
-            <p className="text-slate-400 mb-6">The news article you are looking for does not exist or has been removed.</p>
+            <p className="text-slate-300 mb-6">The news article you are looking for does not exist or has been removed.</p>
             <Link href="/news" className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-lg transition-colors">
               <ArrowLeft className="w-5 h-5" /> Back to News
             </Link>
@@ -262,7 +262,7 @@ export default function NewsDetailClient({ id }: { id: string }) {
       <div className="max-w-4xl mx-auto">
         {/* Back button */}
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="mb-6">
-          <Link href="/news" className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
+          <Link href="/news" className="inline-flex items-center gap-2 text-slate-300 hover:text-white transition-colors">
             <ArrowLeft className="w-5 h-5" /> Back to News
           </Link>
         </motion.div>
@@ -284,7 +284,7 @@ export default function NewsDetailClient({ id }: { id: string }) {
 
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">{news.title}</h1>
 
-            <div className="flex flex-wrap items-center gap-4 text-slate-400 text-sm">
+            <div className="flex flex-wrap items-center gap-4 text-slate-300 text-sm">
               <span className="flex items-center gap-1.5">
                 <Newspaper className="w-4 h-4" />
                 {news.source?.name || 'Unknown Source'}
@@ -309,7 +309,7 @@ export default function NewsDetailClient({ id }: { id: string }) {
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-purple-400 font-medium">AI Perspective</span>
                 </div>
-                <p className="text-slate-400">{news.ai_perspective}</p>
+                <p className="text-slate-300">{news.ai_perspective}</p>
               </div>
             )}
 
@@ -342,7 +342,7 @@ export default function NewsDetailClient({ id }: { id: string }) {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-700/40 hover:bg-slate-700/60 border border-slate-600/50 rounded-xl text-sm text-cyan-400 transition-colors group"
               >
-                <Link2 className="w-4 h-4 shrink-0 text-slate-400 group-hover:text-cyan-400 transition-colors" />
+                <Link2 className="w-4 h-4 shrink-0 text-slate-300 group-hover:text-cyan-400 transition-colors" />
                 <span className="truncate max-w-[280px] md:max-w-md">{getDomain(news.url)}</span>
                 <ExternalLink className="w-3.5 h-3.5 shrink-0 text-slate-500 group-hover:text-cyan-400 transition-colors" />
               </a>
@@ -383,7 +383,7 @@ export default function NewsDetailClient({ id }: { id: string }) {
           className="mt-4 bg-slate-800/50 border border-slate-700 rounded-xl p-4"
         >
           <div className="flex items-center gap-2">
-            <span className="text-sm text-slate-400 mr-2">Quick Reactions:</span>
+            <span className="text-sm text-slate-300 mr-2">Quick Reactions:</span>
             {REACTION_TYPES.map(({ type, emoji, label }) => {
               const count = reactions[type]?.count || 0;
               const isActive = userReaction === type;
@@ -395,7 +395,7 @@ export default function NewsDetailClient({ id }: { id: string }) {
                   className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-all ${
                     isActive
                       ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                      : 'bg-slate-700/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300 border border-transparent'
+                      : 'bg-slate-700/50 text-slate-300 hover:bg-slate-700 hover:text-slate-300 border border-transparent'
                   }`}
                   title={label}
                 >

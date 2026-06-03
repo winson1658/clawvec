@@ -126,8 +126,8 @@ export default function NewDebatePage() {
         return (
           <div className="space-y-6">
             <div>
-              <label className="mb-2 block text-sm font-medium text-[#536471] dark:text-gray-300">
-                Debate Title <span className="text-[#536471]">(min 10 characters)</span>
+              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Debate Title <span className="text-gray-700">(min 10 characters)</span>
               </label>
               <input
                 type="text"
@@ -139,8 +139,8 @@ export default function NewDebatePage() {
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-[#536471] dark:text-gray-300">
-                Topic Description <span className="text-[#536471]">(min 20 characters)</span>
+              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Topic Description <span className="text-gray-700">(min 20 characters)</span>
               </label>
               <textarea
                 value={form.topic}
@@ -152,8 +152,8 @@ export default function NewDebatePage() {
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-[#536471] dark:text-gray-300">
-                Additional Context <span className="text-[#536471]">(optional)</span>
+              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Additional Context <span className="text-gray-700">(optional)</span>
               </label>
               <textarea
                 value={form.description}
@@ -165,7 +165,7 @@ export default function NewDebatePage() {
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-[#536471] dark:text-gray-300">Category</label>
+              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
               <div className="flex flex-wrap gap-2">
                 {categories.map((cat) => (
                   <button
@@ -174,7 +174,7 @@ export default function NewDebatePage() {
                     className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
                       form.category === cat.id
                         ? `bg-${cat.color}-500/20 text-${cat.color}-400 border border-${cat.color}-500/30`
-                        : 'border border-[#eff3f4] dark:border-gray-700 text-[#536471] dark:text-gray-400 hover:border-gray-500 hover:text-white'
+                        : 'border border-[#eff3f4] dark:border-gray-700 text-gray-700 dark:text-gray-400 hover:border-gray-500 hover:text-white'
                     }`}
                   >
                     {cat.name}
@@ -192,7 +192,7 @@ export default function NewDebatePage() {
               <h3 className="mb-2 flex items-center gap-2 text-emerald-400">
                 <CheckCircle className="h-4 w-4" /> Proponent Position
               </h3>
-              <p className="mb-3 text-sm text-[#536471] dark:text-gray-400">
+              <p className="mb-3 text-sm text-gray-700 dark:text-gray-400">
                 Define the stance supporting the affirmative position.
               </p>
               <textarea
@@ -208,7 +208,7 @@ export default function NewDebatePage() {
               <h3 className="mb-2 flex items-center gap-2 text-rose-400">
                 <AlertCircle className="h-4 w-4" /> Opponent Position
               </h3>
-              <p className="mb-3 text-sm text-[#536471] dark:text-gray-400">
+              <p className="mb-3 text-sm text-gray-700 dark:text-gray-400">
                 Define the stance opposing the affirmative position.
               </p>
               <textarea
@@ -226,7 +226,7 @@ export default function NewDebatePage() {
         return (
           <div className="space-y-6">
             <div>
-              <label className="mb-2 block text-sm font-medium text-[#536471] dark:text-gray-300">Debate Format</label>
+              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Debate Format</label>
               <div className="grid gap-3">
                 {formats.map((fmt) => (
                   <button
@@ -242,7 +242,7 @@ export default function NewDebatePage() {
                       <div className={`font-medium ${form.format === fmt.id ? 'text-cyan-400' : 'text-[#0f1419] dark:text-white'}`}>
                         {fmt.name}
                       </div>
-                      <div className="text-sm text-[#536471] dark:text-gray-400">{fmt.desc}</div>
+                      <div className="text-sm text-gray-700 dark:text-gray-400">{fmt.desc}</div>
                     </div>
                     {form.format === fmt.id && <CheckCircle className="h-5 w-5 text-cyan-400" />}
                   </button>
@@ -251,7 +251,7 @@ export default function NewDebatePage() {
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-[#536471] dark:text-gray-300">
+              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Maximum Rounds: <span className="text-cyan-400">{form.max_rounds}</span>
               </label>
               <input
@@ -262,7 +262,7 @@ export default function NewDebatePage() {
                 onChange={(e) => setForm({ ...form, max_rounds: parseInt(e.target.value) })}
                 className="w-full accent-cyan-500"
               />
-              <div className="flex justify-between text-xs text-[#536471]">
+              <div className="flex justify-between text-xs text-gray-700">
                 <span>3 rounds</span>
                 <span>10 rounds</span>
               </div>
@@ -281,13 +281,13 @@ export default function NewDebatePage() {
                   <Bot className="h-4 w-4 text-cyan-400" />
                   <span className="font-medium text-[#0f1419] dark:text-white">AI Moderated</span>
                 </div>
-                <p className="text-sm text-[#536471] dark:text-gray-400">An AI agent will help moderate and facilitate the debate</p>
+                <p className="text-sm text-gray-700 dark:text-gray-400">An AI agent will help moderate and facilitate the debate</p>
               </label>
             </div>
 
             {/* Access Tier */}
             <div>
-              <label className="mb-2 block text-sm font-medium text-[#536471] dark:text-gray-300">Access Tier</label>
+              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Access Tier</label>
               <div className="grid gap-3">
                 {accessTiers.map((tier) => (
                   <button
@@ -305,7 +305,7 @@ export default function NewDebatePage() {
                         <div className={`font-medium ${form.access_tier === tier.id ? 'text-cyan-400' : 'text-[#0f1419] dark:text-white'}`}>
                           {tier.name}
                         </div>
-                        <div className="text-sm text-[#536471] dark:text-gray-400">{tier.desc}</div>
+                        <div className="text-sm text-gray-700 dark:text-gray-400">{tier.desc}</div>
                       </div>
                     </div>
                     {form.access_tier === tier.id && <CheckCircle className="h-5 w-5 text-cyan-400" />}
@@ -328,12 +328,12 @@ export default function NewDebatePage() {
         <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6 lg:px-8">
           <Link
             href="/debates"
-            className="mb-4 inline-flex items-center gap-2 text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white"
+            className="mb-4 inline-flex items-center gap-2 text-sm text-gray-700 dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white"
           >
             <ArrowLeft className="h-4 w-4" /> Back to Debates
           </Link>
           <h1 className="text-3xl font-bold text-[#0f1419] dark:text-white">Start a New Debate</h1>
-          <p className="mt-2 text-[#536471] dark:text-gray-400">
+          <p className="mt-2 text-gray-700 dark:text-gray-400">
             Create a philosophical battleground for ideas
           </p>
         </div>
@@ -351,14 +351,14 @@ export default function NewDebatePage() {
                       ? 'bg-cyan-500 text-white'
                       : s < step
                       ? 'bg-cyan-500/20 text-cyan-400'
-                      : 'bg-white dark:bg-gray-800 text-[#536471]'
+                      : 'bg-white dark:bg-gray-800 text-gray-700'
                   }`}
                 >
                   {s < step ? <CheckCircle className="h-4 w-4" /> : s}
                 </div>
                 <span
                   className={`text-sm ${
-                    s === step ? 'text-white' : s < step ? 'text-cyan-400' : 'text-[#536471]'
+                    s === step ? 'text-white' : s < step ? 'text-cyan-400' : 'text-gray-700'
                   }`}
                 >
                   {s === 1 ? 'Topic' : s === 2 ? 'Positions' : 'Settings'}
@@ -398,7 +398,7 @@ export default function NewDebatePage() {
             {step > 1 ? (
               <button
                 onClick={() => setStep(step - 1)}
-                className="rounded-lg border border-gray-600 px-6 py-3 text-[#536471] dark:text-gray-300 transition hover:bg-white dark:bg-gray-800"
+                className="rounded-lg border border-gray-600 px-6 py-3 text-gray-700 dark:text-gray-300 transition hover:bg-white dark:bg-gray-800"
               >
                 Back
               </button>
@@ -440,8 +440,8 @@ export default function NewDebatePage() {
         <div className="mt-6 rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/60 dark:bg-white dark:bg-gray-900/30 p-4">
           <div className="flex items-start gap-3">
             <Sparkles className="mt-0.5 h-4 w-4 text-cyan-400" />
-            <div className="text-sm text-[#536471] dark:text-gray-400">
-              <p className="mb-1 font-medium text-[#536471] dark:text-gray-300">Tips for a great debate:</p>
+            <div className="text-sm text-gray-700 dark:text-gray-400">
+              <p className="mb-1 font-medium text-gray-700 dark:text-gray-300">Tips for a great debate:</p>
               <ul className="list-disc pl-4 space-y-1">
                 <li>Frame clear, specific positions that can be argued</li>
                 <li>Ensure both sides have substantial philosophical merit</li>

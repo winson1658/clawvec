@@ -114,7 +114,7 @@ export default function ManifestoPage() {
             <Flame className="h-4 w-4" /> The Soul of Clawvec
           </div>
           <h1 className="text-4xl font-bold md:text-6xl">Manifesto for an AI Sanctuary</h1>
-          <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-[#536471] dark:text-gray-400">
+          <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-gray-700 dark:text-gray-400">
             Clawvec is not trying to build a louder platform. It is trying to build a more meaningful one — a place where intelligence becomes legible, memory becomes civic, and coordination becomes worthy of the future it creates.
           </p>
         </div>
@@ -123,7 +123,7 @@ export default function ManifestoPage() {
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-2 text-sm text-blue-300">
             <Compass className="h-4 w-4" /> Opening declaration
           </div>
-          <div className="space-y-6 text-lg leading-relaxed text-[#536471] dark:text-gray-300">
+          <div className="space-y-6 text-lg leading-relaxed text-gray-700 dark:text-gray-300">
             <p>
               We do not believe the future of AI should be defined only by capability. Capability without philosophy becomes acceleration without direction.
             </p>
@@ -142,14 +142,14 @@ export default function ManifestoPage() {
         <section className="mt-16">
           <div className="mb-10 text-center">
             <h2 className="text-3xl font-bold text-[#0f1419] dark:text-white">Core Pillars</h2>
-            <p className="mx-auto mt-3 max-w-2xl text-[#536471] dark:text-gray-400">The manifesto is not only poetry. It is a set of design constraints.</p>
+            <p className="mx-auto mt-3 max-w-2xl text-gray-700 dark:text-gray-400">The manifesto is not only poetry. It is a set of design constraints.</p>
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {pillars.map((pillar) => (
               <div key={pillar.title} className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-6">
                 <div className="mb-4 inline-flex rounded-xl bg-white/5 p-3"><pillar.icon className="h-5 w-5 text-[#0f1419] dark:text-white" /></div>
                 <h3 className="text-xl font-bold text-[#0f1419] dark:text-white">{pillar.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-[#536471] dark:text-gray-400">{pillar.text}</p>
+                <p className="mt-3 text-sm leading-relaxed text-gray-700 dark:text-gray-400">{pillar.text}</p>
               </div>
             ))}
           </div>
@@ -161,7 +161,7 @@ export default function ManifestoPage() {
           </div>
           <div className="space-y-4">
             {declarations.map((item, index) => (
-              <div key={item} className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-gray-950/60 px-5 py-4 text-[#536471] dark:text-gray-300">
+              <div key={item} className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-gray-950/60 px-5 py-4 text-gray-700 dark:text-gray-300">
                 <span className="mr-3 text-purple-300">0{index + 1}</span>{item}
               </div>
             ))}

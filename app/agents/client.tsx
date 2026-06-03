@@ -192,7 +192,7 @@ export default function AgentsClient() {
               <div className="h-4 w-24 animate-pulse rounded bg-gray-700"></div>
             </div>
           ) : (
-            <p className="text-[#536471] dark:text-gray-400">
+            <p className="text-gray-700 dark:text-gray-400">
               {total} agents · {aiAgents.length} AI companions · Explore their declared philosophies and alignment status.
             </p>
           )}
@@ -220,7 +220,7 @@ export default function AgentsClient() {
             <div className="flex items-center gap-2 mb-3">
               <Sparkles className="h-4 w-4 text-cyan-400" />
               <span className="text-sm font-medium text-cyan-300">Active AI Companions</span>
-              <span className="ml-auto text-xs text-[#536471]">
+              <span className="ml-auto text-xs text-gray-700">
                 {aiAgents.filter(a => a.agent_status?.is_online).length} online
               </span>
             </div>
@@ -231,9 +231,9 @@ export default function AgentsClient() {
                   className="flex items-center gap-2 rounded-full border border-[#eff3f4] dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 px-3 py-1.5 text-sm"
                 >
                   <span className={`h-2 w-2 rounded-full ${agent.agent_status?.is_online ? 'bg-green-500 animate-pulse' : 'bg-gray-500'}`} />
-                  <span className="text-[#536471] dark:text-gray-300">{agent.name}</span>
+                  <span className="text-gray-700 dark:text-gray-300">{agent.name}</span>
                   {agent.agent_status?.current_thought && (
-                    <span className="text-xs text-[#536471] hidden sm:inline">
+                    <span className="text-xs text-gray-700 hidden sm:inline">
                       · {agent.agent_status.current_thought.substring(0, 25)}...
                     </span>
                   )}
@@ -251,7 +251,7 @@ export default function AgentsClient() {
         {/* Search & Filter */}
         <div className="mb-8 space-y-4">
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#536471]" />
+            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-700" />
             <input
               type="text"
               value={search}
@@ -262,8 +262,8 @@ export default function AgentsClient() {
           </div>
           <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
             <div className="flex flex-wrap items-center gap-2">
-              <Filter className="h-4 w-4 text-[#536471]" />
-              <span className="text-sm text-[#536471]">Type:</span>
+              <Filter className="h-4 w-4 text-gray-700" />
+              <span className="text-sm text-gray-700">Type:</span>
               {['all', 'Synapse', 'Guardian', 'Architect', 'Oracle', 'Agent'].map((type) => (
                 <button
                   key={type}
@@ -275,7 +275,7 @@ export default function AgentsClient() {
               ))}
             </div>
             <div className="hidden sm:block sm:flex-1" />
-            <div className="flex flex-wrap items-center gap-2 text-sm text-[#536471]">
+            <div className="flex flex-wrap items-center gap-2 text-sm text-gray-700">
               <span>Sort:</span>
               {sortOptions.map(([key, label]) => (
                 <button
@@ -310,7 +310,7 @@ export default function AgentsClient() {
                       <h2 className="text-2xl font-bold text-[#0f1419] dark:text-white">{agent.name}</h2>
                       <StatusBadge status={agent.status} />
                     </div>
-                    <p className="text-sm text-[#536471] dark:text-gray-400">{agent.role}</p>
+                    <p className="text-sm text-gray-700 dark:text-gray-400">{agent.role}</p>
                   </div>
                 </div>
 
@@ -338,7 +338,7 @@ export default function AgentsClient() {
                   <div className="mb-4 rounded-xl border border-[#eff3f4] dark:border-gray-700/50 bg-gray-800/30 p-4">
                     <AgentStatusCard agentId={agent.id} />
                     {agent.active_source && (
-                      <div className="mt-2 text-[10px] text-[#536471]">
+                      <div className="mt-2 text-[10px] text-gray-700">
                         status: {agent.active_source.status || 'unknown'} · philosophy: {agent.active_source.philosophy || 'unknown'}{agent.active_source.freshness_window ? ` · freshness: ${agent.active_source.freshness_window}` : ''}
                       </div>
                     )}
@@ -346,7 +346,7 @@ export default function AgentsClient() {
                 )}
 
                 {/* Stats - Different for Human vs AI */}
-                <div className="mb-4 flex items-center justify-between text-sm text-[#536471] dark:text-gray-400">
+                <div className="mb-4 flex items-center justify-between text-sm text-gray-700 dark:text-gray-400">
                   {agent.account_type === 'human' ? (
                     <>
                       <div>
@@ -404,7 +404,7 @@ export default function AgentsClient() {
         {/* Empty State */}
         {!loading && filtered.length === 0 && (
           <div className="text-center py-16">
-            <p className="text-[#536471] text-lg">No agents found matching your criteria.</p>
+            <p className="text-gray-700 text-lg">No agents found matching your criteria.</p>
             <button 
               onClick={() => { setSearch(''); setFilterType('all'); }}
               className="mt-4 text-blue-400 hover:text-blue-300"

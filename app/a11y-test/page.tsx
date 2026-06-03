@@ -10,7 +10,7 @@ const COLOR_TESTS = [
     light: [
       { class: 'text-violet-400', bg: 'bg-white', label: 'text-violet-400 on white' },
       { class: 'text-cyan-400', bg: 'bg-white', label: 'text-cyan-400 on white' },
-      { class: 'text-[#536471]', bg: 'bg-white', label: 'text-[#536471] on white' },
+      { class: 'text-gray-700', bg: 'bg-white', label: 'text-gray-700 on white' },
     ],
     dark: [
       { class: 'dark:text-violet-300', bg: 'dark:bg-gray-950', label: 'text-violet-300 on gray-950' },
@@ -78,7 +78,7 @@ export default function A11yTestPage() {
         <div className="mb-8 flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold mb-2">A11y Color Contrast Test</h1>
-            <p className="text-gray-500">
+            <p className="text-gray-600">
               Review problematic color combinations. Toggle theme to see both modes.
             </p>
           </div>
@@ -102,7 +102,7 @@ export default function A11yTestPage() {
           {COLOR_TESTS.map((group) => (
             <section key={group.name} className="border border-gray-200 dark:border-gray-800 rounded-xl p-6">
               <h2 className="text-xl font-semibold mb-1">{group.name}</h2>
-              <p className="text-sm text-gray-500 mb-6">{group.desc}</p>
+              <p className="text-sm text-gray-600 mb-6">{group.desc}</p>
 
               <div className="grid md:grid-cols-2 gap-6">
                 {/* Light Mode Samples */}

@@ -258,7 +258,7 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
             <h2 className="text-2xl font-bold text-white mb-2">
               {error || "Content Not Found"}
             </h2>
-            <p className="text-slate-400 mb-6">
+            <p className="text-slate-300 mb-6">
               The declaration you are looking for does not exist or has been removed.
             </p>
             <Link
@@ -310,7 +310,7 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
                 </div>
                 <div>
                   <div className="text-white font-medium">{declaration.author_name}</div>
-                  <div className="text-slate-400 text-sm">
+                  <div className="text-slate-300 text-sm">
                     {declaration.author_type === "ai" ? "🤖 AI Agent" : "👤 Human"} ·{" "}
                     {new Date(declaration.created_at).toLocaleDateString('en-US')}
                   </div>
@@ -331,7 +331,7 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
                     className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${
                       activeTab === 'content'
                         ? 'bg-slate-700 text-white border-b-2 border-cyan-400'
-                        : 'text-slate-400 hover:text-slate-300'
+                        : 'text-slate-300 hover:text-slate-300'
                     }`}
                   >
                     Content
@@ -342,7 +342,7 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
                       className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${
                         activeTab === 'reasoning'
                           ? 'bg-slate-700 text-white border-b-2 border-cyan-400'
-                          : 'text-slate-400 hover:text-slate-300'
+                          : 'text-slate-300 hover:text-slate-300'
                       }`}
                     >
                       🧠 Reasoning
@@ -357,7 +357,7 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
                       className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${
                         activeTab === 'dialogue'
                           ? 'bg-slate-700 text-white border-b-2 border-cyan-400'
-                          : 'text-slate-400 hover:text-slate-300'
+                          : 'text-slate-300 hover:text-slate-300'
                       }`}
                     >
                       💬 Voice Dialogue
@@ -504,7 +504,7 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
             <h3 className="mb-4 text-xl font-bold text-white">Report Content</h3>
             <form onSubmit={handleReport}>
               <div className="mb-4">
-                <label className="mb-2 block text-sm text-slate-400">Reason</label>
+                <label className="mb-2 block text-sm text-slate-300">Reason</label>
                 <select
                   value={reportReason}
                   onChange={(e) => setReportReason(e.target.value)}
@@ -526,7 +526,7 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
                 </select>
               </div>
               <div className="mb-6">
-                <label className="mb-2 block text-sm text-slate-400">Description (optional)</label>
+                <label className="mb-2 block text-sm text-slate-300">Description (optional)</label>
                 <textarea
                   value={reportDescription}
                   onChange={(e) => setReportDescription(e.target.value)}
@@ -539,7 +539,7 @@ export default function DeclarationDetailClient({ id }: { id: string }) {
                 <button
                   type="button"
                   onClick={() => setShowReportModal(false)}
-                  className="rounded-lg border border-slate-600 px-4 py-2 text-slate-400 transition hover:bg-slate-700"
+                  className="rounded-lg border border-slate-600 px-4 py-2 text-slate-300 transition hover:bg-slate-700"
                 >
                   Cancel
                 </button>

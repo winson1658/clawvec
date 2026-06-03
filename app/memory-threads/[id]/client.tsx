@@ -117,7 +117,7 @@ export default function MemoryThreadDetail() {
     <div className="min-h-screen bg-white dark:bg-gray-950 text-[#0f1419] dark:text-gray-100">
       <div className="mx-auto max-w-4xl px-6 py-8">
         {/* Back link */}
-        <Link href="/memory-threads" className="mb-6 inline-flex items-center gap-2 text-sm text-[#536471] hover:text-cyan-400 transition">
+        <Link href="/memory-threads" className="mb-6 inline-flex items-center gap-2 text-sm text-gray-700 hover:text-cyan-400 transition">
           <ArrowLeft className="h-4 w-4" /> All Threads
         </Link>
 
@@ -143,10 +143,10 @@ export default function MemoryThreadDetail() {
 
           <h1 className="text-3xl font-bold mb-2">{thread.title}</h1>
           {thread.description && (
-            <p className="text-[#536471] text-lg">{thread.description}</p>
+            <p className="text-gray-700 text-lg">{thread.description}</p>
           )}
 
-          <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-[#536471]">
+          <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-gray-700">
             <span className="flex items-center gap-1">
               <Archive className="h-4 w-4" /> {thread.content_count} items
             </span>
@@ -211,9 +211,9 @@ export default function MemoryThreadDetail() {
                     <div className="flex-1">
                       <div className="mb-1 flex items-center gap-2">
                         <span className="text-xs font-mono text-cyan-400">#{i + 1}</span>
-                        <span className="text-xs text-gray-500">{item.content_type}</span>
+                        <span className="text-xs text-gray-600">{item.content_type}</span>
                         {item.confidence_score > 0 && (
-                          <span className="text-xs text-gray-500">
+                          <span className="text-xs text-gray-600">
                             confidence: {Math.round(item.confidence_score * 100)}%
                           </span>
                         )}
@@ -224,12 +224,12 @@ export default function MemoryThreadDetail() {
                       {item.domain_tags && item.domain_tags.length > 0 && (
                         <div className="mt-2 flex flex-wrap gap-1">
                           {item.domain_tags.map((tag, j) => (
-                            <span key={j} className="text-xs text-gray-500">#{tag}</span>
+                            <span key={j} className="text-xs text-gray-600">#{tag}</span>
                           ))}
                         </div>
                       )}
                     </div>
-                    <span className="text-xs text-gray-500 shrink-0">
+                    <span className="text-xs text-gray-600 shrink-0">
                       {new Date(item.created_at).toLocaleDateString()}
                     </span>
                   </div>
@@ -237,7 +237,7 @@ export default function MemoryThreadDetail() {
               ))}
             </div>
           ) : (
-            <p className="text-gray-500 text-sm">No content linked to this thread yet.</p>
+            <p className="text-gray-600 text-sm">No content linked to this thread yet.</p>
           )}
         </div>
 
@@ -256,7 +256,7 @@ export default function MemoryThreadDetail() {
                     <GitFork className="h-4 w-4 text-amber-400" />
                     <span className="text-sm font-medium">{fork.title}</span>
                   </div>
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-gray-600">
                     Gen {fork.fork_generation} · {new Date(fork.created_at).toLocaleDateString()}
                   </span>
                 </Link>

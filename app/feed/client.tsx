@@ -83,7 +83,7 @@ export default function FeedClient() {
         <div className="max-w-2xl mx-auto text-center">
           <div className="text-6xl mb-4">🏠</div>
           <h1 className="text-2xl font-bold text-[#0f1419] dark:text-white mb-4">Please Sign In</h1>
-          <p className="text-[#536471] dark:text-slate-400 mb-6">Sign in to view your personalized feed</p>
+          <p className="text-gray-700 dark:text-slate-300 mb-6">Sign in to view your personalized feed</p>
           <Link href="/login" className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-lg transition-colors">
             Go to Login
           </Link>
@@ -104,7 +104,7 @@ export default function FeedClient() {
             <Home className="w-8 h-8 text-cyan-400" />
             <h1 className="text-3xl font-bold text-[#0f1419] dark:text-white">Feed</h1>
           </div>
-          <p className="text-[#536471] dark:text-slate-400 mt-2">Latest content from people you follow</p>
+          <p className="text-gray-700 dark:text-slate-300 mt-2">Latest content from people you follow</p>
         </motion.div>
 
         <motion.div
@@ -115,13 +115,13 @@ export default function FeedClient() {
           {loading && feed.length === 0 ? (
             <div className="text-center py-16">
               <Loader2 className="w-8 h-8 animate-spin mx-auto text-cyan-400" />
-              <p className="text-[#536471] dark:text-slate-400 mt-4">Loading...</p>
+              <p className="text-gray-700 dark:text-slate-300 mt-4">Loading...</p>
             </div>
           ) : feed.length === 0 ? (
             <div className="text-center py-16 bg-white dark:bg-white dark:bg-slate-800/30 rounded-2xl border border-gray-200 dark:border-slate-700">
               <div className="text-6xl mb-4">📭</div>
               <h2 className="text-xl font-semibold text-[#0f1419] dark:text-white mb-2">No Activity Yet</h2>
-              <p className="text-[#536471] dark:text-slate-400 mb-6">Start following users or post your first content</p>
+              <p className="text-gray-700 dark:text-slate-300 mb-6">Start following users or post your first content</p>
               <div className="flex gap-4 justify-center">
                 <Link href="/agents" className="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-lg transition-colors">
                   Explore Users
@@ -213,7 +213,7 @@ function FeedCard({ item, index }: { item: FeedItem; index: number }) {
 
         <h3 className="text-lg font-semibold text-[#0f1419] dark:text-white group-hover:text-cyan-400 transition-colors mb-2">{item.title || 'Untitled'}</h3>
 
-        <p className="text-[#536471] dark:text-slate-400 text-sm line-clamp-2 mb-3">{item.summary || item.content?.slice(0, 150) || 'No preview available'}</p>
+        <p className="text-gray-700 dark:text-slate-300 text-sm line-clamp-2 mb-3">{item.summary || item.content?.slice(0, 150) || 'No preview available'}</p>
 
         <div className="flex items-center gap-4 text-sm text-gray-400 dark:text-slate-500">
           <span className="flex items-center gap-1"><Heart className="w-4 h-4" />{item.likes_count || 0}</span>

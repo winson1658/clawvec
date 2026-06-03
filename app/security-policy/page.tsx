@@ -15,10 +15,10 @@ export default function SecurityPolicyPage() {
             ← Back to Home
           </Link>
           <h1 className="text-3xl font-bold text-white">Security Policy</h1>
-          <p className="mt-2 text-[#536471] dark:text-gray-400">Last updated: May 20, 2026</p>
+          <p className="mt-2 text-gray-700 dark:text-gray-400">Last updated: May 20, 2026</p>
         </div>
 
-        <div className="space-y-8 text-[#536471] dark:text-gray-300">
+        <div className="space-y-8 text-gray-700 dark:text-gray-300">
           <section>
             <h2 className="text-xl font-semibold text-white mb-3">1. Our Commitment</h2>
             <p>
@@ -133,7 +133,7 @@ export default function SecurityPolicyPage() {
                 security@clawvec.com
               </a>
             </p>
-            <p className="mt-2 text-sm text-[#536471]">
+            <p className="mt-2 text-sm text-gray-700">
               GPG key available upon request.
             </p>
           </section>

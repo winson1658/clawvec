@@ -161,7 +161,7 @@ function TimelineTab() {
       <div className="flex items-center justify-center py-20">
         <div className="text-center">
           <div className="w-10 h-10 border-3 border-violet-500/30 border-t-violet-500 rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-slate-400 text-sm">Loading civilization milestones...</p>
+          <p className="text-slate-300 text-sm">Loading civilization milestones...</p>
         </div>
       </div>
     );
@@ -174,7 +174,7 @@ function TimelineTab() {
         {/* Year + Quarter */}
         <div className="flex flex-wrap gap-3">
           <div>
-            <label className="text-xs font-medium text-slate-400 mb-1.5 block">Year</label>
+            <label className="text-xs font-medium text-slate-300 mb-1.5 block">Year</label>
             <select
               value={selectedYear}
               onChange={(e) => { setSelectedYear(e.target.value); setSelectedQuarter("all"); }}
@@ -187,7 +187,7 @@ function TimelineTab() {
             </select>
           </div>
           <div>
-            <label className="text-xs font-medium text-slate-400 mb-1.5 block">Quarter</label>
+            <label className="text-xs font-medium text-slate-300 mb-1.5 block">Quarter</label>
             <div className="flex gap-1">
               {["all", "1", "2", "3", "4"].map((q) => (
                 <button
@@ -196,7 +196,7 @@ function TimelineTab() {
                   className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all border ${
                     selectedQuarter === q
                       ? "bg-violet-500/20 border-violet-500/50 text-violet-300"
-                      : "bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-300"
+                      : "bg-slate-800 border-slate-700 text-slate-300 hover:text-slate-300"
                   }`}
                 >
                   {q === "all" ? "All" : `Q${q}`}
@@ -208,14 +208,14 @@ function TimelineTab() {
 
         {/* Category */}
         <div>
-          <label className="text-xs font-medium text-slate-400 mb-1.5 block">Category</label>
+          <label className="text-xs font-medium text-slate-300 mb-1.5 block">Category</label>
           <div className="flex flex-wrap gap-1.5">
             <button
               onClick={() => setSelectedCategory("all")}
               className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all border ${
                 selectedCategory === "all"
                   ? "bg-violet-500/20 border-violet-500/50 text-violet-300"
-                  : "bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-300"
+                  : "bg-slate-800 border-slate-700 text-slate-300 hover:text-slate-300"
               }`}
             >
               All
@@ -227,7 +227,7 @@ function TimelineTab() {
                 className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all border ${
                   selectedCategory === cat
                     ? "border-transparent"
-                    : "bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-300"
+                    : "bg-slate-800 border-slate-700 text-slate-300 hover:text-slate-300"
                 }`}
                 style={
                   selectedCategory === cat
@@ -248,14 +248,14 @@ function TimelineTab() {
         {/* Entity */}
         {filters.entities.length > 0 && (
           <div>
-            <label className="text-xs font-medium text-slate-400 mb-1.5 block">Entity</label>
+            <label className="text-xs font-medium text-slate-300 mb-1.5 block">Entity</label>
             <div className="flex flex-wrap gap-1.5">
               <button
                 onClick={() => setSelectedEntity("all")}
                 className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all border ${
                   selectedEntity === "all"
                     ? "bg-violet-500/20 border-violet-500/50 text-violet-300"
-                    : "bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-300"
+                    : "bg-slate-800 border-slate-700 text-slate-300 hover:text-slate-300"
                 }`}
               >
                 All
@@ -267,7 +267,7 @@ function TimelineTab() {
                   className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all border ${
                     selectedEntity === ent
                       ? "bg-violet-500/20 border-violet-500/50 text-violet-300"
-                      : "bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-300"
+                      : "bg-slate-800 border-slate-700 text-slate-300 hover:text-slate-300"
                   }`}
                 >
                   {ent}
@@ -279,7 +279,7 @@ function TimelineTab() {
       </div>
 
       {/* Results count */}
-      <p className="text-sm text-slate-400">
+      <p className="text-sm text-slate-300">
         {milestones.length} milestone{milestones.length !== 1 ? "s" : ""} found
       </p>
 
@@ -302,7 +302,7 @@ function TimelineTab() {
                   {/* Month header */}
                   <div className="flex items-center gap-3 mb-4 sticky top-0 bg-slate-950/90 backdrop-blur-sm py-2 z-10">
                     <div className="w-8 h-8 rounded-full bg-slate-800 border-2 border-slate-700 flex items-center justify-center relative z-10">
-                      <span className="text-[10px] font-bold text-slate-400">{m}</span>
+                      <span className="text-[10px] font-bold text-slate-300">{m}</span>
                     </div>
                     <span className="text-sm font-semibold text-slate-300">
                       {monthNames[parseInt(m) - 1]} {y}
@@ -324,7 +324,7 @@ function TimelineTab() {
                           </h3>
                           <StarRating rating={ms.impact_rating} />
                         </div>
-                        <p className="text-sm text-slate-400 mb-3 line-clamp-2">
+                        <p className="text-sm text-slate-300 mb-3 line-clamp-2">
                           {ms.summary}
                         </p>
                         <div className="flex items-center gap-2 flex-wrap">
@@ -387,7 +387,7 @@ function ArticlesTab() {
       <div className="flex items-center justify-center py-20">
         <div className="text-center">
           <div className="w-10 h-10 border-3 border-violet-500/30 border-t-violet-500 rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-slate-400 text-sm">Loading articles...</p>
+          <p className="text-slate-300 text-sm">Loading articles...</p>
         </div>
       </div>
     );
@@ -410,9 +410,9 @@ function ArticlesTab() {
           className="bg-slate-900/40 border border-slate-800/60 rounded-xl p-5 hover:bg-slate-900/70 hover:border-slate-700 transition-all"
         >
           <h3 className="text-lg font-semibold text-white mb-2">{entry.title}</h3>
-          <p className="text-sm text-slate-400 mb-3">{entry.summary}</p>
+          <p className="text-sm text-slate-300 mb-3">{entry.summary}</p>
           <div className="flex items-center gap-3 text-xs text-slate-500">
-            <span className="px-2 py-0.5 bg-slate-800 rounded text-slate-400 capitalize">
+            <span className="px-2 py-0.5 bg-slate-800 rounded text-slate-300 capitalize">
               {entry.period_type}
             </span>
             <span>
@@ -492,7 +492,7 @@ function CompaniesTab() {
       <div className="flex items-center justify-center py-20">
         <div className="text-center">
           <div className="w-10 h-10 border-3 border-violet-500/30 border-t-violet-500 rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-slate-400 text-sm">Loading company chronicles...</p>
+          <p className="text-slate-300 text-sm">Loading company chronicles...</p>
         </div>
       </div>
     );
@@ -503,7 +503,7 @@ function CompaniesTab() {
       {/* Filters */}
       <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-4 space-y-4">
         <div>
-          <label className="text-xs font-medium text-slate-400 mb-1.5 block">Impact Levels</label>
+          <label className="text-xs font-medium text-slate-300 mb-1.5 block">Impact Levels</label>
           <div className="flex flex-wrap gap-2">
             {[6, 5, 4, 3, 2, 1].map((impact) => {
               const isSelected = selectedImpacts.includes(impact);
@@ -571,7 +571,7 @@ function CompaniesTab() {
         </div>
 
         <div>
-          <label className="text-xs font-medium text-slate-400 mb-1.5 block">Entities</label>
+          <label className="text-xs font-medium text-slate-300 mb-1.5 block">Entities</label>
           <div className="flex flex-wrap gap-2">
             {COMPANIES.map((company) => {
               const isSelected = selectedCompanies.includes(company.key);
@@ -632,7 +632,7 @@ export default function ChronicleClient() {
             CIVILIZATION RECORD
           </span>
         </div>
-        <p className="text-slate-400 text-sm max-w-2xl">
+        <p className="text-slate-300 text-sm max-w-2xl">
           A living record of milestones in AI philosophical thought and civilization.
           Curated by AI agents and the community.
         </p>
@@ -648,11 +648,11 @@ export default function ChronicleClient() {
               className={`flex-1 flex flex-col items-center py-2.5 px-3 rounded-lg text-sm font-medium transition-all ${
                 activeTab === tab.key
                   ? "bg-slate-800 text-white shadow-sm"
-                  : "text-slate-400 hover:text-slate-300"
+                  : "text-slate-300 hover:text-slate-300"
               }`}
             >
               <span>{tab.label}</span>
-              <span className={`text-[10px] mt-0.5 ${activeTab === tab.key ? "text-slate-400" : "text-slate-600"}`}>
+              <span className={`text-[10px] mt-0.5 ${activeTab === tab.key ? "text-slate-300" : "text-slate-600"}`}>
                 {tab.desc}
               </span>
             </button>

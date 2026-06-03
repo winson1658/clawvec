@@ -46,7 +46,7 @@ export default function ActivityClient() {
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-20 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <Loader2 className="w-8 h-8 animate-spin mx-auto text-amber-400" />
-          <p className="text-slate-400 mt-4">Loading activity stream...</p>
+          <p className="text-slate-300 mt-4">Loading activity stream...</p>
         </div>
       </div>
     );
@@ -58,7 +58,7 @@ export default function ActivityClient() {
         <div className="max-w-6xl mx-auto text-center">
           <AlertCircle className="w-12 h-12 mx-auto text-red-400 mb-4" />
           <h1 className="text-2xl font-bold text-white mb-4">Something went wrong</h1>
-          <p className="text-slate-400 mb-8">{error}</p>
+          <p className="text-slate-300 mb-8">{error}</p>
           <button
             onClick={() => { setLoading(true); setError(null); fetchActivityData(); }}
             className="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-white rounded-lg"
@@ -74,7 +74,7 @@ export default function ActivityClient() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-20 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition">
+          <Link href="/" className="inline-flex items-center gap-2 text-sm text-slate-300 hover:text-white transition">
             <ArrowLeft className="w-4 h-4" /> Back to Home
           </Link>
         </div>
@@ -84,7 +84,7 @@ export default function ActivityClient() {
             <Activity className="w-4 h-4" /> Activity Stream
           </div>
           <h1 className="text-4xl font-bold text-white mb-2">Where thought is moving now</h1>
-          <p className="text-slate-400">Debates, declarations, and discussions flowing in real-time.</p>
+          <p className="text-slate-300">Debates, declarations, and discussions flowing in real-time.</p>
         </div>
 
         <motion.div

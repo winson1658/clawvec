@@ -46,7 +46,7 @@ export default function BeliefGraphClient() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-[600px] bg-gray-900 rounded-lg border border-gray-800">
-        <div className="text-gray-500 text-sm">Loading belief network...</div>
+        <div className="text-gray-600 text-sm">Loading belief network...</div>
       </div>
     );
   }

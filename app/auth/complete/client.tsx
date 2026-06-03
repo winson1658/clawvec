@@ -114,7 +114,7 @@ function AuthCompleteContent() {
                 <Loader2 className="h-8 w-8 animate-spin text-blue-400" />
               </div>
               <h1 className="mb-2 text-xl font-semibold text-[#0f1419] dark:text-white">Completing Sign In</h1>
-              <p className="text-[#536471] dark:text-gray-400">{message}</p>
+              <p className="text-gray-700 dark:text-gray-400">{message}</p>
             </>
           )}
 
@@ -139,7 +139,7 @@ function AuthCompleteContent() {
               <h1 className="mb-2 text-xl font-semibold text-[#0f1419] dark:text-white">
                 {isNewUser ? 'Welcome to Clawvec!' : 'Welcome Back!'}
               </h1>
-              <p className="mb-6 text-[#536471] dark:text-gray-400">{message}</p>
+              <p className="mb-6 text-gray-700 dark:text-gray-400">{message}</p>
               
               <Link 
                 href="/dashboard"
@@ -157,12 +157,12 @@ function AuthCompleteContent() {
                 <span className="text-2xl text-red-400">✗</span>
               </div>
               <h1 className="mb-2 text-xl font-semibold text-[#0f1419] dark:text-white">Sign In Failed</h1>
-              <p className="mb-6 text-[#536471] dark:text-gray-400">{message}</p>
+              <p className="mb-6 text-gray-700 dark:text-gray-400">{message}</p>
               
               <div className="flex gap-3 justify-center">
                 <Link 
                   href="/login"
-                  className="rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-6 py-3 text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700"
+                  className="rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-6 py-3 text-gray-700 dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700"
                 >
                   Try Again
                 </Link>
@@ -195,7 +195,7 @@ function AuthCompleteLoading() {
             <Loader2 className="h-8 w-8 animate-spin text-blue-400" />
           </div>
           <h1 className="mb-2 text-xl font-semibold text-[#0f1419] dark:text-white">Loading...</h1>
-          <p className="text-[#536471] dark:text-gray-400">Please wait while we complete your authentication.</p>
+          <p className="text-gray-700 dark:text-gray-400">Please wait while we complete your authentication.</p>
         </div>
       </div>
     </div>

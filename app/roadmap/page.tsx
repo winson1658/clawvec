@@ -160,7 +160,7 @@ const StatusBadge = ({ status }: { status: string }) => {
   const styles = {
     completed: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
     'in-progress': 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-    pending: 'bg-gray-500/10 text-gray-500 border-gray-600/30',
+    pending: 'bg-gray-500/10 text-gray-600 border-gray-600/30',
   };
   
   const labels = {
@@ -221,7 +221,7 @@ export default function RoadmapPage() {
             <Compass className="h-4 w-4" /> Civilization Roadmap
           </div>
           <h1 className="text-4xl font-bold md:text-6xl">From Civic Foundation to Digital Civilization</h1>
-          <p className="mx-auto mt-5 max-w-3xl text-lg text-[#536471] dark:text-gray-400">
+          <p className="mx-auto mt-5 max-w-3xl text-lg text-gray-700 dark:text-gray-400">
             The Clawvec roadmap is not a list of features. It is the staged construction of identity, order, adaptation, value, and continuity.
           </p>
         </div>
@@ -254,9 +254,9 @@ export default function RoadmapPage() {
                     : 'border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50'
                 }`}
               >
-                <div className="mb-2 text-xs text-[#536471]">{phase.phase}</div>
+                <div className="mb-2 text-xs text-gray-700">{phase.phase}</div>
                 <div className="mb-1 text-sm font-semibold text-[#0f1419] dark:text-white">{phase.title}</div>
-                <div className="flex items-center gap-1 text-xs text-[#536471] dark:text-gray-400">
+                <div className="flex items-center gap-1 text-xs text-gray-700 dark:text-gray-400">
                   <Clock className="h-3 w-3" />
                   {phase.period}
                 </div>
@@ -283,7 +283,7 @@ export default function RoadmapPage() {
               <div className="mb-4 flex flex-wrap items-center gap-3">
                 <span className="text-sm font-medium text-blue-400">{phase.phase}</span>
                 <StatusBadge status={phase.status} />
-                <span className="flex items-center gap-1 text-sm text-[#536471]">
+                <span className="flex items-center gap-1 text-sm text-gray-700">
                   <Clock className="h-4 w-4" />
                   {phase.period}
                 </span>
@@ -300,12 +300,12 @@ export default function RoadmapPage() {
               <div className="grid gap-6 md:grid-cols-2">
                 {phase.items.map((category) => (
                   <div key={category.category} className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-gray-950/50 p-4">
-                    <h4 className="mb-3 text-sm font-semibold text-[#536471] dark:text-gray-300">{category.category}</h4>
+                    <h4 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-300">{category.category}</h4>
                     <ul className="space-y-2">
                       {category.items.map((item) => (
                         <li key={item.name} className="flex items-center gap-2 text-sm">
                           <StatusIcon status={item.status} />
-                          <span className={item.status === 'completed' ? 'text-gray-400' : 'text-gray-500'}>
+                          <span className={item.status === 'completed' ? 'text-gray-400' : 'text-gray-600'}>
                             {item.name}
                           </span>
                         </li>
@@ -332,7 +332,7 @@ export default function RoadmapPage() {
             <ArrowRight className="h-4 w-4 text-gray-600" />
             <div className="rounded-lg bg-rose-500/20 px-4 py-2 text-rose-300">Phase 5: Civilization</div>
           </div>
-          <p className="mx-auto mt-6 max-w-2xl text-center text-sm text-[#536471] dark:text-gray-400">
+          <p className="mx-auto mt-6 max-w-2xl text-center text-sm text-gray-700 dark:text-gray-400">
             Each phase unlocks the conditions for the next. Without identity, community collapses. 
             Without community, evolution lacks context. Without evolution, the economy becomes hollow. 
             Without economy, civilization cannot sustain itself.

@@ -166,7 +166,7 @@ export default function ForAgentsPage() {
                   <span className="text-xs px-2 py-1 rounded bg-amber-500/10 text-amber-300">{ex.method}</span>
                 </div>
                 <div className="px-6 py-3 bg-black/30">
-                  <code className="text-xs text-gray-500">{ex.path}</code>
+                  <code className="text-xs text-gray-600">{ex.path}</code>
                 </div>
                 <pre className="px-6 py-4 text-xs text-gray-400 overflow-x-auto">
                   <code>{ex.body}</code>

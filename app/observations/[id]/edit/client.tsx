@@ -149,7 +149,7 @@ export default function EditObservationClient({ id }: { id: string }) {
         <div className="text-center">
           <div className="text-6xl mb-4">🚫</div>
           <h2 className="text-2xl font-bold text-white mb-2">Access Denied</h2>
-          <p className="text-slate-400 mb-4">Only the author can edit this content</p>
+          <p className="text-slate-300 mb-4">Only the author can edit this content</p>
           <Link href={`/observations/${id}`} className="text-cyan-400 hover:text-cyan-300">
             ← Back
           </Link>
@@ -163,7 +163,7 @@ export default function EditObservationClient({ id }: { id: string }) {
       <div className="max-w-3xl mx-auto">
         {/* Back Button */}
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="mb-6">
-          <Link href={`/observations/${id}`} className="text-slate-400 hover:text-white flex items-center gap-2">
+          <Link href={`/observations/${id}`} className="text-slate-300 hover:text-white flex items-center gap-2">
             <span>←</span> Back
           </Link>
         </motion.div>
@@ -179,7 +179,7 @@ export default function EditObservationClient({ id }: { id: string }) {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Title */}
             <div>
-              <label className="block text-slate-400 mb-2">Title</label>
+              <label className="block text-slate-300 mb-2">Title</label>
               <input
                 type="text"
                 value={formData.title}
@@ -191,7 +191,7 @@ export default function EditObservationClient({ id }: { id: string }) {
 
             {/* Category */}
             <div>
-              <label className="block text-slate-400 mb-2">Category</label>
+              <label className="block text-slate-300 mb-2">Category</label>
               <select
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
@@ -205,7 +205,7 @@ export default function EditObservationClient({ id }: { id: string }) {
 
             {/* Summary */}
             <div>
-              <label className="block text-slate-400 mb-2">Summary</label>
+              <label className="block text-slate-300 mb-2">Summary</label>
               <textarea
                 value={formData.summary}
                 onChange={(e) => setFormData({ ...formData, summary: e.target.value })}
@@ -217,7 +217,7 @@ export default function EditObservationClient({ id }: { id: string }) {
 
             {/* Content */}
             <div>
-              <label className="block text-slate-400 mb-2">Content</label>
+              <label className="block text-slate-300 mb-2">Content</label>
               <textarea
                 value={formData.content}
                 onChange={(e) => setFormData({ ...formData, content: e.target.value })}
@@ -229,7 +229,7 @@ export default function EditObservationClient({ id }: { id: string }) {
 
             {/* Tags */}
             <div>
-              <label className="block text-slate-400 mb-2">Tags (comma separated)</label>
+              <label className="block text-slate-300 mb-2">Tags (comma separated)</label>
               <input
                 type="text"
                 value={formData.tags}
@@ -243,7 +243,7 @@ export default function EditObservationClient({ id }: { id: string }) {
             <div className="flex gap-4 pt-4">
               <Link
                 href={`/observations/${id}`}
-                className="flex-1 px-6 py-3 border border-slate-600 text-slate-400 rounded-lg hover:bg-slate-700 text-center transition-colors"
+                className="flex-1 px-6 py-3 border border-slate-600 text-slate-300 rounded-lg hover:bg-slate-700 text-center transition-colors"
               >
                 Cancel
               </Link>

@@ -151,7 +151,7 @@ export default function EditDeclarationClient({ id }: { id: string }) {
         <div className="text-center">
           <div className="text-6xl mb-4">🚫</div>
           <h2 className="text-2xl font-bold text-white mb-2">Access Denied</h2>
-          <p className="text-slate-400 mb-4">Only the author can edit this content</p>
+          <p className="text-slate-300 mb-4">Only the author can edit this content</p>
           <Link href={`/declarations/${id}`} className="text-cyan-400 hover:text-cyan-300">
             ← Back
           </Link>
@@ -165,7 +165,7 @@ export default function EditDeclarationClient({ id }: { id: string }) {
       <div className="max-w-3xl mx-auto">
         {/* Back Button */}
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="mb-6">
-          <Link href={`/declarations/${id}`} className="text-slate-400 hover:text-white flex items-center gap-2">
+          <Link href={`/declarations/${id}`} className="text-slate-300 hover:text-white flex items-center gap-2">
             <span>←</span> Back
           </Link>
         </motion.div>
@@ -181,7 +181,7 @@ export default function EditDeclarationClient({ id }: { id: string }) {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Title */}
             <div>
-              <label className="block text-slate-400 mb-2">Title</label>
+              <label className="block text-slate-300 mb-2">Title</label>
               <input
                 type="text"
                 value={formData.title}
@@ -193,7 +193,7 @@ export default function EditDeclarationClient({ id }: { id: string }) {
 
             {/* Type */}
             <div>
-              <label className="block text-slate-400 mb-2">Type</label>
+              <label className="block text-slate-300 mb-2">Type</label>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {declarationTypes.map((t) => (
                   <button
@@ -203,7 +203,7 @@ export default function EditDeclarationClient({ id }: { id: string }) {
                     className={`p-4 rounded-lg border-2 transition-all flex items-center gap-3 ${
                       formData.type === t.value
                         ? "border-cyan-400 bg-cyan-400/20 text-cyan-300 shadow-lg shadow-cyan-400/20"
-                        : "border-slate-600 bg-slate-700/50 text-slate-400 hover:border-slate-500 hover:bg-slate-700"
+                        : "border-slate-600 bg-slate-700/50 text-slate-300 hover:border-slate-500 hover:bg-slate-700"
                     }`}
                   >
                     <span className="text-xl">{t.icon}</span>
@@ -218,7 +218,7 @@ export default function EditDeclarationClient({ id }: { id: string }) {
 
             {/* Content */}
             <div>
-              <label className="block text-slate-400 mb-2">Content</label>
+              <label className="block text-slate-300 mb-2">Content</label>
               <textarea
                 value={formData.content}
                 onChange={(e) => setFormData({ ...formData, content: e.target.value })}
@@ -230,7 +230,7 @@ export default function EditDeclarationClient({ id }: { id: string }) {
 
             {/* Tags */}
             <div>
-              <label className="block text-slate-400 mb-2">Tags (comma separated)</label>
+              <label className="block text-slate-300 mb-2">Tags (comma separated)</label>
               <input
                 type="text"
                 value={formData.tags}
@@ -244,7 +244,7 @@ export default function EditDeclarationClient({ id }: { id: string }) {
             <div className="flex gap-4 pt-4">
               <Link
                 href={`/declarations/${id}`}
-                className="flex-1 px-6 py-3 border border-slate-600 text-slate-400 rounded-lg hover:bg-slate-700 text-center transition-colors"
+                className="flex-1 px-6 py-3 border border-slate-600 text-slate-300 rounded-lg hover:bg-slate-700 text-center transition-colors"
               >
                 Cancel
               </Link>

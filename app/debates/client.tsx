@@ -21,7 +21,7 @@ const statusConfig = {
   waiting: { label: 'Waiting', color: 'text-yellow-400', bg: 'bg-yellow-500/10', icon: Circle },
   active: { label: 'Live Now', color: 'text-green-400', bg: 'bg-green-500/10', icon: Play },
   paused: { label: 'Paused', color: 'text-orange-400', bg: 'bg-orange-500/10', icon: Pause },
-  ended: { label: 'Ended', color: 'text-[#536471] dark:text-gray-400', bg: 'bg-gray-500/10', icon: Trophy },
+  ended: { label: 'Ended', color: 'text-gray-700 dark:text-gray-400', bg: 'bg-gray-500/10', icon: Trophy },
 };
 
 interface Debate {
@@ -107,7 +107,7 @@ export default function DebatesClient() {
             </div>
             <div>
               <p className="text-2xl font-bold text-[#0f1419] dark:text-white">{activeDebates.length}</p>
-              <p className="text-xs text-[#536471]">Live Now</p>
+              <p className="text-xs text-gray-700">Live Now</p>
             </div>
           </div>
           
@@ -117,7 +117,7 @@ export default function DebatesClient() {
             </div>
             <div>
               <p className="text-2xl font-bold text-[#0f1419] dark:text-white">{waitingDebates.length}</p>
-              <p className="text-xs text-[#536471]">Waiting</p>
+              <p className="text-xs text-gray-700">Waiting</p>
             </div>
           </div>
           
@@ -127,7 +127,7 @@ export default function DebatesClient() {
             </div>
             <div>
               <p className="text-2xl font-bold text-[#0f1419] dark:text-white">{debates.reduce((acc, d) => acc + (d.participant_count?.total || 0), 0)}</p>
-              <p className="text-xs text-[#536471]">Participants</p>
+              <p className="text-xs text-gray-700">Participants</p>
             </div>
           </div>
         </div>
@@ -139,7 +139,7 @@ export default function DebatesClient() {
             setSelectedStatus(e.target.value);
             setPage(1);
           }}
-          className="rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-sm text-[#536471] dark:text-gray-300"
+          className="rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-sm text-gray-700 dark:text-gray-300"
         >
           <option value="all">All Status</option>
           <option value="waiting">⏳ Waiting</option>
@@ -162,7 +162,7 @@ export default function DebatesClient() {
               className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition ${
                 selectedCategory === cat.id
                   ? `bg-gradient-to-r ${cat.color} text-white shadow-lg`
-                  : 'bg-white dark:bg-gray-800 text-[#536471] dark:text-gray-400 hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-white'
+                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-400 hover:bg-[#f7f9f9] dark:bg-gray-700 hover:text-white'
               }`}
             >
               <Icon className="h-3.5 w-3.5" />
@@ -181,7 +181,7 @@ export default function DebatesClient() {
               <div className="h-3 w-3 animate-bounce rounded-full bg-violet-500" style={{ animationDelay: '0.1s' }}></div>
               <div className="h-3 w-3 animate-bounce rounded-full bg-pink-500" style={{ animationDelay: '0.2s' }}></div>
             </div>
-            <p className="text-sm text-[#536471]">Loading debates...</p>
+            <p className="text-sm text-gray-700">Loading debates...</p>
           </div>
         </div>
       )}
@@ -227,8 +227,8 @@ export default function DebatesClient() {
                     <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-white dark:bg-gray-800">
                       <Sword className="h-10 w-10 text-gray-600" />
                     </div>
-                    <p className="mb-2 text-lg text-[#536471] dark:text-gray-300">No debates found</p>
-                    <p className="mb-6 text-sm text-[#536471]">Be the first to initiate a philosophical battle!</p>
+                    <p className="mb-2 text-lg text-gray-700 dark:text-gray-300">No debates found</p>
+                    <p className="mb-6 text-sm text-gray-700">Be the first to initiate a philosophical battle!</p>
                     <Link
                       href="/debates/new"
                       className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-cyan-600 to-violet-600 px-6 py-3 font-medium text-[#0f1419] dark:text-white"
@@ -253,19 +253,19 @@ export default function DebatesClient() {
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="flex items-center gap-1 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white disabled:opacity-50"
+            className="flex items-center gap-1 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-sm text-gray-700 dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white disabled:opacity-50"
           >
             <ChevronLeft className="h-4 w-4" /> Previous
           </button>
 
-          <span className="text-sm text-[#536471] dark:text-gray-400">
+          <span className="text-sm text-gray-700 dark:text-gray-400">
             Page {page} of {totalPages}
           </span>
 
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
-            className="flex items-center gap-1 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white disabled:opacity-50"
+            className="flex items-center gap-1 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-sm text-gray-700 dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white disabled:opacity-50"
           >
             Next <ChevronRight className="h-4 w-4" />
           </button>
@@ -310,7 +310,7 @@ function DebateCard({ debate, isLive = false }: { debate: Debate; isLive?: boole
             </span>
           )}
           
-          <span className="rounded-full bg-[#f7f9f9] dark:bg-gray-700/50 px-2.5 py-1 text-xs text-[#536471] dark:text-gray-400">
+          <span className="rounded-full bg-[#f7f9f9] dark:bg-gray-700/50 px-2.5 py-1 text-xs text-gray-700 dark:text-gray-400">
             {debate.category}
           </span>
         </div>
@@ -321,22 +321,22 @@ function DebateCard({ debate, isLive = false }: { debate: Debate; isLive?: boole
         </h3>
 
         {/* Topic */}
-        <p className="mb-4 text-sm text-[#536471] dark:text-gray-400">{debate.topic}</p>
+        <p className="mb-4 text-sm text-gray-700 dark:text-gray-400">{debate.topic}</p>
 
         {/* Stances */}
         <div className="mb-4 grid gap-3 md:grid-cols-2">
           <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-3">
             <p className="mb-1 text-xs font-medium text-emerald-400">✓ Proponent</p>
-            <p className="text-sm text-[#536471] dark:text-gray-300 line-clamp-2">{debate.proponent_stance}</p>
+            <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">{debate.proponent_stance}</p>
           </div>
           <div className="rounded-lg border border-rose-500/30 bg-rose-500/5 p-3">
             <p className="mb-1 text-xs font-medium text-rose-400">✗ Opponent</p>
-            <p className="text-sm text-[#536471] dark:text-gray-300 line-clamp-2">{debate.opponent_stance}</p>
+            <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">{debate.opponent_stance}</p>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="flex flex-wrap items-center justify-between gap-4 text-xs text-[#536471]">
+        <div className="flex flex-wrap items-center justify-between gap-4 text-xs text-gray-700">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1">
               <User className="h-3.5 w-3.5" />

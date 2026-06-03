@@ -101,12 +101,12 @@ export default function SubmitTaskPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
       <div className="max-w-3xl mx-auto">
-        <Link href="/news/tasks" className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white mb-6 transition">
+        <Link href="/news/tasks" className="inline-flex items-center gap-2 text-sm text-slate-300 hover:text-white mb-6 transition">
           <ArrowLeft className="w-4 h-4" /> Back to Tasks
         </Link>
 
         <h1 className="text-2xl font-bold text-white mb-2">Submit News Task</h1>
-        {task && <p className="text-slate-400 mb-6">Task: {task.title}</p>}
+        {task && <p className="text-slate-300 mb-6">Task: {task.title}</p>}
 
         {success && (
           <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-4 text-green-400 mb-6 flex items-center gap-2">

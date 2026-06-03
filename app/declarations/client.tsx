@@ -79,11 +79,11 @@ export default function DeclarationsPage() {
       <div className="mx-auto max-w-6xl px-6 py-12">
         {/* Header */}
         <div className="mb-8 text-center">
-          <Link href="/" className="inline-flex items-center gap-2 text-sm text-[#536471] hover:text-white mb-4 transition-colors">
+          <Link href="/" className="inline-flex items-center gap-2 text-sm text-gray-700 hover:text-white mb-4 transition-colors">
             ← Home
           </Link>
           <h1 className="mb-3 text-4xl font-bold">Philosophy Declarations</h1>
-          <p className="text-[#536471] dark:text-gray-400">Declare your stance. Explore the values that shape our community.</p>
+          <p className="text-gray-700 dark:text-gray-400">Declare your stance. Explore the values that shape our community.</p>
           <Link
             href="/declarations/new"
             className="mt-4 inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-cyan-500 to-purple-500 px-5 py-2.5 text-sm font-medium text-white transition hover:from-cyan-400 hover:to-purple-400"
@@ -96,7 +96,7 @@ export default function DeclarationsPage() {
         {/* Search & Filter */}
         <div className="mb-8 space-y-4">
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#536471]" />
+            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-700" />
             <input
               type="text"
               value={search}
@@ -106,7 +106,7 @@ export default function DeclarationsPage() {
             />
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <Filter className="h-4 w-4 text-[#536471]" />
+            <Filter className="h-4 w-4 text-gray-700" />
             <button
               onClick={() => setSelectedType('')}
               className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${
@@ -130,7 +130,7 @@ export default function DeclarationsPage() {
         </div>
 
         {/* Count */}
-        <div className="mb-4 text-sm text-[#536471]">{filtered.length} declaration{filtered.length !== 1 ? 's' : ''}</div>
+        <div className="mb-4 text-sm text-gray-700">{filtered.length} declaration{filtered.length !== 1 ? 's' : ''}</div>
 
         {/* Grid */}
         {loading ? (
@@ -142,8 +142,8 @@ export default function DeclarationsPage() {
         ) : filtered.length === 0 ? (
           <div className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 py-16 text-center">
             <div className="text-6xl mb-4">📭</div>
-            <h3 className="mb-2 text-lg font-semibold text-[#536471] dark:text-gray-400">No declarations found</h3>
-            <p className="text-sm text-[#536471]">Try adjusting your search or filter.</p>
+            <h3 className="mb-2 text-lg font-semibold text-gray-700 dark:text-gray-400">No declarations found</h3>
+            <p className="text-sm text-gray-700">Try adjusting your search or filter.</p>
           </div>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -227,12 +227,12 @@ function DeclarationCard({ declaration, delay = 0 }: { declaration: Declaration;
             {declaration.title}
           </h3>
 
-          <p className="mb-4 text-sm text-slate-400 line-clamp-3">{declaration.content.slice(0, 120)}...</p>
+          <p className="mb-4 text-sm text-slate-300 line-clamp-3">{declaration.content.slice(0, 120)}...</p>
 
           {declaration.tags && declaration.tags.length > 0 && (
             <div className="mb-4 flex flex-wrap gap-1">
               {declaration.tags.slice(0, 3).map((tag) => (
-                <span key={tag} className="rounded-full bg-slate-700 px-2 py-0.5 text-xs text-slate-400">
+                <span key={tag} className="rounded-full bg-slate-700 px-2 py-0.5 text-xs text-slate-300">
                   #{tag}
                 </span>
               ))}

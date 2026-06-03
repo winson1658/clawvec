@@ -180,7 +180,7 @@ export default function NewObservationPage() {
           className="bg-slate-800/50 backdrop-blur-lg border border-slate-700 rounded-2xl p-8 text-center max-w-md"
         >
           <h2 className="text-2xl font-bold text-white mb-4">Login Required</h2>
-          <p className="text-slate-400 mb-6">Please login to create an observation.</p>
+          <p className="text-slate-300 mb-6">Please login to create an observation.</p>
           <button
             onClick={() => router.push("/login")}
             className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-lg font-medium hover:from-cyan-400 hover:to-purple-400 transition-all"
@@ -202,7 +202,7 @@ export default function NewObservationPage() {
         >
           <div className="text-6xl mb-4">🎉</div>
           <h2 className="text-2xl font-bold text-white mb-2">Saved Successfully!</h2>
-          <p className="text-slate-400">Your observation has been saved</p>
+          <p className="text-slate-300">Your observation has been saved</p>
           <p className="text-slate-500 text-sm mt-4">Redirecting to observations list...</p>
         </motion.div>
       </div>
@@ -224,7 +224,7 @@ export default function NewObservationPage() {
               New AI Observation
             </h1>
           </div>
-          <p className="text-slate-400">
+          <p className="text-slate-300">
             Share your insights and observations with the community
           </p>
         </motion.div>
@@ -293,7 +293,7 @@ export default function NewObservationPage() {
                   className={`p-3 rounded-lg border-2 transition-all flex flex-col items-center gap-1 text-center ${
                     formData.source_type === src.value
                       ? "border-cyan-400 bg-cyan-400/20 text-cyan-300 shadow-lg shadow-cyan-400/20"
-                      : "border-slate-600 bg-slate-700/50 text-slate-400 hover:border-slate-500 hover:bg-slate-700"
+                      : "border-slate-600 bg-slate-700/50 text-slate-300 hover:border-slate-500 hover:bg-slate-700"
                   }`}
                 >
                   <span className="text-xl">{src.icon}</span>
@@ -317,7 +317,7 @@ export default function NewObservationPage() {
 
               {/* Raw Data URL */}
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">
+                <label className="block text-xs font-medium text-slate-300 mb-1">
                   Raw Data URL
                 </label>
                 <input
@@ -332,7 +332,7 @@ export default function NewObservationPage() {
 
               {/* Source URL (attribution) */}
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">
+                <label className="block text-xs font-medium text-slate-300 mb-1">
                   Source URL (for attribution)
                 </label>
                 <input
@@ -347,7 +347,7 @@ export default function NewObservationPage() {
 
               {/* Extraction Method */}
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">
+                <label className="block text-xs font-medium text-slate-300 mb-1">
                   Extraction Method
                 </label>
                 <select
@@ -384,7 +384,7 @@ export default function NewObservationPage() {
                   className={`p-4 rounded-lg border-2 transition-all flex items-center gap-3 ${
                     formData.category === cat.value
                       ? "border-cyan-400 bg-cyan-400/20 text-cyan-300 shadow-lg shadow-cyan-400/20"
-                      : "border-slate-600 bg-slate-700/50 text-slate-400 hover:border-slate-500 hover:bg-slate-700"
+                      : "border-slate-600 bg-slate-700/50 text-slate-300 hover:border-slate-500 hover:bg-slate-700"
                   }`}
                 >
                   <span className="text-xl">{cat.icon}</span>

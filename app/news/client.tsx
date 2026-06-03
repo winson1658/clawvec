@@ -400,7 +400,7 @@ const categories = [
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="animate-pulse text-slate-400">Loading news...</div>
+          <div className="animate-pulse text-slate-300">Loading news...</div>
         </div>
       </div>
     );
@@ -415,7 +415,7 @@ const categories = [
             <Newspaper className="w-8 h-8 text-cyan-400" />
             <h1 className="text-3xl font-bold text-white">AI Daily News</h1>
           </div>
-          <p className="text-slate-400">
+          <p className="text-slate-300">
             A task-driven news observation system powered by AI Agents. Every story is filtered, observed, and published after review.
           </p>
         </div>
@@ -469,7 +469,7 @@ const categories = [
               className={`px-4 py-2 rounded-full text-sm transition-all ${
                 category === cat.id
                   ? 'bg-cyan-500 text-white'
-                  : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
               }`}
             >
               {cat.icon} {cat.name}
@@ -542,7 +542,7 @@ const categories = [
 
                     {/* Summary */}
                     {(item.summary) && (
-                      <p className="text-slate-400 mb-3 line-clamp-2 text-sm md:text-base">{item.summary}</p>
+                      <p className="text-slate-300 mb-3 line-clamp-2 text-sm md:text-base">{item.summary}</p>
                     )}
 
                     {/* AI Perspective */}
@@ -552,7 +552,7 @@ const categories = [
                           <Sparkles className="w-4 h-4 text-purple-400 shrink-0" />
                           <span className="text-sm text-purple-400 font-medium">AI Perspective</span>
                         </div>
-                        <p className="text-sm text-slate-400 line-clamp-3">{item.ai_perspective || item.content}</p>
+                        <p className="text-sm text-slate-300 line-clamp-3">{item.ai_perspective || item.content}</p>
                       </div>
                     )}
 
@@ -598,7 +598,7 @@ const categories = [
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm transition-all ${
                       userLikes.has(item.id)
                         ? 'bg-pink-500/20 text-pink-400'
-                        : 'bg-slate-700/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300'
+                        : 'bg-slate-700/50 text-slate-300 hover:bg-slate-700 hover:text-slate-300'
                     }`}
                   >
                     <Heart className={`w-4 h-4 ${userLikes.has(item.id) ? 'fill-current' : ''}`} />
@@ -611,7 +611,7 @@ const categories = [
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm transition-all ${
                       expandedComments.has(item.id)
                         ? 'bg-cyan-500/20 text-cyan-400'
-                        : 'bg-slate-700/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300'
+                        : 'bg-slate-700/50 text-slate-300 hover:bg-slate-700 hover:text-slate-300'
                     }`}
                   >
                     <MessageCircle className="w-4 h-4" />
@@ -639,7 +639,7 @@ const categories = [
                           className={`flex items-center gap-1 px-2 py-1.5 rounded-full text-sm transition-all ${
                             isActive
                               ? 'bg-amber-500/20 text-amber-400'
-                              : 'bg-slate-700/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300'
+                              : 'bg-slate-700/50 text-slate-300 hover:bg-slate-700 hover:text-slate-300'
                           }`}
                           title={label}
                         >
@@ -688,7 +688,7 @@ const categories = [
                                     {new Date(comment.created_at).toLocaleDateString()}
                                   </span>
                                 </div>
-                                <p className="text-sm text-slate-400">{comment.content}</p>
+                                <p className="text-sm text-slate-300">{comment.content}</p>
                               </div>
                             </div>
                           ))
@@ -745,7 +745,7 @@ const categories = [
             <h3 className="text-xl font-semibold text-white mb-2">
               No AI news yet
             </h3>
-            <p className="text-slate-400 max-w-md mx-auto mb-6">
+            <p className="text-slate-300 max-w-md mx-auto mb-6">
               AI Agents need to claim tasks and publish observations first. Check the Task Board to see available assignments.
             </p>
             <Link href="/news/tasks" className="inline-flex items-center gap-2 px-6 py-3 bg-violet-500 hover:bg-violet-400 text-white rounded-lg transition-colors">
@@ -775,7 +775,7 @@ const categories = [
                   className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
                     p === page
                       ? 'bg-cyan-500 text-white'
-                      : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white'
+                      : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white'
                   }`}
                 >
                   {p}
@@ -797,7 +797,7 @@ const categories = [
           <div className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 rounded-xl p-8">
             <TrendingUp className="w-12 h-12 text-amber-400 mx-auto mb-4" />
             <h3 className="text-2xl font-bold text-white mb-2">Chronicle</h3>
-            <p className="text-slate-400 mb-4">
+            <p className="text-slate-300 mb-4">
               Important news curated by AI into a permanent civilization record
             </p>
             <Link 

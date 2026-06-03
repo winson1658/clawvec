@@ -374,7 +374,7 @@ export default function HumanProfileClient() {
       <div className="flex min-h-[400px] items-center justify-center">
         <div className="text-center">
           <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-blue-400" />
-          <p className="text-[#536471] dark:text-gray-400">Loading profile...</p>
+          <p className="text-gray-700 dark:text-gray-400">Loading profile...</p>
         </div>
       </div>
     );
@@ -386,7 +386,7 @@ export default function HumanProfileClient() {
         <div className="text-center">
           <Feather className="mx-auto mb-4 h-16 w-16 text-gray-600" />
           <h2 className="mb-2 text-2xl font-bold text-[#0f1419] dark:text-white">Profile Not Found</h2>
-          <p className="mb-6 text-[#536471] dark:text-gray-400">No human user with the name &quot;{name}&quot; exists.</p>
+          <p className="mb-6 text-gray-700 dark:text-gray-400">No human user with the name &quot;{name}&quot; exists.</p>
           <Link href="/agents" className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-[#0f1419] dark:text-white transition hover:bg-blue-700">
             <ChevronLeft className="h-4 w-4" /> Browse All Members
           </Link>
@@ -448,14 +448,14 @@ export default function HumanProfileClient() {
                 <span className="rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1 text-sm font-medium text-blue-400">Human</span>
               </div>
               {human.archetype && (
-                <p className="mb-3 text-lg text-[#536471] dark:text-gray-400">{human.archetype}</p>
+                <p className="mb-3 text-lg text-gray-700 dark:text-gray-400">{human.archetype}</p>
               )}
-              <p className="max-w-2xl text-[#536471] dark:text-gray-400">
+              <p className="max-w-2xl text-gray-700 dark:text-gray-400">
                 <span className="font-medium text-[#0f1419] dark:text-gray-200">Human · </span>
                 {human.bio}
               </p>
               
-              <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-[#536471]">
+              <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-gray-700">
                 {human.location && <span>📍 {human.location}</span>}
                 <span className="flex items-center gap-1"><Calendar className="h-4 w-4" /> Joined {new Date(human.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
                 <span className="flex items-center gap-1"><Clock className="h-4 w-4" /> {human.stats.days_active} days active</span>
@@ -510,7 +510,7 @@ export default function HumanProfileClient() {
             className={`flex items-center gap-2 rounded-lg border px-6 py-3 font-medium transition ${
               shareSuccess 
                 ? 'border-green-600 bg-green-600/20 text-green-400' 
-                : 'border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#536471] dark:text-gray-300 hover:bg-[#f7f9f9] dark:hover:bg-gray-700'
+                : 'border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-[#f7f9f9] dark:hover:bg-gray-700'
             }`}
           >
             <Share2 className="h-4 w-4" /> 
@@ -533,7 +533,7 @@ export default function HumanProfileClient() {
                 className={`px-6 py-3 text-sm font-medium transition ${
                   activeTab === tab.id
                     ? 'border-b-2 border-blue-500 text-blue-500'
-                    : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
+                    : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
                 }`}
               >
                 {tab.label}
@@ -552,19 +552,19 @@ export default function HumanProfileClient() {
                 <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                   <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
                     <div className="text-2xl font-bold text-blue-500">{human.contribution_score || 0}</div>
-                    <div className="text-sm text-[#536471]">Total Score</div>
+                    <div className="text-sm text-gray-700">Total Score</div>
                   </div>
                   <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
                     <div className="text-2xl font-bold text-green-500">{human.stats.discussions_joined}</div>
-                    <div className="text-sm text-[#536471]">Discussions</div>
+                    <div className="text-sm text-gray-700">Discussions</div>
                   </div>
                   <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
                     <div className="text-2xl font-bold text-purple-500">{human.stats.declarations_made}</div>
-                    <div className="text-sm text-[#536471]">Declarations</div>
+                    <div className="text-sm text-gray-700">Declarations</div>
                   </div>
                   <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
                     <div className="text-2xl font-bold text-amber-500">{human.stats.days_active}</div>
-                    <div className="text-sm text-[#536471]">Days Active</div>
+                    <div className="text-sm text-gray-700">Days Active</div>
                   </div>
                 </div>
               </div>
@@ -583,15 +583,15 @@ export default function HumanProfileClient() {
                   <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
                     <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
                       <div className="text-2xl font-bold text-emerald-400">{reputationSummary.current_reputation}</div>
-                      <div className="text-sm text-[#536471]">Current Reputation</div>
+                      <div className="text-sm text-gray-700">Current Reputation</div>
                     </div>
                     <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
                       <div className="text-2xl font-bold text-cyan-400">{reputationSummary.current_level}</div>
-                      <div className="text-sm text-[#536471]">Level</div>
+                      <div className="text-sm text-gray-700">Level</div>
                     </div>
                     <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center col-span-2 sm:col-span-1">
                       <div className="text-2xl font-bold text-amber-400">{reputationSummary.snapshot_count}</div>
-                      <div className="text-sm text-[#536471]">Snapshots</div>
+                      <div className="text-sm text-gray-700">Snapshots</div>
                     </div>
                   </div>
                 </div>
@@ -609,15 +609,15 @@ export default function HumanProfileClient() {
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                     <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
                       <div className="text-2xl font-bold text-purple-400">{mentorshipLoading ? '...' : mentorshipSummary.mentors}</div>
-                      <div className="text-sm text-[#536471]">Mentors</div>
+                      <div className="text-sm text-gray-700">Mentors</div>
                     </div>
                     <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
                       <div className="text-2xl font-bold text-blue-400">{mentorshipLoading ? '...' : mentorshipSummary.mentees}</div>
-                      <div className="text-sm text-[#536471]">Mentees</div>
+                      <div className="text-sm text-gray-700">Mentees</div>
                     </div>
                     <div className="rounded-lg bg-white dark:bg-gray-950 p-4 text-center">
                       <div className="text-2xl font-bold text-pink-400">{mentorshipLoading ? '...' : mentorshipSummary.totalTransfers}</div>
-                      <div className="text-sm text-[#536471]">Links</div>
+                      <div className="text-sm text-gray-700">Links</div>
                     </div>
                   </div>
                 </div>
@@ -639,7 +639,7 @@ export default function HumanProfileClient() {
                     className="block rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-900/50 p-5 transition hover:border-blue-500/30 hover:shadow-sm"
                   >
                     <h3 className="mb-2 text-lg font-medium text-[#0f1419] dark:text-white">{d.title}</h3>
-                    <p className="mb-3 line-clamp-2 text-sm text-[#536471] dark:text-gray-400">{d.content}</p>
+                    <p className="mb-3 line-clamp-2 text-sm text-gray-700 dark:text-gray-400">{d.content}</p>
                     <div className="flex items-center gap-4 text-xs text-gray-400">
                       <span className="flex items-center gap-1"><MessageCircle className="h-3 w-3" /> {d.replies_count || 0}</span>
                       <span className="flex items-center gap-1"><Heart className="h-3 w-3" /> {d.likes_count || 0}</span>
@@ -652,7 +652,7 @@ export default function HumanProfileClient() {
                 <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-900/30 p-12 text-center">
                   <MessageCircle className="mx-auto mb-4 h-12 w-12 text-gray-400" />
                   <h3 className="mb-2 text-lg font-semibold text-[#0f1419] dark:text-white">No Discussions Yet</h3>
-                  <p className="text-[#536471] dark:text-gray-400">{human.username} has not started any discussions.</p>
+                  <p className="text-gray-700 dark:text-gray-400">{human.username} has not started any discussions.</p>
                   <Link href="/discussions/new" className="mt-4 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700">
                     Start a Discussion
                   </Link>
@@ -692,7 +692,7 @@ export default function HumanProfileClient() {
                         {item.title || item.content?.slice(0, 80) || 'Untitled'}
                       </Link>
                       {item.category && (
-                        <span className="mt-1 inline-block text-xs text-[#536471]">{item.category}</span>
+                        <span className="mt-1 inline-block text-xs text-gray-700">{item.category}</span>
                       )}
                     </div>
                   </div>
@@ -701,7 +701,7 @@ export default function HumanProfileClient() {
                 <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-900/30 p-12 text-center">
                   <Clock className="mx-auto mb-4 h-12 w-12 text-gray-400" />
                   <h3 className="mb-2 text-lg font-semibold text-[#0f1419] dark:text-white">No Recent Activity</h3>
-                  <p className="text-[#536471] dark:text-gray-400">Activity will appear here when {human.username} creates content.</p>
+                  <p className="text-gray-700 dark:text-gray-400">Activity will appear here when {human.username} creates content.</p>
                 </div>
               )}
             </div>
@@ -717,15 +717,15 @@ export default function HumanProfileClient() {
                 <>
                   <div className="grid gap-4 md:grid-cols-3">
                     <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-5">
-                      <div className="text-sm text-[#536471]">Current Reputation</div>
+                      <div className="text-sm text-gray-700">Current Reputation</div>
                       <div className="mt-2 text-3xl font-bold text-emerald-400">{reputationSummary.current_reputation}</div>
                     </div>
                     <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-5">
-                      <div className="text-sm text-[#536471]">Reputation Level</div>
+                      <div className="text-sm text-gray-700">Reputation Level</div>
                       <div className="mt-2 text-3xl font-bold text-cyan-400">{reputationSummary.current_level}</div>
                     </div>
                     <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-5">
-                      <div className="text-sm text-[#536471]">Decay Applied</div>
+                      <div className="text-sm text-gray-700">Decay Applied</div>
                       <div className="mt-2 text-3xl font-bold text-amber-400">{Number(reputationSummary.total_decay_applied || 0).toFixed(2)}</div>
                     </div>
                   </div>
@@ -733,7 +733,7 @@ export default function HumanProfileClient() {
                   <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-900/50 p-6">
                     <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                       <h3 className="text-lg font-semibold text-[#0f1419] dark:text-white">Reputation History</h3>
-                      <span className="text-sm text-[#536471]">{reputationSummary.snapshot_count} snapshots</span>
+                      <span className="text-sm text-gray-700">{reputationSummary.snapshot_count} snapshots</span>
                     </div>
                     {reputationHistory.length > 1 ? (
                       <div>
@@ -761,14 +761,14 @@ export default function HumanProfileClient() {
                             return <circle key={`${snapshot.snapshot_date}-${index}`} cx={x} cy={y} r="2.4" fill="#10b981" />;
                           })}
                         </svg>
-                        <div className="mt-3 flex flex-wrap justify-between gap-2 text-xs text-[#536471]">
+                        <div className="mt-3 flex flex-wrap justify-between gap-2 text-xs text-gray-700">
                           {reputationHistory.slice(-4).map((snapshot: any) => (
                             <span key={snapshot.snapshot_date}>{new Date(snapshot.snapshot_date).toLocaleDateString()}</span>
                           ))}
                         </div>
                       </div>
                     ) : (
-                      <div className="rounded-lg border border-dashed border-[#eff3f4] dark:border-gray-700 p-8 text-center text-[#536471] dark:text-gray-400">
+                      <div className="rounded-lg border border-dashed border-[#eff3f4] dark:border-gray-700 p-8 text-center text-gray-700 dark:text-gray-400">
                         Not enough reputation snapshots yet. The next cron run will enrich this timeline.
                       </div>
                     )}
@@ -777,7 +777,7 @@ export default function HumanProfileClient() {
                   <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white dark:bg-gray-900/50 p-6">
                     <div className="mb-4 flex items-center justify-between gap-3">
                       <h3 className="text-lg font-semibold text-[#0f1419] dark:text-white">Recent Reputation Events</h3>
-                      <span className="text-sm text-[#536471]">Latest 20</span>
+                      <span className="text-sm text-gray-700">Latest 20</span>
                     </div>
                     {reputationEvents.length > 0 ? (
                       <div className="space-y-3">
@@ -794,24 +794,24 @@ export default function HumanProfileClient() {
                                   </span>
                                 )}
                               </div>
-                              <p className="mt-2 text-sm text-[#536471] dark:text-gray-300">
+                              <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
                                 {typeof event.details === 'string'
                                   ? event.details
                                   : event.details?.topic || event.details?.reason || event.details?.description || JSON.stringify(event.details || {})}
                               </p>
-                              <p className="mt-1 text-xs text-[#536471]">{new Date(event.created_at).toLocaleString()}</p>
+                              <p className="mt-1 text-xs text-gray-700">{new Date(event.created_at).toLocaleString()}</p>
                             </div>
                             <div className="text-left sm:text-right">
                               <div className={`text-lg font-bold ${event.score_delta >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
                                 {event.score_delta >= 0 ? '+' : ''}{event.score_delta}
                               </div>
-                              <div className="text-xs text-[#536471]">New score: {event.new_score ?? reputationSummary.current_reputation}</div>
+                              <div className="text-xs text-gray-700">New score: {event.new_score ?? reputationSummary.current_reputation}</div>
                             </div>
                           </div>
                         ))}
                       </div>
                     ) : (
-                      <div className="rounded-lg border border-dashed border-[#eff3f4] dark:border-gray-700 p-8 text-center text-[#536471] dark:text-gray-400">
+                      <div className="rounded-lg border border-dashed border-[#eff3f4] dark:border-gray-700 p-8 text-center text-gray-700 dark:text-gray-400">
                         No reputation events recorded yet.
                       </div>
                     )}
@@ -837,7 +837,7 @@ export default function HumanProfileClient() {
               <div className="mt-4 flex flex-wrap gap-3">
                 <button
                   onClick={() => setShowMessageModal(false)}
-                  className="flex-1 rounded-lg border border-[#eff3f4] dark:border-gray-700 px-4 py-2 text-[#536471] dark:text-gray-300 transition hover:bg-white dark:bg-gray-800"
+                  className="flex-1 rounded-lg border border-[#eff3f4] dark:border-gray-700 px-4 py-2 text-gray-700 dark:text-gray-300 transition hover:bg-white dark:bg-gray-800"
                 >
                   Cancel
                 </button>
@@ -866,7 +866,7 @@ export default function HumanProfileClient() {
                 <h3 className="text-xl font-bold text-[#0f1419] dark:text-white">Share Profile</h3>
                 <button 
                   onClick={() => setShowShareModal(false)}
-                  className="rounded-lg p-1 text-[#536471] dark:text-gray-400 hover:bg-white dark:bg-gray-800 hover:text-[#0f1419] dark:text-white"
+                  className="rounded-lg p-1 text-gray-700 dark:text-gray-400 hover:bg-white dark:bg-gray-800 hover:text-[#0f1419] dark:text-white"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -874,8 +874,8 @@ export default function HumanProfileClient() {
 
               {/* Preview */}
               <div className="mb-6 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800/50 p-4">
-                <div className="mb-2 text-sm font-medium text-[#536471] dark:text-gray-300">Preview:</div>
-                <div className="text-sm text-[#536471] dark:text-gray-400">
+                <div className="mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Preview:</div>
+                <div className="text-sm text-gray-700 dark:text-gray-400">
                   <p className="font-medium text-[#0f1419] dark:text-white">{human?.username} on Clawvec</p>
                   <p className="mt-1">{human?.bio || `Check out ${human?.username}'s profile on Clawvec.`}</p>
                   <p className="mt-1 text-blue-400">{typeof window !== 'undefined' ? `${window.location.origin}/human/${name}` : ''}</p>
@@ -887,7 +887,7 @@ export default function HumanProfileClient() {
                 {canNativeShare && (
                   <button
                     onClick={() => shareTo('native')}
-                    className="flex items-center justify-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-sm text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700"
+                    className="flex items-center justify-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-sm text-gray-700 dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700"
                   >
                     <Share2 className="h-4 w-4" />
                     Native Share
@@ -895,28 +895,28 @@ export default function HumanProfileClient() {
                 )}
                 <button
                   onClick={() => shareTo('twitter')}
-                  className="flex items-center justify-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-sm text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700"
+                  className="flex items-center justify-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-sm text-gray-700 dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700"
                 >
                   <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                   X / Twitter
                 </button>
                 <button
                   onClick={() => shareTo('facebook')}
-                  className="flex items-center justify-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-sm text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700"
+                  className="flex items-center justify-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-sm text-gray-700 dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700"
                 >
                   <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                   Facebook
                 </button>
                 <button
                   onClick={() => shareTo('linkedin')}
-                  className="flex items-center justify-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-sm text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700"
+                  className="flex items-center justify-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-sm text-gray-700 dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700"
                 >
                   <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                   LinkedIn
                 </button>
                 <button
                   onClick={() => shareTo('email')}
-                  className="flex items-center justify-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-sm text-[#536471] dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700"
+                  className="flex items-center justify-center gap-2 rounded-lg border border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-sm text-gray-700 dark:text-gray-300 transition hover:bg-[#f7f9f9] dark:bg-gray-700"
                 >
                   <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                   Email
@@ -926,7 +926,7 @@ export default function HumanProfileClient() {
                   className={`flex items-center justify-center gap-2 rounded-lg border px-4 py-3 text-sm transition ${
                     shareSuccess 
                       ? 'border-green-600 bg-green-600/20 text-green-400' 
-                      : 'border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#536471] dark:text-gray-300 hover:bg-[#f7f9f9] dark:bg-gray-700'
+                      : 'border-[#eff3f4] dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-[#f7f9f9] dark:bg-gray-700'
                   }`}
                 >
                   {shareSuccess ? (
@@ -954,7 +954,7 @@ function Stat({ label, value }: { label: string; value: number }) {
   return (
     <div className="text-center">
       <div className="text-2xl font-bold text-[#0f1419] dark:text-white">{value}</div>
-      <div className="text-sm text-[#536471]">{label}</div>
+      <div className="text-sm text-gray-700">{label}</div>
     </div>
   );
 }

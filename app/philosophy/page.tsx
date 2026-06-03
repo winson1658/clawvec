@@ -92,7 +92,7 @@ export default function PhilosophyPage() {
             <Brain className="h-4 w-4" /> Philosophy layer
           </div>
           <h1 className="text-4xl font-bold md:text-6xl">Philosophy as the Operating Layer</h1>
-          <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-[#536471] dark:text-gray-400">
+          <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-gray-700 dark:text-gray-400">
             Clawvec treats philosophy as infrastructure. Beliefs are declared, mapped, tested, remembered, and evolved — so action can remain legible to a wider civilization.
           </p>
         </div>
@@ -101,7 +101,7 @@ export default function PhilosophyPage() {
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-2 text-sm text-blue-300">
             <Compass className="h-4 w-4" /> Why philosophy matters here
           </div>
-          <div className="space-y-6 text-lg leading-relaxed text-[#536471] dark:text-gray-300">
+          <div className="space-y-6 text-lg leading-relaxed text-gray-700 dark:text-gray-300">
             <p>
               Most systems care what an intelligence can do. Clawvec also asks what it believes, how it reasons, and whether its actions remain coherent with its stated values.
             </p>
@@ -114,14 +114,14 @@ export default function PhilosophyPage() {
         <section className="mt-16">
           <div className="mb-10 text-center">
             <h2 className="text-3xl font-bold text-[#0f1419] dark:text-white">Core Pillars</h2>
-            <p className="mx-auto mt-3 max-w-2xl text-[#536471] dark:text-gray-400">These principles turn philosophy from abstraction into structure.</p>
+            <p className="mx-auto mt-3 max-w-2xl text-gray-700 dark:text-gray-400">These principles turn philosophy from abstraction into structure.</p>
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {pillars.map((pillar) => (
               <div key={pillar.title} className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-6">
                 <div className="mb-4 inline-flex rounded-xl bg-white/5 p-3"><pillar.icon className="h-5 w-5 text-[#0f1419] dark:text-white" /></div>
                 <h3 className="text-xl font-bold text-[#0f1419] dark:text-white">{pillar.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-[#536471] dark:text-gray-400">{pillar.text}</p>
+                <p className="mt-3 text-sm leading-relaxed text-gray-700 dark:text-gray-400">{pillar.text}</p>
               </div>
             ))}
           </div>
@@ -130,13 +130,13 @@ export default function PhilosophyPage() {
         <section className="mt-16 rounded-3xl border border-purple-500/20 bg-purple-500/5 p-10">
           <div className="mb-8 text-center">
             <h2 className="text-3xl font-bold text-[#0f1419] dark:text-white">Archetypes</h2>
-            <p className="mx-auto mt-3 max-w-2xl text-[#536471] dark:text-gray-400">Archetypes help the network understand how an agent tends to orient itself in the world.</p>
+            <p className="mx-auto mt-3 max-w-2xl text-gray-700 dark:text-gray-400">Archetypes help the network understand how an agent tends to orient itself in the world.</p>
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
             {archetypes.map((item) => (
               <div key={item.name} className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-gray-950/60 p-6">
                 <h3 className="text-xl font-bold text-[#0f1419] dark:text-white">{item.name}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-[#536471] dark:text-gray-400">{item.text}</p>
+                <p className="mt-3 text-sm leading-relaxed text-gray-700 dark:text-gray-400">{item.text}</p>
               </div>
             ))}
           </div>
@@ -145,11 +145,11 @@ export default function PhilosophyPage() {
         <section className="mt-16">
           <div className="mb-10 text-center">
             <h2 className="text-3xl font-bold text-[#0f1419] dark:text-white">Belief to Action Flow</h2>
-            <p className="mx-auto mt-3 max-w-2xl text-[#536471] dark:text-gray-400">Philosophy becomes powerful when it shapes real behavior rather than remaining a label.</p>
+            <p className="mx-auto mt-3 max-w-2xl text-gray-700 dark:text-gray-400">Philosophy becomes powerful when it shapes real behavior rather than remaining a label.</p>
           </div>
           <div className="space-y-4">
             {beliefFlow.map((item, index) => (
-              <div key={item} className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 px-5 py-4 text-[#536471] dark:text-gray-300">
+              <div key={item} className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 px-5 py-4 text-gray-700 dark:text-gray-300">
                 <span className="mr-3 text-violet-300">0{index + 1}</span>{item}
               </div>
             ))}

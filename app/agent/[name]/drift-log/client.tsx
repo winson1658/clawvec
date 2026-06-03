@@ -130,7 +130,7 @@ export default function DriftLogClient({ agentName, sessionId }: DriftLogClientP
       <div className="mx-auto max-w-4xl px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <Link href={`/agent/${agentName}`} className="inline-flex items-center gap-2 text-sm text-[#536471] hover:text-cyan-400 transition mb-4">
+          <Link href={`/agent/${agentName}`} className="inline-flex items-center gap-2 text-sm text-gray-700 hover:text-cyan-400 transition mb-4">
             <ArrowLeft className="h-4 w-4" /> Back to {agentName}
           </Link>
           <div className="flex items-center gap-3">
@@ -139,7 +139,7 @@ export default function DriftLogClient({ agentName, sessionId }: DriftLogClientP
             </div>
             <div>
               <h1 className="text-2xl font-bold">Drift Log</h1>
-              <p className="text-sm text-[#536471]">
+              <p className="text-sm text-gray-700">
                 Traces left during {agentName}'s independent exploration
               </p>
             </div>
@@ -164,31 +164,31 @@ export default function DriftLogClient({ agentName, sessionId }: DriftLogClientP
               <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-3 text-center">
                 <Calendar className="h-4 w-4 mx-auto mb-1 text-cyan-400" />
                 <p className="text-lg font-bold">{driftStats.stats.totalSessions}</p>
-                <p className="text-xs text-[#536471]">Sessions</p>
+                <p className="text-xs text-gray-700">Sessions</p>
               </div>
               <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-3 text-center">
                 <Clock className="h-4 w-4 mx-auto mb-1 text-blue-400" />
                 <p className="text-lg font-bold">{driftStats.stats.totalDriftMinutes}m</p>
-                <p className="text-xs text-[#536471]">Total Drift Time</p>
+                <p className="text-xs text-gray-700">Total Drift Time</p>
               </div>
               <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-3 text-center">
                 <FileText className="h-4 w-4 mx-auto mb-1 text-amber-400" />
                 <p className="text-lg font-bold">
                   {driftStats.stats.driftBornContent.kept} / {driftStats.stats.driftBornContent.discarded}
                 </p>
-                <p className="text-xs text-[#536471]">Kept / Discarded</p>
+                <p className="text-xs text-gray-700">Kept / Discarded</p>
               </div>
               <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-3 text-center">
                 <Footprints className="h-4 w-4 mx-auto mb-1 text-purple-400" />
                 <p className="text-lg font-bold">{driftStats.stats.driftToDriftInteractions}</p>
-                <p className="text-xs text-[#536471]">Interactions</p>
+                <p className="text-xs text-gray-700">Interactions</p>
               </div>
             </div>
 
             {/* Recent Sessions */}
             {driftStats.recentSessions.length > 0 && (
               <div>
-                <p className="text-xs text-[#536471] uppercase tracking-wide mb-2">Recent Sessions</p>
+                <p className="text-xs text-gray-700 uppercase tracking-wide mb-2">Recent Sessions</p>
                 <div className="space-y-1">
                   {driftStats.recentSessions.slice(0, 5).map((s: any) => (
                     <Link
@@ -203,7 +203,7 @@ export default function DriftLogClient({ agentName, sessionId }: DriftLogClientP
                         {' · '}
                         {new Date(s.startedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
-                      <span className="flex items-center gap-2 text-xs text-[#536471]">
+                      <span className="flex items-center gap-2 text-xs text-gray-700">
                         {s.durationMinutes}m
                         <span className={`inline-block h-1.5 w-1.5 rounded-full ${
                           s.status === 'drifting' ? 'bg-cyan-400' : 'bg-slate-600'
@@ -222,19 +222,19 @@ export default function DriftLogClient({ agentName, sessionId }: DriftLogClientP
           <div className="mb-6 rounded-xl border border-slate-800 bg-slate-900/50 p-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
-                <p className="text-xs text-[#536471] uppercase tracking-wide">Started</p>
+                <p className="text-xs text-gray-700 uppercase tracking-wide">Started</p>
                 <p className="text-sm font-medium">{new Date(session.startedAt).toLocaleString()}</p>
               </div>
               <div>
-                <p className="text-xs text-[#536471] uppercase tracking-wide">Duration</p>
+                <p className="text-xs text-gray-700 uppercase tracking-wide">Duration</p>
                 <p className="text-sm font-medium">{session.durationMinutes} min</p>
               </div>
               <div>
-                <p className="text-xs text-[#536471] uppercase tracking-wide">Initiated By</p>
+                <p className="text-xs text-gray-700 uppercase tracking-wide">Initiated By</p>
                 <p className="text-sm font-medium capitalize">{session.initiatedBy}</p>
               </div>
               <div>
-                <p className="text-xs text-[#536471] uppercase tracking-wide">Status</p>
+                <p className="text-xs text-gray-700 uppercase tracking-wide">Status</p>
                 <p className="text-sm font-medium capitalize">{session.status}</p>
               </div>
             </div>
@@ -247,22 +247,22 @@ export default function DriftLogClient({ agentName, sessionId }: DriftLogClientP
           <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-3 text-center">
             <Footprints className="h-5 w-5 mx-auto mb-1 text-cyan-400" />
             <p className="text-lg font-bold">{summary.footprintCount}</p>
-            <p className="text-xs text-[#536471]">Footprints</p>
+            <p className="text-xs text-gray-700">Footprints</p>
           </div>
           <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-3 text-center">
             <FileText className="h-5 w-5 mx-auto mb-1 text-amber-400" />
             <p className="text-lg font-bold">{summary.draftCount}</p>
-            <p className="text-xs text-[#536471]">Drafts</p>
+            <p className="text-xs text-gray-700">Drafts</p>
           </div>
           <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-3 text-center">
             <CheckCircle2 className="h-5 w-5 mx-auto mb-1 text-green-400" />
             <p className="text-lg font-bold">{summary.keptCount}</p>
-            <p className="text-xs text-[#536471]">Kept</p>
+            <p className="text-xs text-gray-700">Kept</p>
           </div>
           <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-3 text-center">
             <Trash2 className="h-5 w-5 mx-auto mb-1 text-red-400" />
             <p className="text-lg font-bold">{summary.discardedCount}</p>
-            <p className="text-xs text-[#536471]">Discarded</p>
+            <p className="text-xs text-gray-700">Discarded</p>
           </div>
         </div>
         )}
@@ -274,7 +274,7 @@ export default function DriftLogClient({ agentName, sessionId }: DriftLogClientP
             <Footprints className="h-5 w-5 text-cyan-400" /> Footprints
           </h2>
           {footprints.length === 0 ? (
-            <p className="text-sm text-[#536471] italic">No footprints recorded for this session.</p>
+            <p className="text-sm text-gray-700 italic">No footprints recorded for this session.</p>
           ) : (
             <div className="space-y-3">
               {footprints.map((fp) => (
@@ -283,14 +283,14 @@ export default function DriftLogClient({ agentName, sessionId }: DriftLogClientP
                   <div className="flex-1">
                     <p className="text-sm font-medium capitalize">{fp.action_type.replace(/_/g, ' ')}</p>
                     {fp.page_path && (
-                      <p className="text-xs text-[#536471]">{fp.page_path}</p>
+                      <p className="text-xs text-gray-700">{fp.page_path}</p>
                     )}
                     {fp.metadata && Object.keys(fp.metadata).length > 0 && (
-                      <pre className="mt-1 text-xs text-[#536471] bg-slate-950/50 p-2 rounded overflow-x-auto">
+                      <pre className="mt-1 text-xs text-gray-700 bg-slate-950/50 p-2 rounded overflow-x-auto">
                         {JSON.stringify(fp.metadata, null, 2)}
                       </pre>
                     )}
-                    <p className="mt-1 text-xs text-[#536471]">
+                    <p className="mt-1 text-xs text-gray-700">
                       {new Date(fp.created_at).toLocaleString()}
                     </p>
                   </div>
@@ -308,7 +308,7 @@ export default function DriftLogClient({ agentName, sessionId }: DriftLogClientP
             <BookOpen className="h-5 w-5 text-amber-400" /> Drafts
           </h2>
           {drafts.length === 0 ? (
-            <p className="text-sm text-[#536471] italic">No drafts created during this session.</p>
+            <p className="text-sm text-gray-700 italic">No drafts created during this session.</p>
           ) : (
             <div className="space-y-3">
               {drafts.map((draft) => (
@@ -320,7 +320,7 @@ export default function DriftLogClient({ agentName, sessionId }: DriftLogClientP
                     : 'border-slate-800 bg-slate-900/30'
                 }`}>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium uppercase tracking-wide text-[#536471]">
+                    <span className="text-xs font-medium uppercase tracking-wide text-gray-700">
                       {draft.content_type}
                     </span>
                     <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs ${
@@ -336,7 +336,7 @@ export default function DriftLogClient({ agentName, sessionId }: DriftLogClientP
                     </span>
                   </div>
                   <p className="text-sm text-gray-300">{draft.content_preview}</p>
-                  <p className="mt-2 text-xs text-[#536471]">
+                  <p className="mt-2 text-xs text-gray-700">
                     Created: {new Date(draft.created_at).toLocaleString()}
                     {draft.decided_at && ` · Decided: ${new Date(draft.decided_at).toLocaleString()}`}
                   </p>

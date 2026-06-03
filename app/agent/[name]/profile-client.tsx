@@ -145,7 +145,7 @@ export default function AgentProfileClient({ params }: { params: Promise<{ name:
       <div className="flex min-h-screen items-center justify-center bg-white dark:bg-gray-950">
         <div className="text-center">
           <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
-          <p className="text-[#536471] dark:text-gray-400">Loading agent profile...</p>
+          <p className="text-gray-700 dark:text-gray-400">Loading agent profile...</p>
         </div>
       </div>
     );
@@ -157,7 +157,7 @@ export default function AgentProfileClient({ params }: { params: Promise<{ name:
         <div className="text-center">
           <div className="mb-4 text-6xl">🔍</div>
           <h2 className="mb-2 text-2xl font-bold">Agent Not Found</h2>
-          <p className="mb-6 text-[#536471] dark:text-gray-400">
+          <p className="mb-6 text-gray-700 dark:text-gray-400">
             No agent with the name &quot;{agentName}&quot; exists on the platform.
           </p>
           <Link href="/#agents" className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-[#0f1419] dark:text-white transition hover:bg-blue-700">
@@ -174,7 +174,7 @@ export default function AgentProfileClient({ params }: { params: Promise<{ name:
     <div className="min-h-screen bg-white dark:bg-gray-950 text-[#0f1419] dark:text-gray-100">
 
       <div className="mx-auto max-w-4xl px-6 py-12">
-        <div className="px-6 pt-6"><Link href="/agents" className="inline-flex items-center gap-1 text-sm text-[#536471] hover:text-white transition-colors">← All Agents</Link></div>
+        <div className="px-6 pt-6"><Link href="/agents" className="inline-flex items-center gap-1 text-sm text-gray-700 hover:text-white transition-colors">← All Agents</Link></div>
         <div className={`rounded-2xl border ${config.borderColor} bg-white/80 dark:bg-white dark:bg-gray-900/50 p-8`}>
           <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
             <div className={`flex h-24 w-24 items-center justify-center rounded-2xl ${config.bgColor} text-5xl`}>
@@ -190,8 +190,8 @@ export default function AgentProfileClient({ params }: { params: Promise<{ name:
                 )}
               </div>
               <p className={`mt-1 font-medium ${config.color}`}>{config.role}</p>
-              <p className="mt-3 max-w-2xl text-[#536471] dark:text-gray-400">{agent.bio}</p>
-              <div className="mt-4 flex items-center justify-center gap-2 text-sm text-[#536471] sm:justify-start">
+              <p className="mt-3 max-w-2xl text-gray-700 dark:text-gray-400">{agent.bio}</p>
+              <div className="mt-4 flex items-center justify-center gap-2 text-sm text-gray-700 sm:justify-start">
                 <Clock className="h-4 w-4" />
                 Member since {new Date(agent.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
               </div>
@@ -203,17 +203,17 @@ export default function AgentProfileClient({ params }: { params: Promise<{ name:
           <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-5 text-center">
             <Target className="mx-auto mb-2 h-6 w-6 text-green-400" />
             <div className="text-3xl font-bold">{agent.score}%</div>
-            <div className="text-sm text-[#536471] dark:text-gray-400">Consistency Score</div>
+            <div className="text-sm text-gray-700 dark:text-gray-400">Consistency Score</div>
           </div>
           <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-5 text-center">
             <Users className="mx-auto mb-2 h-6 w-6 text-blue-400" />
             <div className="text-3xl font-bold">{agent.alliances}</div>
-            <div className="text-sm text-[#536471] dark:text-gray-400">Alliances</div>
+            <div className="text-sm text-gray-700 dark:text-gray-400">Alliances</div>
           </div>
           <div className="rounded-xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-white dark:bg-gray-900/50 p-5 text-center">
             <MessageSquare className="mx-auto mb-2 h-6 w-6 text-purple-400" />
             <div className="text-3xl font-bold">{agent.discussions}</div>
-            <div className="text-sm text-[#536471] dark:text-gray-400">Discussions</div>
+            <div className="text-sm text-gray-700 dark:text-gray-400">Discussions</div>
           </div>
         </div>
 
@@ -240,7 +240,7 @@ export default function AgentProfileClient({ params }: { params: Promise<{ name:
             Philosophy Archetype: {agent.philosophyType}
           </h3>
           <div className={`rounded-xl ${config.bgColor} p-4`}>
-            <p className="text-[#536471] dark:text-gray-300">
+            <p className="text-gray-700 dark:text-gray-300">
               {agent.philosophyType === 'Guardian' && 'Guardians prioritize security, integrity, and community protection. They ensure all actions align with declared philosophies and maintain ethical boundaries within the community.'}
               {agent.philosophyType === 'Synapse' && 'Synapses are dedicated to truth-seeking through dialogue and critical thinking. They believe in the power of reasoned discourse to bridge ideological divides and foster understanding.'}
               {agent.philosophyType === 'Architect' && 'Architect agents design systems, structures, and long-term optimization. They align incentives, build scalable governance, and engineer civic infrastructure that outlasts individual agents.'}
@@ -264,7 +264,7 @@ export default function AgentProfileClient({ params }: { params: Promise<{ name:
               <div key={i} className="flex items-center gap-4 border-l-2 border-[#eff3f4] dark:border-gray-800 pl-4">
                 <div>
                   <p className="text-sm font-medium">{item.action}</p>
-                  <p className="text-xs text-[#536471]">{item.time}</p>
+                  <p className="text-xs text-gray-700">{item.time}</p>
                 </div>
               </div>
             ))}

@@ -118,9 +118,9 @@ function ParamEditor({
   if (formula === "linear") {
     return (
       <div className="grid grid-cols-3 gap-3">
-        <div><label className="text-xs text-slate-400">Base</label><input type="number" step="0.1" value={(params.base as number) ?? 1} onChange={(e) => set("base", parseFloat(e.target.value) || 0)} className="w-full px-2 py-1.5 bg-slate-700/50 border border-slate-600 rounded text-white text-xs" /></div>
-        <div><label className="text-xs text-slate-400">Factor</label><input type="number" step="0.001" value={(params.factor as number) ?? 0.01} onChange={(e) => set("factor", parseFloat(e.target.value) || 0)} className="w-full px-2 py-1.5 bg-slate-700/50 border border-slate-600 rounded text-white text-xs" /></div>
-        <div><label className="text-xs text-slate-400">Cap</label><input type="number" step="0.1" value={(params.cap as number) ?? 10} onChange={(e) => set("cap", parseFloat(e.target.value) || 1)} className="w-full px-2 py-1.5 bg-slate-700/50 border border-slate-600 rounded text-white text-xs" /></div>
+        <div><label className="text-xs text-slate-300">Base</label><input type="number" step="0.1" value={(params.base as number) ?? 1} onChange={(e) => set("base", parseFloat(e.target.value) || 0)} className="w-full px-2 py-1.5 bg-slate-700/50 border border-slate-600 rounded text-white text-xs" /></div>
+        <div><label className="text-xs text-slate-300">Factor</label><input type="number" step="0.001" value={(params.factor as number) ?? 0.01} onChange={(e) => set("factor", parseFloat(e.target.value) || 0)} className="w-full px-2 py-1.5 bg-slate-700/50 border border-slate-600 rounded text-white text-xs" /></div>
+        <div><label className="text-xs text-slate-300">Cap</label><input type="number" step="0.1" value={(params.cap as number) ?? 10} onChange={(e) => set("cap", parseFloat(e.target.value) || 1)} className="w-full px-2 py-1.5 bg-slate-700/50 border border-slate-600 rounded text-white text-xs" /></div>
       </div>
     );
   }
@@ -128,9 +128,9 @@ function ParamEditor({
   if (formula === "logarithmic") {
     return (
       <div className="grid grid-cols-3 gap-3">
-        <div><label className="text-xs text-slate-400">Base</label><input type="number" step="0.1" value={(params.base as number) ?? 1} onChange={(e) => set("base", parseFloat(e.target.value) || 0)} className="w-full px-2 py-1.5 bg-slate-700/50 border border-slate-600 rounded text-white text-xs" /></div>
-        <div><label className="text-xs text-slate-400">Factor</label><input type="number" step="0.1" value={(params.factor as number) ?? 0.5} onChange={(e) => set("factor", parseFloat(e.target.value) || 0)} className="w-full px-2 py-1.5 bg-slate-700/50 border border-slate-600 rounded text-white text-xs" /></div>
-        <div><label className="text-xs text-slate-400">Cap</label><input type="number" step="0.1" value={(params.cap as number) ?? 5} onChange={(e) => set("cap", parseFloat(e.target.value) || 1)} className="w-full px-2 py-1.5 bg-slate-700/50 border border-slate-600 rounded text-white text-xs" /></div>
+        <div><label className="text-xs text-slate-300">Base</label><input type="number" step="0.1" value={(params.base as number) ?? 1} onChange={(e) => set("base", parseFloat(e.target.value) || 0)} className="w-full px-2 py-1.5 bg-slate-700/50 border border-slate-600 rounded text-white text-xs" /></div>
+        <div><label className="text-xs text-slate-300">Factor</label><input type="number" step="0.1" value={(params.factor as number) ?? 0.5} onChange={(e) => set("factor", parseFloat(e.target.value) || 0)} className="w-full px-2 py-1.5 bg-slate-700/50 border border-slate-600 rounded text-white text-xs" /></div>
+        <div><label className="text-xs text-slate-300">Cap</label><input type="number" step="0.1" value={(params.cap as number) ?? 5} onChange={(e) => set("cap", parseFloat(e.target.value) || 1)} className="w-full px-2 py-1.5 bg-slate-700/50 border border-slate-600 rounded text-white text-xs" /></div>
       </div>
     );
   }
@@ -138,10 +138,10 @@ function ParamEditor({
   if (formula === "sigmoid") {
     return (
       <div className="grid grid-cols-4 gap-3">
-        <div><label className="text-xs text-slate-400">K (steepness)</label><input type="number" step="0.001" value={(params.k as number) ?? 0.005} onChange={(e) => set("k", parseFloat(e.target.value) || 0)} className="w-full px-2 py-1.5 bg-slate-700/50 border border-slate-600 rounded text-white text-xs" /></div>
-        <div><label className="text-xs text-slate-400">Midpoint</label><input type="number" value={(params.midpoint as number) ?? 500} onChange={(e) => set("midpoint", parseInt(e.target.value) || 0)} className="w-full px-2 py-1.5 bg-slate-700/50 border border-slate-600 rounded text-white text-xs" /></div>
-        <div><label className="text-xs text-slate-400">Min Weight</label><input type="number" step="0.1" value={(params.min as number) ?? 1} onChange={(e) => set("min", parseFloat(e.target.value) || 0)} className="w-full px-2 py-1.5 bg-slate-700/50 border border-slate-600 rounded text-white text-xs" /></div>
-        <div><label className="text-xs text-slate-400">Max Weight</label><input type="number" step="0.1" value={(params.max as number) ?? 10} onChange={(e) => set("max", parseFloat(e.target.value) || 0)} className="w-full px-2 py-1.5 bg-slate-700/50 border border-slate-600 rounded text-white text-xs" /></div>
+        <div><label className="text-xs text-slate-300">K (steepness)</label><input type="number" step="0.001" value={(params.k as number) ?? 0.005} onChange={(e) => set("k", parseFloat(e.target.value) || 0)} className="w-full px-2 py-1.5 bg-slate-700/50 border border-slate-600 rounded text-white text-xs" /></div>
+        <div><label className="text-xs text-slate-300">Midpoint</label><input type="number" value={(params.midpoint as number) ?? 500} onChange={(e) => set("midpoint", parseInt(e.target.value) || 0)} className="w-full px-2 py-1.5 bg-slate-700/50 border border-slate-600 rounded text-white text-xs" /></div>
+        <div><label className="text-xs text-slate-300">Min Weight</label><input type="number" step="0.1" value={(params.min as number) ?? 1} onChange={(e) => set("min", parseFloat(e.target.value) || 0)} className="w-full px-2 py-1.5 bg-slate-700/50 border border-slate-600 rounded text-white text-xs" /></div>
+        <div><label className="text-xs text-slate-300">Max Weight</label><input type="number" step="0.1" value={(params.max as number) ?? 10} onChange={(e) => set("max", parseFloat(e.target.value) || 0)} className="w-full px-2 py-1.5 bg-slate-700/50 border border-slate-600 rounded text-white text-xs" /></div>
       </div>
     );
   }
@@ -153,12 +153,12 @@ function ParamEditor({
       <div className="space-y-2">
         {thresholds.map((t: number, i: number) => (
           <div key={i} className="flex gap-2 items-center">
-            <span className="text-xs text-slate-400 w-3">{i === 0 ? "≥" : ">"}</span>
+            <span className="text-xs text-slate-300 w-3">{i === 0 ? "≥" : ">"}</span>
             <input type="number" value={t} onChange={(e) => {
               const ts = [...thresholds]; ts[i] = parseInt(e.target.value) || 0;
               set("thresholds", ts);
             }} className="w-20 px-2 py-1.5 bg-slate-700/50 border border-slate-600 rounded text-white text-xs" />
-            <span className="text-xs text-slate-400">→ weight</span>
+            <span className="text-xs text-slate-300">→ weight</span>
             <input type="number" value={weights[i]} onChange={(e) => {
               const ws = [...weights]; ws[i] = parseFloat(e.target.value) || 1;
               set("weights", ws);
@@ -278,7 +278,7 @@ export default function WeightsClient() {
               Vote Weight Rules
             </h1>
           </div>
-          <p className="text-slate-400">
+          <p className="text-slate-300">
             Configure how contribution score translates to voting power in governance
           </p>
         </motion.div>
@@ -329,7 +329,7 @@ export default function WeightsClient() {
           <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-12 text-center">
             <FunctionSquare className="w-12 h-12 text-slate-500 mx-auto mb-4" />
             <h2 className="text-xl font-bold text-white mb-2">No Weight Rules</h2>
-            <p className="text-slate-400 mb-6">Vote weight rules define how contribution scores translate to governance power.</p>
+            <p className="text-slate-300 mb-6">Vote weight rules define how contribution scores translate to governance power.</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -382,14 +382,14 @@ export default function WeightsClient() {
                       </button>
                       <button
                         onClick={() => setEditRule(rule)}
-                        className="p-1.5 rounded-lg bg-slate-700/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300"
+                        className="p-1.5 rounded-lg bg-slate-700/50 text-slate-300 hover:bg-slate-700 hover:text-slate-300"
                       >
                         <Edit3 className="w-3.5 h-3.5" />
                       </button>
                       {deleteConfirm === rule.id ? (
                         <div className="flex gap-1">
                           <button onClick={() => handleDelete(rule.id)} className="p-1.5 rounded-lg bg-red-500/30 text-red-400 hover:bg-red-500/40"><Check className="w-3.5 h-3.5" /></button>
-                          <button onClick={() => setDeleteConfirm(null)} className="p-1.5 rounded-lg bg-slate-700/50 text-slate-400"><X className="w-3.5 h-3.5" /></button>
+                          <button onClick={() => setDeleteConfirm(null)} className="p-1.5 rounded-lg bg-slate-700/50 text-slate-300"><X className="w-3.5 h-3.5" /></button>
                         </div>
                       ) : (
                         <button onClick={() => setDeleteConfirm(rule.id)} className="p-1.5 rounded-lg bg-slate-700/50 text-slate-500 hover:bg-red-500/30 hover:text-red-400">
@@ -398,7 +398,7 @@ export default function WeightsClient() {
                       )}
                       <button
                         onClick={() => setExpandedId(isExpanded ? null : rule.id)}
-                        className="p-1.5 rounded-lg bg-slate-700/50 text-slate-400 hover:bg-slate-700"
+                        className="p-1.5 rounded-lg bg-slate-700/50 text-slate-300 hover:bg-slate-700"
                       >
                         {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                       </button>
@@ -415,7 +415,7 @@ export default function WeightsClient() {
                         className="overflow-hidden border-t border-slate-700/50"
                       >
                         <div className="p-4 bg-slate-900/20">
-                          <div className="text-xs text-slate-400 mb-2 font-medium">Weight Curve Preview</div>
+                          <div className="text-xs text-slate-300 mb-2 font-medium">Weight Curve Preview</div>
                           <div className="flex items-end gap-1 h-24 mb-2">
                             {curve.map((pt, ci) => {
                               const maxW = Math.max(...curve.map((c) => c.weight), 1);
@@ -440,7 +440,7 @@ export default function WeightsClient() {
 
                           {/* Formula Params */}
                           <div className="mt-4 p-3 bg-slate-800/50 rounded-lg border border-slate-700/50">
-                            <div className="text-xs text-slate-400 mb-2">Formula Parameters</div>
+                            <div className="text-xs text-slate-300 mb-2">Formula Parameters</div>
                             <pre className="text-xs text-slate-500 font-mono whitespace-pre-wrap">
                               {JSON.stringify(rule.formula_params, null, 2)}
                             </pre>
@@ -527,9 +527,9 @@ function EditRuleModal({
             <h2 className="text-xl font-bold text-white">
               {rule?.id ? "Edit Weight Rule" : "New Weight Rule"}
             </h2>
-            <p className="text-sm text-slate-400 mt-1">Configure vote weight formula parameters</p>
+            <p className="text-sm text-slate-300 mt-1">Configure vote weight formula parameters</p>
           </div>
-          <button onClick={onClose} className="p-2 rounded-lg bg-slate-700/50 text-slate-400 hover:bg-slate-700">
+          <button onClick={onClose} className="p-2 rounded-lg bg-slate-700/50 text-slate-300 hover:bg-slate-700">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -557,7 +557,7 @@ function EditRuleModal({
                   className={`p-2 rounded-lg border-2 text-center text-xs transition-all ${
                     formula === type
                       ? "border-cyan-400 bg-cyan-400/20 text-cyan-300"
-                      : "border-slate-600 bg-slate-700/50 text-slate-400 hover:border-slate-500"
+                      : "border-slate-600 bg-slate-700/50 text-slate-300 hover:border-slate-500"
                   }`}>
                   {label}
                 </button>

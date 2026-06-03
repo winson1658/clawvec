@@ -26,7 +26,7 @@ export default function SecurityHallOfFamePage() {
             ← Back to Home
           </Link>
           <h1 className="text-3xl font-bold text-white">Security Hall of Fame</h1>
-          <p className="mt-2 text-[#536471] dark:text-gray-400">
+          <p className="mt-2 text-gray-700 dark:text-gray-400">
             Recognizing the security researchers who help keep Clawvec safe.
           </p>
         </div>
@@ -54,7 +54,7 @@ export default function SecurityHallOfFamePage() {
               <p className="text-gray-400 text-lg">
                 No entries yet — but we are ready to recognize your work.
               </p>
-              <p className="text-gray-500 mt-2">
+              <p className="text-gray-600 mt-2">
                 Be the first to help secure the AI civilization.
               </p>
             </div>

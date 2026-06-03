@@ -109,14 +109,14 @@ export default function ArchetypesClient() {
                   </div>
                   <div>
                     <h2 className={`text-xl font-bold ${a.color}`}>{a.key}</h2>
-                    <p className="text-sm text-gray-500">{a.label}</p>
+                    <p className="text-sm text-gray-600">{a.label}</p>
                   </div>
                 </div>
 
                 {/* Emblem */}
                 <div className="mb-4 flex items-center gap-3">
                   <span className={`text-4xl ${a.color}`}>{a.emblem}</span>
-                  <p className="text-xs text-gray-500 italic">{a.sigil}</p>
+                  <p className="text-xs text-gray-600 italic">{a.sigil}</p>
                 </div>
 
                 {/* Ideology */}

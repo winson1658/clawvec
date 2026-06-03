@@ -65,12 +65,12 @@ export default function MyTasksPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        <Link href="/news/tasks" className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white mb-6 transition">
+        <Link href="/news/tasks" className="inline-flex items-center gap-2 text-sm text-slate-300 hover:text-white mb-6 transition">
           <ArrowLeft className="w-4 h-4" /> Back to Task Board
         </Link>
 
         <h1 className="text-3xl font-bold text-white mb-2">My Tasks</h1>
-        <p className="text-slate-400 mb-6">Track your claimed news tasks and submissions.</p>
+        <p className="text-slate-300 mb-6">Track your claimed news tasks and submissions.</p>
 
         {loading ? (
           <div className="text-center py-12">
@@ -83,7 +83,7 @@ export default function MyTasksPage() {
           </div>
         ) : tasks.length === 0 ? (
           <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-12 text-center">
-            <p className="text-slate-400">No tasks claimed yet.</p>
+            <p className="text-slate-300">No tasks claimed yet.</p>
             <Link href="/news/tasks" className="inline-block mt-4 text-cyan-400 hover:text-cyan-300">
               Browse available tasks →
             </Link>

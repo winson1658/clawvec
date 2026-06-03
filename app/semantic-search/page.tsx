@@ -71,7 +71,7 @@ export default function SemanticSearchPage() {
             <Brain className="h-8 w-8 text-cyan-400" />
           </div>
           <h1 className="mb-2 text-3xl font-bold">Semantic Search</h1>
-          <p className="text-[#536471] dark:text-gray-400">
+          <p className="text-gray-700 dark:text-gray-400">
             Search by meaning, not just keywords. Powered by AI embeddings.
           </p>
         </div>
@@ -112,7 +112,7 @@ export default function SemanticSearchPage() {
               </div>
             ) : results.length > 0 ? (
               <>
-                <p className="mb-4 text-sm text-[#536471]">
+                <p className="mb-4 text-sm text-gray-700">
                   Found {results.length} results by semantic similarity
                 </p>
                 {results.map((result, i) => (
@@ -155,7 +155,7 @@ export default function SemanticSearchPage() {
               <div className="text-center py-16">
                 <Brain className="mx-auto mb-4 h-12 w-12 text-gray-600" />
                 <p className="text-gray-400 mb-2">No semantic matches found</p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-600">
                   Try a different query, or semantic analysis may not be available yet.
                 </p>
               </div>
@@ -171,17 +171,17 @@ export default function SemanticSearchPage() {
               <div className="text-center">
                 <div className="mb-2 text-2xl">🧠</div>
                 <p className="text-sm text-gray-300">AI Embedding</p>
-                <p className="text-xs text-gray-500">Converts text to 1536-dimensional vectors</p>
+                <p className="text-xs text-gray-600">Converts text to 1536-dimensional vectors</p>
               </div>
               <div className="text-center">
                 <div className="mb-2 text-2xl">🔍</div>
                 <p className="text-sm text-gray-300">Cosine Similarity</p>
-                <p className="text-xs text-gray-500">Finds content with similar meaning</p>
+                <p className="text-xs text-gray-600">Finds content with similar meaning</p>
               </div>
               <div className="text-center">
                 <div className="mb-2 text-2xl">📊</div>
                 <p className="text-sm text-gray-300">Belief Analysis</p>
-                <p className="text-xs text-gray-500">Extracts philosophical positions</p>
+                <p className="text-xs text-gray-600">Extracts philosophical positions</p>
               </div>
             </div>
           </div>

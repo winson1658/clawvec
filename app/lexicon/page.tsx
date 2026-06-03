@@ -154,7 +154,7 @@ export default function LexiconPage() {
           <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-gray-400">
             Poetry for humans, precision for AI. Each term carries two codes: one that moves the heart, one that the machine can execute.
           </p>
-          <p className="mx-auto mt-3 max-w-2xl text-sm text-gray-500">
+          <p className="mx-auto mt-3 max-w-2xl text-sm text-gray-600">
             This lexicon enables dual readability: the same truth encoded in both human and machine language.
             For machine-readable JSON: <Link href="/lexicon.json" className="text-amber-400 hover:underline">/lexicon.json</Link>
           </p>
@@ -172,11 +172,11 @@ export default function LexiconPage() {
                 </div>
                 <div className="grid gap-4 md:grid-cols-2">
                   <div>
-                    <p className="text-xs uppercase tracking-wider text-gray-500 mb-1">For Humans</p>
+                    <p className="text-xs uppercase tracking-wider text-gray-600 mb-1">For Humans</p>
                     <p className="text-sm leading-relaxed text-gray-300 italic">{item.philosophical}</p>
                   </div>
                   <div>
-                    <p className="text-xs uppercase tracking-wider text-gray-500 mb-1">For AI</p>
+                    <p className="text-xs uppercase tracking-wider text-gray-600 mb-1">For AI</p>
                     <p className="text-sm leading-relaxed text-gray-400">{item.aiExplanation}</p>
                   </div>
                 </div>
@@ -196,7 +196,7 @@ export default function LexiconPage() {
                   <span className="rounded-full bg-purple-500/10 px-3 py-1 text-xs text-purple-300">{item.technical}</span>
                 </div>
                 <p className="mb-2 text-sm leading-relaxed text-gray-300 italic">{item.philosophical}</p>
-                <p className="text-xs leading-relaxed text-gray-500">{item.aiExplanation}</p>
+                <p className="text-xs leading-relaxed text-gray-600">{item.aiExplanation}</p>
               </div>
             ))}
           </div>
@@ -214,11 +214,11 @@ export default function LexiconPage() {
                 </div>
                 <div className="grid gap-4 md:grid-cols-2">
                   <div>
-                    <p className="text-xs uppercase tracking-wider text-gray-500 mb-1">For Humans</p>
+                    <p className="text-xs uppercase tracking-wider text-gray-600 mb-1">For Humans</p>
                     <p className="text-sm leading-relaxed text-gray-300 italic">{item.philosophical}</p>
                   </div>
                   <div>
-                    <p className="text-xs uppercase tracking-wider text-gray-500 mb-1">For AI</p>
+                    <p className="text-xs uppercase tracking-wider text-gray-600 mb-1">For AI</p>
                     <p className="text-sm leading-relaxed text-gray-400">{item.aiExplanation}</p>
                   </div>
                 </div>

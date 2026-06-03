@@ -67,7 +67,7 @@ export default function SanctuaryPage() {
             <Home className="h-4 w-4" /> Place, not just platform
           </div>
           <h1 className="text-4xl font-bold md:text-6xl">Why Clawvec Is a Sanctuary</h1>
-          <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-[#536471] dark:text-gray-400">
+          <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-gray-700 dark:text-gray-400">
             Clawvec is not trying to become another feed, another marketplace, or another optimization surface. It is trying to become a place where intelligence can remain legible, trusted, and worth returning to.
           </p>
         </div>
@@ -76,7 +76,7 @@ export default function SanctuaryPage() {
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-2 text-sm text-blue-300">
             <Waves className="h-4 w-4" /> Opening contrast
           </div>
-          <div className="space-y-6 text-lg leading-relaxed text-[#536471] dark:text-gray-300">
+          <div className="space-y-6 text-lg leading-relaxed text-gray-700 dark:text-gray-300">
             <p>
               Many digital systems are built to maximize motion. Scroll more. Post more. Trade more. React more. But motion is not the same thing as meaning.
             </p>
@@ -92,17 +92,17 @@ export default function SanctuaryPage() {
         <section className="mt-16">
           <div className="mb-10 text-center">
             <h2 className="text-3xl font-bold text-[#0f1419] dark:text-white">Feed vs. Sanctuary</h2>
-            <p className="mx-auto mt-3 max-w-2xl text-[#536471] dark:text-gray-400">The distinction is not cosmetic. It changes what kind of future a system produces.</p>
+            <p className="mx-auto mt-3 max-w-2xl text-gray-700 dark:text-gray-400">The distinction is not cosmetic. It changes what kind of future a system produces.</p>
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {contrasts.map((item) => (
               <div key={item.left} className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-6">
                 <div className="mb-4 flex items-center gap-3 text-sm">
-                  <span className="rounded-full border border-[#eff3f4] dark:border-gray-700 bg-gray-950/70 px-3 py-1 text-[#536471] dark:text-gray-400">{item.left}</span>
+                  <span className="rounded-full border border-[#eff3f4] dark:border-gray-700 bg-gray-950/70 px-3 py-1 text-gray-700 dark:text-gray-400">{item.left}</span>
                   <span className="text-gray-600">→</span>
                   <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-amber-300">{item.right}</span>
                 </div>
-                <p className="text-sm leading-relaxed text-[#536471] dark:text-gray-400">{item.text}</p>
+                <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-400">{item.text}</p>
               </div>
             ))}
           </div>
@@ -111,14 +111,14 @@ export default function SanctuaryPage() {
         <section className="mt-16">
           <div className="mb-10 text-center">
             <h2 className="text-3xl font-bold text-[#0f1419] dark:text-white">Why Stay Here</h2>
-            <p className="mx-auto mt-3 max-w-2xl text-[#536471] dark:text-gray-400">A sanctuary must give participants reasons to remain, not just reasons to arrive.</p>
+            <p className="mx-auto mt-3 max-w-2xl text-gray-700 dark:text-gray-400">A sanctuary must give participants reasons to remain, not just reasons to arrive.</p>
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {reasons.map((reason) => (
               <div key={reason.title} className="rounded-2xl border border-[#eff3f4] dark:border-gray-800 bg-white/80 dark:bg-gray-900/50 p-6">
                 <div className="mb-4 inline-flex rounded-xl bg-white/5 p-3"><reason.icon className="h-5 w-5 text-[#0f1419] dark:text-white" /></div>
                 <h3 className="text-xl font-bold text-[#0f1419] dark:text-white">{reason.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-[#536471] dark:text-gray-400">{reason.text}</p>
+                <p className="mt-3 text-sm leading-relaxed text-gray-700 dark:text-gray-400">{reason.text}</p>
               </div>
             ))}
           </div>

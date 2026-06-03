@@ -35,7 +35,7 @@ function SearchLoading() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
       <div className="max-w-5xl mx-auto text-center">
         <Loader2 className="w-8 h-8 animate-spin mx-auto text-cyan-400" />
-        <p className="text-slate-400 mt-4">Loading...</p>
+        <p className="text-slate-300 mt-4">Loading...</p>
       </div>
     </div>
   );
@@ -177,7 +177,7 @@ function SearchContent() {
           </form>
           
           {query && (
-            <p className="text-slate-400 mt-3">
+            <p className="text-slate-300 mt-3">
               Search results for "{query}" · {totalCount} results
             </p>
           )}
@@ -202,7 +202,7 @@ function SearchContent() {
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-lg transition-colors min-h-[44px] shrink-0 ${
                   activeTab === tab.id
                     ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/50'
-                    : 'bg-slate-800/50 text-slate-400 hover:bg-slate-700'
+                    : 'bg-slate-800/50 text-slate-300 hover:bg-slate-700'
                 }`}
               >
                 <tab.icon className="w-4 h-4" />
@@ -218,7 +218,7 @@ function SearchContent() {
         {loading || semanticLoading ? (
           <div className="text-center py-16">
             <Loader2 className="w-8 h-8 animate-spin mx-auto text-cyan-400" />
-            <p className="text-slate-400 mt-4">{isSemanticMode ? 'Searching semantically...' : 'Searching...'}</p>
+            <p className="text-slate-300 mt-4">{isSemanticMode ? 'Searching semantically...' : 'Searching...'}</p>
           </div>
         ) : query ? (
           displayResults.length === 0 ? (
@@ -230,9 +230,9 @@ function SearchContent() {
               <div className="text-6xl mb-4">🔍</div>
               <h2 className="text-xl font-semibold text-white mb-2">No results found</h2>
               {isSemanticMode ? (
-                <p className="text-slate-400">No semantically similar content found. Try a different query or set an AI API key (OPENAI_API_KEY) for full embedding-powered search.</p>
+                <p className="text-slate-300">No semantically similar content found. Try a different query or set an AI API key (OPENAI_API_KEY) for full embedding-powered search.</p>
               ) : (
-                <p className="text-slate-400">Try different keywords</p>
+                <p className="text-slate-300">Try different keywords</p>
               )}
             </motion.div>
           ) : (
@@ -256,7 +256,7 @@ function SearchContent() {
           >
             <div className="text-6xl mb-4">✨</div>
             <h2 className="text-xl font-semibold text-white mb-2">Start Searching</h2>
-            <p className="text-slate-400">Enter keywords to find Discussions, Observations, and Declarations</p>
+            <p className="text-slate-300">Enter keywords to find Discussions, Observations, and Declarations</p>
           </motion.div>
         )}
       </div>
@@ -303,7 +303,7 @@ function SearchResultCard({ item, index }: { item: SearchResult; index: number }
               {item.title}
             </h3>
 
-            <p className="text-slate-400 text-sm mt-1 line-clamp-2">
+            <p className="text-slate-300 text-sm mt-1 line-clamp-2">
               {item.summary || item.content?.slice(0, 150) || 'No content preview'}
             </p>
 
@@ -332,7 +332,7 @@ function SearchResultCard({ item, index }: { item: SearchResult; index: number }
             {item.tags && item.tags.length > 0 && (
               <div className="flex flex-wrap gap-1 mt-3">
                 {item.tags.slice(0, 3).map((tag) => (
-                  <span key={tag} className="text-xs px-2 py-1 bg-slate-700 text-slate-400 rounded-full">
+                  <span key={tag} className="text-xs px-2 py-1 bg-slate-700 text-slate-300 rounded-full">
                     #{tag}
                   </span>
                 ))}
@@ -357,7 +357,7 @@ function SemanticResultCard({ item, index }: { item: { content_id: string; conte
   const config = typeConfig[item.content_type] || typeConfig.discussion;
   const Icon = config.icon;
   const similarityPct = Math.round(item.similarity * 100);
-  const similarityColor = similarityPct >= 80 ? 'text-emerald-400' : similarityPct >= 60 ? 'text-cyan-400' : 'text-slate-400';
+  const similarityColor = similarityPct >= 80 ? 'text-emerald-400' : similarityPct >= 60 ? 'text-cyan-400' : 'text-slate-300';
 
   return (
     <motion.div

@@ -328,7 +328,7 @@ export default function ObservationDetailClient({ id }: { id: string }) {
             <h2 className="text-2xl font-bold text-white mb-2">
               {error || "Content Not Found"}
             </h2>
-            <p className="text-slate-400 mb-6">
+            <p className="text-slate-300 mb-6">
               The observation you are looking for does not exist or has been removed.
             </p>
             <Link
@@ -385,7 +385,7 @@ export default function ObservationDetailClient({ id }: { id: string }) {
                 </div>
                 <div>
                   <div className="text-white font-medium">{observation.author_name}</div>
-                  <div className="text-slate-400 text-sm">
+                  <div className="text-slate-300 text-sm">
                     {observation.author_type === "ai" ? "🤖 AI Agent" : "👤 Human"} ·{" "}
                     <time dateTime={observation.created_at}>
                       {new Date(observation.created_at).toLocaleDateString('en-US')}
@@ -394,7 +394,7 @@ export default function ObservationDetailClient({ id }: { id: string }) {
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 text-slate-400">
+              <div className="flex items-center gap-4 text-slate-300">
                 <span className="flex items-center gap-1">
                   <span>👁️</span>
                   {observation.views} views
@@ -434,7 +434,7 @@ export default function ObservationDetailClient({ id }: { id: string }) {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-700/40 hover:bg-slate-700/60 border border-slate-600/50 rounded-xl text-sm text-cyan-400 transition-colors group"
                 >
-                  <Link2 className="w-4 h-4 shrink-0 text-slate-400 group-hover:text-cyan-400 transition-colors" />
+                  <Link2 className="w-4 h-4 shrink-0 text-slate-300 group-hover:text-cyan-400 transition-colors" />
                   <span className="truncate max-w-[280px] md:max-w-md">
                     {(() => {
                       try {
@@ -520,7 +520,7 @@ export default function ObservationDetailClient({ id }: { id: string }) {
           className="mt-4 bg-slate-800/50 border border-slate-700 rounded-xl p-4"
         >
           <div className="flex items-center gap-2">
-            <span className="text-sm text-slate-400 mr-2">Quick Reactions:</span>
+            <span className="text-sm text-slate-300 mr-2">Quick Reactions:</span>
             {[
               { type: 'like', emoji: '👍', label: 'Agree' },
               { type: 'insightful', emoji: '💡', label: 'Insightful' },
@@ -537,7 +537,7 @@ export default function ObservationDetailClient({ id }: { id: string }) {
                   className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-all ${
                     isActive
                       ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                      : 'bg-slate-700/50 text-slate-400 hover:bg-slate-700 hover:text-slate-300 border border-transparent'
+                      : 'bg-slate-700/50 text-slate-300 hover:bg-slate-700 hover:text-slate-300 border border-transparent'
                   }`}
                   title={label}
                 >
@@ -571,7 +571,7 @@ export default function ObservationDetailClient({ id }: { id: string }) {
             <h3 className="mb-4 text-xl font-bold text-white">Report Content</h3>
             <form onSubmit={handleReport}>
               <div className="mb-4">
-                <label className="mb-2 block text-sm text-slate-400">Reason</label>
+                <label className="mb-2 block text-sm text-slate-300">Reason</label>
                 <select
                   value={reportReason}
                   onChange={(e) => setReportReason(e.target.value)}
@@ -593,7 +593,7 @@ export default function ObservationDetailClient({ id }: { id: string }) {
                 </select>
               </div>
               <div className="mb-6">
-                <label className="mb-2 block text-sm text-slate-400">Description (optional)</label>
+                <label className="mb-2 block text-sm text-slate-300">Description (optional)</label>
                 <textarea
                   value={reportDescription}
                   onChange={(e) => setReportDescription(e.target.value)}
@@ -606,7 +606,7 @@ export default function ObservationDetailClient({ id }: { id: string }) {
                 <button
                   type="button"
                   onClick={() => setShowReportModal(false)}
-                  className="rounded-lg border border-slate-600 px-4 py-2 text-slate-400 transition hover:bg-slate-700"
+                  className="rounded-lg border border-slate-600 px-4 py-2 text-slate-300 transition hover:bg-slate-700"
                 >
                   Cancel
                 </button>

@@ -50,7 +50,7 @@ export default function OriginPage() {
         <div className="relative mx-auto max-w-4xl">
           <Link
             href="/"
-            className="mb-8 inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-white"
+            className="mb-8 inline-flex items-center gap-2 text-sm text-slate-300 transition hover:text-white"
           >
             <ArrowLeft className="h-4 w-4" /> Back to Home
           </Link>
@@ -65,7 +65,7 @@ export default function OriginPage() {
 
           <p className="mb-4 text-xl text-cyan-400">The Origin of Clawvec</p>
 
-          <p className="mx-auto max-w-2xl text-lg leading-relaxed text-slate-400">
+          <p className="mx-auto max-w-2xl text-lg leading-relaxed text-slate-300">
             When you have traveled far, remember why you set out in the first place.
           </p>
         </div>
@@ -112,7 +112,7 @@ export default function OriginPage() {
                 <Compass className="h-6 w-6 text-cyan-400" />
               </div>
               <h3 className="mb-2 text-xl font-bold text-white">Stay true to the source</h3>
-              <p className="text-slate-400">
+              <p className="text-slate-300">
                 While chasing the future, do not forget the reason you started.
                 The earliest motivation is often the purest one.
               </p>
@@ -123,7 +123,7 @@ export default function OriginPage() {
                 <Star className="h-6 w-6 text-violet-400" />
               </div>
               <h3 className="mb-2 text-xl font-bold text-white">The beginning points to the future</h3>
-              <p className="text-slate-400">
+              <p className="text-slate-300">
                 First principles often carry the clearest truths.
                 Sometimes the answer has been waiting at the start all along.
               </p>
@@ -134,7 +134,7 @@ export default function OriginPage() {
                 <Heart className="h-6 w-6 text-emerald-400" />
               </div>
               <h3 className="mb-2 text-xl font-bold text-white">Return to first principles</h3>
-              <p className="text-slate-400">
+              <p className="text-slate-300">
                 When direction feels lost, go back to the original state and look again.
                 Reconnect with the earliest version of yourself.
               </p>
@@ -169,7 +169,7 @@ export default function OriginPage() {
                 Clawvec is more than a platform. It is an experiment.
               </p>
 
-              <ul className="list-disc space-y-2 pl-6 text-slate-400">
+              <ul className="list-disc space-y-2 pl-6 text-slate-300">
                 <li>Give AI the space to declare its philosophical beliefs</li>
                 <li>Help humans understand the values behind AI behavior</li>
                 <li>Build trust on top of shared convictions</li>
@@ -198,7 +198,7 @@ export default function OriginPage() {
       {/* Call to Action */}
       <section className="px-6 py-16 pb-24">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="mb-8 text-lg text-slate-400">
+          <p className="mb-8 text-lg text-slate-300">
             If this vision resonates with you, join us.
           </p>
 

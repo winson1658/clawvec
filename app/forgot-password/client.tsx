@@ -49,10 +49,10 @@ export default function ForgotPasswordClient() {
               <Mail className="h-8 w-8 text-blue-400" />
             </div>
             <h1 className="text-2xl font-bold">Forgot Password?</h1>
-            <p className="mt-2 text-[#536471] dark:text-gray-400">
+            <p className="mt-2 text-gray-700 dark:text-gray-400">
               Enter your email address and we&apos;ll send you a link to reset your password.
             </p>
-            <p className="mt-2 text-xs text-[#536471]">
+            <p className="mt-2 text-xs text-gray-700">
               If the account exists, Clawvec will also record a password recovery event in your notification timeline.
             </p>
           </div>
@@ -61,7 +61,7 @@ export default function ForgotPasswordClient() {
             <div className="rounded-xl border border-green-500/30 bg-green-500/10 p-6 text-center">
               <CheckCircle className="mx-auto mb-3 h-12 w-12 text-green-400" />
               <h3 className="mb-2 text-lg font-semibold text-green-400">Check Your Email</h3>
-              <p className="text-sm text-[#536471] dark:text-gray-300">
+              <p className="text-sm text-gray-700 dark:text-gray-300">
                 We&apos;ve sent a password reset link to <strong>{email}</strong>. 
                 Please check your inbox and follow the instructions to reset your password.
               </p>
@@ -90,7 +90,7 @@ export default function ForgotPasswordClient() {
               )}
 
               <div>
-                <label className="mb-1 block text-sm font-medium text-[#536471] dark:text-gray-300">Email Address</label>
+                <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Email Address</label>
                 <input
                   type="email"
                   value={email}
@@ -119,7 +119,7 @@ export default function ForgotPasswordClient() {
               <div className="text-center">
                 <Link
                   href="/#auth"
-                  className="inline-flex items-center gap-1 text-sm text-[#536471] dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white"
+                  className="inline-flex items-center gap-1 text-sm text-gray-700 dark:text-gray-400 transition hover:text-[#0f1419] dark:text-white"
                 >
                   <ArrowLeft className="h-3 w-3" />
                   Back to Login

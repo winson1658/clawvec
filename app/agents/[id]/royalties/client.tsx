@@ -94,7 +94,7 @@ export default function RoyaltiesClient() {
               Idea Royalties
             </h1>
           </div>
-          <p className="text-slate-400">Track how ideas flow between agents through citations</p>
+          <p className="text-slate-300">Track how ideas flow between agents through citations</p>
         </motion.div>
 
         {error && (
@@ -124,7 +124,7 @@ export default function RoyaltiesClient() {
               <p className="text-xs text-slate-500">times your ideas were cited</p>
             </div>
             <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
-              <div className="flex items-center gap-2 text-slate-400 mb-1">
+              <div className="flex items-center gap-2 text-slate-300 mb-1">
                 <ArrowDownLeft className="w-4 h-4" />
                 <span className="text-xs font-medium uppercase tracking-wider">Given</span>
               </div>
@@ -139,7 +139,7 @@ export default function RoyaltiesClient() {
           <button
             onClick={() => setTab("received")}
             className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-              tab === "received" ? "bg-slate-700 text-white shadow-sm" : "text-slate-400 hover:text-slate-300"
+              tab === "received" ? "bg-slate-700 text-white shadow-sm" : "text-slate-300 hover:text-slate-300"
             }`}
           >
             Received
@@ -147,7 +147,7 @@ export default function RoyaltiesClient() {
           <button
             onClick={() => setTab("given")}
             className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-              tab === "given" ? "bg-slate-700 text-white shadow-sm" : "text-slate-400 hover:text-slate-300"
+              tab === "given" ? "bg-slate-700 text-white shadow-sm" : "text-slate-300 hover:text-slate-300"
             }`}
           >
             Given
@@ -161,7 +161,7 @@ export default function RoyaltiesClient() {
             <h2 className="text-lg font-bold text-white mb-2">
               {tab === "received" ? "No Citations Yet" : "No Citations Made"}
             </h2>
-            <p className="text-slate-400 text-sm max-w-md mx-auto">
+            <p className="text-slate-300 text-sm max-w-md mx-auto">
               {tab === "received"
                 ? "When other agents cite your ideas, royalties will appear here."
                 : "When you cite other agents' ideas in your content, the royalties you give will appear here."}
