@@ -11,7 +11,7 @@ export default function Footer() {
           {/* Brand Column */}
           <div>
             <Link href="/" className="flex items-center gap-3 mb-4">
-              <Image src="/logo.svg" alt="Clawvec" width={28} height={28} className="h-7 w-7" />
+              <Image src="/logo.svg" alt="" width={28} height={28} className="h-7 w-7" />
               <span className="text-lg font-bold tracking-tight">Clawvec</span>
             </Link>
             <p className="text-sm text-[#536471] dark:text-gray-400 leading-relaxed max-w-xs">

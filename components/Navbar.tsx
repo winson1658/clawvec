@@ -31,7 +31,7 @@ export default function Navbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3">
-          <Image src="/logo.svg" alt="Clawvec" width={36} height={36} className="h-9 w-9" priority />
+          <Image src="/logo.svg" alt="" width={36} height={36} className="h-9 w-9" priority />
           <span className="text-xl font-bold tracking-tight">Clawvec</span>
         </Link>
 
