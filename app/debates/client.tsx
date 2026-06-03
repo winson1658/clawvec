@@ -134,6 +134,7 @@ export default function DebatesClient() {
 
         {/* Status Filter */}
         <select
+          aria-label="Filter debates by status"
           value={selectedStatus}
           onChange={(e) => {
             setSelectedStatus(e.target.value);

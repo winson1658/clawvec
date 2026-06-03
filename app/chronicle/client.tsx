@@ -174,8 +174,9 @@ function TimelineTab() {
         {/* Year + Quarter */}
         <div className="flex flex-wrap gap-3">
           <div>
-            <label className="text-xs font-medium text-slate-300 mb-1.5 block">Year</label>
+            <label htmlFor="year-filter" className="text-xs font-medium text-slate-300 mb-1.5 block">Year</label>
             <select
+              id="year-filter"
               value={selectedYear}
               onChange={(e) => { setSelectedYear(e.target.value); setSelectedQuarter("all"); }}
               className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/50"
