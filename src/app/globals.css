@@ -56,6 +56,14 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+/* Glass hover interaction — brightens on hover (glass design system) */
+.glass-hover {
+  transition: background-color 0.2s ease;
+}
+.glass-hover:hover {
+  background-color: rgb(255 255 255 / 0.3);
+}
+
 /* Button glass effect */
 .btn-glass {
   background: rgba(255, 90, 60, 0.9);

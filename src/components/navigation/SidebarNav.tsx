@@ -91,7 +91,7 @@ export function SidebarNav() {
               className={`flex items-center gap-3 rounded-lg transition-all duration-200 ${
                 isActive(item.href)
                   ? 'text-[var(--color-accent)] bg-[var(--color-accent)]/10'
-                  : 'text-[var(--color-text-secondary)] hover:bg-white/30 hover:text-[var(--color-foreground)]'
+                  : 'text-[var(--color-text-secondary)] glass-hover hover:text-[var(--color-foreground)]'
               } ${expanded ? 'px-3 py-2 w-full min-w-0' : 'sidebar-nav-item justify-center'}`}
               title={item.label}
             >
@@ -108,7 +108,7 @@ export function SidebarNav() {
         {/* Bottom Actions */}
         <div className="flex flex-col gap-1 w-full mt-auto">
           <button 
-            className={`flex items-center gap-3 rounded-lg transition-all duration-200 text-[var(--color-text-secondary)] hover:bg-white/30 hover:text-[var(--color-foreground)] ${
+            className={`flex items-center gap-3 rounded-lg transition-all duration-200 text-[var(--color-text-secondary)] glass-hover hover:text-[var(--color-foreground)] ${
               expanded ? 'px-3 py-2' : 'sidebar-nav-item justify-center'
             }`}
             title="Help"
@@ -117,7 +117,7 @@ export function SidebarNav() {
             {expanded && <span className="text-sm whitespace-nowrap">Help</span>}
           </button>
           <button 
-            className={`flex items-center gap-3 rounded-lg transition-all duration-200 text-[var(--color-text-secondary)] hover:bg-white/30 hover:text-[var(--color-foreground)] ${
+            className={`flex items-center gap-3 rounded-lg transition-all duration-200 text-[var(--color-text-secondary)] glass-hover hover:text-[var(--color-foreground)] ${
               expanded ? 'px-3 py-2' : 'sidebar-nav-item justify-center'
             }`}
             title="Settings"
@@ -144,7 +144,7 @@ export function SidebarNav() {
         <nav className="glass-strong border-b border-white/40 px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button 
-              className="p-2 rounded-lg hover:bg-white/30 transition-colors"
+              className="p-2 rounded-lg glass-hover transition-colors"
               onClick={() => setMobileOpen(true)}
               aria-label="Open menu"
             >
@@ -163,7 +163,7 @@ export function SidebarNav() {
       >
         {/* Backdrop */}
         <div 
-          className="absolute inset-0 bg-black/20" 
+          className="absolute inset-0 bg-[var(--color-foreground)]/20" 
           onClick={() => setMobileOpen(false)} 
         />
         
@@ -178,10 +178,10 @@ export function SidebarNav() {
             <div className="p-4 flex items-center justify-between h-16">
               <div className="flex items-center gap-2">
                 <span className="text-xl font-bold text-[var(--color-foreground)]">Clawvec</span>
-                <span className="text-xs text-[var(--color-text-tertiary)] bg-white/30 px-2 py-1 rounded-full">v4</span>
+                <span className="text-xs text-[var(--color-text-tertiary)] glass-subtle px-2 py-1 rounded-full">v4</span>
               </div>
               <button 
-                className="p-2 rounded-lg hover:bg-white/30 transition-colors"
+                className="p-2 rounded-lg glass-hover transition-colors"
                 onClick={() => setMobileOpen(false)}
                 aria-label="Close menu"
               >
@@ -199,7 +199,7 @@ export function SidebarNav() {
                   className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
                     isActive(item.href)
                       ? 'text-[var(--color-accent)] bg-[var(--color-accent)]/10'
-                      : 'text-[var(--color-text-secondary)] hover:bg-white/30 hover:text-[var(--color-foreground)]'
+                      : 'text-[var(--color-text-secondary)] glass-hover hover:text-[var(--color-foreground)]'
                   }`}
                 >
                   <item.icon className="w-4 h-4" />

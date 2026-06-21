@@ -26,6 +26,7 @@
 | #007 | Chronicle 模塊初始化 | 2026-06-21 | features/chronicle/ TradingView 風格時間軸 |
 | #007-1 | 六憲法違規修正 | 2026-06-21 | 硬編碼顏色移除、全局類型建立、舊文件清理 |
 | #013 | V3 首頁設計融入 V4 | 2026-06-21 | PROJECT.md §5.6, page.tsx, globals.css, 六憲法更新 |
+| #014 | Sidebar 展開/收合導航系統 | 2026-06-21 | SidebarNav.tsx (React Context + CSS transition), MainContent.tsx, TopNav.tsx, layout.tsx, globals.css Tailwind v4 語法修復 |
 
 ---
 
