@@ -1,5 +1,8 @@
+'use client';
+
 import { Compass, Code2, X } from 'lucide-react';
 import Link from 'next/link';
+import { useSidebar } from './SidebarNav';
 
 const footerLinks = {
   explore: [
@@ -20,8 +23,12 @@ const footerLinks = {
 };
 
 export function Footer() {
+  const { expanded } = useSidebar();
   return (
-    <footer className="border-t border-[var(--color-line)] bg-[var(--color-background)]">
+    <footer 
+      className="border-t border-[var(--color-line)] bg-[var(--color-background)] transition-[margin-left] duration-300 ease-in-out"
+      style={{ marginLeft: expanded ? '256px' : '64px' }}
+    >
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {/* Brand */}
