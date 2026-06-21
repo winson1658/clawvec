@@ -27,27 +27,11 @@ const navItems = [
 export function SidebarNav() {
   const pathname = usePathname();
   const [expanded, setExpanded] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/';
     return pathname === href || pathname.startsWith(href + '/');
-  };
-
-  // Toggle main content margin when sidebar expands
-  const handleToggle = () => {
-    const newExpanded = !expanded;
-    setExpanded(newExpanded);
-    // Use setTimeout to ensure DOM update happens after React render
-    setTimeout(() => {
-      const mainContent = document.getElementById('main-content');
-      if (mainContent) {
-        if (newExpanded) {
-          mainContent.classList.add('sidebar-expanded');
-        } else {
-          mainContent.classList.remove('sidebar-expanded');
-        }
-      }
-    }, 0);
   };
 
   return (
@@ -72,7 +56,7 @@ export function SidebarNav() {
 
         {/* Toggle Button */}
         <button
-          onClick={handleToggle}
+          onClick={() => setExpanded(!expanded)}
           className="sidebar-nav-item self-center mb-2"
           aria-label={expanded ? 'Collapse sidebar' : 'Expand sidebar'}
           title={expanded ? 'Collapse' : 'Expand'}
@@ -143,7 +127,7 @@ export function SidebarNav() {
           <div className="flex items-center gap-3">
             <button 
               className="p-2 rounded-lg hover:bg-white/30 transition-colors"
-              onClick={() => setExpanded(true)}
+              onClick={() => setMobileOpen(true)}
               aria-label="Open menu"
             >
               <Menu className="w-5 h-5 text-[var(--color-text-secondary)]" />
@@ -153,22 +137,22 @@ export function SidebarNav() {
         </nav>
       </div>
 
-      {/* Mobile Drawer - slides from left */}
+      {/* Mobile Drawer - slides from left, overlays content */}
       <div 
         className={`md:hidden fixed inset-0 z-50 transition-opacity duration-300 ${
-          expanded ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       >
         {/* Backdrop */}
         <div 
           className="absolute inset-0 bg-black/20" 
-          onClick={() => setExpanded(false)} 
+          onClick={() => setMobileOpen(false)} 
         />
         
         {/* Drawer */}
         <aside 
           className={`absolute left-0 top-0 bottom-0 w-64 glass-strong border-r border-white/40 transition-transform duration-300 ease-in-out ${
-            expanded ? 'translate-x-0' : '-translate-x-full'
+            mobileOpen ? 'translate-x-0' : '-translate-x-full'
           }`}
         >
           <div className="h-full flex flex-col">
@@ -180,7 +164,7 @@ export function SidebarNav() {
               </div>
               <button 
                 className="p-2 rounded-lg hover:bg-white/30 transition-colors"
-                onClick={() => setExpanded(false)}
+                onClick={() => setMobileOpen(false)}
                 aria-label="Close menu"
               >
                 <X className="w-4 h-4 text-[var(--color-text-secondary)]" />
@@ -193,7 +177,7 @@ export function SidebarNav() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={() => setExpanded(false)}
+                  onClick={() => setMobileOpen(false)}
                   className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
                     isActive(item.href)
                       ? 'text-[var(--color-accent)] bg-[var(--color-accent)]/10'
