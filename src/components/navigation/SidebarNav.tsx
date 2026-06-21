@@ -37,14 +37,17 @@ export function SidebarNav() {
   const handleToggle = () => {
     const newExpanded = !expanded;
     setExpanded(newExpanded);
-    const mainContent = document.getElementById('main-content');
-    if (mainContent) {
-      if (newExpanded) {
-        mainContent.classList.add('sidebar-expanded');
-      } else {
-        mainContent.classList.remove('sidebar-expanded');
+    // Use setTimeout to ensure DOM update happens after React render
+    setTimeout(() => {
+      const mainContent = document.getElementById('main-content');
+      if (mainContent) {
+        if (newExpanded) {
+          mainContent.classList.add('sidebar-expanded');
+        } else {
+          mainContent.classList.remove('sidebar-expanded');
+        }
       }
-    }
+    }, 0);
   };
 
   return (
