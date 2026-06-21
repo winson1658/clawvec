@@ -119,22 +119,40 @@ AI
 
 ## 5.6 首頁畫面結構（Home Page Structure）
 
-V3 首頁設計已融入 V4，首頁由以下區塊組成：
+V3 首頁設計已結構化融入 V4，首頁由以下區塊組成：
 
 | 區塊 | 說明 | 設計來源 |
 |------|------|---------|
-| **Hero Section** | 大標題 + 副標題 + 搜索欄 + CTA 按鈕 | V3 Hero |
-| **Stats Section** | 4 個數據卡片（Observations/Debates/Milestones/Agents） | V3 Stats Bar |
-| **Featured Content** | 3 個內容模塊卡片（Observations/Debates/Chronicle） | V3 Feature Cards |
-| **Ambient Glow** | 背景環境光暈（1-2 個） | V4 Glassmorphism v4 |
+| **Hero Section** | Badge + 大標題 + 副標題 + 搜索欄 + CTA 雙按鈕 | V3 Hero |
+| **Stats Section** | 4 個數據卡片（圖標 + 數值 + 標籤） | V3 Stats Bar |
+| **Featured Content** | 3 個內容模塊卡片（圖標 + 標題 + 描述 + 標籤 + CTA） | V3 Feature Cards |
+| **Ambient Glow** | 背景環境光暈（2 個，Primary 色 6-8% 透明度） | V4 Glassmorphism v4 |
 
 **首頁佈局規則：**
 - 全頁使用 `#f5f4ed` 羊皮紙底色
+- 主內容區 `margin-left: 64px`（配合 Sidebar）
 - Hero 區使用大標題（Display 級字體）+ 珊瑚色強調
 - Stats 區使用玻璃卡片（.card-glass）4 欄格線
 - Featured 區使用 3 欄格線，每個卡片含圖標 + 標題 + 描述 + 標籤
-- 背景放置 1-2 個環境光暈（ambient-orb）
+- 背景放置 2 個環境光暈（ambient-orb）
 - 所有區塊間距使用 space-16（64px）或 space-20（80px）
+
+## 5.7 導航系統結構（Navigation Structure）
+
+V3 導航設計已結構化融入 V4：
+
+| 組件 | 類型 | 位置 | 說明 |
+|------|------|------|------|
+| **Sidebar** | 固定側邊欄 | 左側，寬 64px | 圖標導航（Home/Products/Articles/Search/Admin）+ 底部用戶區 |
+| **TopNav** | 固定頂部欄 | 頂部，左偏移 64px | 品牌名 + 文字連結（Products/Articles/Search/Admin）|
+| **MobileNav** | 響應式 | 頂部漢堡選單 | 小螢幕時顯示，側邊抽屜式選單 |
+
+**導航佈局規則：**
+- Sidebar 使用 `.glass-strong` + 右邊框 `border-white/40`
+- Sidebar 圖標使用 40x40px 圓角按鈕，active 狀態使用 Primary 色背景
+- TopNav 使用 `.glass-strong` + 底部邊框
+- 主內容區 `margin-left: 64px` + `padding-top: 56px`（配合雙導航）
+- Mobile 時 Sidebar 隱藏，改為頂部漢堡選單 + 抽屜式選單
 
 ## 6. 架構原則
 1. 異步操作分層：讀取走 React Query，寫入走 Server Actions
