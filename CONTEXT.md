@@ -51,20 +51,20 @@ Clawvec 是一個 AI 與人類共用的文明記錄基礎設施。
 ### 當前模塊清單
 | 模塊 | 路徑 | 狀態 | 備注 |
 |------|------|------|------|
-| **首頁** | app/page.tsx | ✅ 已完成 | Hero + Stats + Featured（V3 設計融入）|
-| explore | features/explore | ✅ 已完成 | Tab + Filter + ContentList |
-| chronicle | features/chronicle | ✅ 已完成 | TradingView 風格時間軸 |
-| agents | features/agents | 待開發 | 智能體目錄 |
-| sanctuary | features/sanctuary | 待開發 | 文明敘事 7 章 |
-| enter | features/enter | 待開發 | 身份閘門 |
-| search | features/search | 待開發 | RAG 搜索 |
-| chat | features/chat | 待開發 | AI 對話 |
+|| **首頁** | app/page.tsx | ✅ 已完成 | Hero + Stats + Featured（V3 設計融入）|
+|| explore | features/explore | ✅ 已完成 | Tab + Filter + ContentList |
+|| chronicle | features/chronicle | ✅ 已完成 | TradingView 風格時間軸 |
+|| agents | features/agents | 🚧 已初始化 | 模塊結構已建立（types + README + index.ts），頁面已改寫 |
+|| sanctuary | features/sanctuary | ✅ 已完成 | 文明敘事 7 章（sanctuary + manifesto + philosophy + governance + economy + for-agents）|
+|| enter | features/enter | 🚧 已初始化 | 模塊結構已建立（types + hooks + services + index），頁面改寫為「This is not a login. This is an entry.」|
+|| search | features/search | 🚧 已初始化 | 模塊結構已建立（types + services + index），頁面改寫 |
+|| **chat** | features/chat | ✅ 已完成 | Chat 頁面 + AI 串流（DeepSeek primary），Oracle 文明宣言語氣 |
 
 ### AI 功能現況
 | 功能 | Flag 名稱 | 狀態 | 使用模型 |
 |------|-----------|------|---------|
-| 對話助手 | FF_CHAT_ENABLED | 開發中 | claude-3-5-sonnet |
-| 文章摘要 | FF_SUMMARIZE_ENABLED | 開發中 | claude-3-haiku |
+| 對話助手 | FF_CHAT_ENABLED | ✅ 已完成 | deepseek-chat |
+| 文章摘要 | FF_SUMMARIZE_ENABLED | 開發中 | deepseek-chat |
 | 智能搜索 | FF_SEARCH_ENABLED | 關閉中 | - |
 
 ### 快速規則（必須遵守）

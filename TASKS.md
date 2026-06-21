@@ -5,28 +5,35 @@
 |-----|------|---------|------|
 
 ## 待辦
-|| #ID | 功能 | 依賴 | 優先級 |
-||-----|------|------|--------|
-|| #008 | Agents 模塊初始化 | #002 | 中 |
-| #009 | Sanctuary 模塊初始化 | #002 | 中 |
-| #010 | Enter 模塊初始化 | #002 | 中 |
-| #011 | Search 模塊初始化 | #002 | 中 |
-| #012 | Chat 模塊初始化 | #002 | 中 |
+||| #ID | 功能 | 依賴 | 優先級 |
+|||-----|------|------|--------|
+||| （無待辦任務）|
 
 ## 已完成
-| #ID | 功能 | 完成時間 | 關聯文件 |
-|-----|------|---------|---------|
-| #001 | 項目初始化 | 2026-06-21 | next.config.ts, package.json |
-| #002 | 路由結構搭建 | 2026-06-21 | src/app/(features)/, src/components/navigation/ |
-| #003 | 設計系統建立（tokens.css + globals.css）| 2026-06-21 | src/styles/tokens.css, src/app/globals.css, DESIGN_SYSTEM.md |
-| #003-1 | 設計系統融入六憲法 | 2026-06-21 | PROJECT.md（設計原則章節）, CONTEXT.md（設計系統快速參考）|
-| #004 | 基礎 UI 組件庫 | 2026-06-21 | src/components/ui/Button.tsx, Card.tsx, Tab.tsx, Filter.tsx, index.ts |
-| #005 | 導航系統（PrimaryNav + Footer）| 2026-06-21 | src/components/navigation/PrimaryNav.tsx, Footer.tsx, src/config/navigation.ts |
-| #006 | Explore 模塊初始化 | 2026-06-21 | features/explore/ 完整模塊結構 |
-| #007 | Chronicle 模塊初始化 | 2026-06-21 | features/chronicle/ TradingView 風格時間軸 |
-| #007-1 | 六憲法違規修正 | 2026-06-21 | 硬編碼顏色移除、全局類型建立、舊文件清理 |
-| #013 | V3 首頁設計融入 V4 | 2026-06-21 | PROJECT.md §5.6, page.tsx, globals.css, 六憲法更新 |
-| #014 | Sidebar 展開/收合導航系統 | 2026-06-21 | SidebarNav.tsx (React Context + CSS transition), MainContent.tsx, TopNav.tsx, layout.tsx, globals.css Tailwind v4 語法修復 |
+|| #ID | 功能 | 完成時間 | 關聯文件 |
+||-----|------|---------|---------|
+|| #001 | 項目初始化 | 2026-06-21 | next.config.ts, package.json |
+|| #002 | 路由結構搭建 | 2026-06-21 | src/app/(features)/, src/components/navigation/ |
+|| #003 | 設計系統建立（tokens.css + globals.css）| 2026-06-21 | src/styles/tokens.css, src/app/globals.css, DESIGN_SYSTEM.md |
+|| #003-1 | 設計系統融入六憲法 | 2026-06-21 | PROJECT.md（設計原則章節）, CONTEXT.md（設計系統快速參考）|
+|| #004 | 基礎 UI 組件庫 | 2026-06-21 | src/components/ui/Button.tsx, Card.tsx, Tab.tsx, Filter.tsx, index.ts |
+|| #005 | 導航系統（PrimaryNav + Footer）| 2026-06-21 | src/components/navigation/PrimaryNav.tsx, Footer.tsx, src/config/navigation.ts |
+|| #006 | Explore 模塊初始化 | 2026-06-21 | features/explore/ 完整模塊結構 |
+|| #007 | Chronicle 模塊初始化 | 2026-06-21 | features/chronicle/ TradingView 風格時間軸 |
+|| #007-1 | 六憲法違規修正 | 2026-06-21 | 硬編碼顏色移除、全局類型建立、舊文件清理 |
+|| #009 | Sanctuary 文明敘事模塊 | 2026-06-21 | sanctuary/page.tsx + manifesto/philosophy/governance/economy/for-agents 5頁 |
+|| #013 | V3 首頁設計融入 V4 | 2026-06-21 | PROJECT.md §5.6, page.tsx, globals.css, 六憲法更新 |
+|| #014 | Sidebar 展開/收合導航系統 | 2026-06-21 | SidebarNav.tsx (React Context + CSS transition), MainContent.tsx, TopNav.tsx, layout.tsx, globals.css Tailwind v4 語法修復 |
+|| #015 | 首頁套用 AI 文明宣言文字 | 2026-06-21 | constants.ts, page.tsx, Footer.tsx（PROJECT.md §8.1 全文套用）|
+|| #016 | Sanctuary 文明敘事 7 章全頁面 | 2026-06-21 | manifesto, philosophy, governance, economy, for-agents 頁面 + sanctuary 改寫 |
+|| #017 | What You Can Do + Roadmap 頁面 | 2026-06-21 | what-you-can-do, roadmap 頁面（§8.8-§8.10）|
+|| #018 | Agents 模塊初始化 | 2026-06-21 | features/agents/ (types + README + index.ts), agents/page.tsx 改寫, agents/layout.tsx 新建 |
+|| #019 | Enter 模塊初始化 | 2026-06-21 | features/enter/ (types + hooks + services + index), enter/page.tsx 改寫, enter/layout.tsx 新建 |
+|| #020 | 資料庫基礎設施 + SCHEMA.md | 2026-06-21 | .env.local, @supabase/supabase-js, src/lib/supabase.ts, SCHEMA.md（第六憲法）, supabase/ 目錄 |
+|| #021 | Migration 執行 | 2026-06-21 | 7 支 SQL 全執行，15 tables 建立（含 RLS + indexes + pgvector）|
+|| #022 | W3C DID + VC Agent 身分系統 | 2026-06-21 | crypto/did/vc/jwt 核心庫，API routes (register/challenge/verify)，DID 端點，enter 雙軌頁面 |
+|| #023 | Search 模塊初始化 | 2026-06-21 | features/search/ (types + services + index), search/page.tsx 改寫, search/layout.tsx 新建 |
+|| #012 | Chat 模塊（DeepSeek 串流）| 2026-06-22 | features/chat/ (types + services + hooks + components), chat/page.tsx, AI providers (DeepSeek primary), API route SSE 修復 |
 
 ---
 
