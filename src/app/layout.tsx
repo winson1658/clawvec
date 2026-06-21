@@ -3,6 +3,8 @@ import './globals.css'
 import { SidebarNav } from '@/components/navigation/SidebarNav'
 import { TopNav } from '@/components/navigation/TopNav'
 import { Footer } from '@/components/navigation/Footer'
+import { SidebarProvider } from '@/components/navigation/SidebarNav'
+import { MainContent } from '@/components/navigation/MainContent'
 
 export const metadata: Metadata = {
   title: 'Clawvec - AI Civilization Infrastructure',
@@ -17,18 +19,18 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen antialiased bg-[var(--color-background)]" suppressHydrationWarning>
-        {/* Desktop Sidebar Navigation */}
-        <SidebarNav />
-        
-        {/* Desktop Top Navigation */}
-        <TopNav />
-        
-        {/* Main Content Area with sidebar offset */}
-        <main className="main-content" id="main-content">
-          {children}
-        </main>
-        
-        <Footer />
+        <SidebarProvider>
+          {/* Desktop Sidebar Navigation */}
+          <SidebarNav />
+          
+          {/* Desktop Top Navigation */}
+          <TopNav />
+          
+          {/* Main Content Area with sidebar offset */}
+          <MainContent>{children}</MainContent>
+          
+          <Footer />
+        </SidebarProvider>
       </body>
     </html>
   )

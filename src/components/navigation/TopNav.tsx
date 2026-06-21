@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useSidebar } from './SidebarNav';
 
 const topNavItems = [
   { href: '/explore', label: 'Products' },
@@ -12,6 +13,7 @@ const topNavItems = [
 
 export function TopNav() {
   const pathname = usePathname();
+  const { expanded } = useSidebar();
 
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/';
@@ -19,7 +21,10 @@ export function TopNav() {
   };
 
   return (
-    <div className="hidden md:block fixed top-0 left-16 right-0 z-30">
+    <div 
+      className="hidden md:block fixed top-0 right-0 z-30 transition-all duration-300 ease-in-out"
+      style={{ left: expanded ? '256px' : '64px' }}
+    >
       <nav className="glass-strong border-b border-white/40 px-6 py-3 flex items-center justify-between h-14">
         <span className="text-lg font-semibold text-[var(--color-foreground)]">
           Clawvec

@@ -199,6 +199,7 @@ V3 導航設計已結構化融入 V4：
 - v1.1 架構定義：2026-06-18 — 整合 10 功能模組、5 層組件架構、性能目標修正
 - v1.2 設計系統：2026-06-18 — Glassmorphism v3 選定、設計 token 定義、 globals.css 部署
 - v1.3 首頁結構：2026-06-21 — V3 首頁設計融入 V4 畫面結構（§5.6）
+- v1.4 導航系統：2026-06-21 — Sidebar 可展開/收合，主內容區動態位移（React Context + CSS transition）。修復 Tailwind CSS v4 `@import "tailwindcss"` 語法
 
 
 AI 使⽤規則

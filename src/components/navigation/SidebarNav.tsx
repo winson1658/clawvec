@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { 
@@ -24,9 +24,27 @@ const navItems = [
   { href: '/admin', icon: ChartColumn, label: 'Admin' },
 ];
 
+const SidebarContext = createContext<{
+  expanded: boolean;
+  setExpanded: (v: boolean) => void;
+}>({ expanded: false, setExpanded: () => {} });
+
+export function useSidebar() {
+  return useContext(SidebarContext);
+}
+
+export function SidebarProvider({ children }: { children: React.ReactNode }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <SidebarContext.Provider value={{ expanded, setExpanded }}>
+      {children}
+    </SidebarContext.Provider>
+  );
+}
+
 export function SidebarNav() {
   const pathname = usePathname();
-  const [expanded, setExpanded] = useState(false);
+  const { expanded, setExpanded } = useSidebar();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const isActive = (href: string) => {
@@ -74,12 +92,12 @@ export function SidebarNav() {
                 isActive(item.href)
                   ? 'text-[var(--color-accent)] bg-[var(--color-accent)]/10'
                   : 'text-[var(--color-text-secondary)] hover:bg-white/30 hover:text-[var(--color-foreground)]'
-              } ${expanded ? 'px-3 py-2' : 'sidebar-nav-item justify-center'}`}
+              } ${expanded ? 'px-3 py-2 w-full min-w-0' : 'sidebar-nav-item justify-center'}`}
               title={item.label}
             >
               <item.icon className="w-5 h-5 flex-shrink-0" />
               {expanded && (
-                <span className="text-sm whitespace-nowrap overflow-hidden">
+                <span className="text-sm whitespace-nowrap">
                   {item.label}
                 </span>
               )}
