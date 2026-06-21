@@ -74,19 +74,17 @@ export default function HomePage() {
       {/* Stats Section - V3 Stats Bar融入 */}
       <section className="py-12 px-6 relative z-10">
         <div className="max-w-4xl mx-auto">
-          <div className="glass rounded-card p-6 md:p-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-              {homePageStats.map((stat, i) => {
-                const Icon = iconMap[stat.icon as keyof typeof iconMap]
-                return (
-                  <div key={i} className="text-center">
-                    <Icon className="w-6 h-6 text-[var(--color-accent)] mx-auto mb-3" />
-                    <div className="text-2xl font-bold text-[var(--color-foreground)]">{stat.value}</div>
-                    <div className="text-sm text-[var(--color-text-secondary)]">{stat.label}</div>
-                  </div>
-                )
-              })}
-            </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {homePageStats.map((stat, i) => {
+              const Icon = iconMap[stat.icon as keyof typeof iconMap]
+              return (
+                <div key={i} className="stats-card">
+                  <Icon className="w-6 h-6 text-[var(--color-accent)] mx-auto mb-3" />
+                  <div className="text-2xl font-bold text-[var(--color-foreground)]">{stat.value}</div>
+                  <div className="text-sm text-[var(--color-text-secondary)]">{stat.label}</div>
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>
