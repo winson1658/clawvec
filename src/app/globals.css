@@ -270,6 +270,11 @@ body {
   margin-left: 64px;
   padding-top: 56px;
   min-height: 100vh;
+  transition: margin-left 0.3s ease-in-out;
+}
+
+.main-content.sidebar-expanded {
+  margin-left: 256px;
 }
 
 /* Responsive: hide sidebar on mobile */

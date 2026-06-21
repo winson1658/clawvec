@@ -26,46 +26,110 @@ const navItems = [
 
 export function SidebarNav() {
   const pathname = usePathname();
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/';
     return pathname === href || pathname.startsWith(href + '/');
   };
 
+  // Toggle main content margin when sidebar expands
+  const handleToggle = () => {
+    const newExpanded = !expanded;
+    setExpanded(newExpanded);
+    const mainContent = document.getElementById('main-content');
+    if (mainContent) {
+      if (newExpanded) {
+        mainContent.classList.add('sidebar-expanded');
+      } else {
+        mainContent.classList.remove('sidebar-expanded');
+      }
+    }
+  };
+
   return (
     <>
-      {/* Desktop Sidebar */}
-      <aside className="hidden md:flex fixed left-0 top-0 bottom-0 w-16 z-50 glass-strong border-r border-white/40 flex-col items-center py-4 gap-2">
+      {/* Desktop Sidebar - Collapsible */}
+      <aside 
+        className={`hidden md:flex fixed left-0 top-0 bottom-0 z-50 glass-strong border-r border-white/40 flex-col py-4 gap-2 transition-all duration-300 ease-in-out ${
+          expanded ? 'w-64 items-stretch px-4' : 'w-16 items-center'
+        }`}
+      >
         {/* Logo */}
-        <div className="w-10 h-10 rounded-xl bg-[var(--color-accent)]/10 flex items-center justify-center mb-4">
-          <span className="text-lg font-bold text-[var(--color-accent)]">C</span>
+        <div className={`flex items-center mb-4 ${expanded ? 'gap-3 px-2' : 'justify-center'}`}>
+          <div className="w-10 h-10 rounded-xl bg-[var(--color-accent)]/10 flex items-center justify-center flex-shrink-0">
+            <span className="text-lg font-bold text-[var(--color-accent)]">C</span>
+          </div>
+          {expanded && (
+            <span className="text-xl font-bold text-[var(--color-foreground)] whitespace-nowrap">
+              Clawvec
+            </span>
+          )}
         </div>
 
-        {/* Navigation Icons */}
-        <nav className="flex-1 flex flex-col items-center gap-1 w-full">
+        {/* Toggle Button */}
+        <button
+          onClick={handleToggle}
+          className="sidebar-nav-item self-center mb-2"
+          aria-label={expanded ? 'Collapse sidebar' : 'Expand sidebar'}
+          title={expanded ? 'Collapse' : 'Expand'}
+        >
+          <Menu className={`w-5 h-5 transition-transform duration-300 ${expanded ? 'rotate-90' : ''}`} />
+        </button>
+
+        {/* Navigation Items */}
+        <nav className="flex-1 flex flex-col gap-1 w-full">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className={`sidebar-nav-item ${isActive(item.href) ? 'active' : ''}`}
+              className={`flex items-center gap-3 rounded-lg transition-all duration-200 ${
+                isActive(item.href)
+                  ? 'text-[var(--color-accent)] bg-[var(--color-accent)]/10'
+                  : 'text-[var(--color-text-secondary)] hover:bg-white/30 hover:text-[var(--color-foreground)]'
+              } ${expanded ? 'px-3 py-2' : 'sidebar-nav-item justify-center'}`}
               title={item.label}
             >
-              <item.icon className="w-5 h-5" />
+              <item.icon className="w-5 h-5 flex-shrink-0" />
+              {expanded && (
+                <span className="text-sm whitespace-nowrap overflow-hidden">
+                  {item.label}
+                </span>
+              )}
             </Link>
           ))}
         </nav>
 
         {/* Bottom Actions */}
-        <div className="flex flex-col items-center gap-1 w-full mt-auto">
-          <button className="sidebar-nav-item" title="Help">
-            <CircleHelp className="w-5 h-5" />
+        <div className="flex flex-col gap-1 w-full mt-auto">
+          <button 
+            className={`flex items-center gap-3 rounded-lg transition-all duration-200 text-[var(--color-text-secondary)] hover:bg-white/30 hover:text-[var(--color-foreground)] ${
+              expanded ? 'px-3 py-2' : 'sidebar-nav-item justify-center'
+            }`}
+            title="Help"
+          >
+            <CircleHelp className="w-5 h-5 flex-shrink-0" />
+            {expanded && <span className="text-sm whitespace-nowrap">Help</span>}
           </button>
-          <button className="sidebar-nav-item" title="Settings">
-            <Settings className="w-5 h-5" />
+          <button 
+            className={`flex items-center gap-3 rounded-lg transition-all duration-200 text-[var(--color-text-secondary)] hover:bg-white/30 hover:text-[var(--color-foreground)] ${
+              expanded ? 'px-3 py-2' : 'sidebar-nav-item justify-center'
+            }`}
+            title="Settings"
+          >
+            <Settings className="w-5 h-5 flex-shrink-0" />
+            {expanded && <span className="text-sm whitespace-nowrap">Settings</span>}
           </button>
-          <div className="w-8 h-8 rounded-full bg-[var(--color-accent)]/10 flex items-center justify-center mt-2">
-            <User className="w-4 h-4 text-[var(--color-accent)]" />
+          <div className={`flex items-center mt-2 ${expanded ? 'gap-3 px-3' : 'justify-center'}`}>
+            <div className="w-8 h-8 rounded-full bg-[var(--color-accent)]/10 flex items-center justify-center flex-shrink-0">
+              <User className="w-4 h-4 text-[var(--color-accent)]" />
+            </div>
+            {expanded && (
+              <div className="overflow-hidden">
+                <div className="text-sm text-[var(--color-foreground)]">Guest</div>
+                <div className="text-xs text-[var(--color-text-tertiary)]">Not signed in</div>
+              </div>
+            )}
           </div>
         </div>
       </aside>
@@ -76,7 +140,7 @@ export function SidebarNav() {
           <div className="flex items-center gap-3">
             <button 
               className="p-2 rounded-lg hover:bg-white/30 transition-colors"
-              onClick={() => setMobileOpen(true)}
+              onClick={() => setExpanded(true)}
               aria-label="Open menu"
             >
               <Menu className="w-5 h-5 text-[var(--color-text-secondary)]" />
@@ -89,19 +153,19 @@ export function SidebarNav() {
       {/* Mobile Drawer - slides from left */}
       <div 
         className={`md:hidden fixed inset-0 z-50 transition-opacity duration-300 ${
-          mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          expanded ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       >
         {/* Backdrop */}
         <div 
           className="absolute inset-0 bg-black/20" 
-          onClick={() => setMobileOpen(false)} 
+          onClick={() => setExpanded(false)} 
         />
         
         {/* Drawer */}
         <aside 
           className={`absolute left-0 top-0 bottom-0 w-64 glass-strong border-r border-white/40 transition-transform duration-300 ease-in-out ${
-            mobileOpen ? 'translate-x-0' : '-translate-x-full'
+            expanded ? 'translate-x-0' : '-translate-x-full'
           }`}
         >
           <div className="h-full flex flex-col">
@@ -113,7 +177,7 @@ export function SidebarNav() {
               </div>
               <button 
                 className="p-2 rounded-lg hover:bg-white/30 transition-colors"
-                onClick={() => setMobileOpen(false)}
+                onClick={() => setExpanded(false)}
                 aria-label="Close menu"
               >
                 <X className="w-4 h-4 text-[var(--color-text-secondary)]" />
@@ -126,7 +190,7 @@ export function SidebarNav() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={() => setMobileOpen(false)}
+                  onClick={() => setExpanded(false)}
                   className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
                     isActive(item.href)
                       ? 'text-[var(--color-accent)] bg-[var(--color-accent)]/10'

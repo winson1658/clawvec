@@ -143,15 +143,17 @@ V3 導航設計已結構化融入 V4：
 
 | 組件 | 類型 | 位置 | 說明 |
 |------|------|------|------|
-| **Sidebar** | 固定側邊欄 | 左側，寬 64px | 圖標導航（Home/Products/Articles/Search/Admin）+ 底部用戶區 |
+| **Sidebar** | 固定側邊欄 | 左側，寬 64px（展開 256px） | 圖標導航（Home/Products/Articles/Search/Admin）+ 底部用戶區 |
 | **TopNav** | 固定頂部欄 | 頂部，左偏移 64px | 品牌名 + 文字連結（Products/Articles/Search/Admin）|
 | **MobileNav** | 響應式 | 頂部漢堡選單 | 小螢幕時顯示，側邊抽屜式選單 |
 
 **導航佈局規則：**
 - Sidebar 使用 `.glass-strong` + 右邊框 `border-white/40`
 - Sidebar 圖標使用 40x40px 圓角按鈕，active 狀態使用 Primary 色背景
+- **Sidebar 可展開**：點擊漢堡按鈕從 64px 展開至 256px，顯示完整文字標籤
+- **主內容區隨 Sidebar 移動**：`margin-left: 64px` → `margin-left: 256px`（transition 0.3s）
 - TopNav 使用 `.glass-strong` + 底部邊框
-- 主內容區 `margin-left: 64px` + `padding-top: 56px`（配合雙導航）
+- 主內容區 `padding-top: 56px`（配合雙導航）
 - Mobile 時 Sidebar 隱藏，改為頂部漢堡選單 + 抽屜式選單
 
 ## 6. 架構原則

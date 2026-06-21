@@ -24,7 +24,7 @@ export default function RootLayout({
         <TopNav />
         
         {/* Main Content Area with sidebar offset */}
-        <main className="main-content">
+        <main className="main-content" id="main-content">
           {children}
         </main>
         
