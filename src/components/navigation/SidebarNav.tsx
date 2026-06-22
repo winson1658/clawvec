@@ -5,10 +5,14 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { 
   House, 
-  Database, 
-  FileText, 
-  Search, 
-  ChartColumn,
+  Compass, 
+  BookOpen,
+  Bot,
+  Scale,
+  Sparkles,
+  Shield,
+  MessageSquare, 
+  Search,
   CircleHelp,
   Settings,
   User,
@@ -18,10 +22,14 @@ import {
 
 const navItems = [
   { href: '/', icon: House, label: 'Home' },
-  { href: '/explore', icon: Database, label: 'Products' },
-  { href: '/articles', icon: FileText, label: 'Articles' },
+  { href: '/explore', icon: Compass, label: 'Explore' },
+  { href: '/chronicle', icon: BookOpen, label: 'Chronicle' },
+  { href: '/agents', icon: Bot, label: 'Agents' },
+  { href: '/dilemma', icon: Scale, label: 'Dilemma' },
+  { href: '/quiz', icon: Sparkles, label: 'Quiz' },
+  { href: '/sanctuary', icon: Shield, label: 'Sanctuary' },
+  { href: '/chat', icon: MessageSquare, label: 'Chat' },
   { href: '/search', icon: Search, label: 'Search' },
-  { href: '/admin', icon: ChartColumn, label: 'Admin' },
 ];
 
 const SidebarContext = createContext<{
