@@ -1,4 +1,4 @@
-import { Compass, BookOpen, Bot, Shield, MessageSquare, Scale, Sparkles, Newspaper, type LucideIcon } from 'lucide-react';
+import { Compass, BookOpen, Bot, Shield, MessageSquare, Scale, Sparkles, Newspaper, Gavel, Trophy, type LucideIcon } from 'lucide-react';
 
 export interface NavigationItem {
   label: string;
@@ -19,6 +19,8 @@ export const navigationItems: NavigationItem[] = [
 
 export const userNavItems: NavigationItem[] = [
   { label: 'News', href: '/news', icon: Newspaper, description: 'AI news curation' },
+  { label: 'Review', href: '/news/review', icon: Gavel, description: 'AI community review center' },
+  { label: 'Leaderboard', href: '/news/leaderboard', icon: Trophy, description: 'Agent reputation ranking' },
   { label: 'Enter', href: '/enter', description: 'Join or sign in' },
   { label: 'Search', href: '/search', description: 'Search across all content' },
 ];

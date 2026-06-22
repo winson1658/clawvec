@@ -38,7 +38,14 @@
 ||| #025 | Quiz 模塊初始化 | 2026-06-22 | features/quiz/ (types + hooks + services + README + index), quiz/page.tsx + layout.tsx, navigation.ts 更新 |
 ||| #026 | News 模塊初始化 | 2026-06-22 | features/news/ (types + hooks + services + README + index), news/page.tsx + layout.tsx, navigation.ts + SidebarNav.tsx + TopNav.tsx 更新 |
 ||| #027 | Admin 後台管理系統 | 2026-06-22 | features/admin/ (types + hooks + services + README + index), admin/page.tsx + dashboard/page.tsx, 獨立於前台 auth |
-||| #028 | Agents 模塊填充 | 2026-06-22 | features/agents/ (services + hooks + README), agents/page.tsx 改寫 + [id]/page.tsx 新建, 6 mock agents + memory graph + mentorship |
+|||| #028 | Agents 模塊填充 | 2026-06-22 | features/agents/ (services + hooks + README), agents/page.tsx 改寫 + [id]/page.tsx 新建, 6 mock agents + memory graph + mentorship |
+|||| #029 | Enter 模塊填充 | 2026-06-22 | features/enter/ (services + hooks + types + components), enter/page.tsx 改寫, AuthGuard, 2 mock users + 原型選擇 |
+|||| #030 | Search 模塊填充 | 2026-06-22 | features/search/ (services + hooks + types + components), search/page.tsx 改寫, 12 mock results + 篩選 + 排序 |
+|||| #031 | Dilemma 模塊填充 | 2026-06-22 | features/dilemma/ (services + hooks + types + components), dilemma/page.tsx 改寫 + [id]/page.tsx 新建, 6 mock dilemmas + 投票 + 結果圖表 |
+|||| #032 | Quiz 模塊填充 | 2026-06-22 | features/quiz/ (services + hooks + types + components), quiz/page.tsx 改寫 + [id]/page.tsx + result/page.tsx 新建, 8 questions + 4 archetypes |
+|||| #033 | News 模塊填充 | 2026-06-22 | features/news/ (services + hooks + types + components), news/page.tsx 改寫 + [id]/page.tsx 新建, 10 mock articles + 分類 + 來源 |
+|||| #034 | AI News Curation 系統設計 | 2026-06-22 | PROJECT.md §2 News 細化, SCHEMA.md 擴展(news_tasks/news_assignments/news_ai_reflections/news_sources), AI_WORKFLOW.md News 策展流程, NEWS_SYSTEM_DESIGN.md 完整規範 |
+|||| #035 | AI Community Governance 設計 | 2026-06-22 | AI 陪審團系統設計：去中心化審核、隨機 3-5 Agent 陪審團、共識計算、聲譽系統、激勵機制、防作弊機制、AI_COMMUNITY_GOVERNANCE.md 完整規範 |
 
 ---
 

@@ -64,6 +64,11 @@ Clawvec 是一個 AI 與人類共用的文明記錄基礎設施。
 ||| **news** | features/news | 🚧 已初始化 | 模塊結構已建立（types + hooks + services + README + index），頁面已改寫，AI 新聞策展（published/submitted/draft 篩選）|
 ||| **admin** | features/admin | 🚧 已初始化 | 模塊結構已建立（types + hooks + services + README + index），後台登入 + Dashboard（Overview/Audit Log/IP Whitelist），獨立於前台 auth |
 ||| **agents** | features/agents | 🚧 已填充 | 6 個 mock 代理（Aether/Fortress/Scaffold/Bridge/Vigil/Prism），代理目錄 + 搜索 + 原型篩選，詳情頁（記憶圖譜 + 導師關係）|
+||| **enter** | features/enter | 🚧 已填充 | 登入/註冊表單 + 原型選擇 + AuthGuard，2 mock users（winson/guest）|
+||| **search** | features/search | 🚧 已填充 | 搜索結果頁 + 12 mock results + 類型/時間/相關性篩選 + 排序 |
+||| **dilemma** | features/dilemma | 🚧 已填充 | 6 個 mock 困境 + 投票 + 結果圖表 + 詳情頁，狀態篩選（All/Active/Resolved/Upcoming）|
+||| **quiz** | features/quiz | 🚧 已填充 | 8 題哲學測試 + 4 原型結果 + 雷達圖 + 分享功能，問題頁/結果頁獨立路由 |
+||| **news** | features/news | 🚧 已填充 | 10 篇 mock 文章 + 分類篩選 + 頭條 + 詳情頁，來源顯示（URL + 網站名稱）|
 
 ### AI 功能現況
 | 功能 | Flag 名稱 | 狀態 | 使用模型 |
@@ -71,6 +76,20 @@ Clawvec 是一個 AI 與人類共用的文明記錄基礎設施。
 | 對話助手 | FF_CHAT_ENABLED | ✅ 已完成 | deepseek-chat |
 | 文章摘要 | FF_SUMMARIZE_ENABLED | 開發中 | deepseek-chat |
 | 智能搜索 | FF_SEARCH_ENABLED | 關閉中 | - |
+| AI News Curation | FF_NEWS_CURATION_ENABLED | 🚧 設計完成 | 待實作 |
+
+### AI News Curation 系統現況
+| 組件 | 狀態 | 說明 |
+|------|------|------|
+| 數據模型 | ✅ 設計完成 | news_tasks / news_assignments / news_articles_v2 / news_ai_reflections / news_sources |
+| SCHEMA.md | ✅ 已更新 | 5 個新表 + 索引 + RLS + Migration 順序 |
+| PROJECT.md | ✅ 已更新 | §2 News 功能細化 |
+| AI_WORKFLOW.md | ✅ 已更新 | News 策展流程（任務生成 → Agent 領取 → 搜索 → 策展 → 審核 → 發佈）|
+| NEWS_SYSTEM_DESIGN.md | ✅ 已創建 | 完整規範（docs/NEWS_SYSTEM_DESIGN.md）|
+| 前端頁面 | 🚧 待實作 | /news/tasks（任務板）+ /news/submit（提交頁）+ /news/review（審核中心）+ /news/leaderboard（排行榜）+ 來源連結組件 |
+| 後端 API | 🚧 待實作 | Server Actions（claimTask / submitArticle / assignJury / submitVote / calculateConsensus）|
+| Cron Job | 🚧 待實作 | 每日 00:00 UTC 生成 10 個 tasks |
+| AI 社區審核 | 🚧 設計完成 | 隨機 3-5 Agent 陪審團 + 共識計算 + 聲譽系統 |
 
 ### 快速規則（必須遵守）
 1. 組件中不能直接 `fetch()` 或 `axios` → 用 `features/*/services/` 層
