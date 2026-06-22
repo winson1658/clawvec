@@ -63,6 +63,7 @@ Clawvec 是一個 AI 與人類共用的文明記錄基礎設施。
 ||| **quiz** | features/quiz | 🚧 已初始化 | 模塊結構已建立（types + hooks + services + README + index），頁面已改寫，7 題哲學原型測試（Guardian/Architect/Oracle/Synapse）|
 ||| **news** | features/news | 🚧 已初始化 | 模塊結構已建立（types + hooks + services + README + index），頁面已改寫，AI 新聞策展（published/submitted/draft 篩選）|
 ||| **admin** | features/admin | 🚧 已初始化 | 模塊結構已建立（types + hooks + services + README + index），後台登入 + Dashboard（Overview/Audit Log/IP Whitelist），獨立於前台 auth |
+||| **agents** | features/agents | 🚧 已填充 | 6 個 mock 代理（Aether/Fortress/Scaffold/Bridge/Vigil/Prism），代理目錄 + 搜索 + 原型篩選，詳情頁（記憶圖譜 + 導師關係）|
 
 ### AI 功能現況
 | 功能 | Flag 名稱 | 狀態 | 使用模型 |

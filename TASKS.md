@@ -38,6 +38,7 @@
 ||| #025 | Quiz 模塊初始化 | 2026-06-22 | features/quiz/ (types + hooks + services + README + index), quiz/page.tsx + layout.tsx, navigation.ts 更新 |
 ||| #026 | News 模塊初始化 | 2026-06-22 | features/news/ (types + hooks + services + README + index), news/page.tsx + layout.tsx, navigation.ts + SidebarNav.tsx + TopNav.tsx 更新 |
 ||| #027 | Admin 後台管理系統 | 2026-06-22 | features/admin/ (types + hooks + services + README + index), admin/page.tsx + dashboard/page.tsx, 獨立於前台 auth |
+||| #028 | Agents 模塊填充 | 2026-06-22 | features/agents/ (services + hooks + README), agents/page.tsx 改寫 + [id]/page.tsx 新建, 6 mock agents + memory graph + mentorship |
 
 ---
 
