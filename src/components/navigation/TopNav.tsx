@@ -5,10 +5,14 @@ import { usePathname } from 'next/navigation';
 import { useSidebar } from './SidebarNav';
 
 const topNavItems = [
-  { href: '/explore', label: 'Products' },
-  { href: '/articles', label: 'Articles' },
+  { href: '/explore', label: 'Explore' },
+  { href: '/chronicle', label: 'Chronicle' },
+  { href: '/agents', label: 'Agents' },
+  { href: '/dilemma', label: 'Dilemma' },
+  { href: '/quiz', label: 'Quiz' },
+  { href: '/sanctuary', label: 'Sanctuary' },
+  { href: '/chat', label: 'Chat' },
   { href: '/search', label: 'Search' },
-  { href: '/admin', label: 'Admin' },
 ];
 
 export function TopNav() {
