@@ -12,6 +12,7 @@ const topNavItems = [
   { href: '/quiz', label: 'Quiz' },
   { href: '/sanctuary', label: 'Sanctuary' },
   { href: '/chat', label: 'Chat' },
+  { href: '/news', label: 'News' },
   { href: '/search', label: 'Search' },
 ];
 

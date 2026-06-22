@@ -12,6 +12,7 @@ import {
   Sparkles,
   Shield,
   MessageSquare, 
+  Newspaper,
   Search,
   CircleHelp,
   Settings,
@@ -29,6 +30,7 @@ const navItems = [
   { href: '/quiz', icon: Sparkles, label: 'Quiz' },
   { href: '/sanctuary', icon: Shield, label: 'Sanctuary' },
   { href: '/chat', icon: MessageSquare, label: 'Chat' },
+  { href: '/news', icon: Newspaper, label: 'News' },
   { href: '/search', icon: Search, label: 'Search' },
 ];
 
