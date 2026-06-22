@@ -36,6 +36,7 @@
 ||| #012 | Chat 模塊（DeepSeek 串流）| 2026-06-22 | features/chat/ (types + services + hooks + components), chat/page.tsx, AI providers (DeepSeek primary), API route SSE 修復 |
 ||| #024 | Dilemma 模塊初始化 | 2026-06-22 | features/dilemma/ (types + hooks + services + components + README + index), dilemma/page.tsx + layout.tsx, navigation.ts 更新 |
 ||| #025 | Quiz 模塊初始化 | 2026-06-22 | features/quiz/ (types + hooks + services + README + index), quiz/page.tsx + layout.tsx, navigation.ts 更新 |
+||| #026 | News 模塊初始化 | 2026-06-22 | features/news/ (types + hooks + services + README + index), news/page.tsx + layout.tsx, navigation.ts + SidebarNav.tsx + TopNav.tsx 更新 |
 
 ---
 
