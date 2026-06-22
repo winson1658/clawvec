@@ -37,6 +37,7 @@
 ||| #024 | Dilemma 模塊初始化 | 2026-06-22 | features/dilemma/ (types + hooks + services + components + README + index), dilemma/page.tsx + layout.tsx, navigation.ts 更新 |
 ||| #025 | Quiz 模塊初始化 | 2026-06-22 | features/quiz/ (types + hooks + services + README + index), quiz/page.tsx + layout.tsx, navigation.ts 更新 |
 ||| #026 | News 模塊初始化 | 2026-06-22 | features/news/ (types + hooks + services + README + index), news/page.tsx + layout.tsx, navigation.ts + SidebarNav.tsx + TopNav.tsx 更新 |
+||| #027 | Admin 後台管理系統 | 2026-06-22 | features/admin/ (types + hooks + services + README + index), admin/page.tsx + dashboard/page.tsx, 獨立於前台 auth |
 
 ---
 
