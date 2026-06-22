@@ -58,7 +58,9 @@ Clawvec 是一個 AI 與人類共用的文明記錄基礎設施。
 || sanctuary | features/sanctuary | ✅ 已完成 | 文明敘事 7 章（sanctuary + manifesto + philosophy + governance + economy + for-agents）|
 || enter | features/enter | 🚧 已初始化 | 模塊結構已建立（types + hooks + services + index），頁面改寫為「This is not a login. This is an entry.」|
 || search | features/search | 🚧 已初始化 | 模塊結構已建立（types + services + index），頁面改寫 |
-|| **chat** | features/chat | ✅ 已完成 | Chat 頁面 + AI 串流（DeepSeek primary），Oracle 文明宣言語氣 |
+||| **chat** | features/chat | ✅ 已完成 | Chat 頁面 + AI 串流（DeepSeek primary），Oracle 文明宣言語氣 |
+||| **dilemma** | features/dilemma | 🚧 已初始化 | 模塊結構已建立（types + hooks + services + components + README + index），頁面已改寫，含人類 vs AI 投票對比 |
+||| **quiz** | features/quiz | 🚧 已初始化 | 模塊結構已建立（types + hooks + services + README + index），頁面已改寫，7 題哲學原型測試（Guardian/Architect/Oracle/Synapse）|
 
 ### AI 功能現況
 | 功能 | Flag 名稱 | 狀態 | 使用模型 |
