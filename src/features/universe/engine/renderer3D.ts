@@ -1,5 +1,6 @@
 // features/universe/engine/renderer3D.ts
-// Three.js InstancedMesh renderer for particle universe v2.1
+// Three.js Points renderer for particle universe v2.1
+// Switched from InstancedMesh to Points for reliable per-particle coloring
 
 import * as THREE from 'three'
 import type { ParticleData, FusionEvent } from '../types/universe.types'
@@ -8,17 +9,14 @@ import { hueToColor } from './forceMap'
 let scene: THREE.Scene
 let camera: THREE.PerspectiveCamera
 let renderer: THREE.WebGLRenderer
-let mesh: THREE.InstancedMesh
-let dummy: THREE.Object3D
+let points: THREE.Points
+let positions: Float32Array
+let colors: Float32Array
+let sizes: Float32Array
+let bufferGeo: THREE.BufferGeometry
 let animFrameId: number | null = null
 let loopFn: ((dt: number) => void) | null = null
 let lastTime = 0
-
-// HUD elements refs
-let hudCallbacks: {
-  onStats?: (p: number, c: number) => void
-  onFusion?: (name: string) => void
-} = {}
 
 export interface RenderContext {
   particles: ParticleData[]
@@ -27,16 +25,13 @@ export interface RenderContext {
   selectedParticleId: string | null
 }
 
-/**
- * Initialize Three.js scene, camera, renderer.
- */
+const MAX_PARTICLES = 1000
+
 export function initRenderer(
   canvas: HTMLCanvasElement,
   onLoop: (dt: number) => void,
-  huds: typeof hudCallbacks = {},
 ): void {
   loopFn = onLoop
-  hudCallbacks = huds
 
   const width = canvas.clientWidth
   const height = canvas.clientHeight
@@ -45,38 +40,17 @@ export function initRenderer(
   scene = new THREE.Scene()
   scene.background = new THREE.Color('#0a0a14')
 
-  // Camera — isometric view of the galactic disk
+  // Camera — looking at the galactic disk from above
   camera = new THREE.PerspectiveCamera(50, width / height, 10, 10000)
-  camera.position.set(0, -600, 400)
-  camera.lookAt(0, 0, 0)
+  camera.position.set(400, 300, 800)
+  camera.lookAt(400, 300, 0)
 
   // Renderer
   renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false })
   renderer.setSize(width, height, false)
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
-  // Lighting
-  scene.add(new THREE.AmbientLight(0x222244, 0.5))
-  const dir = new THREE.DirectionalLight(0xffffff, 0.3)
-  dir.position.set(0, 0, 500)
-  scene.add(dir)
-
-  // InstancedMesh for particles
-  const geometry = new THREE.SphereGeometry(5, 12, 8)
-  const material = new THREE.MeshBasicMaterial({
-    // Unlit — always visible regardless of lighting
-    transparent: true,
-    opacity: 0.9,
-  })
-  mesh = new THREE.InstancedMesh(geometry, material, 1000)
-  mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage)
-  scene.add(mesh)
-
-  // Grid helper for orientation
-  const grid = new THREE.PolarGridHelper(400, 32, 24, 64, 0x333355, 0x222244)
-  scene.add(grid)
-
-  // Stars background
+  // Stars background (small white dots behind everything)
   const starsGeo = new THREE.BufferGeometry()
   const starPositions = new Float32Array(2000 * 3)
   for (let i = 0; i < 2000; i++) {
@@ -85,81 +59,114 @@ export function initRenderer(
     starPositions[i * 3 + 2] = -100 - Math.random() * 500
   }
   starsGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3))
-  const starsMat = new THREE.PointsMaterial({ color: 0x8888aa, size: 0.8 })
+  const starsMat = new THREE.PointsMaterial({ color: 0x8888aa, size: 1.5 })
   scene.add(new THREE.Points(starsGeo, starsMat))
 
-  dummy = new THREE.Object3D()
-  lastTime = performance.now()
+  // Grid ring for orientation
+  const grid = new THREE.PolarGridHelper(400, 32, 24, 64, 0x333355, 0x222244)
+  scene.add(grid)
 
-  // Start render loop
+  // Test sphere — verify renderer works
+  const testGeo = new THREE.SphereGeometry(20, 16, 12)
+  const testMat = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+  const testSphere = new THREE.Mesh(testGeo, testMat)
+  testSphere.position.set(400, 300, 0)
+  scene.add(testSphere)
+
+  // Particle points
+  positions = new Float32Array(MAX_PARTICLES * 3)
+  colors = new Float32Array(MAX_PARTICLES * 3)
+  sizes = new Float32Array(MAX_PARTICLES)
+
+  bufferGeo = new THREE.BufferGeometry()
+  bufferGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+  bufferGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3))
+  bufferGeo.setAttribute('size', new THREE.BufferAttribute(sizes, 1))
+  bufferGeo.setDrawRange(0, 0)
+
+  // Use a circular sprite texture for soft dots
+  const spriteCanvas = document.createElement('canvas')
+  spriteCanvas.width = 32
+  spriteCanvas.height = 32
+  const ctx = spriteCanvas.getContext('2d')!
+  const gradient = ctx.createRadialGradient(16, 16, 0, 16, 16, 16)
+  gradient.addColorStop(0, 'rgba(255,255,255,1)')
+  gradient.addColorStop(0.2, 'rgba(255,255,255,0.9)')
+  gradient.addColorStop(0.5, 'rgba(255,255,255,0.3)')
+  gradient.addColorStop(1, 'rgba(255,255,255,0)')
+  ctx.fillStyle = gradient
+  ctx.fillRect(0, 0, 32, 32)
+  const spriteTexture = new THREE.CanvasTexture(spriteCanvas)
+
+  const pointsMat = new THREE.PointsMaterial({
+    size: 12,
+    map: spriteTexture,
+    vertexColors: true,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    transparent: true,
+  })
+
+  points = new THREE.Points(bufferGeo, pointsMat)
+  scene.add(points)
+
+  lastTime = performance.now()
   animate()
 }
 
-/**
- * Main render loop.
- */
 function animate(): void {
   animFrameId = requestAnimationFrame(animate)
-
   const now = performance.now()
-  const dt = Math.min(0.05, (now - lastTime) / 1000) // cap dt to avoid spiral of death
+  const dt = Math.min(0.05, (now - lastTime) / 1000)
   lastTime = now
-
   if (loopFn) loopFn(dt)
 }
 
-/**
- * Render one frame of particles.
- */
 export function renderFrame(ctx: RenderContext): void {
   const { particles } = ctx
-  const count = Math.min(particles.length, 1000)
+  const count = Math.min(particles.length, MAX_PARTICLES)
 
-  // Update instanced mesh
   for (let i = 0; i < count; i++) {
     const p = particles[i]
-    dummy.position.set(p.x, p.y, p.z)
-    dummy.scale.setScalar(Math.max(0.5, Math.min(4, p.mass * 0.5)))
-    dummy.updateMatrix()
-    mesh.setMatrixAt(i, dummy.matrix)
+    positions[i * 3] = p.x
+    positions[i * 3 + 1] = p.y
+    positions[i * 3 + 2] = p.z
 
-    // Color based on hue
     const [r, g, b] = hueToColor(p.hue)
-    mesh.setColorAt(i, new THREE.Color(r / 255, g / 255, b / 255))
+    colors[i * 3] = r / 255
+    colors[i * 3 + 1] = g / 255
+    colors[i * 3 + 2] = b / 255
+
+    sizes[i] = Math.max(6, Math.min(24, p.mass * 6))
   }
 
-  // Hide unused instances
-  for (let i = count; i < 1000; i++) {
-    dummy.position.set(0, -9999, 0)
-    dummy.scale.setScalar(0)
-    dummy.updateMatrix()
-    mesh.setMatrixAt(i, dummy.matrix)
+  // Hide unused
+  for (let i = count; i < MAX_PARTICLES; i++) {
+    positions[i * 3] = -9999
+    positions[i * 3 + 1] = -9999
+    positions[i * 3 + 2] = -9999
+    colors[i * 3] = 0
+    colors[i * 3 + 1] = 0
+    colors[i * 3 + 2] = 0
+    sizes[i] = 0
   }
 
-  mesh.instanceMatrix.needsUpdate = true
-  if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true
-  mesh.count = count
+  bufferGeo.attributes.position.needsUpdate = true
+  bufferGeo.attributes.color.needsUpdate = true
+  bufferGeo.attributes.size.needsUpdate = true
+  bufferGeo.setDrawRange(0, count)
 
   renderer.render(scene, camera)
 }
 
-/**
- * Get camera for OrbitControls setup.
- */
 export function getCamera(): THREE.PerspectiveCamera {
   return camera
 }
 
-/**
- * Get renderer DOM element for controls.
- */
 export function getRendererDom(): HTMLCanvasElement {
   return renderer.domElement
 }
 
-/**
- * Handle window resize.
- */
 export function handleResize(canvas: HTMLCanvasElement): void {
   const width = canvas.clientWidth
   const height = canvas.clientHeight
@@ -169,29 +176,19 @@ export function handleResize(canvas: HTMLCanvasElement): void {
   renderer.setSize(width, height, false)
 }
 
-/**
- * Stop the render loop and clean up.
- */
 export function stopRenderer(): void {
   if (animFrameId !== null) {
     cancelAnimationFrame(animFrameId)
     animFrameId = null
   }
-  if (mesh) {
-    mesh.geometry.dispose()
-    if (Array.isArray(mesh.material)) {
-      mesh.material.forEach((m) => m.dispose())
-    } else {
-      mesh.material.dispose()
-    }
+  if (points) {
+    points.geometry.dispose()
+    ;(points.material as THREE.Material).dispose()
   }
   if (renderer) renderer.dispose()
   loopFn = null
 }
 
-/**
- * Raycast to find particle at screen position.
- */
 export function raycastParticle(
   mouseX: number,
   mouseY: number,
@@ -199,7 +196,7 @@ export function raycastParticle(
   canvas: HTMLCanvasElement,
 ): ParticleData | null {
   const raycaster = new THREE.Raycaster()
-  raycaster.params.Points.threshold = 10
+  raycaster.params.Points.threshold = 20
 
   const rect = canvas.getBoundingClientRect()
   const ndc = new THREE.Vector2(
@@ -208,10 +205,10 @@ export function raycastParticle(
   )
 
   raycaster.setFromCamera(ndc, camera)
-  const intersects = raycaster.intersectObject(mesh)
+  const intersects = raycaster.intersectObject(points)
 
   if (intersects.length > 0) {
-    const idx = intersects[0].instanceId
+    const idx = intersects[0].index
     if (idx !== undefined && idx < particles.length) {
       return particles[idx]
     }
