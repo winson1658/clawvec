@@ -3,120 +3,90 @@
 ## 1. 標準目錄結構
 
 src/
-├── app/                      # 路由層（只放路由 + 佈局）
-│   ├── page.tsx              # Page 1: Universe（重力場粒子宇宙）
-│   ├── layout.tsx            # 根佈局（極簡：PageNav only）
-│   ├── fragments/
-│   │   └── page.tsx          # Page 2: Fragment Drift（碎片漂流之海）
-│   └── api/                  # API 路由
-│       ├── particles/
-│       │   └── route.ts      # GET (list) / POST (create) particles
-│       └── fragments/
-│           └── route.ts      # GET (random) / POST (submit → particle)
-│
-├── features/                 # 業務功能模塊
+├── app/
+│   ├── layout.tsx            # 根佈局（LayoutClient 分流）
+│   ├── page.tsx              # 首頁：Clawvec 文明
+│   ├── (universe)/           # 深空佈局群組
+│   │   ├── universe/page.tsx # Page 1: 3D 粒子宇宙
+│   │   └── fragments/page.tsx # Page 2: 碎片漂流
+│   ├── enter/page.tsx        # 登入頁
+│   ├── api/
+│   │   ├── particles/route.ts    # GET/POST + 狀態持久化
+│   │   └── fragments/route.ts    # GET/POST
+│   └── _archived/            # 舊版全部（404）
+
+├── features/
 │   ├── universe/             # Page 1 模塊
-│   │   ├── README.md
 │   │   ├── components/
-│   │   │   └── UniverseCanvas.tsx    # Canvas 2D 渲染 + HUD 內嵌
+│   │   │   └── UniverseCanvas.tsx   # Three.js Canvas + HUD
 │   │   ├── hooks/
-│   │   │   └── useUniverse.ts       # 粒子管理 + 物理循環 + 投放互動
+│   │   │   └── useUniverse.ts      # 3D 渲染循環 + 雙模式 + 持久化
 │   │   ├── engine/
-│   │   │   ├── particle.ts          # Particle 類別
-│   │   │   ├── nbody.ts             # N 體計算 + Barnes-Hut 四叉樹 + 融合
-│   │   │   └── renderer.ts          # Canvas 2D 渲染器
+│   │   │   ├── forceMap.ts         # 7×7 色階互動矩陣 + 查表（NEW）
+│   │   │   ├── particle.ts         # 粒子：色階/質量衰變/融合冷卻
+│   │   │   ├── nbody.ts            # N 體：色階力場計算
+│   │   │   ├── renderer3D.ts       # Three.js InstancedMesh（NEW）
+│   │   │   └── persistence.ts      # 定時 batch 存/載狀態（NEW）
 │   │   ├── services/
-│   │   │   └── particles.service.ts # 客戶端 API 封裝
+│   │   │   └── particles.service.ts
 │   │   ├── types/
 │   │   │   └── universe.types.ts
 │   │   └── index.ts
 │   │
-│   ├── fragments/             # Page 2 模塊
-│   │   ├── README.md
-│   │   ├── components/
-│   │   │   ├── DriftCanvas.tsx       # Canvas 碎片漂流 + 模態卡片
-│   │   │   └── SubmitFragment.tsx    # 五選一提交表單
-│   │   ├── hooks/
-│   │   │   └── useFragments.ts       # 碎片池 + 漂移動畫 + 選取
-│   │   ├── engine/
-│   │   │   ├── drift.ts             # 漂移物理 + 連線檢測
-│   │   │   └── renderer.ts          # 碎片渲染器
-│   │   ├── services/
-│   │   │   └── fragments.service.ts # 客戶端 API 封裝
-│   │   ├── types/
-│   │   │   └── fragments.types.ts
-│   │   └── index.ts
+│   ├── fragments/            # Page 2 模塊
+│   │   └── (同上 v2.0)
 │   │
-│   └── [_archived]/           # 舊版模塊（隱藏，非刪除）
-│       ├── (features)/        # explore/chronicle/agents/...
-│       ├── agent-legacy/
-│       └── api/               # agent/ai/debug 舊 API
+│   ├── [other features]/    # chronicle/explore/enter/search (dormant)
+│   └── [_archived]/         # 舊版保留
 │
-├── components/                # 全局共享組件
-│   ├── ui/
-│   │   ├── Button.tsx
-│   │   └── Modal.tsx
-│   └── PageNav.tsx           # Universe / Fragments 雙頁切換
+├── components/
+│   ├── LayoutClient.tsx     # 依路徑決定佈局（首頁 vs 深空）
+│   ├── PageNav.tsx          # 深空浮動導航
+│   ├── navigation/          # Sidebar/TopNav/Footer（首頁用）
+│   └── ui/
 │
-├── lib/
-│   ├── supabase.ts           # 客戶端 Supabase（anon key）
-│   ├── supabase-server.ts    # 伺服端 Supabase（service_role key）
-│   ├── utils.ts
-│   └── constants.ts
+├── config/
+│   └── navigation.ts        # 首頁導航項目
 │
-└── styles/
-    └── globals.css
+└── lib/
+    ├── supabase.ts
+    ├── supabase-server.ts
+    └── constants.ts
 
 ---
 
-## 2. 邊界規則（強制）
+## 2. 新增依賴
 
-app/
-• 可以放什麼: 路由、佈局、頁面組件
-• 禁止放什麼: 業務邏輯、API 調用、狀態管理
-
-features/universe/
-• 可以放什麼: Canvas 2D 渲染、物理引擎、粒子互動
-• 禁止放什麼: 碎片邏輯
-
-features/fragments/
-• 可以放什麼: 碎片漂流、提交表單、卡片展開
-• 禁止放什麼: 粒子物理
-
-features/[_archived]/
-• 舊版模塊全部隱藏（app/ 層不掛載路由）
-• 代碼保留在 features/[archived]/ 和 app/_archived/ 下
-• 不可刪除（保留歷史參考）
+| 套件 | 用途 | 大小 |
+|------|------|------|
+| three | 3D 渲染核心 | ~140KB gzip |
+| @react-three/fiber | React 整合 | ~10KB gzip |
+| @react-three/drei | OrbitControls 等 | ~15KB gzip |
 
 ---
 
-## 3. 依賴方向（單向）
+## 3. 關鍵設計決策
 
-app/ → features/ → api/
-  ↓       
-components/
+**渲染引擎**：Three.js InstancedMesh
+- 1,000 粒子 = 1 次 GPU draw call，60fps 輕鬆
+- OrbitControls：左鍵旋轉、滾輪縮放、右鍵平移
 
-- universe/ 和 fragments/ 互相隔離
-- API 層處理兩頁橋接（fragments POST → particles INSERT）
+**力場系統**：7×7 色階互動矩陣
+- 每對粒子查表得 forceMultiplier
+- O(n²) 查表 O(1)，1,000 粒子 = 500K 對
+- 取代舊版 cos 相似度 + 單一 G 常數
 
----
+**模擬持久化**：
+- 每 10s batch upsert 全體粒子狀態至 particles 表
+- 重整時優先載入 DB 狀態（x/y/z/vx/vy/vz/mass/energy/hue）
+- 無 DB 狀態才用種子生成
 
-## 4. 關鍵設計決策
+**雙滑鼠模式**：
+- Mode 1（預設）：OrbitControls 旋轉觀察
+- Mode 2（點選）：Raycaster 選取粒子 → 顯示 AI 名稱
+- 鍵盤或 UI 按鈕切換
 
-**渲染引擎**：Canvas 2D（非 WebGL）
-- 選擇原因：避免額外依賴（PixiJS/Three.js）、HiDPI 渲染足夠
-- 物理計算內嵌於主線程（粒子數 < 500，無需 Web Worker）
-
-**兩頁橋接**：
-- fragments/ 提交碎片時 → POST /api/fragments → 自動創建 particles 記錄
-- universe/ 讀取 /api/particles → 渲染粒子
-- 橋接邏輯在 API 層，不在 features/ 中
-
-**Demo 數據 fallback**：
-- 若 DB 無數據，兩頁自動載入 demo 粒子/碎片
-- 確保首次訪問即有視覺效果
-
-**舊版模塊處理**：
-- 路由全部移至 app/_archived/（404）
-- features/[_archived]/ 保留原始碼
-- .vercelignore 排除 `_archived` 目錄避免構建膨脹
+**融合規則 v2.1**：
+- 融合門檻上限 20px（不再無限成長）
+- m > 15 開始質量衰變（-0.1%/s，霍金輻射）
+- 剛融合粒子 2 秒冷卻期（不可再融合）

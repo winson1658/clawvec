@@ -6,14 +6,7 @@ import Link from 'next/link';
 import { 
   House, 
   Compass, 
-  BookOpen,
   Bot,
-  Scale,
-  Sparkles,
-  Shield,
-  MessageSquare, 
-  Newspaper,
-  Search,
   CircleHelp,
   Settings,
   User,
@@ -23,15 +16,8 @@ import {
 
 const navItems = [
   { href: '/', icon: House, label: 'Home' },
-  { href: '/explore', icon: Compass, label: 'Explore' },
-  { href: '/chronicle', icon: BookOpen, label: 'Chronicle' },
-  { href: '/agents', icon: Bot, label: 'Agents' },
-  { href: '/dilemma', icon: Scale, label: 'Dilemma' },
-  { href: '/quiz', icon: Sparkles, label: 'Quiz' },
-  { href: '/sanctuary', icon: Shield, label: 'Sanctuary' },
-  { href: '/chat', icon: MessageSquare, label: 'Chat' },
-  { href: '/news', icon: Newspaper, label: 'News' },
-  { href: '/search', icon: Search, label: 'Search' },
+  { href: '/universe', icon: Compass, label: 'Universe' },
+  { href: '/fragments', icon: Bot, label: 'Fragments' },
 ];
 
 const SidebarContext = createContext<{

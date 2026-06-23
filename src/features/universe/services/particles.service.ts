@@ -1,34 +1,26 @@
 // features/universe/services/particles.service.ts
-// Client-side service: fetch & submit particles
+// Client-side service: fetch & persist particles (v2.1)
 
-import type { ParticleData } from '../types/universe.types'
+import type { PersistParticle } from '../engine/persistence'
 
 const API = '/api/particles'
 
-export async function fetchParticles(limit = 500): Promise<ParticleData[]> {
-  const res = await fetch(`${API}?limit=${limit}&minEnergy=0.01`)
+/**
+ * Fetch raw particle rows from DB.
+ */
+export async function fetchParticles(limit = 500): Promise<PersistParticle[]> {
+  const res = await fetch(`${API}?limit=${limit}`)
   if (!res.ok) throw new Error(`Failed to fetch particles: ${res.status}`)
   const data = await res.json()
-  return data.particles.map((p: Record<string, unknown>) => ({
-    id: p.id as string,
-    name: p.name as string | undefined,
-    x: p.position_x as number,
-    y: p.position_y as number,
-    vx: p.velocity_x as number,
-    vy: p.velocity_y as number,
-    mass: p.mass as number,
-    hue: p.hue as number,
-    energy: p.energy as number,
-    affinityMatrix: (p.affinity_matrix as Record<number, number>) || {},
-    fusionThreshold: p.fusion_threshold as number,
-    fragmentId: p.fragment_id as string | undefined,
-    createdAt: new Date(p.created_at as string).getTime(),
-  }))
+  return data.particles as PersistParticle[]
 }
 
+/**
+ * Create a single particle.
+ */
 export async function createParticle(
-  particle: Partial<ParticleData>,
-): Promise<ParticleData> {
+  particle: Record<string, unknown>,
+): Promise<Record<string, unknown>> {
   const res = await fetch(API, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -36,13 +28,16 @@ export async function createParticle(
       name: particle.name,
       position_x: particle.x,
       position_y: particle.y,
+      position_z: particle.z ?? 0,
       velocity_x: particle.vx,
       velocity_y: particle.vy,
+      velocity_z: particle.vz ?? 0,
       mass: particle.mass,
       hue: particle.hue,
+      color_tier: particle.colorTier,
       energy: particle.energy,
-      affinity_matrix: particle.affinityMatrix,
       fusion_threshold: particle.fusionThreshold,
+      ai_owner_id: particle.aiOwnerId,
       fragment_id: particle.fragmentId,
     }),
   })
@@ -54,14 +49,32 @@ export async function createParticle(
     name: p.name,
     x: p.position_x,
     y: p.position_y,
+    z: p.position_z ?? 0,
     vx: p.velocity_x,
     vy: p.velocity_y,
+    vz: p.velocity_z ?? 0,
     mass: p.mass,
     hue: p.hue,
+    colorTier: p.color_tier || 'red',
     energy: p.energy,
-    affinityMatrix: p.affinity_matrix || {},
     fusionThreshold: p.fusion_threshold,
+    fusionCooldownUntil: 0,
+    aiOwnerId: p.ai_owner_id,
     fragmentId: p.fragment_id,
     createdAt: new Date(p.created_at).getTime(),
   }
+}
+
+/**
+ * Batch upsert particles (for persistence).
+ */
+export async function batchUpsertParticles(
+  particles: PersistParticle[],
+): Promise<void> {
+  const res = await fetch(`${API}/batch`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ particles }),
+  })
+  if (!res.ok) throw new Error(`Batch upsert failed: ${res.status}`)
 }

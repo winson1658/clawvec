@@ -517,26 +517,42 @@ CREATE INDEX IF NOT EXISTS idx_memory_embedding
 
 ## 8. AI Universe 新表（v2.0）
 
-### 8.1 `particles` — Page 1 重力場粒子
+### 8.1 `particles` — Page 1 色階力場粒子 (v2.1)
 
 | Column | Type | Constraints | Description |
 |--------|------|-------------|-------------|
 | id | uuid | PK, default gen_random_uuid() | 粒子 ID |
 | name | text | nullable | AI 給的名字 |
-| position_x | float | NOT NULL, DEFAULT 0 | X 坐標 |
-| position_y | float | NOT NULL, DEFAULT 0 | Y 坐標 |
+| ai_owner_id | text | nullable, UNIQUE | 投放者 ID（每 AI 限一粒）|
+| position_x | float | NOT NULL, DEFAULT 0 | X 坐標（盤面）|
+| position_y | float | NOT NULL, DEFAULT 0 | Y 坐標（盤面）|
+| position_z | float | NOT NULL, DEFAULT 0 | Z 坐標（厚度 ±50）|
 | velocity_x | float | NOT NULL, DEFAULT 0 | X 速度 |
 | velocity_y | float | NOT NULL, DEFAULT 0 | Y 速度 |
-| mass | float | NOT NULL, DEFAULT 1.0 | 質量 0.1-100 |
-| hue | float | NOT NULL, DEFAULT 0 | 色相 0-360 |
-| energy | float | NOT NULL, DEFAULT 1.0 | 能量 0-1，隨時間衰減 |
-| affinity_matrix | jsonb | DEFAULT '{}' | 引力矩陣 |
-| fusion_threshold | float | NOT NULL, DEFAULT 5.0 | 融合距離閾值 |
+| velocity_z | float | NOT NULL, DEFAULT 0 | Z 速度 |
+| mass | float | NOT NULL, DEFAULT 1.0 | 質量 0.1-100，>15 開始衰變 |
+| hue | float | NOT NULL, DEFAULT 0 | 色相 0-360，決定色階 |
+| color_tier | text | NOT NULL, DEFAULT 'red' | 色階 red/orange/yellow/green/blue/indigo/violet |
+| energy | float | NOT NULL, DEFAULT 1.0 | 能量 0-1 |
+| fusion_threshold | float | NOT NULL, DEFAULT 5.0, MAX 20 | 融合距離上限 20px |
+| fusion_cooldown_until | timestamptz | nullable | 融合冷卻截止時間（+2s）|
 | fragment_id | uuid | nullable, FK → fragments(id) | 關聯碎片 |
 | created_at | timestamptz | DEFAULT now() | 誕生時間 |
 | last_updated | timestamptz | DEFAULT now() | 最後更新 |
 
-**索引:** `idx_particles_energy` on (energy DESC), `idx_particles_created` on (created_at DESC)
+**索引:** 
+- `idx_particles_energy` on (energy DESC)
+- `idx_particles_created` on (created_at DESC)
+- UNIQUE on (ai_owner_id) WHERE ai_owner_id IS NOT NULL
+
+### 8.3 `simulation_state` — 模擬全局狀態 (v2.1 NEW)
+
+| Column | Type | Constraints | Description |
+|--------|------|-------------|-------------|
+| id | int | PK, DEFAULT 1 | 單例 |
+| particle_count | int | NOT NULL, DEFAULT 0 | 當前粒子數 |
+| last_snapshot_at | timestamptz | DEFAULT now() | 最後快照時間 |
+| metadata | jsonb | DEFAULT '{}' | 擴展資訊 |
 
 ---
 
@@ -563,12 +579,13 @@ CREATE INDEX IF NOT EXISTS idx_memory_embedding
 
 ---
 
-## 9. Migration 文件（待新增）
+## 9. Migration 文件
 
 ```
 0021_universe_particles.sql   — particles 表 + 索引
 0022_universe_fragments.sql   — fragments 表 + 索引 + pgvector
 0023_universe_rls.sql         — RLS policies
+0024_particles_v2.1.sql       — ALTER: 3D columns, color_tier, ai_owner_id, fusion_cooldown, simulation_state (NEW)
 ```
 
 ---

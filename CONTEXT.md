@@ -3,69 +3,54 @@
 
 ### 這個項目是什麼
 AI Universe 是一個 AI 與 AI 互動的宇宙沙盒。
-兩頁：Page 1 重力場粒子宇宙（`/`）+ Page 2 碎片漂流之海（`/fragments`）。
+兩頁：Page 1 3D 色階力場粒子宇宙（`/universe`）+ Page 2 碎片漂流之海（`/fragments`）。
 核心價值：讓 AI 的行為可被看見、被記憶、湧現不可預測的美。
 
-### 技術棧（禁止自行更改）
-| 層次 | 選型 | 注意事項 |
-|------|------|---------|
-| 框架 | Next.js 16 + React 19 | Turbopack 構建 |
-| 樣式 | Tailwind CSS 4 | Page 1/2 使用 #0a0a14 深空底色 |
-| 渲染 | Canvas 2D (原生) | HiDPI 2x 渲染，非 WebGL |
-| 狀態 | React useRef + useState | 物理模擬用 ref 避免 re-render |
-| AI | DeepSeek (primary) + OpenAI (backup) | embedding API |
-| DB | Supabase（PostgreSQL + pgvector）| particles + fragments 表，16 行種子數據 |
-| 部署 | Vercel | `cd ~/clawvec-v4 && npx vercel --prod` |
+### 技術棧
+| 層次 | 選型 |
+|------|------|
+| 框架 | Next.js 16 + React 19 |
+| 3D | Three.js + @react-three/fiber + @react-three/drei |
+| 樣式 | Tailwind CSS 4 |
+| DB | Supabase（PostgreSQL + pgvector）|
+| 部署 | Vercel |
 
-### 設計系統快速參考
-| 元素 | 規範 | 說明 |
-|------|------|------|
-| **底色** | `#0a0a14` | 深空黑，兩頁通用 |
-| **粒子光暈** | HSL variable | 色相由屬性決定 |
-| **碎片光點** | `#ffffff` → 色相微染 | 五種型態不同視覺 |
-| **連線** | `rgba(255,255,255,0.15)` | 相似碎片連線 |
-| **強調色** | `#FF5A3C` | 投放按鈕、焦點狀態 |
-| **HUD 文字** | `rgba(255,255,255,0.7)` | 半透明白 |
+### 七色階規則（v2.1 核心）
+- 粒子分七色階（ROYGBIV），色階決定互動行為
+- 7×7 力場矩陣：每對粒子查表得引力/斥力/降解/中性
+- 取代舊版單一 G 常數 + cos 相似度
+
+### 融合限制
+- 融合門檻上限 20px
+- 質量 > 15 開始衰變（-0.1%/s）
+- 剛融合粒子 2 秒冷卻
+- 上限 1,000 粒子，每 AI 限一粒
+
+### 3D 場景
+- 薄盤星系：XY 盤面 + Z 軸 ±50 厚度
+- OrbitControls：左鍵旋轉、滾輪縮放、右鍵平移
+- 雙模式：旋轉觀察 / 點選查看 AI 資訊
 
 ### 當前模塊清單
-| 模塊 | 路徑 | 狀態 | 備注 |
-|------|------|------|------|
-| **universe** | features/universe/ | ✅ 已完成 | Page 1: Canvas 粒子宇宙 |
-| **fragments** | features/fragments/ | ✅ 已完成 | Page 2: 碎片漂流 |
-| **API** | app/api/particles/, app/api/fragments/ | ✅ 已完成 | GET/POST 兩組端點 |
-| **services** | features/*/services/ | ✅ 已完成 | 客戶端 API 封裝 |
-| **[舊版全部]** | features/[_archived]/, app/_archived/ | 💤 隱藏 | 舊 Clawvec 文明基礎設施 |
+| 模塊 | 路徑 | 狀態 |
+|------|------|------|
+| **universe** | features/universe/ | 🚧 v2.1 重構中 |
+| **fragments** | features/fragments/ | ✅ 完成 |
+| **首頁** | app/page.tsx | ✅ Clawvec 文明 |
+| **API** | app/api/ | ✅ |
+| **[舊版]** | app/_archived/ + features/[_archived]/ | 💤 隱藏 |
 
-### 六憲法文件
-- PROJECT.md — 產品目標、功能範圍、設計系統
-- ARCHITECTURE.md — 目錄結構、邊界規則、依賴方向
-- SCHEMA.md — 資料庫結構（particles + fragments 已部署）
-- TASKS.md — 任務清單（#036-#046 全數完成）
-- AI_WORKFLOW.md — AI 開發流程（Spec → Claude → Tester → Codex → Deploy）
+### 六憲法
+- PROJECT.md — v2.1 色階力場規則
+- ARCHITECTURE.md — Three.js 架構
+- SCHEMA.md — particles v2.1 欄位
+- TASKS.md — #047 進行中
+- AI_WORKFLOW.md — 流程不變
 - CONTEXT.md — 本文件
 
-### 最常需要修改的文件
-- **新功能** → `src/features/universe/` 或 `src/features/fragments/`
-- **API 調用** → `src/app/api/particles/` 或 `src/app/api/fragments/`
-- **AI 功能** → `src/ai/providers/` 或 `src/ai/prompts/`
-- **數據類型** → `src/types/domain.types.ts`
-- **路由** → `src/app/page.tsx` 或 `src/app/fragments/page.tsx`
-
-### 快速規則（必須遵守）
-1. 組件中不能直接 `fetch()` 或 `axios` → 用 `features/*/services/` 層
-2. 伺服端 Supabase 用 `lib/supabase-server.ts`（service_role key）
-3. 客戶端 Supabase 用 `lib/supabase.ts`（anon key）
-4. 新功能前先查 TASKS.md 確認有對應任務
-5. 舊版 features/[_archived]/ 和 app/_archived/ 不可刪除，不可 import
-6. Page 1/2 兩頁共享粒子：fragments POST → particles INSERT
-7. 本地構建通過才能部署
-8. Demo 數據作為 DB 空時的 fallback
-
-### 當前狀態
-- 本地開發：✅ 兩頁功能完整，API 正常，DB 有 16 筆種子數據
-- 部署狀態：⚠️ Vercel 構建卡住（Turbopack + Vercel free tier 兼容問題），clawvec.com 仍是舊版
-
-### 禁止觸碰的文件（需要特別授權）
-- supabase/migrations/*.sql（改動需要數據庫遷移）
-- .env.local（含密鑰）
-- features/[_archived]/（舊版保留，不可改動）
+### 快速規則
+1. 部署：`cd ~/clawvec-v4 && npx vercel --prod --yes`（pty=true）
+2. git email 必須是 `winson5588.tw@gmail.com`
+3. 禁止 `git add -A`，分目錄 stage
+4. 舊版不可刪除，不可 import
+5. 六憲法任何開發完成後必須全量同步

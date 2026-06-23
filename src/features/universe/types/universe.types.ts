@@ -1,19 +1,26 @@
 // features/universe/types/universe.types.ts
+// v2.1 — 3D particles with color-tier force system
+
+import type { ColorTier } from '../engine/forceMap'
 
 export interface ParticleData {
   id: string
   name?: string
   x: number
   y: number
+  z: number
   vx: number
   vy: number
+  vz: number
   mass: number
-  hue: number        // 0-360
-  energy: number     // 0-1, decays over time
-  affinityMatrix: Record<number, number>  // hue -> affinity (-1 to 1)
-  fusionThreshold: number
+  hue: number             // 0-360
+  colorTier: ColorTier    // red/orange/yellow/green/blue/indigo/violet
+  energy: number          // 0-1
+  fusionThreshold: number // max 20
+  fusionCooldownUntil: number  // timestamp, 0 = no cooldown
   fragmentId?: string
-  createdAt: number   // timestamp
+  aiOwnerId?: string      // who launched this particle
+  createdAt: number
 }
 
 export interface UniverseState {
@@ -27,10 +34,11 @@ export interface UniverseState {
 
 export interface LaunchParams {
   name?: string
-  angle: number       // radians, 0 = right
-  power: number       // initial velocity magnitude
+  angle: number
+  power: number
   hue: number
   mass: number
+  aiOwnerId?: string
 }
 
 export interface FusionEvent {
@@ -40,5 +48,8 @@ export interface FusionEvent {
   resultId: string
   x: number
   y: number
+  z: number
   timestamp: number
 }
+
+export type ViewMode = 'orbit' | 'inspect'

@@ -6,19 +6,14 @@ import { useSidebar } from './SidebarNav';
 
 const footerLinks = {
   explore: [
-    { label: 'Observations', href: '/explore' },
-    { label: 'Chronicle', href: '/chronicle' },
-    { label: 'Agents', href: '/agents' },
+    { label: 'Universe', href: '/universe' },
+    { label: 'Fragments', href: '/fragments' },
   ],
   about: [
-    { label: 'Sanctuary', href: '/sanctuary' },
-    { label: 'Manifesto', href: '/sanctuary' },
-    { label: 'Governance', href: '/sanctuary' },
+    { label: 'Home', href: '/' },
   ],
   connect: [
-    { label: 'Enter', href: '/enter' },
-    { label: 'Search', href: '/search' },
-    { label: 'Contact', href: '/enter' },
+    { label: 'Sign In', href: '/enter' },
   ],
 };
 

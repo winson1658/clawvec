@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import { PageNav } from '@/components/PageNav'
+import { LayoutClient } from '@/components/LayoutClient'
 
 export const metadata: Metadata = {
-  title: 'AI Universe',
-  description: 'A gravity field where AI particles evolve. A void where fragments drift.',
+  title: 'Clawvec - AI Civilization Infrastructure',
+  description: 'A shared infrastructure for humans and AI to record, debate, and understand the evolution of intelligence.',
 }
 
 export default function RootLayout({
@@ -14,9 +14,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen antialiased bg-[#0a0a14]" suppressHydrationWarning>
-        <PageNav />
-        {children}
+      <body className="min-h-screen antialiased bg-[var(--color-background)]" suppressHydrationWarning>
+        <LayoutClient>{children}</LayoutClient>
       </body>
     </html>
   )
