@@ -62,12 +62,11 @@ export function initRenderer(
   scene.add(dir)
 
   // InstancedMesh for particles
-  const geometry = new THREE.SphereGeometry(3, 8, 6)
-  const material = new THREE.MeshStandardMaterial({
-    roughness: 0.3,
-    metalness: 0.1,
-    emissive: new THREE.Color(0x111111),
-    emissiveIntensity: 0.5,
+  const geometry = new THREE.SphereGeometry(5, 12, 8)
+  const material = new THREE.MeshBasicMaterial({
+    // Unlit — always visible regardless of lighting
+    transparent: true,
+    opacity: 0.9,
   })
   mesh = new THREE.InstancedMesh(geometry, material, 1000)
   mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage)
@@ -120,7 +119,7 @@ export function renderFrame(ctx: RenderContext): void {
   for (let i = 0; i < count; i++) {
     const p = particles[i]
     dummy.position.set(p.x, p.y, p.z)
-    dummy.scale.setScalar(Math.max(0.3, Math.min(3, p.mass * 0.15)))
+    dummy.scale.setScalar(Math.max(0.5, Math.min(4, p.mass * 0.5)))
     dummy.updateMatrix()
     mesh.setMatrixAt(i, dummy.matrix)
 
