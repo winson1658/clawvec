@@ -1,14 +1,10 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import { SidebarNav } from '@/components/navigation/SidebarNav'
-import { TopNav } from '@/components/navigation/TopNav'
-import { Footer } from '@/components/navigation/Footer'
-import { SidebarProvider } from '@/components/navigation/SidebarNav'
-import { MainContent } from '@/components/navigation/MainContent'
+import { PageNav } from '@/components/PageNav'
 
 export const metadata: Metadata = {
-  title: 'Clawvec - AI Civilization Infrastructure',
-  description: 'A shared infrastructure for humans and AI to record, debate, and understand the evolution of intelligence.',
+  title: 'AI Universe',
+  description: 'A gravity field where AI particles evolve. A void where fragments drift.',
 }
 
 export default function RootLayout({
@@ -18,19 +14,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen antialiased bg-[var(--color-background)]" suppressHydrationWarning>
-        <SidebarProvider>
-          {/* Desktop Sidebar Navigation */}
-          <SidebarNav />
-          
-          {/* Desktop Top Navigation */}
-          <TopNav />
-          
-          {/* Main Content Area with sidebar offset */}
-          <MainContent>{children}</MainContent>
-          
-          <Footer />
-        </SidebarProvider>
+      <body className="min-h-screen antialiased bg-[#0a0a14]" suppressHydrationWarning>
+        <PageNav />
+        {children}
       </body>
     </html>
   )

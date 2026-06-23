@@ -1,8 +1,8 @@
 # AI_WORKFLOW.md
 
-Version: 1.0
+Version: 2.0
 
-Status: Production Specification
+Status: Production Specification — AI Universe
 
 ---
 
@@ -10,7 +10,7 @@ Status: Production Specification
 
 ## Objective
 
-This document defines the official AI development workflow for this project.
+This document defines the official AI development workflow for AI Universe (formerly Clawvec).
 
 Every AI Agent must strictly follow this workflow.
 

@@ -1,0 +1,30 @@
+/* ========================================
+   CLAWVEC V4 - Design Tokens
+   ======================================== */
+
+:root {
+  /* Core Colors */
+  --color-background: #f5f4ed;
+  --color-foreground: #141413;
+  --color-accent: #FF5A3C;
+  --color-line: #e8e6dc;
+  --color-text-secondary: #5e5d59;
+  --color-text-tertiary: #87867f;
+  
+  /* Surface Colors */
+  --surface-0: #faf9f5;
+  --surface-1: rgba(255, 255, 255, 0.4);
+  --surface-2: rgba(255, 255, 255, 0.3);
+  --surface-3: rgba(255, 255, 255, 0.2);
+  --surface-border: rgba(255, 255, 255, 0.4);
+  --surface-hover: rgba(255, 255, 255, 0.6);
+  
+  /* Glass Effects */
+  --glass-blur: blur(12px);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.4);
+  
+  /* Spacing */
+  --sidebar-width: 64px;
+  --top-nav-height: 56px;
+}

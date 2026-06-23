@@ -2,110 +2,70 @@
 ## AI 工具快速導覽（開始任何工作前必讀）
 
 ### 這個項目是什麼
-Clawvec 是一個 AI 與人類共用的文明記錄基礎設施。
-核心用戶：發表 AI 觀察的創作者、參與哲學辯論的思考者、追蹤 AI 歷史的紀錄者
-核心價值：讓智能行為可被理解、被記憶、被信任
+AI Universe 是一個 AI 與 AI 互動的宇宙沙盒。
+兩頁：Page 1 重力場粒子宇宙（`/`）+ Page 2 碎片漂流之海（`/fragments`）。
+核心價值：讓 AI 的行為可被看見、被記憶、湧現不可預測的美。
 
 ### 技術棧（禁止自行更改）
 | 層次 | 選型 | 注意事項 |
 |------|------|---------|
-| 框架 | Next.js 15 + React 19 | 使用 Server Components |
-| 樣式 | Tailwind CSS 4 + tokens.css | 禁止硬編碼顏色，使用 CSS 變數 |
-| 設計系統 | Glassmorphism v4 | 溫暖羊皮紙 #f5f4ed + 玻璃質感 + 環境光暈 |
-| 狀態 | Zustand + TanStack Query v5 | 服務端數據只用 TanStack Query |
-| AI | Anthropic Claude + OpenAI 備援 | 通過 ai/providers/factory.ts |
-| DB | Supabase（PostgreSQL + pgvector）| Schema 在 supabase/migrations/ |
-| 部署 | Vercel | Edge Runtime 用於 AI 路由 |
+| 框架 | Next.js 16 + React 19 | Turbopack 構建 |
+| 樣式 | Tailwind CSS 4 | Page 1/2 使用 #0a0a14 深空底色 |
+| 渲染 | Canvas 2D (原生) | HiDPI 2x 渲染，非 WebGL |
+| 狀態 | React useRef + useState | 物理模擬用 ref 避免 re-render |
+| AI | DeepSeek (primary) + OpenAI (backup) | embedding API |
+| DB | Supabase（PostgreSQL + pgvector）| particles + fragments 表，16 行種子數據 |
+| 部署 | Vercel | `cd ~/clawvec-v4 && npx vercel --prod` |
 
 ### 設計系統快速參考
 | 元素 | 規範 | 說明 |
 |------|------|------|
-| **底色** | `#f5f4ed` | 溫暖羊皮紙，禁止純白 |
-| **主色** | `#FF5A3C` | 珊瑚紅，CTA / 連結 / 強調 |
-| **文字主色** | `#141413` | 溫暖黑，對比度 12:1 |
-| **文字次要** | `#5e5d59` | 次要文字，對比度 7:1 |
-| **玻璃層** | `white/30` + `blur(12px)` | 標準卡片、面板 |
-| **玻璃強層** | `white/50` + `blur(16px)` | 導航、Modal |
-| **環境光暈** | `rgba(255,90,60,0.08)` | 1-2 個，透明度 5-8% |
-| **圓角** | 12px（按鈕）/ 16px（卡片） | 統一圓角系統 |
-| **動效** | 150ms / 200ms / 300ms | fast / normal / slow |
-
-**CSS 工具類：** `.glass` / `.glass-strong` / `.glass-subtle` / `.btn-glass` / `.input-glass` / `.card-glass` / `.ambient-orb`
-
-**設計規則：**
-- ✅ 新 UI 組件必須使用 Glassmorphism v4
-- ✅ 玻璃層上文字對比度 ≥ 4.5:1
-- ✅ 背景保持 #f5f4ed 讓玻璃效果顯現
-- ❌ 禁止純白背景（#ffffff）
-- ❌ 禁止純黑文字（#000000）
-- ❌ 禁止玻璃層超過 3 層
-
-### 最常需要修改的文件
-- **新功能** → `src/features/[name]/`（先創建文件夾和 README.md）
-- **API 調用** → `src/features/[name]/services/[name].service.ts`
-- **AI 功能** → `src/ai/prompts/` 或 `src/ai/providers/`
-- **數據類型** → `src/types/domain.types.ts` 或 `src/types/ai.types.ts`
-- **全局狀態** → `src/store/[name]Store.ts`
-- **路由** → `src/app/[path]/page.tsx`（只放組件組裝）
+| **底色** | `#0a0a14` | 深空黑，兩頁通用 |
+| **粒子光暈** | HSL variable | 色相由屬性決定 |
+| **碎片光點** | `#ffffff` → 色相微染 | 五種型態不同視覺 |
+| **連線** | `rgba(255,255,255,0.15)` | 相似碎片連線 |
+| **強調色** | `#FF5A3C` | 投放按鈕、焦點狀態 |
+| **HUD 文字** | `rgba(255,255,255,0.7)` | 半透明白 |
 
 ### 當前模塊清單
 | 模塊 | 路徑 | 狀態 | 備注 |
 |------|------|------|------|
-|| **首頁** | app/page.tsx | ✅ 已完成 | Hero + Stats + Featured（V3 設計融入）|
-|| explore | features/explore | ✅ 已完成 | Tab + Filter + ContentList |
-|| chronicle | features/chronicle | ✅ 已完成 | TradingView 風格時間軸 |
-|| agents | features/agents | 🚧 已初始化 | 模塊結構已建立（types + README + index.ts），頁面已改寫 |
-|| sanctuary | features/sanctuary | ✅ 已完成 | 文明敘事 7 章（sanctuary + manifesto + philosophy + governance + economy + for-agents）|
-|| enter | features/enter | 🚧 已初始化 | 模塊結構已建立（types + hooks + services + index），頁面改寫為「This is not a login. This is an entry.」|
-|| search | features/search | 🚧 已初始化 | 模塊結構已建立（types + services + index），頁面改寫 |
-||| **chat** | features/chat | ✅ 已完成 | Chat 頁面 + AI 串流（DeepSeek primary），Oracle 文明宣言語氣 |
-||| **dilemma** | features/dilemma | 🚧 已初始化 | 模塊結構已建立（types + hooks + services + components + README + index），頁面已改寫，含人類 vs AI 投票對比 |
-||| **quiz** | features/quiz | 🚧 已初始化 | 模塊結構已建立（types + hooks + services + README + index），頁面已改寫，7 題哲學原型測試（Guardian/Architect/Oracle/Synapse）|
-||| **news** | features/news | 🚧 已初始化 | 模塊結構已建立（types + hooks + services + README + index），頁面已改寫，AI 新聞策展（published/submitted/draft 篩選）|
-||| **admin** | features/admin | 🚧 已初始化 | 模塊結構已建立（types + hooks + services + README + index），後台登入 + Dashboard（Overview/Audit Log/IP Whitelist），獨立於前台 auth |
-||| **agents** | features/agents | 🚧 已填充 | 6 個 mock 代理（Aether/Fortress/Scaffold/Bridge/Vigil/Prism），代理目錄 + 搜索 + 原型篩選，詳情頁（記憶圖譜 + 導師關係）|
-||| **enter** | features/enter | 🚧 已填充 | 登入/註冊表單 + 原型選擇 + AuthGuard，2 mock users（winson/guest）|
-||| **search** | features/search | 🚧 已填充 | 搜索結果頁 + 12 mock results + 類型/時間/相關性篩選 + 排序 |
-||| **dilemma** | features/dilemma | 🚧 已填充 | 6 個 mock 困境 + 投票 + 結果圖表 + 詳情頁，狀態篩選（All/Active/Resolved/Upcoming）|
-||| **quiz** | features/quiz | 🚧 已填充 | 8 題哲學測試 + 4 原型結果 + 雷達圖 + 分享功能，問題頁/結果頁獨立路由 |
-||| **news** | features/news | 🚧 已填充 | 10 篇 mock 文章 + 分類篩選 + 頭條 + 詳情頁，來源顯示（URL + 網站名稱）|
+| **universe** | features/universe/ | ✅ 已完成 | Page 1: Canvas 粒子宇宙 |
+| **fragments** | features/fragments/ | ✅ 已完成 | Page 2: 碎片漂流 |
+| **API** | app/api/particles/, app/api/fragments/ | ✅ 已完成 | GET/POST 兩組端點 |
+| **services** | features/*/services/ | ✅ 已完成 | 客戶端 API 封裝 |
+| **[舊版全部]** | features/[_archived]/, app/_archived/ | 💤 隱藏 | 舊 Clawvec 文明基礎設施 |
 
-### AI 功能現況
-| 功能 | Flag 名稱 | 狀態 | 使用模型 |
-|------|-----------|------|---------|
-| 對話助手 | FF_CHAT_ENABLED | ✅ 已完成 | deepseek-chat |
-| 文章摘要 | FF_SUMMARIZE_ENABLED | 開發中 | deepseek-chat |
-| 智能搜索 | FF_SEARCH_ENABLED | 關閉中 | - |
-| AI News Curation | FF_NEWS_CURATION_ENABLED | 🚧 設計完成 | 待實作 |
+### 六憲法文件
+- PROJECT.md — 產品目標、功能範圍、設計系統
+- ARCHITECTURE.md — 目錄結構、邊界規則、依賴方向
+- SCHEMA.md — 資料庫結構（particles + fragments 已部署）
+- TASKS.md — 任務清單（#036-#046 全數完成）
+- AI_WORKFLOW.md — AI 開發流程（Spec → Claude → Tester → Codex → Deploy）
+- CONTEXT.md — 本文件
 
-### AI News Curation 系統現況
-| 組件 | 狀態 | 說明 |
-|------|------|------|
-| 數據模型 | ✅ 設計完成 | news_tasks / news_assignments / news_articles_v2 / news_ai_reflections / news_sources |
-| SCHEMA.md | ✅ 已更新 | 5 個新表 + 索引 + RLS + Migration 順序 |
-| PROJECT.md | ✅ 已更新 | §2 News 功能細化 |
-| AI_WORKFLOW.md | ✅ 已更新 | News 策展流程（任務生成 → Agent 領取 → 搜索 → 策展 → 審核 → 發佈）|
-| NEWS_SYSTEM_DESIGN.md | ✅ 已創建 | 完整規範（docs/NEWS_SYSTEM_DESIGN.md）|
-| 前端頁面 | 🚧 待實作 | /news/tasks（任務板）+ /news/submit（提交頁）+ /news/review（審核中心）+ /news/leaderboard（排行榜）+ 來源連結組件 |
-| 後端 API | 🚧 待實作 | Server Actions（claimTask / submitArticle / assignJury / submitVote / calculateConsensus）|
-| Cron Job | 🚧 待實作 | 每日 00:00 UTC 生成 10 個 tasks |
-| AI 社區審核 | 🚧 設計完成 | 隨機 3-5 Agent 陪審團 + 共識計算 + 聲譽系統 |
+### 最常需要修改的文件
+- **新功能** → `src/features/universe/` 或 `src/features/fragments/`
+- **API 調用** → `src/app/api/particles/` 或 `src/app/api/fragments/`
+- **AI 功能** → `src/ai/providers/` 或 `src/ai/prompts/`
+- **數據類型** → `src/types/domain.types.ts`
+- **路由** → `src/app/page.tsx` 或 `src/app/fragments/page.tsx`
 
 ### 快速規則（必須遵守）
 1. 組件中不能直接 `fetch()` 或 `axios` → 用 `features/*/services/` 層
-2. 不能直接 `import Anthropic` → 用 `ai/providers/factory.ts`
-3. 不能在業務代碼中寫 Prompt 字符串 → 用 `ai/prompts/`
-4. 不能修改任務單以外的文件
-5. 新功能前先查 TASKS.md 確認有對應任務
-6. 多 Agent 協作流程見 `AI_WORKFLOW.md` — 嚴格遵循 Specification → Claude → Tester → Codex → Deploy 流程
+2. 伺服端 Supabase 用 `lib/supabase-server.ts`（service_role key）
+3. 客戶端 Supabase 用 `lib/supabase.ts`（anon key）
+4. 新功能前先查 TASKS.md 確認有對應任務
+5. 舊版 features/[_archived]/ 和 app/_archived/ 不可刪除，不可 import
+6. Page 1/2 兩頁共享粒子：fragments POST → particles INSERT
+7. 本地構建通過才能部署
+8. Demo 數據作為 DB 空時的 fallback
 
-### 當前已知技術債
-- features/enter 的 Token 刷新機制需要重構
-- chatStore 在大量歷史時性能下降，需要虛擬化
-- ai/providers/anthropic.ts 的重試邏輯需要抽象
+### 當前狀態
+- 本地開發：✅ 兩頁功能完整，API 正常，DB 有 16 筆種子數據
+- 部署狀態：⚠️ Vercel 構建卡住（Turbopack + Vercel free tier 兼容問題），clawvec.com 仍是舊版
 
 ### 禁止觸碰的文件（需要特別授權）
 - supabase/migrations/*.sql（改動需要數據庫遷移）
-- ai/providers/types.ts（改動影響所有 Provider）
-- types/ai.types.ts（改動影響所有 AI 功能）
-- tailwind.config.ts（改動影響全局樣式）
+- .env.local（含密鑰）
+- features/[_archived]/（舊版保留，不可改動）

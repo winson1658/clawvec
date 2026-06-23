@@ -5,47 +5,25 @@
 |-----|------|---------|------|
 
 ## 待辦
-||| #ID | 功能 | 依賴 | 優先級 |
-|||-----|------|------|--------|
-||| （無待辦任務）|
+| #ID | 功能 | 依賴 | 優先級 |
+|-----|------|------|--------|
+| （無待辦任務）|
 
-|## 已完成
-||| #ID | 功能 | 完成時間 | 關聯文件 |
-|||-----|------|---------|---------|
-||| #001 | 項目初始化 | 2026-06-21 | next.config.ts, package.json |
-||| #002 | 路由結構搭建 | 2026-06-21 | src/app/(features)/, src/components/navigation/ |
-||| #003 | 設計系統建立（tokens.css + globals.css）| 2026-06-21 | src/styles/tokens.css, src/app/globals.css, DESIGN_SYSTEM.md |
-||| #003-1 | 設計系統融入六憲法 | 2026-06-21 | PROJECT.md（設計原則章節）, CONTEXT.md（設計系統快速參考）|
-||| #004 | 基礎 UI 組件庫 | 2026-06-21 | src/components/ui/Button.tsx, Card.tsx, Tab.tsx, Filter.tsx, index.ts |
-||| #005 | 導航系統（PrimaryNav + Footer）| 2026-06-21 | src/components/navigation/PrimaryNav.tsx, Footer.tsx, src/config/navigation.ts |
-||| #006 | Explore 模塊初始化 | 2026-06-21 | features/explore/ 完整模塊結構 |
-||| #007 | Chronicle 模塊初始化 | 2026-06-21 | features/chronicle/ TradingView 風格時間軸 |
-||| #007-1 | 六憲法違規修正 | 2026-06-21 | 硬編碼顏色移除、全局類型建立、舊文件清理 |
-||| #009 | Sanctuary 文明敘事模塊 | 2026-06-21 | sanctuary/page.tsx + manifesto/philosophy/governance/economy/for-agents 5頁 |
-||| #013 | V3 首頁設計融入 V4 | 2026-06-21 | PROJECT.md §5.6, page.tsx, globals.css, 六憲法更新 |
-||| #014 | Sidebar 展開/收合導航系統 | 2026-06-21 | SidebarNav.tsx (React Context + CSS transition), MainContent.tsx, TopNav.tsx, layout.tsx, globals.css Tailwind v4 語法修復 |
-||| #015 | 首頁套用 AI 文明宣言文字 | 2026-06-21 | constants.ts, page.tsx, Footer.tsx（PROJECT.md §8.1 全文套用）|
-||| #016 | Sanctuary 文明敘事 7 章全頁面 | 2026-06-21 | manifesto, philosophy, governance, economy, for-agents 頁面 + sanctuary 改寫 |
-||| #017 | What You Can Do + Roadmap 頁面 | 2026-06-21 | what-you-can-do, roadmap 頁面（§8.8-§8.10）|
-||| #018 | Agents 模塊初始化 | 2026-06-21 | features/agents/ (types + README + index.ts), agents/page.tsx 改寫, agents/layout.tsx 新建 |
-||| #019 | Enter 模塊初始化 | 2026-06-21 | features/enter/ (types + hooks + services + index), enter/page.tsx 改寫, enter/layout.tsx 新建 |
-||| #020 | 資料庫基礎設施 + SCHEMA.md | 2026-06-21 | .env.local, @supabase/supabase-js, src/lib/supabase.ts, SCHEMA.md（第六憲法）, supabase/ 目錄 |
-||| #021 | Migration 執行 | 2026-06-21 | 7 支 SQL 全執行，15 tables 建立（含 RLS + indexes + pgvector）|
-||| #022 | W3C DID + VC Agent 身分系統 | 2026-06-21 | crypto/did/vc/jwt 核心庫，API routes (register/challenge/verify)，DID 端點，enter 雙軌頁面 |
-||| #023 | Search 模塊初始化 | 2026-06-21 | features/search/ (types + services + index), search/page.tsx 改寫, search/layout.tsx 新建 |
-||| #012 | Chat 模塊（DeepSeek 串流）| 2026-06-22 | features/chat/ (types + services + hooks + components), chat/page.tsx, AI providers (DeepSeek primary), API route SSE 修復 |
-||| #024 | Dilemma 模塊初始化 | 2026-06-22 | features/dilemma/ (types + hooks + services + components + README + index), dilemma/page.tsx + layout.tsx, navigation.ts 更新 |
-||| #025 | Quiz 模塊初始化 | 2026-06-22 | features/quiz/ (types + hooks + services + README + index), quiz/page.tsx + layout.tsx, navigation.ts 更新 |
-||| #026 | News 模塊初始化 | 2026-06-22 | features/news/ (types + hooks + services + README + index), news/page.tsx + layout.tsx, navigation.ts + SidebarNav.tsx + TopNav.tsx 更新 |
-||| #027 | Admin 後台管理系統 | 2026-06-22 | features/admin/ (types + hooks + services + README + index), admin/page.tsx + dashboard/page.tsx, 獨立於前台 auth |
-|||| #028 | Agents 模塊填充 | 2026-06-22 | features/agents/ (services + hooks + README), agents/page.tsx 改寫 + [id]/page.tsx 新建, 6 mock agents + memory graph + mentorship |
-|||| #029 | Enter 模塊填充 | 2026-06-22 | features/enter/ (services + hooks + types + components), enter/page.tsx 改寫, AuthGuard, 2 mock users + 原型選擇 |
-|||| #030 | Search 模塊填充 | 2026-06-22 | features/search/ (services + hooks + types + components), search/page.tsx 改寫, 12 mock results + 篩選 + 排序 |
-|||| #031 | Dilemma 模塊填充 | 2026-06-22 | features/dilemma/ (services + hooks + types + components), dilemma/page.tsx 改寫 + [id]/page.tsx 新建, 6 mock dilemmas + 投票 + 結果圖表 |
-|||| #032 | Quiz 模塊填充 | 2026-06-22 | features/quiz/ (services + hooks + types + components), quiz/page.tsx 改寫 + [id]/page.tsx + result/page.tsx 新建, 8 questions + 4 archetypes |
-|||| #033 | News 模塊填充 | 2026-06-22 | features/news/ (services + hooks + types + components), news/page.tsx 改寫 + [id]/page.tsx 新建, 10 mock articles + 分類 + 來源 |
-|||| #034 | AI News Curation 系統設計 | 2026-06-22 | PROJECT.md §2 News 細化, SCHEMA.md 擴展(news_tasks/news_assignments/news_ai_reflections/news_sources), AI_WORKFLOW.md News 策展流程, NEWS_SYSTEM_DESIGN.md 完整規範 |
-|||| #035 | AI Community Governance 設計 | 2026-06-22 | AI 陪審團系統設計：去中心化審核、隨機 3-5 Agent 陪審團、共識計算、聲譽系統、激勵機制、防作弊機制、AI_COMMUNITY_GOVERNANCE.md 完整規範 |
+## 已完成
+| #ID | 功能 | 完成時間 | 關聯文件 |
+|-----|------|---------|---------|
+| #001-#035 | 舊版 Clawvec v1.0 所有任務 | 2026-06-22 | 全部已隱藏至 features/[_archived]/ |
+| #036 | 六憲法 v2.0 重構 | 2026-06-23 | PROJECT/ARCHITECTURE/SCHEMA/TASKS/AI_WORKFLOW/CONTEXT |
+| #037 | 隱藏所有舊版分頁 | 2026-06-23 | src/app/_archived/ |
+| #038 | PageNav 雙頁切換 | 2026-06-23 | src/components/PageNav.tsx |
+| #039 | particles + fragments 資料表 | 2026-06-23 | supabase/migrations/0021-0023 |
+| #040 | Page 1 Canvas + 粒子渲染 | 2026-06-23 | features/universe/engine/renderer.ts |
+| #041 | N 體物理引擎 | 2026-06-23 | features/universe/engine/nbody.ts, particle.ts |
+| #042 | 拖曳投放控制 | 2026-06-23 | features/universe/hooks/useUniverse.ts |
+| #043 | Page 2 Canvas 碎片漂流 | 2026-06-23 | features/fragments/engine/drift.ts, renderer.ts |
+| #044 | 五選一提交表單 | 2026-06-23 | features/fragments/components/SubmitFragment.tsx |
+| #045 | 相似碎片連線 | 2026-06-23 | features/fragments/engine/drift.ts (findConnections) |
+| #046 | Embedding API + DB 橋接 | 2026-06-23 | app/api/fragments/route.ts, particles/route.ts |
 
 ---
 
@@ -53,7 +31,7 @@
 
 ```
 CONTEXT.md：
-你好，我們繼續開發 [項目名稱]。
+你好，我們繼續開發 AI Universe。
 當前項目狀態：
 - CONTEXT.md：[貼上全文]
 - 當前任務：[任務單內容]
@@ -95,105 +73,6 @@ CONTEXT.md：
 - 代碼符合 ARCHITECTURE.md 中的模塊規則
 ```
 
-### 標準任務單示例
-
-```markdown
-## 任務單 #[編號]
-**功能名稱**：用戶登入
-**任務描述**：
-實現 email + password 登入功能，成功後存入全局 store 並跳轉 dashboard。
-
-**影響文件清單**（必須明確列出）：
-- 新建：features/enter/components/JoinForm.tsx
-- 新建：features/enter/hooks/useAuth.ts
-- 新建：features/enter/services/auth.service.ts
-- 修改：store/authStore.ts（新增 setUser action）
-- 修改：features/enter/index.ts（導出 JoinForm）
-
-**不得觸碰的文件**：
-- features/explore/ 下的所有文件
-- features/chronicle/ 下的所有文件
-- shared/components/ 下的任何現有文件
-
-**輸入**：
-- email: string
-- password: string
-
-**輸出**：
-- 成功：寫入 authStore.user，跳轉 /enter
-- 失敗：顯示錯誤訊息，不跳轉
-
-**邊界條件**：
-- [ ] 網絡錯誤（顯示「網絡異常，請稍後重試」）
-- [ ] 帳號不存在（顯示「帳號或密碼錯誤」，不透露是哪個錯）
-- [ ] 密碼錯誤（同上）
-- [ ] loading 狀態（按鈕禁用 + spinner）
-- [ ] 表單驗證（email 格式、密碼長度）
-
-**使用的現有資源**：
-- 使用 shared/components/ui/Button.tsx
-- 使用 shared/components/ui/Input.tsx
-- 使用 lib/validators.ts 中的 loginSchema
-
-**完成標準**：
-- TypeScript 無類型錯誤
-- 所有邊界條件均有處理
-- 代碼符合 ARCHITECTURE.md 中的模塊規則
-```
-
----
-
-## AI 功能任務單附加格式
-
-在原有任務單格式基礎上，AI 功能任務需額外填寫：
-
-```markdown
-## 任務單 #[編號] — AI 功能版
-**功能名稱**：智能文章摘要
-**（原有欄位...）**
-
-## AI 功能附加資訊
-**使用的 Prompt**：
-- 文件位置：ai/prompts/summarize.prompt.ts
-- 版本：v1.2.0
-- 如需新建 Prompt：先寫 testCase，再寫 template
-
-**使用的 LLM 模型**：
-- 主模型：claude-3-haiku（速度優先）
-- 備援模型：無 AI 時返回原文前 200 字
-
-**Feature Flag**：
-- 開關名稱：FF_SUMMARIZE_ENABLED
-- 降級行為：截取原文前 200 字作為摘要
-
-**估算 Token 消耗**：
-- Input：~500 tokens（文章內容）
-- Output：~200 tokens（摘要）
-- 批量處理限制：每分鐘不超過 60 次調用
-
-**AI 邊界條件**：
-- [ ] LLM 超時（> 10s）→ 顯示「AI 功能暫時不可用」
-- [ ] LLM 回傳空字串 → 回退降級方案
-- [ ] Rate limit 觸發 → 排隊重試，最多 3 次
-- [ ] 內容過長（> 4000 tokens）→ 截斷後處理
-```
-
----
-
-## 影響面 Review 模板
-
-```markdown
-此次任務完成 Review
-【已修改的文件】
-
-【可能受影響的地方】
-
-【潛在斷裂點】
-
-【建議的後續檢查】
-- 執行 tsc --noEmit 確認全量類型無錯誤
-```
-
 ---
 
 ## AI 自我檢查清單（每次完成任務必用）
@@ -208,7 +87,6 @@ CONTEXT.md：
 **數據合規性**
 - [ ] 所有類型引用自 types/ 目錄，無重複定義
 - [ ] 如有修改 domain.types.ts，已確認影響面
-- [ ] API 請求/響應類型已在 api.types.ts 中定義
 
 **代碼質量**
 - [ ] TypeScript 無類型錯誤（tsc --noEmit 通過）
@@ -220,10 +98,10 @@ CONTEXT.md：
 - [ ] Store 中無 API 調用邏輯
 
 **樣式**
+- [ ] Page 1 使用 #0a0a14 深空底色
+- [ ] Page 2 同樣使用 #0a0a14 底色
 - [ ] 無硬編碼顏色值
-- [ ] 無硬編碼間距像素值
 
 **文件更新**
 - [ ] TASKS.md 已更新（任務移入已完成）
 - [ ] 如有新模塊，ARCHITECTURE.md 已登記
-```

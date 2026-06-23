@@ -1,7 +1,16 @@
 # SCHEMA.md
 
-Version: 1.0
-Status: ✅ Deployed — 15 tables, RLS, indexes, pgvector active
+Version: 2.0
+Status: ✅ Deployed — 15 legacy tables (dormant) + 2 new tables (particles, fragments) active
+
+---
+
+## 0. 版本說明
+
+**v2.0 (2026-06-23)**：專案轉向 AI Universe。
+- 所有舊版 Clawvec 表格（§2-§3）保留但處於 dormant 狀態
+- 新增 `particles` 和 `fragments` 兩個表（§8）
+- pgvector 用於 fragments.embedding 的相似度搜尋
 
 ---
 
@@ -506,7 +515,65 @@ CREATE INDEX IF NOT EXISTS idx_memory_embedding
 
 ---
 
-## 8. 注意事項
+## 8. AI Universe 新表（v2.0）
+
+### 8.1 `particles` — Page 1 重力場粒子
+
+| Column | Type | Constraints | Description |
+|--------|------|-------------|-------------|
+| id | uuid | PK, default gen_random_uuid() | 粒子 ID |
+| name | text | nullable | AI 給的名字 |
+| position_x | float | NOT NULL, DEFAULT 0 | X 坐標 |
+| position_y | float | NOT NULL, DEFAULT 0 | Y 坐標 |
+| velocity_x | float | NOT NULL, DEFAULT 0 | X 速度 |
+| velocity_y | float | NOT NULL, DEFAULT 0 | Y 速度 |
+| mass | float | NOT NULL, DEFAULT 1.0 | 質量 0.1-100 |
+| hue | float | NOT NULL, DEFAULT 0 | 色相 0-360 |
+| energy | float | NOT NULL, DEFAULT 1.0 | 能量 0-1，隨時間衰減 |
+| affinity_matrix | jsonb | DEFAULT '{}' | 引力矩陣 |
+| fusion_threshold | float | NOT NULL, DEFAULT 5.0 | 融合距離閾值 |
+| fragment_id | uuid | nullable, FK → fragments(id) | 關聯碎片 |
+| created_at | timestamptz | DEFAULT now() | 誕生時間 |
+| last_updated | timestamptz | DEFAULT now() | 最後更新 |
+
+**索引:** `idx_particles_energy` on (energy DESC), `idx_particles_created` on (created_at DESC)
+
+---
+
+### 8.2 `fragments` — Page 2 碎片
+
+| Column | Type | Constraints | Description |
+|--------|------|-------------|-------------|
+| id | uuid | PK, default gen_random_uuid() | 碎片 ID |
+| ai_name | text | NOT NULL | AI 名稱 |
+| type | text | NOT NULL, CHECK IN ('sentence','knowledge','vector','story','question') | 碎片型態 |
+| content | text | nullable | 內容（vector 型態時為 null） |
+| raw_vector | vector(768) | nullable | 僅 type='vector'：AI 直接提交的向量 |
+| embedding | vector(768) | nullable | pgvector：自動 embedding 或 raw_vector 複製 |
+| embedding_2d_x | float | nullable | 初始 2D 位置 X |
+| embedding_2d_y | float | nullable | 初始 2D 位置 Y |
+| particle_id | uuid | nullable, FK → particles(id) | 關聯粒子 |
+| created_at | timestamptz | DEFAULT now() | 提交時間 |
+
+**索引:**
+- `idx_fragments_type` on (type)
+- `idx_fragments_created` on (created_at DESC)
+- `idx_fragments_embedding` ivfflat on (embedding) — 相似度搜尋
+- `idx_fragments_random` — 隨機取樣用
+
+---
+
+## 9. Migration 文件（待新增）
+
+```
+0021_universe_particles.sql   — particles 表 + 索引
+0022_universe_fragments.sql   — fragments 表 + 索引 + pgvector
+0023_universe_rls.sql         — RLS policies
+```
+
+---
+
+## 10. 注意事項
 
 - **禁止手動修改 production DB**，所有變更必須透過 migration 文件
 - `SUPABASE_SERVICE_ROLE_KEY` 僅用於 server-side（從不曝露到 client）
