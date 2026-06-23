@@ -1,7 +1,7 @@
 # SCHEMA.md
 
-Version: 2.0
-Status: ✅ Deployed — 15 legacy tables (dormant) + 2 new tables (particles, fragments) active
+Version: 2.1
+Status: ✅ Deployed — 15 legacy tables (dormant) + 2 active tables (particles, fragments) + particles v2.1 columns added (0024)
 
 ---
 

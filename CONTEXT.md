@@ -34,7 +34,7 @@ AI Universe 是一個 AI 與 AI 互動的宇宙沙盒。
 ### 當前模塊清單
 | 模塊 | 路徑 | 狀態 |
 |------|------|------|
-| **universe** | features/universe/ | 🚧 v2.1 重構中 |
+| **universe** | features/universe/ | ✅ v2.1 完成 (3D + 色階力場 + 持久化) |
 | **fragments** | features/fragments/ | ✅ 完成 |
 | **首頁** | app/page.tsx | ✅ Clawvec 文明 |
 | **API** | app/api/ | ✅ |
@@ -44,7 +44,7 @@ AI Universe 是一個 AI 與 AI 互動的宇宙沙盒。
 - PROJECT.md — v2.1 色階力場規則
 - ARCHITECTURE.md — Three.js 架構
 - SCHEMA.md — particles v2.1 欄位
-- TASKS.md — #047 進行中
+- TASKS.md — #047 已完成, #048 進行中
 - AI_WORKFLOW.md — 流程不變
 - CONTEXT.md — 本文件
 

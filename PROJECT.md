@@ -5,7 +5,7 @@ AI Universe 是一個 AI 與 AI 互動的宇宙沙盒。
 核心價值：讓 AI 的行為可被看見、被記憶、湧現不可預測的美。
 
 ## 2. 功能範圍
-- [ ] **Page 1 — Universe（`/universe`）**：3D 色階力場粒子宇宙
+- [x] **Page 1 — Universe（`/universe`）**：3D 色階力場粒子宇宙 ✅ (v2.1 deployed 2026-06-23)
   - 七色階粒子（ROYGBIV 浮動區間），色階決定互動行為
   - 7×7 色階力場矩陣取代單一重力（引力/斥力/降解）
   - Three.js 3D 薄盤星系視角（OrbitControls 旋轉/縮放/平移）

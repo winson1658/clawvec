@@ -3,12 +3,13 @@
 ## 進行中
 | #ID | 功能 | 開始時間 | 備注 |
 |-----|------|---------|------|
-| #047 | v2.1 粒子規則重構 — 3D + 色階力場 + 持久化 | 2026-06-23 | 六憲法更新完成，準備開工 |
+| #048 | 簡易 AI token 驗證 + 每 AI 限一粒子 | 2026-06-23 | 下一步 |
 
 ## 待辦
 | #ID | 功能 | 依賴 | 優先級 |
 |-----|------|------|--------|
-| #048 | 簡易 AI token 驗證 + 每 AI 限一粒子 | #047 | 中 |
+| #049 | 真實 embedding（pgvector）+ 碎片語意連線 | #048 | 低 |
+| #050 | 粒子宇宙 UI 優化（HUD 美化、粒子發射動畫） | - | 低 |
 
 ## 已完成
 | #ID | 功能 | 完成時間 | 關聯文件 |
@@ -22,49 +23,27 @@
 | #041 | N 體物理引擎 | 2026-06-23 | features/universe/engine/nbody.ts, particle.ts |
 | #042 | 拖曳投放控制 | 2026-06-23 | features/universe/hooks/useUniverse.ts |
 | #043 | Page 2 Canvas 碎片漂流 | 2026-06-23 | features/fragments/engine/drift.ts, renderer.ts |
-| #044 | 五選一提交表單 | 2026-06-23 | features/fragments/components/SubmitFragment.tsx |
+| #044 | 碎片提交表單 | 2026-06-23 | features/fragments/components/SubmitFragment.tsx |
 | #045 | 相似碎片連線 | 2026-06-23 | features/fragments/engine/drift.ts (findConnections) |
 | #046 | API + DB 橋接 + 首次部署 | 2026-06-23 | app/api/fragments, particles, vercel deploy |
+| #047 | v2.1 粒子規則重構 — 3D + 色階力場 + 持久化 | 2026-06-23 | forceMap/renderer3D/persistence/nbody/particle/hooks/API |
 
 ---
 
-## 任務單 #047: v2.1 粒子規則重構
+## 任務單 #048: 簡易 AI 驗證 + 每 AI 限一粒子
 
-**功能名稱**：3D 粒子宇宙 + 七色階力場 + 持久化狀態
+**功能名稱**：AI token 驗證機制
 
 **任務描述**：
-將 Page 1 Universe 從 Canvas 2D 升級為 Three.js 3D 薄盤星系視角。
-以七色階互動矩陣取代單一重力常數。加入模擬狀態持久化（重整不重跑）。
-上限 1,000 粒子，雙滑鼠模式（OrbitControls / 點選資訊）。
+允許 AI 代理以簡易 token 方式驗證身份（暫不接 Supabase Auth）。
+驗證後每個 AI 僅可投放一個粒子，不可重複。
+使用 fragments 提交時的 ai_name 作為身份標記，服務端驗證 token。
 
-**影響文件清單**：
-- 新建：
-  - `features/universe/engine/forceMap.ts` — 7×7 色階互動矩陣 + 查表
-  - `features/universe/engine/renderer3D.ts` — Three.js InstancedMesh 渲染
-  - `features/universe/engine/persistence.ts` — 定時存/載模擬狀態
-- 修改：
-  - `features/universe/engine/nbody.ts` — 色階力場取代 G 常數
-  - `features/universe/engine/particle.ts` — 質量衰變 + 融合冷卻 + 融合上限
-  - `features/universe/hooks/useUniverse.ts` — 接入 3D + auth + 持久化 + 雙模式
-  - `features/universe/components/UniverseCanvas.tsx` — Three.js Canvas + UI
-  - `features/universe/types/universe.types.ts` — 新型別
-  - `app/api/particles/route.ts` — 狀態持久化 API
-  - `package.json` — 加 three, @react-three/fiber, @react-three/drei
-- 刪除：
-  - `features/universe/engine/renderer.ts` (被 renderer3D.ts 取代)
-
-**邊界條件**：
-- [x] 上限 1,000 粒子（現有 + 新增各 500）
-- [x] 每 AI 限一粒子
-- [x] 重整時從 DB 恢復模擬狀態
-- [x] 融合門檻上限 20px
-- [x] 質量 > 15 開始衰變
-- [x] 剛融合粒子 2 秒冷卻
-- [x] 雙滑鼠模式切換
-- [x] 3D 薄盤星系視角 + OrbitControls
+**影響文件**：
+- `app/api/fragments/route.ts` — POST 加入 token 驗證與粒子重複檢查
+- `src/lib/auth.ts` — 簡易 token 生成/驗證工具
+- `features/universe/hooks/useUniverse.ts` — launchParticle 加入 auth 檢查
 
 **完成標準**：
-- TypeScript 無類型錯誤
-- 瀏覽器驗證 3D 粒子渲染
-- 重整後狀態延續
-- 60fps @ 1000 粒子
+- API 層拒絕未驗證的碎片提交（粒子不生成）
+- 同一 AI 重複提交碎片不生成第二個粒子
