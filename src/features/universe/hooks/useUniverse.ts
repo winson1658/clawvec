@@ -54,62 +54,73 @@ export function useUniverse() {
 
     setIsLoading(true)
 
-    // Init 3D renderer
-    initRenderer(canvas, (dt) => {
-      const result = simulateStep(
-        particlesRef.current,
-        dt,
-        800, // logical width
-        600, // logical height
-      )
-      particlesRef.current = enforceLimit(result.particles)
-      if (result.fusions.length > 0) {
-        fusionsRef.current = [
-          ...fusionsRef.current.slice(-20),
-          ...result.fusions,
-        ]
-      }
+    console.log('[useUniverse] init start, canvas:', canvas.width, canvas.height)
 
-      // Render
-      renderFrame({
-        particles: particlesRef.current,
-        fusions: fusionsRef.current.filter(
-          (f) => Date.now() - f.timestamp < 3000,
-        ),
-        viewMode,
-        selectedParticleId: selectedParticle?.id ?? null,
-      })
+    try {
+      // Init 3D renderer
+      initRenderer(canvas, (dt) => {
+        const result = simulateStep(
+          particlesRef.current,
+          dt,
+          800, // logical width
+          600, // logical height
+        )
+        particlesRef.current = enforceLimit(result.particles)
+        if (result.fusions.length > 0) {
+          fusionsRef.current = [
+            ...fusionsRef.current.slice(-20),
+            ...result.fusions,
+          ]
+        }
 
-      // Schedule persistence
-      scheduleSave(particlesRef.current, async (particles) => {
-        await batchUpsertParticles(particles).catch(() => {})
-      })
-
-      // Update stats throttled
-      if (Math.random() < 0.05) {
-        setStats({
-          particles: particlesRef.current.length,
-          clusters: countClusters(particlesRef.current),
-          fusions: fusionsRef.current.length,
+        // Render
+        renderFrame({
+          particles: particlesRef.current,
+          fusions: fusionsRef.current.filter(
+            (f) => Date.now() - f.timestamp < 3000,
+          ),
+          viewMode,
+          selectedParticleId: selectedParticle?.id ?? null,
         })
-      }
-    })
 
-    // Setup OrbitControls
-    const camera = getCamera()
-    const dom = getRendererDom()
-    const controls = new OrbitControls(camera, dom)
-    controls.enableDamping = true
-    controls.dampingFactor = 0.08
-    controls.minDistance = 100
-    controls.maxDistance = 1500
-    controls.maxPolarAngle = Math.PI * 0.6
-    controls.target.set(400, 300, 0)
-    controls.update()
-    controlsRef.current = controls
+        // Schedule persistence
+        scheduleSave(particlesRef.current, async (particles) => {
+          await batchUpsertParticles(particles).catch(() => {})
+        })
+
+        // Update stats throttled
+        if (Math.random() < 0.05) {
+          setStats({
+            particles: particlesRef.current.length,
+            clusters: countClusters(particlesRef.current),
+            fusions: fusionsRef.current.length,
+          })
+        }
+      })
+      console.log('[useUniverse] initRenderer done')
+
+      // Setup OrbitControls
+      const camera = getCamera()
+      const dom = getRendererDom()
+      const controls = new OrbitControls(camera, dom)
+      controls.enableDamping = true
+      controls.dampingFactor = 0.08
+      controls.minDistance = 100
+      controls.maxDistance = 1500
+      controls.maxPolarAngle = Math.PI * 0.6
+      controls.target.set(400, 300, 0)
+      controls.update()
+      controlsRef.current = controls
+
+    } catch (err) {
+      console.error('[useUniverse] init error:', err)
+      setIsLoading(false)
+      return
+    }
 
     // Load particles from DB
     fetchParticles(500).then((rows) => {
+      console.log('[useUniverse] fetchParticles done, rows:', rows.length)
       if (rows.length > 0) {
         particlesRef.current = mapDbToParticles(rows, 800, 600)
       } else {
@@ -117,14 +128,15 @@ export function useUniverse() {
         particlesRef.current = createDemoParticles(49, 800, 600) // 7 colors × 7 each
       }
       setIsLoading(false)
-    }).catch(() => {
+    }).catch((err) => {
+      console.error('[useUniverse] fetchParticles error:', err)
       particlesRef.current = createDemoParticles(49, 800, 600)
       setIsLoading(false)
     })
 
     return () => {
       stopRenderer()
-      controls.dispose()
+      if (controlsRef.current) controlsRef.current.dispose()
     }
   }, [])
 
