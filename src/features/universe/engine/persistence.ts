@@ -2,6 +2,7 @@
 // Batch save/load simulation state to Supabase
 
 import type { ParticleData } from '../types/universe.types'
+import { hueToTier } from './forceMap'
 
 const SAVE_INTERVAL = 10000 // 10 seconds
 const MAX_PARTICLES = 1000
@@ -90,7 +91,7 @@ export function mapDbToParticles(
     vz: r.vz ?? 0,
     mass: r.mass,
     hue: r.hue,
-    colorTier: (r.color_tier as ParticleData['colorTier']) || 'red',
+    colorTier: hueToTier(r.hue),
     energy: r.energy,
     fusionThreshold: r.fusion_threshold,
     fusionCooldownUntil: r.fusion_cooldown_until
