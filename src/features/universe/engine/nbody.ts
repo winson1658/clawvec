@@ -3,7 +3,7 @@
 
 import type { ParticleData, FusionEvent } from '../types/universe.types'
 import { getForceMultiplier, isDegrade } from './forceMap'
-import { decayParticle, fuseParticles, isDead, isInCooldown } from './particle'
+import { decayParticle, fuseParticles, isDead, isInCooldown, createSeedParticles } from './particle'
 
 // Simulation constants
 const BASE_G = 200         // base gravitational constant (reduced from 800)
@@ -213,6 +213,5 @@ export function createDemoParticles(
   width: number,
   height: number,
 ): ParticleData[] {
-  const { createSeedParticles } = require('./particle')
   return createSeedParticles(Math.min(count, 50), width, height)
 }
