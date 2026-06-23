@@ -54,8 +54,6 @@ export function useUniverse() {
 
     setIsLoading(true)
 
-    console.log('[useUniverse] init start, canvas:', canvas.width, canvas.height)
-
     try {
       // Init 3D renderer
       initRenderer(canvas, (dt) => {
@@ -97,7 +95,6 @@ export function useUniverse() {
           })
         }
       })
-      console.log('[useUniverse] initRenderer done')
 
       // Setup OrbitControls
       const camera = getCamera()
@@ -120,7 +117,6 @@ export function useUniverse() {
 
     // Load particles from DB
     fetchParticles(500).then((rows) => {
-      console.log('[useUniverse] fetchParticles done, rows:', rows.length)
       if (rows.length > 0) {
         particlesRef.current = mapDbToParticles(rows, 800, 600)
       } else {
