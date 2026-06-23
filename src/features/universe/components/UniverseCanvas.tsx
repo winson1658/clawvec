@@ -12,6 +12,7 @@ export function UniverseCanvas() {
     selectedParticle,
     tooltip,
     isLoading,
+    debugInfo,
     handleClick,
     launchParticle,
   } = useUniverse()
@@ -37,6 +38,10 @@ export function UniverseCanvas() {
         <div>Particles: <span className="text-[#FF5A3C]">{stats.particles}</span></div>
         <div>Clusters: {stats.clusters}</div>
         <div>Fusions: {stats.fusions}</div>
+        <div className="text-white/40 text-xs mt-2">
+          Frames: {debugInfo.frames}
+          {debugInfo.error && <span className="text-red-400 ml-2">ERR: {debugInfo.error}</span>}
+        </div>
       </div>
 
       {/* Mode toggle */}

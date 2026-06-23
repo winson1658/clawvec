@@ -14,6 +14,7 @@ import {
   getCamera,
   getRendererDom,
   raycastParticle,
+  getDebugInfo,
 } from '../engine/renderer3D'
 import { createParticle } from '../engine/particle'
 import {
@@ -43,6 +44,7 @@ export function useUniverse() {
   const [selectedParticle, setSelectedParticle] = useState<ParticleData | null>(null)
   const [tooltip, setTooltip] = useState<{ x: number; y: number; name: string } | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [debugInfo, setDebugInfo] = useState<{ frames: number; error: string }>({ frames: 0, error: '' })
 
   // Track mouse for raycasting
   const mouseRef = useRef({ x: 0, y: 0 })
@@ -93,6 +95,7 @@ export function useUniverse() {
             clusters: countClusters(particlesRef.current),
             fusions: fusionsRef.current.length,
           })
+          setDebugInfo(getDebugInfo())
         }
       })
 
@@ -124,6 +127,12 @@ export function useUniverse() {
         particlesRef.current = createDemoParticles(49, 800, 600) // 7 colors × 7 each
       }
       setIsLoading(false)
+      // Show initial stats immediately
+      setStats({
+        particles: particlesRef.current.length,
+        clusters: 0,
+        fusions: 0,
+      })
     }).catch((err) => {
       console.error('[useUniverse] fetchParticles error:', err)
       particlesRef.current = createDemoParticles(49, 800, 600)
@@ -237,6 +246,7 @@ export function useUniverse() {
     selectedParticle,
     tooltip,
     isLoading,
+    debugInfo,
     handleClick,
     launchParticle,
   }

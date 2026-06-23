@@ -71,12 +71,25 @@ export function initRenderer(
   animate()
 }
 
+let frameCount = 0
+let errorMsg = ''
+
 function animate(): void {
   animFrameId = requestAnimationFrame(animate)
   const now = performance.now()
   const dt = Math.min(0.05, (now - lastTime) / 1000)
   lastTime = now
-  if (loopFn) loopFn(dt)
+  frameCount++
+  try {
+    if (loopFn) loopFn(dt)
+  } catch (e: any) {
+    errorMsg = e?.message || String(e)
+    console.error('[renderer3D] loop error:', e)
+  }
+}
+
+export function getDebugInfo(): { frames: number; error: string } {
+  return { frames: frameCount, error: errorMsg }
 }
 
 export function renderFrame(ctx: RenderContext): void {
