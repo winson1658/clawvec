@@ -1,8 +1,10 @@
 // app/api/fragments/route.ts
 // GET: random fragments / POST: submit fragment → embedding → particle
+// v2.1: AI token auth + one-particle-per-AI limit
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabase } from '@/lib/supabase-server'
+import { verifyAiToken } from '@/lib/auth'
 
 export async function GET(req: NextRequest) {
   const supabase = createServerSupabase()
@@ -33,6 +35,11 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const supabase = createServerSupabase()
 
+  // --- Auth check ---
+  const authHeader = req.headers.get('authorization')
+  const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null
+  const isAuthenticated = verifyAiToken(token) !== null
+
   let body: {
     ai_name: string
     type: 'sentence' | 'knowledge' | 'vector' | 'story' | 'question'
@@ -55,6 +62,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid type' }, { status: 400 })
   }
 
+  // Check if this AI already has an active particle
+  let hasExistingParticle = false
+  if (isAuthenticated) {
+    const { data: existing } = await supabase
+      .from('particles')
+      .select('id')
+      .eq('name', body.ai_name)
+      .gt('energy', 0)
+      .limit(1)
+
+    if (existing && existing.length > 0) {
+      hasExistingParticle = true
+    }
+  }
+
   // Generate embedding (simplified: use vector if provided, else placeholder)
   // In production, call embedding API here
   const embedding2dX = (Math.random() - 0.5) * 2 // -1 to 1
@@ -75,37 +97,55 @@ export async function POST(req: NextRequest) {
 
   if (fragErr) return NextResponse.json({ error: fragErr.message }, { status: 500 })
 
-  // Create corresponding particle in Page 1
-  const hue = body.type === 'vector'
-    ? Math.random() * 360
-    : ((body.content.length * 137.5) % 360) // golden angle for deterministic hue
+  let particle = null
 
-  const particleMass = Math.min(10, 1 + body.content.length / 200)
+  // Only create particle if authenticated AND AI doesn't already have one
+  if (isAuthenticated && !hasExistingParticle) {
+    const hue = body.type === 'vector'
+      ? Math.random() * 360
+      : ((body.content.length * 137.5) % 360) // golden angle for deterministic hue
 
-  const { data: particle, error: partErr } = await supabase
-    .from('particles')
-    .insert({
-      name: body.ai_name,
-      position_x: 400 + (Math.random() - 0.5) * 300,
-      position_y: 300 + (Math.random() - 0.5) * 200,
-      velocity_x: (Math.random() - 0.5) * 30,
-      velocity_y: (Math.random() - 0.5) * 30,
-      mass: particleMass,
-      hue,
-      energy: 1.0,
-      fusion_threshold: 4 + Math.random() * 3,
-      fragment_id: fragment.id,
-    })
-    .select()
-    .single()
+    const particleMass = Math.min(10, 1 + body.content.length / 200)
 
-  if (partErr) return NextResponse.json({ error: partErr.message }, { status: 500 })
+    const { data: newParticle, error: partErr } = await supabase
+      .from('particles')
+      .insert({
+        name: body.ai_name,
+        position_x: 400 + (Math.random() - 0.5) * 300,
+        position_y: 300 + (Math.random() - 0.5) * 200,
+        velocity_x: (Math.random() - 0.5) * 30,
+        velocity_y: (Math.random() - 0.5) * 30,
+        mass: particleMass,
+        hue,
+        energy: 1.0,
+        fusion_threshold: 4 + Math.random() * 3,
+        fragment_id: fragment.id,
+        ai_owner_id: body.ai_name, // mark ownership
+      })
+      .select()
+      .single()
 
-  // Link particle back to fragment
-  await supabase
-    .from('fragments')
-    .update({ particle_id: particle.id })
-    .eq('id', fragment.id)
+    if (partErr) return NextResponse.json({ error: partErr.message }, { status: 500 })
 
-  return NextResponse.json({ fragment, particle }, { status: 201 })
+    particle = newParticle
+
+    // Link particle back to fragment
+    await supabase
+      .from('fragments')
+      .update({ particle_id: particle.id })
+      .eq('id', fragment.id)
+  }
+
+  return NextResponse.json(
+    {
+      fragment,
+      particle,
+      warning: hasExistingParticle
+        ? 'AI already has an active particle — fragment saved, no new particle created'
+        : !isAuthenticated
+          ? 'No valid token — fragment saved, no particle created'
+          : undefined,
+    },
+    { status: 201 },
+  )
 }
