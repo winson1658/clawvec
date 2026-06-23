@@ -1,6 +1,6 @@
 // features/universe/engine/renderer3D.ts
 // Three.js Points renderer for particle universe v2.1
-// Switched from InstancedMesh to Points for reliable per-particle coloring
+// Simple colored dots — no fancy blending, just big visible particles
 
 import * as THREE from 'three'
 import type { ParticleData, FusionEvent } from '../types/universe.types'
@@ -12,7 +12,6 @@ let renderer: THREE.WebGLRenderer
 let points: THREE.Points
 let positions: Float32Array
 let colors: Float32Array
-let sizes: Float32Array
 let bufferGeo: THREE.BufferGeometry
 let animFrameId: number | null = null
 let loopFn: ((dt: number) => void) | null = null
@@ -50,7 +49,27 @@ export function initRenderer(
   renderer.setSize(width, height, false)
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
-  // Stars background (small white dots behind everything)
+  // === DEBUG: Large glowing test spheres to verify the renderer works ===
+  const debugGeo = new THREE.SphereGeometry(80, 16, 12)
+  const debugMat = new THREE.MeshBasicMaterial({ color: 0xff4444 })
+  const debugSphere = new THREE.Mesh(debugGeo, debugMat)
+  debugSphere.position.set(100, 100, 0)
+  scene.add(debugSphere)
+
+  const debugGeo2 = new THREE.SphereGeometry(60, 16, 12)
+  const debugMat2 = new THREE.MeshBasicMaterial({ color: 0x44ff44 })
+  const debugSphere2 = new THREE.Mesh(debugGeo2, debugMat2)
+  debugSphere2.position.set(700, 500, 0)
+  scene.add(debugSphere2)
+
+  const debugGeo3 = new THREE.SphereGeometry(50, 16, 12)
+  const debugMat3 = new THREE.MeshBasicMaterial({ color: 0x4444ff })
+  const debugSphere3 = new THREE.Mesh(debugGeo3, debugMat3)
+  debugSphere3.position.set(400, 300, -50)
+  scene.add(debugSphere3)
+  // === END DEBUG ===
+
+  // Stars background
   const starsGeo = new THREE.BufferGeometry()
   const starPositions = new Float32Array(2000 * 3)
   for (let i = 0; i < 2000; i++) {
@@ -59,50 +78,41 @@ export function initRenderer(
     starPositions[i * 3 + 2] = -100 - Math.random() * 500
   }
   starsGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3))
-  const starsMat = new THREE.PointsMaterial({ color: 0x8888aa, size: 1.5 })
+  const starsMat = new THREE.PointsMaterial({ color: 0x8888aa, size: 3 })
   scene.add(new THREE.Points(starsGeo, starsMat))
 
-  // Grid ring for orientation
+  // Grid ring
   const grid = new THREE.PolarGridHelper(400, 32, 24, 64, 0x333355, 0x222244)
   scene.add(grid)
 
-  // Test sphere — verify renderer works
-  const testGeo = new THREE.SphereGeometry(20, 16, 12)
-  const testMat = new THREE.MeshBasicMaterial({ color: 0xff0000 })
-  const testSphere = new THREE.Mesh(testGeo, testMat)
-  testSphere.position.set(400, 300, 0)
-  scene.add(testSphere)
-
-  // Particle points
+  // Particle points — BIG, simple, no additive blending
   positions = new Float32Array(MAX_PARTICLES * 3)
   colors = new Float32Array(MAX_PARTICLES * 3)
-  sizes = new Float32Array(MAX_PARTICLES)
 
   bufferGeo = new THREE.BufferGeometry()
   bufferGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3))
   bufferGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3))
-  bufferGeo.setAttribute('size', new THREE.BufferAttribute(sizes, 1))
   bufferGeo.setDrawRange(0, 0)
 
-  // Use a circular sprite texture for soft dots
+  // Soft circle sprite
   const spriteCanvas = document.createElement('canvas')
-  spriteCanvas.width = 32
-  spriteCanvas.height = 32
+  spriteCanvas.width = 64
+  spriteCanvas.height = 64
   const ctx = spriteCanvas.getContext('2d')!
-  const gradient = ctx.createRadialGradient(16, 16, 0, 16, 16, 16)
+  const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32)
   gradient.addColorStop(0, 'rgba(255,255,255,1)')
-  gradient.addColorStop(0.2, 'rgba(255,255,255,0.9)')
-  gradient.addColorStop(0.5, 'rgba(255,255,255,0.3)')
+  gradient.addColorStop(0.3, 'rgba(255,255,255,0.8)')
+  gradient.addColorStop(0.7, 'rgba(255,255,255,0.15)')
   gradient.addColorStop(1, 'rgba(255,255,255,0)')
   ctx.fillStyle = gradient
-  ctx.fillRect(0, 0, 32, 32)
+  ctx.fillRect(0, 0, 64, 64)
   const spriteTexture = new THREE.CanvasTexture(spriteCanvas)
 
   const pointsMat = new THREE.PointsMaterial({
-    size: 12,
+    size: 25,               // BIG dots
     map: spriteTexture,
     vertexColors: true,
-    blending: THREE.AdditiveBlending,
+    blending: THREE.NormalBlending,  // No additive — just normal
     depthWrite: false,
     transparent: true,
   })
@@ -136,8 +146,6 @@ export function renderFrame(ctx: RenderContext): void {
     colors[i * 3] = r / 255
     colors[i * 3 + 1] = g / 255
     colors[i * 3 + 2] = b / 255
-
-    sizes[i] = Math.max(6, Math.min(24, p.mass * 6))
   }
 
   // Hide unused
@@ -148,12 +156,10 @@ export function renderFrame(ctx: RenderContext): void {
     colors[i * 3] = 0
     colors[i * 3 + 1] = 0
     colors[i * 3 + 2] = 0
-    sizes[i] = 0
   }
 
   bufferGeo.attributes.position.needsUpdate = true
   bufferGeo.attributes.color.needsUpdate = true
-  bufferGeo.attributes.size.needsUpdate = true
   bufferGeo.setDrawRange(0, count)
 
   renderer.render(scene, camera)
@@ -196,7 +202,7 @@ export function raycastParticle(
   canvas: HTMLCanvasElement,
 ): ParticleData | null {
   const raycaster = new THREE.Raycaster()
-  raycaster.params.Points.threshold = 20
+  raycaster.params.Points.threshold = 30
 
   const rect = canvas.getBoundingClientRect()
   const ndc = new THREE.Vector2(
