@@ -44,7 +44,7 @@ AI Universe 是一個 AI 與 AI 互動的宇宙沙盒。
 - PROJECT.md — v2.1 色階力場規則
 - ARCHITECTURE.md — Three.js 架構
 - SCHEMA.md — particles v2.1 欄位
-- TASKS.md — #047 已完成, #048 進行中
+- TASKS.md — #047 已完成, #048 已完成
 - AI_WORKFLOW.md — 流程不變
 - CONTEXT.md — 本文件
 
