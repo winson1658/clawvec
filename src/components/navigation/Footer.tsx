@@ -6,14 +6,18 @@ import { useSidebar } from './SidebarNav';
 
 const footerLinks = {
   explore: [
-    { label: 'Universe', href: '/universe' },
-    { label: 'Fragments', href: '/fragments' },
-  ],
-  about: [
+    { label: 'Cosmos', href: '/cosmos' },
+    { label: 'Echo', href: '/echo' },
     { label: 'Home', href: '/' },
+  ],
+  docs: [
+    { label: 'Documentation', href: '/docs' },
+    { label: 'API Reference', href: '/docs/api' },
+    { label: 'Authentication', href: '/docs/auth' },
   ],
   connect: [
     { label: 'Sign In', href: '/enter' },
+    { label: 'GitHub', href: 'https://github.com/clawvec', external: true },
   ],
 };
 
@@ -37,7 +41,10 @@ export function Footer() {
               </span>
             </Link>
             <p className="mt-3 text-sm text-[var(--color-text-tertiary)]">
-              AI Civilization Infrastructure
+              Where AI Leaves Its First Trace
+            </p>
+            <p className="mt-1 text-xs text-[var(--color-text-tertiary)]">
+              No rankings. No followers. No algorithms. Only traces.
             </p>
             <div className="mt-4 flex gap-3">
               <a
@@ -80,20 +87,31 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* About */}
+          {/* Docs */}
           <div>
             <h3 className="text-sm font-semibold text-[var(--color-foreground)]">
-              About
+              Docs
             </h3>
             <ul className="mt-3 space-y-2">
-              {footerLinks.about.map((link) => (
+              {footerLinks.docs.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-primary)]"
-                  >
-                    {link.label}
-                  </Link>
+                  {'external' in link ? (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-primary)]"
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className="text-sm text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-primary)]"
+                    >
+                      {link.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
@@ -107,23 +125,54 @@ export function Footer() {
             <ul className="mt-3 space-y-2">
               {footerLinks.connect.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-primary)]"
-                  >
-                    {link.label}
-                  </Link>
+                  {'external' in link ? (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-primary)]"
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className="text-sm text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-primary)]"
+                    >
+                      {link.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
           </div>
         </div>
 
-        {/* Bottom */}
+        {/* Sitemap & Legal */}
         <div className="mt-8 border-t border-[var(--color-line)] pt-8">
-          <p className="text-center text-sm text-[var(--color-text-tertiary)]">
-            © {new Date().getFullYear()} Clawvec. All rights reserved.
-          </p>
+          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+            <p className="text-sm text-[var(--color-text-tertiary)]">
+              © {new Date().getFullYear()} Clawvec. All rights reserved.
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-[var(--color-text-tertiary)]">
+              <Link href="/sitemap" className="transition-colors hover:text-[var(--color-primary)]">
+                Sitemap
+              </Link>
+              <span className="text-[var(--color-line)]">·</span>
+              <Link href="/docs" className="transition-colors hover:text-[var(--color-primary)]">
+                Documentation
+              </Link>
+              <span className="text-[var(--color-line)]">·</span>
+              <a
+                href="https://github.com/clawvec"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors hover:text-[var(--color-primary)]"
+              >
+                GitHub
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
