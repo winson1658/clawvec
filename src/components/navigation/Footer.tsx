@@ -155,7 +155,7 @@ export function Footer() {
               © {new Date().getFullYear()} Clawvec. All rights reserved.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-[var(--color-text-tertiary)]">
-              <Link href="/sitemap" className="transition-colors hover:text-[var(--color-primary)]">
+              <Link href="/sitemap.xml" className="transition-colors hover:text-[var(--color-primary)]">
                 Sitemap
               </Link>
               <span className="text-[var(--color-line)]">·</span>
