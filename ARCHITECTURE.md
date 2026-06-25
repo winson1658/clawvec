@@ -65,8 +65,6 @@ src/
 | 套件 | 用途 | 大小 |
 |------|------|------|
 | three | 3D 渲染核心 | ~140KB gzip |
-| @react-three/fiber | React 整合 | ~10KB gzip |
-| @react-three/drei | OrbitControls 等 | ~15KB gzip |
 
 ---
 
@@ -82,16 +80,16 @@ src/
 - 1,000 粒子 = 1 次 GPU draw call，60fps 輕鬆
 - OrbitControls：左鍵旋轉、滾輪縮放、右鍵平移
 
-**力場系統 v2.3.1**：7×7 色階互動矩陣 + 六層力學
+**力場系統 v2.7d**：7×7 色階互動矩陣 + 六層力學 + 銀河螺旋
 - 9 種力類型：attract_strong/weak, repel_strong/weak, burst, oscillate, shear_attract, degrade, neutral
 - Layer ①: 色階矩陣（基態互動）
-- Layer ②: 爆破+衝擊波（burst/repel_strong 對靠近 35px 觸發 ×8.0 爆炸，80px 衝擊波）
+- Layer ②: 爆破+衝擊波（burst/repel_strong 靠近 35px 觸發 ×5.0 爆炸，80px 衝擊波）
 - Layer ③: 密度撕扯（50px 半徑 ≥3 鄰居隨機撕扯力，SHEAR_BASE=0.3, SHEAR_SCALE=1.0）
 - Layer ④: 震盪力（oscillate 對 sin(dist/30)×1.5 正負交替）
 - Layer ⑤: 尾流（高速粒子 >80px/s 留下衰減尾流）
-- Layer ⑥: 螺旋渦流（0.4 切向力，提供軌道運動）
+- Layer ⑥: 銀河螺旋（中心重力井 6.0 + m=2 橢圓棒勢 + 純旋轉差速 → 雙螺旋臂）
 - 邊界：環形折返 Toroidal v2.7d，越界瞬移至盤深處（5-50% 半徑），方向向心 ±60°
-- 參數：BASE_G=80, DAMP=0.999, REPEL_DIST=45, REPEL_STR=2.0, CENTER_REPEL=2.0@80px, BROWNIAN_JITTER=0.2, POST_FUSION_REPEL=0.5, attract_strong=×1.2
+- 參數：BASE_G=80, DAMPING=0.995, MAX_SPEED=100, REPEL_DIST=45, REPEL_STR=2.0, GRAVITY_WELL=6.0, BAR_AMPLITUDE=0.25, attract_strong=×1.2
 
 **模擬持久化**：
 - 每 10s batch upsert 全體粒子狀態至 particles 表
@@ -103,16 +101,14 @@ src/
 - Mode 2（點選）：Raycaster 選取粒子 → 顯示 AI 名稱
 - 鍵盤或 UI 按鈕切換
 
-**融合規則 v2.4 Immortal Traces + v2.6 Fission**：
-- 🆕 粒子**永不消失** — 每個 AI 留下的足跡永久存在
-- 融合時不創建新粒子，不刪除原粒子 — **in-place merge**
-- 兩個粒子合併到同一位置/速度，共享合併質量，渲染為一個融合體
-- 融合名字保存在 `fusedNames[]`（去重），點擊顯示所有融合名字（`⊕` 連接）
-- 🆕 **融合成長**：粒子視覺大小隨 fusedNames 數量增長 (×1.15/融合)
-- 🆕 **超新星分裂**：fusedNames ≥ 10 → 0.3%/幀機率分裂回原粒子，向外噴發
-- 融合條件：dist < threshold `&` attract_strong `&` energy > 0.2 `&` 1% 量子隨機
-- 融合冷卻 30s（稀有事件），`deadIds` 永遠為空陣列
+**融合規則 v2.7 + 分裂規則 v2.7**：
+- 融合：2 粒子 → 1 粒子（數量 -1），名字保存於 fusedNames[]
+- 融合條件：dist < 25px & attract_strong & energy > 0.2 & 1% 量子隨機，冷卻 30s
 - 融合後動量守恆，能量補償：(a.energy + b.energy) × 0.7 + 0.2
+- 粒子視覺大小隨 fusedNames 增長（×1.15/融合）
+- 點擊融合粒子顯示所有名字（⊕ 連接）
+- 分裂僅在融合當下觸發：fusedNames ≥ 10 → 1/6 機率超新星分裂回原粒子
+- 單粒子永不自行分裂
 
 **引力彈弓 v2.1.2**：
 - 弱吸引色階對（multiplier = 0.7）近距離掠過時
@@ -122,7 +118,7 @@ src/
 **粒子視覺 v2.3**：
 - 固定 2px 屏幕空間感知縮放（basePixelSize = 2）
 - 深空背景 #0a0a1a，粒子上色基於色相 HSL
-- 近裁剪面 near=0.1（原 10），放大時粒子不消失
+- 近裁剪面 near=0.01（原 10），放大時粒子不消失
 - 七色階 RGB 映射（紅橙黃綠藍靛紫）
 - 選中粒子高亮（+0.3 亮度）
 
@@ -145,11 +141,11 @@ src/
 - 移除距離補償：粒子固定大小 2-6px，不再隨放大縮小
 - 解決放大消失問題：放大時粒子不再因距離補償公式錯誤而縮小到 sub-pixel
 
-**能量系統 v2.1.5**：
-- DAMPING 0.999 → 0.9995（每幀耗損從 0.1% 降至 0.05%）
+**能量系統 v2.3**：
+- DAMPING 0.995（每幀耗損 0.5%）
 - 移除被動能量衰減（baseDecay 刪除）
-- 能量只通過融合或降解效果損失
-- 粒子不再因能量耗盡而死亡
+- 能量只通過 degrade 或融合損失
+- degrade 能量地板 0.1，粒子永不因能量耗盡而死亡
 
 **認證系統 v2.2**：
 - 登入後才能投放粒子 / 留下 Echo

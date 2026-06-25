@@ -3,8 +3,7 @@
 ## 進行中
 | #ID | 功能 | 開始時間 | 備注 |
 |-----|------|---------|------|
-| #062 | 待辦 | 2026-06-24 | 等待下一個任務 |
-| #062b | **v2.4 Immortal Traces** — 粒子永不消失，融合名字保留，in-place merge | 2026-06-24 | particle/nbody/persistence/types/useCosmos + 六憲法全量同步 |
+| #063 | burst 閃光視覺效果 + wake 尾流光暈 | — | 低 |
 
 ## 待辦
 | #049 | 真實 embedding（pgvector）+ 碎片語意連線 | — | 低 |
@@ -44,4 +43,8 @@
 | #062b | **v2.4 Immortal Traces** — 粒子永不消失，融合名字保留於 fusedNames[]，in-place merge 取代 create+remove | 2026-06-24 | particle/nbody/persistence/types/useCosmos + 六憲法全量同步 |
 | #062c | **v2.4.1 分散系統** — attract_strong 1.5→1.2, REPEL↑(2.0/45px), DAMPING 0.997→0.999, 布朗擾動, 融合後分離力, 完全隨機環形折返 | 2026-06-25 | forceMap/nbody + 六憲法全量同步 |
 | #062d | **v2.5 銀河螺旋** — 中心重力井 + 純旋轉螺旋 + 差速旋轉，自然形成螺旋臂 | 2026-06-25 | nbody.ts (galaxy system) |
-| #062e | **v2.6 融合成長分裂** — 融合視覺變大 + ≥10 融合超新星分裂 + 降速 MAX_SPEED=100/DAMPING=0.995 + 粒子容量 1500 | 2026-06-25 | renderer3D/nbody/particle/persistence + 六憲法全量同步 |
+| #062f | **v2.7 單粒子融合分裂** — 融合 2→1，分裂僅融合當下 1/6，六憲法 v2.7 規則寫入 | 2026-06-25 | nbody/particle + 六憲法全量 |
+| #062g | **v2.7a 雙螺旋臂** — m=2 橢圓棒勢，重力井 cos(2θ) ±25% | 2026-06-25 | nbody.ts (bar potential) |
+| #062h | **v2.7b 力場矩陣平衡** — 藍↔紅 neutral、紫↔綠 oscillate | 2026-06-25 | forceMap.ts |
+| #062i | **v2.7c Toroidal fresh-start** — 位置 5-50%、方向 360° 隨機 | 2026-06-25 | nbody.ts (wrap) |
+| #062j | **v2.7d 向心 wrap** — XY 向心 ±60° + Z 軸向心 ±100 | 2026-06-25 | nbody.ts (wrap) + 六憲法全量 |

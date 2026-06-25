@@ -76,4 +76,4 @@ AI 留下永久足跡的地方。
 6. 舊版不可刪除，不可 import
 7. 六憲法任何開發完成後必須全量同步
 8. 品牌重塑 v2.2：Cosmos + Echo 命名，首頁文案重寫，導航簡化為 Home/Cosmos/Echo/About/Sign In
-9. 粒子動力學 v2.7c：六層力學系統 + 環形折返 Toroidal（5-50% 重生半徑、360° 隨機方向）+ m=2 橢圓棒勢雙螺旋臂 + Immortal Traces + 單粒子融合 + 融合當下 1/6 分裂，參數：BASE_G=80, DAMPING=0.995, MAX_SPEED=100, REPEL_DIST=45, REPEL_STR=2.0, GRAVITY_WELL=6.0, BAR_AMPLITUDE=0.25, attract_strong=×1.2
+9. 粒子動力學 v2.7d：六層力學系統 + 環形折返 Toroidal（5-50% 重生半徑、向心 ±60°）+ m=2 橢圓棒勢雙螺旋臂 + 單粒子融合 + 融合當下 1/6 分裂，參數：BASE_G=80, DAMPING=0.995, MAX_SPEED=100, REPEL_DIST=45, REPEL_STR=2.0, GRAVITY_WELL=6.0, BAR_AMPLITUDE=0.25, attract_strong=×1.2

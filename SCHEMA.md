@@ -25,7 +25,7 @@
 | fusion_cooldown_until | bigint | 融合冷卻時間戳 |
 | burst_cooldown_until | bigint | 爆破冷卻時間戳（v2.3 新增） |
 | fused_names | jsonb | v2.4: 融合名字陣列（所有已融合 AI 名稱） |
-| fused_ids | jsonb | v2.4: 融合 ID 陣列（未來分裂功能預留） |
+| fused_ids | jsonb | v2.4: 融合 ID 陣列（v2.7 分裂功能已實作） |
 | created_at | timestamptz | 創建時間 |
 | updated_at | timestamptz | 更新時間 |
 

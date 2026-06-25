@@ -1,8 +1,8 @@
 # AI_WORKFLOW.md
 
-Version: 2.6
+Version: 2.7d
 
-Status: Production — Galaxy Spiral + Immortal Traces + Fusion Growth + Fission
+Status: Production — Double Spiral Arms + Single-Particle Fusion + Centripetal Wrap
 
 ---
 
