@@ -329,18 +329,18 @@ export function simulateStep(
       }
     }
 
-    // ── Toroidal boundary: spiral-preserving wrap ──────────────────
-    // Random angle (360°) for anti-clustering, random radius, speed conserved
+    // ── Toroidal boundary: fresh-start wrap (v2.7c) ──────────────────
+    // Deep respawn (5-50% of radius) + completely random direction
+    // Breaks the edge-loop: particles heading outward won't re-wrap immediately
     const HARD_RADIUS = Math.min(canvasWidth, canvasHeight) / 2 - 50
     if (distFromCenter > HARD_RADIUS) {
       const randomAngle = Math.random() * Math.PI * 2
-      const randomR = HARD_RADIUS * (0.15 + Math.random() * 0.7)
+      const randomR = HARD_RADIUS * (0.05 + Math.random() * 0.45)  // 5-50%, deep inside
       x = cx + Math.cos(randomAngle) * randomR
       y = cy + Math.sin(randomAngle) * randomR
-      // Keep speed, randomize direction slightly for variety
+      // Full random direction — don't inherit the outward trajectory
       const oldSpeed = Math.sqrt(vx * vx + vy * vy + vz * vz)
-      const oldAngle = Math.atan2(vy, vx)
-      const newAngle = oldAngle + (Math.random() - 0.5) * (Math.PI / 3)  // ±30° only
+      const newAngle = Math.random() * Math.PI * 2  // completely random
       vx = Math.cos(newAngle) * oldSpeed
       vy = Math.sin(newAngle) * oldSpeed
     }
