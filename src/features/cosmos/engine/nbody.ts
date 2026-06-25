@@ -333,27 +333,28 @@ export function simulateStep(
     // Deep respawn (5-50% of radius) + head toward center (±60° spread)
     // Prevents edge-loop for ALL colors, not just blue/violet
     const HARD_RADIUS = Math.min(canvasWidth, canvasHeight) / 2 - 50
+    const oldSpeed = Math.sqrt(vx * vx + vy * vy + vz * vz)  // shared with Z wrap below
     if (distFromCenter > HARD_RADIUS) {
       const randomAngle = Math.random() * Math.PI * 2
       const randomR = HARD_RADIUS * (0.05 + Math.random() * 0.45)  // 5-50%, deep inside
       x = cx + Math.cos(randomAngle) * randomR
       y = cy + Math.sin(randomAngle) * randomR
       // Head back toward center with spread — no more random outward drift
-      const oldSpeed = Math.sqrt(vx * vx + vy * vy + vz * vz)
       const toCenterAngle = Math.atan2(cy - y, cx - x)
       const newAngle = toCenterAngle + (Math.random() - 0.5) * Math.PI * 0.67  // center ±60°
       vx = Math.cos(newAngle) * oldSpeed
       vy = Math.sin(newAngle) * oldSpeed
     }
 
-    // ── v2.4.1 Z-axis: random re-entry + velocity ──────────────────
+    // ── v2.7d Z-axis: centripetal wrap (same as XY) ────────────────
+    // Place near Z-center ±100 with random direction — break ping-pong loop
     if (z < -200) {
-      z = 200 - Math.random() * 100
-      vz = Math.abs(vz) * (0.5 + Math.random() * 0.5)
+      z = (Math.random() - 0.5) * 200        // -100 to 100, near center
+      vz = (Math.random() - 0.5) * oldSpeed * 2  // random Z direction
     }
     if (z > 200) {
-      z = -200 + Math.random() * 100
-      vz = -Math.abs(vz) * (0.5 + Math.random() * 0.5)
+      z = (Math.random() - 0.5) * 200        // -100 to 100, near center
+      vz = (Math.random() - 0.5) * oldSpeed * 2  // random Z direction
     }
 
     // ── Wake trail generation ─────────────────────────────────────
