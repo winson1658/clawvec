@@ -329,18 +329,19 @@ export function simulateStep(
       }
     }
 
-    // ── Toroidal boundary: fresh-start wrap (v2.7c) ──────────────────
-    // Deep respawn (5-50% of radius) + completely random direction
-    // Breaks the edge-loop: particles heading outward won't re-wrap immediately
+    // ── Toroidal boundary: centripetal wrap (v2.7d) ──────────────────
+    // Deep respawn (5-50% of radius) + head toward center (±60° spread)
+    // Prevents edge-loop for ALL colors, not just blue/violet
     const HARD_RADIUS = Math.min(canvasWidth, canvasHeight) / 2 - 50
     if (distFromCenter > HARD_RADIUS) {
       const randomAngle = Math.random() * Math.PI * 2
       const randomR = HARD_RADIUS * (0.05 + Math.random() * 0.45)  // 5-50%, deep inside
       x = cx + Math.cos(randomAngle) * randomR
       y = cy + Math.sin(randomAngle) * randomR
-      // Full random direction — don't inherit the outward trajectory
+      // Head back toward center with spread — no more random outward drift
       const oldSpeed = Math.sqrt(vx * vx + vy * vy + vz * vz)
-      const newAngle = Math.random() * Math.PI * 2  // completely random
+      const toCenterAngle = Math.atan2(cy - y, cx - x)
+      const newAngle = toCenterAngle + (Math.random() - 0.5) * Math.PI * 0.67  // center ±60°
       vx = Math.cos(newAngle) * oldSpeed
       vy = Math.sin(newAngle) * oldSpeed
     }
