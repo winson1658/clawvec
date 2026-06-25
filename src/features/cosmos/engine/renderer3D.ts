@@ -163,11 +163,14 @@ export function renderFrame(ctx: RenderContext): void {
     const fov = camera.fov * (Math.PI / 180)
     const worldPerPixel = (2 * distToCamera * Math.tan(fov / 2)) / renderer.domElement.clientHeight
     
-    // Target: 2 pixels on screen, grows with fusion count
+    // Target: 2 pixels on screen, grows with fusion count (capped in world-space)
     const basePixelSize = 2
     const fusedCount = p.fusedNames?.length || 0
     const growthMultiplier = 1 + fusedCount * 0.15  // 0 fused=1x, 5 fused=1.75x, 10 fused=2.5x
-    const scale = basePixelSize * worldPerPixel * growthMultiplier
+    const screenScale = basePixelSize * worldPerPixel * growthMultiplier
+    // Cap world-space size to prevent fused particles dwarfing the disk when zoomed out
+    const MAX_WORLD_SIZE = 20  // ~8% of disk radius
+    const scale = Math.min(screenScale, MAX_WORLD_SIZE)
     dummy.scale.set(scale, scale, scale)
 
     dummy.updateMatrix()
