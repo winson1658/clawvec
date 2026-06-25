@@ -46,11 +46,11 @@ export const FORCE_MULTIPLIER: Record<ForceEffect, number> = {
 const MATRIX: ForceEffect[][] = [
   //         red       orange     yellow     green      blue       indigo     violet
   /* red    */ ['neutral',     'attract_weak',  'neutral',      'attract_strong', 'repel_weak',    'burst',        'repel_weak'],
-  /* orange */ ['attract_weak', 'neutral',      'attract_strong','attract_weak',  'repel_weak',    'burst',        'neutral'],
+  /* orange */ ['attract_weak', 'neutral',      'attract_strong','oscillate',    'repel_weak',    'burst',        'neutral'],
   /* yellow */ ['neutral',     'attract_strong','neutral',       'degrade',       'repel_weak',    'repel_weak',   'burst'],
-  /* green  */ ['attract_strong','attract_weak','degrade',       'neutral',       'oscillate',     'neutral',      'burst'],
-  /* blue   */ ['neutral',     'repel_weak',   'repel_weak',    'oscillate',     'neutral',       'attract_strong','attract_weak'],
-  /* indigo */ ['burst',       'burst',        'repel_weak',    'neutral',       'attract_strong', 'neutral',      'attract_weak'],
+  /* green  */ ['attract_strong','oscillate',  'degrade',       'neutral',       'oscillate',     'neutral',      'burst'],
+  /* blue   */ ['neutral',     'repel_weak',   'repel_weak',    'oscillate',     'neutral',       'oscillate',    'attract_weak'],
+  /* indigo */ ['burst',       'burst',        'repel_weak',    'neutral',       'attract_weak',  'neutral',      'attract_weak'],
   /* violet */ ['repel_weak',  'neutral',      'burst',         'oscillate',    'attract_weak',   'attract_weak',  'neutral'],
 ]
 
