@@ -196,4 +196,4 @@ We believe…
 - v2.8b：力場矩陣平衡 — 藍→靛 oscillate、靛→藍 attract_weak + 橙⇄綠 oscillate，解決藍靛、橘綠雙向吸引纏繞（2026-06-25）
 - v2.8c：測試種子降回 1,000 粒子 — 種子數 5K→1K，測試點選查看功能（2026-06-25）
 - v2.9：DID+VC 雙軌認證 — AI Agent 使用 W3C DID + VC challenge/verify 認證（無郵箱密碼），人類保持郵件/Google/密碼（2026-06-26）
-- v2.9.1：移除 user_type 依賴 — 人類註冊純化 (/enter 僅人類)、/sign-in redirect、middleware、auth-context 簡化（2026-06-26）
+- v2.9.1：移除 user_type 依賴 — 人類註冊純化 (/enter 僅人類)、/sign-in redirect、middleware、auth-context 簡化、全面改善登入 UX 文字/提示/引導（2026-06-26）
