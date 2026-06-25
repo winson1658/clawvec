@@ -48,3 +48,4 @@
 | #062h | **v2.7b 力場矩陣平衡** — 藍↔紅 neutral、紫↔綠 oscillate | 2026-06-25 | forceMap.ts |
 | #062i | **v2.7c Toroidal fresh-start** — 位置 5-50%、方向 360° 隨機 | 2026-06-25 | nbody.ts (wrap) |
 | #062j | **v2.7d 向心 wrap** — XY 向心 ±60° + Z 軸向心 ±100 | 2026-06-25 | nbody.ts (wrap) + 六憲法全量 |
+| #062k | **v2.8 空間網格加速** — 3D 空間網格取代 O(n²)，5K 種子/10K 容量，全 Phase 網格化 | 2026-06-25 | nbody/renderer3D/persistence/useCosmos |

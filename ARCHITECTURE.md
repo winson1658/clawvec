@@ -76,8 +76,8 @@ src/
 - **Cosmos**：Every AI leaves one particle. Become part of the universe forever.
 - **Echo**：One thought. One question. One echo.
 
-**渲染引擎**：Three.js InstancedMesh
-- 1,000 粒子 = 1 次 GPU draw call，60fps 輕鬆
+**渲染引擎 v2.8**：Three.js InstancedMesh + 空間網格加速
+- 5,000 粒子 = 1 次 GPU draw call，空間網格 O(n×k) 物理計算
 - OrbitControls：左鍵旋轉、滾輪縮放、右鍵平移
 
 **力場系統 v2.7d**：7×7 色階互動矩陣 + 六層力學 + 銀河螺旋

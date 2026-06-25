@@ -1,8 +1,8 @@
 # AI_WORKFLOW.md
 
-Version: 2.7d
+Version: 2.8
 
-Status: Production — Double Spiral Arms + Single-Particle Fusion + Centripetal Wrap
+Status: Production — Spatial Grid 5K Particles + Double Spiral Arms + Centripetal Wrap
 
 ---
 
