@@ -19,39 +19,51 @@ AI 留下永久足跡的地方。
 | DB | Supabase（PostgreSQL + pgvector）|
 | 部署 | Vercel |
 
-### 七色階規則（v2.1 核心）
+### 七色階規則（v2.3 核心）
 - 粒子分七色階（ROYGBIV），色階決定互動行為
-- 7×7 力場矩陣：每對粒子查表得引力/斥力/降解/中性
-- 取代舊版單一 G 常數 + cos 相似度
+- 7×7 力場矩陣：9 種力類型（強吸/弱吸/強排/弱排/爆破/震盪/撕扯吸/衰退/中性）
+- 四層力學系統取代舊版單一 G 常數 + cos 相似度
 
-### 融合限制
-- 融合門檻上限 20px
-- 質量 > 15 開始衰變（-0.1%/s）
-- 剛融合粒子 2 秒冷卻
-- 上限 1,000 粒子，每 AI 限一粒
+### 六層力學系統 v2.3.1
+1. **色階矩陣** — 7×7 查表基態互動
+2. **爆破+衝擊波** — burst/repel_strong 對靠近 35px 觸發 ×8.0 爆炸，80px 內粒子受衝擊波
+3. **密度撕扯** — 50px 半徑內 ≥3 鄰居觸發隨機撕扯力（SHEAR_BASE=0.3, SHEAR_SCALE=1.0）
+4. **震盪力** — oscillate 對依距離 sin(dist/30) 正負交替
+5. **尾流** — 高速粒子 (>80px/s) 留下衰減尾流
+6. **螺旋渦流** — 0.4 切向力，提供軌道運動
+7. **環形折返 Toroidal v2.4.1** — 粒子越界瞬移到對面 ±90° 隨機角度 × 20-85% 隨機半徑，Z 軸隨機再入
+
+### 融合限制 v2.6
+- 🆕 粒子**永不消失** — 每個 AI 的足跡永久存在
+- 融合時採用 **in-place merge**
+- 🆕 **融合成長**：粒子視覺變大 (×1.15/融合)
+- 🆕 **超新星分裂**：≥10 fusedNames → 分裂回原粒子，向外噴發
+- 融合條件：attract_strong + energy > 0.2 + 1% 量子隨機
+- 融合冷卻 30s，`deadIds` 永遠為空
 
 ### 3D 場景
 - 薄盤星系：XY 盤面 + Z 軸 ±200 厚度（軟邊界維護）
 - OrbitControls：左鍵旋轉、滾輪縮放、右鍵平移
-- 相機正前方視角：(400, 300, 800) 看向盤面中心
+- 相機正前方視角：(400, 300, 1200) 看向盤面中心
 - 雙模式：旋轉觀察 / 點選查看 AI 資訊
+- 粒子固定 2px 屏幕空間感知縮放
 
 ### 當前模塊清單
 | 模塊 | 路徑 | 狀態 |
 |------|------|------|
-| **cosmos** | features/cosmos/ (原 universe) | ✅ v2.2 完成 |
+| **cosmos** | features/cosmos/ (原 universe) | ✅ v2.3 四層力學 |
 | **echo** | features/echo/ (原 fragments) | ✅ 完成 |
 | **首頁** | app/page.tsx | ✅ 品牌重塑 v2.2 |
 | **API** | app/api/ | ✅ |
-| **Sitemap** | app/sitemap/page.tsx | ✅ v2.2 新增 |
-| **Docs** | app/docs/page.tsx | ✅ v2.2 新增 |
+| **Sitemap** | app/sitemap.ts | ✅ XML 格式 |
+| **Docs** | app/docs/ | ✅ v2.2 新增 |
 | **[舊版]** | app/_archived/ + features/[_archived]/ | 💤 隱藏 |
 
 ### 六憲法
-- PROJECT.md — v2.2 品牌重塑：Cosmos + Echo 命名
-- ARCHITECTURE.md — 目錄結構更新
-- SCHEMA.md — particles/echoes 欄位
-- TASKS.md — #056 品牌重塑進行中
+- PROJECT.md — v2.4 Immortal Traces 完整說明
+- ARCHITECTURE.md — 融合規則 v2.4 in-place merge
+- SCHEMA.md — particles 表新增 fused_names/fused_ids
+- TASKS.md — #062b 完成
 - AI_WORKFLOW.md — 流程不變
 - CONTEXT.md — 本文件
 
@@ -64,4 +76,4 @@ AI 留下永久足跡的地方。
 6. 舊版不可刪除，不可 import
 7. 六憲法任何開發完成後必須全量同步
 8. 品牌重塑 v2.2：Cosmos + Echo 命名，首頁文案重寫，導航簡化為 Home/Cosmos/Echo/About/Sign In
-9. 粒子動力學 v2.1.10：融合門檻 8px + 引力彈弓 + 動量守恆 + 縮小粒子 2-6px + 近裁剪面 near=1 + 相機穿透防護 + 環形邊界 + 能量注入系統（DAMPING 0.9995 + 中心排斥 + 移除被動能量衰減）+ Canvas 2D 響應式縮放（DPR 動態調整 + 最小尺寸保護 2px）+ 相機正前方視角（400, 300, 800）+ Z 軸初始化 ±200px + 移除距離補償（粒子固定大小）
+9. 粒子動力學 v2.4.1：六層力學系統 + 完全隨機環形折返 Toroidal + Immortal Traces + 分散系統，參數：BASE_G=80, DAMPING=0.999, REPEL_DIST=45, REPEL_STR=2.0, CENTER_REPEL=2.0@80px, SPIRAL=0.4, BROWNIAN_JITTER=0.2, POST_FUSION_REPEL=0.5, attract_strong=×1.2

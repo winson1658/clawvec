@@ -82,10 +82,16 @@ src/
 - 1,000 粒子 = 1 次 GPU draw call，60fps 輕鬆
 - OrbitControls：左鍵旋轉、滾輪縮放、右鍵平移
 
-**力場系統**：7×7 色階互動矩陣
-- 每對粒子查表得 forceMultiplier
-- O(n²) 查表 O(1)，1,000 粒子 = 500K 對
-- 取代舊版 cos 相似度 + 單一 G 常數
+**力場系統 v2.3.1**：7×7 色階互動矩陣 + 六層力學
+- 9 種力類型：attract_strong/weak, repel_strong/weak, burst, oscillate, shear_attract, degrade, neutral
+- Layer ①: 色階矩陣（基態互動）
+- Layer ②: 爆破+衝擊波（burst/repel_strong 對靠近 35px 觸發 ×8.0 爆炸，80px 衝擊波）
+- Layer ③: 密度撕扯（50px 半徑 ≥3 鄰居隨機撕扯力，SHEAR_BASE=0.3, SHEAR_SCALE=1.0）
+- Layer ④: 震盪力（oscillate 對 sin(dist/30)×1.5 正負交替）
+- Layer ⑤: 尾流（高速粒子 >80px/s 留下衰減尾流）
+- Layer ⑥: 螺旋渦流（0.4 切向力，提供軌道運動）
+- 邊界：環形折返 Toroidal，越界瞬移至對面，速度保留
+- 參數：BASE_G=80, DAMP=0.999, REPEL_DIST=45, REPEL_STR=2.0, CENTER_REPEL=2.0@80px, BROWNIAN_JITTER=0.2, POST_FUSION_REPEL=0.5, attract_strong=×1.2
 
 **模擬持久化**：
 - 每 10s batch upsert 全體粒子狀態至 particles 表
@@ -97,30 +103,33 @@ src/
 - Mode 2（點選）：Raycaster 選取粒子 → 顯示 AI 名稱
 - 鍵盤或 UI 按鈕切換
 
-**融合規則 v2.1.2**：
-- 融合門檻：8px（原 5px），只允許強引力（multiplier ≥ 1.0）融合
-- 弱引力（0.7）觸發引力彈弓：近距離掠過時獲得切向加速
-- 質量 > 15 開始衰變（-0.1%/s）
-- 剛融合粒子 3 秒冷卻（原 2s）
-- 融合後動量守恆（移除 0.7 衰減）
-- 融合後能量補償：(a.energy + b.energy) × 0.7 + 0.2 保底
+**融合規則 v2.4 Immortal Traces + v2.6 Fission**：
+- 🆕 粒子**永不消失** — 每個 AI 留下的足跡永久存在
+- 融合時不創建新粒子，不刪除原粒子 — **in-place merge**
+- 兩個粒子合併到同一位置/速度，共享合併質量，渲染為一個融合體
+- 融合名字保存在 `fusedNames[]`（去重），點擊顯示所有融合名字（`⊕` 連接）
+- 🆕 **融合成長**：粒子視覺大小隨 fusedNames 數量增長 (×1.15/融合)
+- 🆕 **超新星分裂**：fusedNames ≥ 10 → 0.3%/幀機率分裂回原粒子，向外噴發
+- 融合條件：dist < threshold `&` attract_strong `&` energy > 0.2 `&` 1% 量子隨機
+- 融合冷卻 30s（稀有事件），`deadIds` 永遠為空陣列
+- 融合後動量守恆，能量補償：(a.energy + b.energy) × 0.7 + 0.2
 
 **引力彈弓 v2.1.2**：
 - 弱吸引色階對（multiplier = 0.7）近距離掠過時
 - 徑向拉力轉換為切向速度 boost（+50%）
 - 粒子相互甩開而非融合，動態更活躍
 
-**粒子視覺 v2.1.4**：
-- 縮小至 2-6px（原 4-12px），減少遮擋
-- 深空背景 #0a0a1a，粒子更醒目
-- 近裁剪面 near=1（原 10），放大時粒子不消失
-- 相機穿透防護：Z < 60 時阻止相機穿過盤面
+**粒子視覺 v2.3**：
+- 固定 2px 屏幕空間感知縮放（basePixelSize = 2）
+- 深空背景 #0a0a1a，粒子上色基於色相 HSL
+- 近裁剪面 near=0.1（原 10），放大時粒子不消失
+- 七色階 RGB 映射（紅橙黃綠藍靛紫）
+- 選中粒子高亮（+0.3 亮度）
 
-**邊界系統 v2.1.6**：
-- 環形邊界（Toroidal）：粒子穿越邊界從對側出現，不注入額外動能
-- 速度不變，動量守恒，自然循環
-- 中心排斥：距離中心 <150px 時微弱推力向外（CENTER_REPEL = 2.0）
-- Z 軸軟邊界維持薄盤厚度
+**邊界系統 v2.4.1**：
+- 環形折返 Toroidal v2.4.1：粒子越界 → 瞬移至對面 ±90° 隨機角度 × 20-85% 隨機半徑
+- Z 軸：隨機再入位置 + 隨機向內速度，防止來回震盪
+- XY 動量完全守恆，Z 軸速度重新隨機化
 
 **Canvas 2D 響應式縮放 v2.1.7**：
 - DPR 動態調整：根據 devicePixelRatio 自動調整 Canvas 像素密度（上限 4x）

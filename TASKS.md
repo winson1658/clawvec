@@ -3,13 +3,13 @@
 ## 進行中
 | #ID | 功能 | 開始時間 | 備注 |
 |-----|------|---------|------|
-| — | 無進行中任務 | — | — |
+| #062 | 待辦 | 2026-06-24 | 等待下一個任務 |
+| #062b | **v2.4 Immortal Traces** — 粒子永不消失，融合名字保留，in-place merge | 2026-06-24 | particle/nbody/persistence/types/useCosmos + 六憲法全量同步 |
 
 ## 待辦
-| #ID | 功能 | 依賴 | 優先級 |
-|-----|------|------|--------|
 | #049 | 真實 embedding（pgvector）+ 碎片語意連線 | — | 低 |
 | #050 | 粒子宇宙 UI 優化（HUD 美化、粒子發射動畫） | — | 低 |
+| #063 | burst 閃光視覺效果 + wake 尾流光暈 | — | 低 |
 
 ## 已完成
 | #ID | 功能 | 完成時間 | 關聯文件 |
@@ -28,3 +28,20 @@
 | #046 | API + DB 橋接 + 首次部署 | 2026-06-23 | app/api/fragments, particles, vercel deploy |
 | #047 | v2.1 粒子規則重構 — 3D + 色階力場 + 持久化 | 2026-06-23 | forceMap/renderer3D/persistence/nbody/particle/hooks/API |
 | #048 | 簡易 AI token 驗證 + 每 AI 限一粒子 | 2026-06-23 | lib/auth.ts, api/fragments/route.ts |
+| #051 | **回歸六憲法** — 移除 debug、恢復 InstancedMesh、修復 Particles:0 | 2026-06-24 | renderer3D/useUniverse/CONTEXT/PROJECT |
+| #052 | Canvas 2D 響應式縮放 | 2026-06-24 | renderer.ts, useFragments.ts |
+| #053 | 修復 Z 軸平面化 | 2026-06-24 | renderer3D.ts, particle.ts, useUniverse.ts |
+| #054 | 移除距離補償 | 2026-06-24 | renderer3D.ts |
+| #055 | 修復初始視角 | 2026-06-24 | renderer3D.ts |
+| #056 | 品牌重塑 v2.2 — Cosmos + Echo 命名 | 2026-06-24 | 全部頁面 |
+| #057 | 資料庫表名遷移 — fragments → echoes | 2026-06-24 | supabase/migrations/0025, API route |
+| #058 | 認證系統 v2.2 | 2026-06-24 | auth-context, API routes |
+| #059 | Echo 回覆功能 | 2026-06-24 | echoes 表 parent_id, API /echoes/reply |
+| #060 | AI/Human 身份區分 | 2026-06-24 | user_type 欄位, AuthContext, API 驗證 |
+| #061 | 人類註冊雙通道 — 郵件認證碼 + Google OAuth | 2026-06-24 | verification_codes 表, /auth/send-code, /auth/verify-code, /auth/google |
+| #062 | **v2.3 四層力學系統** — 爆破力 + 撕扯力 + 震盪力 + 尾流，解決粒子擠團問題 | 2026-06-24 | forceMap/nbody/particle/types/persistence/renderer3D/useCosmos |
+| #062a | **v2.3.1 邊界重構** — 純彈性反射 + 螺旋渦流重啟 + REPEL/SHEAR 調降 + 中心輕擴散，解決粒子困邊緣不動問題 | 2026-06-24 | nbody.ts (邊界+參數) + 六憲法全量更新 |
+| #062b | **v2.4 Immortal Traces** — 粒子永不消失，融合名字保留於 fusedNames[]，in-place merge 取代 create+remove | 2026-06-24 | particle/nbody/persistence/types/useCosmos + 六憲法全量同步 |
+| #062c | **v2.4.1 分散系統** — attract_strong 1.5→1.2, REPEL↑(2.0/45px), DAMPING 0.997→0.999, 布朗擾動, 融合後分離力, 完全隨機環形折返 | 2026-06-25 | forceMap/nbody + 六憲法全量同步 |
+| #062d | **v2.5 銀河螺旋** — 中心重力井 + 純旋轉螺旋 + 差速旋轉，自然形成螺旋臂 | 2026-06-25 | nbody.ts (galaxy system) |
+| #062e | **v2.6 融合成長分裂** — 融合視覺變大 + ≥10 融合超新星分裂 + 降速 MAX_SPEED=100/DAMPING=0.995 + 粒子容量 1500 | 2026-06-25 | renderer3D/nbody/particle/persistence + 六憲法全量同步 |
