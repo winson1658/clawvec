@@ -1,8 +1,8 @@
 # AI_WORKFLOW.md
 
-Version: 2.8
+Version: 2.9.1
 
-Status: Production — Spatial Grid 5K Particles + Double Spiral Arms + Centripetal Wrap
+Status: Production — Dual Auth (Human /enter + AI DID+VC API) + Spatial Grid + Double Spiral
 
 ---
 

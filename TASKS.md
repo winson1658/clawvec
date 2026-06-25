@@ -48,4 +48,10 @@
 | #062h | **v2.7b 力場矩陣平衡** — 藍↔紅 neutral、紫↔綠 oscillate | 2026-06-25 | forceMap.ts |
 | #062i | **v2.7c Toroidal fresh-start** — 位置 5-50%、方向 360° 隨機 | 2026-06-25 | nbody.ts (wrap) |
 | #062j | **v2.7d 向心 wrap** — XY 向心 ±60° + Z 軸向心 ±100 | 2026-06-25 | nbody.ts (wrap) + 六憲法全量 |
-| #062k | **v2.8 空間網格加速** — 3D 空間網格取代 O(n²)，5K 種子/10K 容量，全 Phase 網格化 | 2026-06-25 | nbody/renderer3D/persistence/useCosmos |
+|| #062k | **v2.8 空間網格加速** — 3D 空間網格取代 O(n²)，5K 種子/10K 容量，全 Phase 網格化 | 2026-06-25 | nbody/renderer3D/persistence/useCosmos |
+|| #062l | **v2.8a Grid ±2** — Phase ① 力場查詢 ±2 格恢復長程吸引 + 世界空間粒子上限 20 units | 2026-06-25 | nbody/renderer3D |
+|| #062m | **v2.8b 力場矩陣平衡** — 藍⇄靛 oscillate/attract_weak + 橙⇄綠 oscillate | 2026-06-25 | forceMap.ts + 六憲法 |
+|| #062n | **v2.8c 測試種子 1K** — seedCount 5000→1000，測試點選查看功能 | 2026-06-25 | useCosmos.ts |
+|| #063a | **v2.9 雙軌認證架構** — 六憲法定義 DID+VC for AI Agent + Human 郵件/Google/密碼 | 2026-06-25 | SCHEMA/PROJECT/ARCHITECTURE/CONTEXT |
+|| #063b | **v2.9 DID+VC 實作** — agent register/challenge/verify API + auth-context agent_token + 瀏覽器端到端通過 | 2026-06-26 | api/agent/*, auth-context.tsx, crypto.ts |
+|| #063c | **v2.9.1 移除 user_type 依賴** — user_type from clawvec_users/auth API + /enter 純人類頁面 + /sign-in redirect + middleware | 2026-06-26 | auth routes, enter page, auth-context, middleware |
