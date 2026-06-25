@@ -158,8 +158,8 @@ export function useCosmos() {
       return
     }
 
-    // Load particles: always seed demo particles (v2.8: 10K grid-accelerated)
-    const seedCount = 10000
+    // Load particles: always seed demo particles (v2.8: 5K grid-accelerated)
+    const seedCount = 5000
     console.log(`[useUniverse] Seeding ${seedCount} demo particles...`)
     particlesRef.current = createDemoParticles(seedCount, 800, 600)
     setIsLoading(false)
