@@ -196,7 +196,7 @@ export default function EnterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 relative bg-[#0a0a14]">
+    <div className="min-h-screen flex items-center justify-center px-6 relative" style={{ backgroundColor: '#0a0a14' }}>
       {/* Ambient background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="ambient-orb w-[500px] h-[500px] bg-[var(--color-accent)]/[0.05] top-[20%] left-[30%]" />
