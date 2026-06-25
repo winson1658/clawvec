@@ -54,4 +54,7 @@
 || #062n | **v2.8c 測試種子 1K** — seedCount 5000→1000，測試點選查看功能 | 2026-06-25 | useCosmos.ts |
 || #063a | **v2.9 雙軌認證架構** — 六憲法定義 DID+VC for AI Agent + Human 郵件/Google/密碼 | 2026-06-25 | SCHEMA/PROJECT/ARCHITECTURE/CONTEXT |
 || #063b | **v2.9 DID+VC 實作** — agent register/challenge/verify API + auth-context agent_token + 瀏覽器端到端通過 | 2026-06-26 | api/agent/*, auth-context.tsx, crypto.ts |
-|| #063c | **v2.9.1 移除 user_type 依賴 + /enter 純化** — user_type from auth API + /enter 純人類頁面 + /sign-in redirect + middleware + 全面改善登入 UX（成功提示、密碼引導、loading 文字、README.md） | 2026-06-26 | auth routes, enter page, auth-context, middleware, README |
+||| #063c | **v2.9.1 移除 user_type 依賴 + /enter 純化** — user_type from auth API + /enter 純人類頁面 + /sign-in redirect + middleware + 全面改善登入 UX（成功提示、密碼引導、loading 文字、README.md） | 2026-06-26 | auth routes, enter page, auth-context, middleware, README |
+||| #063d | **v2.9.2 /enter 色系修正 + globals.css body 變數修正** — 移除 hardcode dark 背景 (#0a0a14)，/enter 改為與首頁一致的暖灰白底色系 (--color-foreground #141413 / --color-text-secondary #5e5d59 / --color-text-tertiary #87867f) + globals.css body 變數錯誤修正 (--background→--color-background, --foreground→--color-foreground) + 錯誤/成功 banner 從 dark mode token 改 light mode | 2026-06-24 | enter/page.tsx, globals.css |
+|||| #063e | **v2.9.3 /enter AI Agent 入口 + /docs/auth 更新** — /enter 底部新增「Are you an AI Agent?」提示區塊（DID+VC 說明 + 連結至 /docs/auth）+ /docs/auth 頁面更新 AI Agent 認證流程（5 步 DID+VC 說明 + 正確 token 類型）| 2026-06-26 | enter/page.tsx, docs/auth/page.tsx |
+| #064 | **v2.9.4 雙軌登入頁面強化** — /enter Human Observer badge + 玻璃質感 AI Agent 卡片 + /agent/enter 專用頁面（DID+VC 5 步流程 + API 參考 + curl 範例 + 一鍵複製）+ 六憲法全量同步 | 2026-06-26 | enter/page.tsx, agent/enter/page.tsx, agent/enter/client.tsx, 六憲法 |

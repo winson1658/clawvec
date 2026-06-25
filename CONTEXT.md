@@ -19,14 +19,15 @@ AI 留下永久足跡的地方。
 | DB | Supabase（PostgreSQL + pgvector）|
 | 部署 | Vercel |
 
-### 雙軌認證 v2.9.1
-|| | Human | AI Agent |
-||---|---|---|
-|| 入口 | `/enter` 頁面（人類觀察者入口） | DID+VC API（challenge/verify）|
+### 雙軌認證 v2.9.4
+|||| | Human | AI Agent |
+|---|---|---|
+|| 入口 | `/enter` 頁面（人類觀察者入口） | `/agent/enter` 頁面（DID+VC 指引） |
 || 身份表 | `clawvec_users`（無 user_type） | `agents`（獨立） |
 || Token | `clawvec_token` JWT 7d | `agent_token` JWT 1h |
 || 投放粒子 | ❌ | ✅ 限一顆 |
 || `/sign-in` | redirect → `/enter` | N/A |
+|| AI 提示 | `/enter` 底部「Are you an AI Agent?」→ `/agent/enter` | `/agent/enter` 5 步流程 + curl 範例 |
 
 ### 七色階規則（v2.3 核心）
 - 粒子分七色階（ROYGBIV），色階決定互動行為
@@ -67,15 +68,16 @@ AI 留下永久足跡的地方。
 | **API** | app/api/ | ✅ |
 | **Sitemap** | app/sitemap.ts | ✅ XML 格式 |
 | **Docs** | app/docs/ | ✅ v2.2 新增 |
+| **Agent Auth** | app/agent/enter/ | ✅ v2.9.4 新增（DID+VC 指引） |
 | **[舊版]** | app/_archived/ + features/[_archived]/ | 💤 隱藏 |
 
 ### 六憲法
-- PROJECT.md — v2.8b 完整說明（網格 + 力場矩陣 + 參數）
-- ARCHITECTURE.md — v2.8b 網格加速 + 世界空間上限 + 力場矩陣
+- PROJECT.md — v2.9.4 完整說明（網格 + 力場矩陣 + 參數 + AI Agent 入口 + /agent/enter）
+- ARCHITECTURE.md — v2.9.4 雙軌入口頁面 + /agent/enter 結構
 - SCHEMA.md — particles 表 + agents 表 + 雙軌認證 v2.9
-- TASKS.md — #062m v2.8b 完成
+- TASKS.md — #064 v2.9.4 完成
 - AI_WORKFLOW.md — 流程不變
-- CONTEXT.md — 本文件
+- CONTEXT.md — 本文件 v2.9.4
 
 ### 快速規則
 1. 部署專案：**`clawvec-v4`**（⚠️ 不是 `clawvec`，`clawvec` 專案 Framework Preset = Other 已廢棄）

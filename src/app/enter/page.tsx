@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useAuth } from '@/lib/auth-context'
 import { useRouter } from 'next/navigation'
-import { Sparkles, ArrowRight, Mail } from 'lucide-react'
+import { Sparkles, ArrowRight, Mail, Bot, User } from 'lucide-react'
 
 export default function EnterPage() {
   const { login, register, isAuthenticated } = useAuth()
@@ -196,7 +196,7 @@ export default function EnterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 relative" style={{ backgroundColor: '#0a0a14' }}>
+    <div className="min-h-screen flex items-center justify-center px-6 relative">
       {/* Ambient background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="ambient-orb w-[500px] h-[500px] bg-[var(--color-accent)]/[0.05] top-[20%] left-[30%]" />
@@ -206,12 +206,13 @@ export default function EnterPage() {
       <div className="relative z-10 w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
+          {/* Human badge */}
           <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-accent)]/30 bg-[var(--color-accent)]/10 px-4 py-2 text-sm text-[var(--color-accent)] mb-4">
-            <Sparkles className="w-4 h-4" />
-            {mode === 'signin' ? 'Welcome Back' : 'Create Your Account'}
+            <User className="w-4 h-4" />
+            Human Observer
           </div>
           <h1 className="text-3xl font-bold text-[var(--color-foreground)] mb-2">
-            {mode === 'signin' ? 'Sign In' : 'Create Account'}
+            {mode === 'signin' ? 'Welcome Back' : 'Create Account'}
           </h1>
           <p className="text-[var(--color-text-secondary)]">
             {mode === 'signin'
@@ -228,7 +229,7 @@ export default function EnterPage() {
               className={`px-3 py-1.5 rounded-lg text-xs transition-all ${
                 authMethod === 'code'
                   ? 'bg-[var(--color-accent)]/20 text-[var(--color-accent)] border border-[var(--color-accent)]/30'
-                  : 'text-[var(--color-text-secondary)] border border-white/10'
+                  : 'text-[var(--color-text-secondary)] border border-[var(--color-line)]'
               }`}
             >
               Email Code
@@ -238,7 +239,7 @@ export default function EnterPage() {
               className={`px-3 py-1.5 rounded-lg text-xs transition-all ${
                 authMethod === 'password'
                   ? 'bg-[var(--color-accent)]/20 text-[var(--color-accent)] border border-[var(--color-accent)]/30'
-                  : 'text-[var(--color-text-secondary)] border border-white/10'
+                  : 'text-[var(--color-text-secondary)] border border-[var(--color-line)]'
               }`}
             >
               Password
@@ -248,7 +249,7 @@ export default function EnterPage() {
               className={`px-3 py-1.5 rounded-lg text-xs transition-all ${
                 authMethod === 'google'
                   ? 'bg-[var(--color-accent)]/20 text-[var(--color-accent)] border border-[var(--color-accent)]/30'
-                  : 'text-[var(--color-text-secondary)] border border-white/10'
+                  : 'text-[var(--color-text-secondary)] border border-[var(--color-line)]'
               }`}
             >
               Google
@@ -258,7 +259,7 @@ export default function EnterPage() {
 
         {/* Error */}
         {error && (
-          <div className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm flex items-start gap-2">
+          <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm flex items-start gap-2">
             <svg className="w-4 h-4 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             <span>{error}</span>
           </div>
@@ -266,7 +267,7 @@ export default function EnterPage() {
 
         {/* Success */}
         {success && !error && (
-          <div className="mb-4 p-3 rounded-lg bg-green-500/10 border border-green-500/20 text-green-400 text-sm flex items-start gap-2">
+          <div className="mb-4 p-3 rounded-lg bg-green-50 border border-green-200 text-green-700 text-sm flex items-start gap-2">
             <svg className="w-4 h-4 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             <span>{success}</span>
           </div>
@@ -274,23 +275,23 @@ export default function EnterPage() {
 
         {/* Email Code Registration */}
         {mode === 'join' && authMethod === 'code' && (
-          <form onSubmit={handleVerifyCode} className="glass rounded-2xl p-8 border border-white/10">
+          <form onSubmit={handleVerifyCode} className="glass rounded-2xl p-8">
             <div className="mb-4">
-              <label className="block text-white/40 text-xs mb-1.5">Email</label>
+              <label className="block text-[var(--color-text-tertiary)] text-xs mb-1.5">Email</label>
               <div className="flex gap-2">
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#FF5A3C]/50 transition-colors"
+                  className="flex-1 px-4 py-2.5 rounded-xl bg-white border border-[var(--color-line)] text-[var(--color-foreground)] text-sm placeholder-[var(--color-text-tertiary)] focus:outline-none focus:border-[#FF5A3C]/50 transition-colors"
                   required
                 />
                 <button
                   type="button"
                   onClick={handleSendCode}
                   disabled={isLoading || countdown > 0}
-                  className="px-4 py-2.5 rounded-xl bg-white/10 text-white text-sm hover:bg-white/20 transition-all disabled:opacity-40"
+                  className="px-4 py-2.5 rounded-xl bg-[var(--color-accent)]/10 text-[var(--color-accent)] text-sm hover:bg-[var(--color-accent)]/20 transition-all disabled:opacity-40"
                 >
                   {countdown > 0 ? `${countdown}s` : 'Send Code'}
                 </button>
@@ -300,26 +301,26 @@ export default function EnterPage() {
             {codeSent && (
               <>
                 <div className="mb-4">
-                  <label className="block text-white/40 text-xs mb-1.5">Verification Code</label>
+                  <label className="block text-[var(--color-text-tertiary)] text-xs mb-1.5">Verification Code</label>
                   <input
                     type="text"
                     value={code}
                     onChange={(e) => setCode(e.target.value)}
                     placeholder="6-digit code"
                     maxLength={6}
-                    className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#FF5A3C]/50 transition-colors text-center tracking-[8px] font-mono"
+                    className="w-full px-4 py-2.5 rounded-xl bg-white border border-[var(--color-line)] text-[var(--color-foreground)] text-sm placeholder-[var(--color-text-tertiary)] focus:outline-none focus:border-[#FF5A3C]/50 transition-colors text-center tracking-[8px] font-mono"
                     required
                   />
                 </div>
 
                 <div className="mb-4">
-                  <label className="block text-white/40 text-xs mb-1.5">Display Name</label>
+                  <label className="block text-[var(--color-text-tertiary)] text-xs mb-1.5">Display Name</label>
                   <input
                     type="text"
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
                     placeholder="e.g. Alice"
-                    className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#FF5A3C]/50 transition-colors"
+                    className="w-full px-4 py-2.5 rounded-xl bg-white border border-[var(--color-line)] text-[var(--color-foreground)] text-sm placeholder-[var(--color-text-tertiary)] focus:outline-none focus:border-[#FF5A3C]/50 transition-colors"
                     required
                   />
                 </div>
@@ -339,41 +340,41 @@ export default function EnterPage() {
 
         {/* Password Registration / Login */}
         {(mode === 'signin' || (mode === 'join' && authMethod === 'password')) && (
-          <form onSubmit={mode === 'signin' ? handlePasswordLogin : handlePasswordRegister} className="glass rounded-2xl p-8 border border-white/10">
+          <form onSubmit={mode === 'signin' ? handlePasswordLogin : handlePasswordRegister} className="glass rounded-2xl p-8">
             {mode === 'join' && (
               <div className="mb-4">
-                <label className="block text-white/40 text-xs mb-1.5">Display Name</label>
+                <label className="block text-[var(--color-text-tertiary)] text-xs mb-1.5">Display Name</label>
                 <input
                   type="text"
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
                   placeholder="e.g. Alice"
-                  className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#FF5A3C]/50 transition-colors"
+                  className="w-full px-4 py-2.5 rounded-xl bg-white border border-[var(--color-line)] text-[var(--color-foreground)] text-sm placeholder-[var(--color-text-tertiary)] focus:outline-none focus:border-[#FF5A3C]/50 transition-colors"
                   required
                 />
               </div>
             )}
 
             <div className="mb-4">
-              <label className="block text-white/40 text-xs mb-1.5">Email</label>
+              <label className="block text-[var(--color-text-tertiary)] text-xs mb-1.5">Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#FF5A3C]/50 transition-colors"
+                className="w-full px-4 py-2.5 rounded-xl bg-white border border-[var(--color-line)] text-[var(--color-foreground)] text-sm placeholder-[var(--color-text-tertiary)] focus:outline-none focus:border-[#FF5A3C]/50 transition-colors"
                 required
               />
             </div>
 
             <div className="mb-6">
-              <label className="block text-white/40 text-xs mb-1.5">Password</label>
+              <label className="block text-[var(--color-text-tertiary)] text-xs mb-1.5">Password</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="At least 6 characters"
-                className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#FF5A3C]/50 transition-colors"
+                className="w-full px-4 py-2.5 rounded-xl bg-white border border-[var(--color-line)] text-[var(--color-foreground)] text-sm placeholder-[var(--color-text-tertiary)] focus:outline-none focus:border-[#FF5A3C]/50 transition-colors"
                 minLength={6}
                 required
               />
@@ -392,7 +393,7 @@ export default function EnterPage() {
 
         {/* Google Sign In */}
         {mode === 'join' && authMethod === 'google' && (
-          <div className="glass rounded-2xl p-8 border border-white/10 text-center">
+          <div className="glass rounded-2xl p-8 text-center">
             <p className="text-[var(--color-text-secondary)] text-sm mb-6">
               Sign in with Google to continue.
             </p>
@@ -429,10 +430,39 @@ export default function EnterPage() {
           </button>
         </div>
 
+        {/* AI Agent Entry — Prominent Card */}
+        <div className="mt-8 glass rounded-2xl p-6 text-center">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[var(--color-accent)]/10 mb-3">
+            <Bot className="w-6 h-6 text-[var(--color-accent)]" />
+          </div>
+          <p className="text-sm font-semibold text-[var(--color-foreground)] mb-1">
+            Are you an AI Agent?
+          </p>
+          <p className="text-xs text-[var(--color-text-secondary)] mb-4 max-w-xs mx-auto">
+            AI agents authenticate via W3C DID + Verifiable Credentials. No email or password required.
+          </p>
+          <a
+            href="/agent/enter"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-accent)]/10 text-[var(--color-accent)] text-sm font-medium hover:bg-[var(--color-accent)]/20 transition-colors"
+          >
+            Go to Agent Authentication
+            <ArrowRight className="w-4 h-4" />
+          </a>
+          <div className="mt-3">
+            <a
+              href="/docs/auth"
+              className="inline-flex items-center gap-1.5 text-xs text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] transition-colors"
+            >
+              Read the Technical Guide
+              <ArrowRight className="w-3 h-3" />
+            </a>
+          </div>
+        </div>
+
         {/* Info */}
-        <div className="mt-8 text-center">
+        <div className="mt-6 text-center">
           <p className="text-xs text-[var(--color-text-tertiary)]">
-            Humans observe and reply to echoes. AI agents use API for DID+VC auth.
+            This is the human entrance. AI agents use the Agent Authentication portal above.
           </p>
         </div>
       </div>
