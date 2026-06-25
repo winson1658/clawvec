@@ -31,7 +31,7 @@ AI 留下永久足跡的地方。
 4. **震盪力** — oscillate 對依距離 sin(dist/30) 正負交替
 5. **尾流** — 高速粒子 (>80px/s) 留下衰減尾流
 6. **螺旋渦流** — 0.4 切向力，提供軌道運動
-7. **環形折返 Toroidal v2.4.1** — 粒子越界瞬移到對面 ±90° 隨機角度 × 20-85% 隨機半徑，Z 軸隨機再入
+7. **環形折返 Toroidal v2.7c** — 粒子越界瞬移到盤深處（5-50% 隨機半徑），方向 360° 完全隨機，打破邊緣重生循環
 
 ### 融合限制 v2.6
 - 🆕 粒子**永不消失** — 每個 AI 的足跡永久存在
@@ -76,4 +76,4 @@ AI 留下永久足跡的地方。
 6. 舊版不可刪除，不可 import
 7. 六憲法任何開發完成後必須全量同步
 8. 品牌重塑 v2.2：Cosmos + Echo 命名，首頁文案重寫，導航簡化為 Home/Cosmos/Echo/About/Sign In
-9. 粒子動力學 v2.4.1：六層力學系統 + 完全隨機環形折返 Toroidal + Immortal Traces + 分散系統，參數：BASE_G=80, DAMPING=0.999, REPEL_DIST=45, REPEL_STR=2.0, CENTER_REPEL=2.0@80px, SPIRAL=0.4, BROWNIAN_JITTER=0.2, POST_FUSION_REPEL=0.5, attract_strong=×1.2
+9. 粒子動力學 v2.7c：六層力學系統 + 環形折返 Toroidal（5-50% 重生半徑、360° 隨機方向）+ m=2 橢圓棒勢雙螺旋臂 + Immortal Traces + 單粒子融合 + 融合當下 1/6 分裂，參數：BASE_G=80, DAMPING=0.995, MAX_SPEED=100, REPEL_DIST=45, REPEL_STR=2.0, GRAVITY_WELL=6.0, BAR_AMPLITUDE=0.25, attract_strong=×1.2
