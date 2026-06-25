@@ -5,7 +5,7 @@ import type { ParticleData } from '../types/cosmos.types'
 import { hueToTier } from './forceMap'
 
 const SAVE_INTERVAL = 10000 // 10 seconds
-const MAX_PARTICLES = 1500  // v2.6: increased for fission
+const MAX_PARTICLES = 10000  // v2.8: spatial grid enables 10K particles
 
 let lastSave = 0
 let saveTimer: ReturnType<typeof setTimeout> | null = null

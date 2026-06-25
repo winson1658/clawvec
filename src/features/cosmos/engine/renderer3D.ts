@@ -22,7 +22,7 @@ export interface RenderContext {
   selectedParticleId: string | null
 }
 
-const MAX_PARTICLES = 1500  // v2.6: increased from 1000 for fission support
+const MAX_PARTICLES = 10000  // v2.8: spatial grid enables 10K particles
 
 export function initRenderer(
   canvas: HTMLCanvasElement,
