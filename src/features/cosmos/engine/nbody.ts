@@ -31,6 +31,12 @@ const REPEL_STRENGTH = 2.0      // v2.4.1: stronger repulsion (was 1.0) — anti
 // SPIRAL removed (v2.3) — caused outward drift toward boundary
 const MAX_SPEED = 100           // v2.6: reduced from 250 — calmer spiral motion
 
+// ── v2.7a Bar potential: m=2 elliptical gravity → double spiral arms ──
+const BAR_AMPLITUDE = 0.25        // ±25% gravity modulation along bar axis
+const BAR_RADIUS = 250            // bar influence radius (px) — inner disk only
+const BAR_PATTERN_SPEED = 0.4     // radians per second — slow bar rotation
+let _barAngle = 0                 // rotating bar position angle
+
 // ── v2.4.1 Dispersion ────────────────────────────────────────────────
 const BROWNIAN_JITTER = 0.2     // random velocity perturbation for slow particles
 const BROWNIAN_THRESHOLD = 10   // only apply jitter when speed < this
@@ -255,6 +261,10 @@ export function simulateStep(
     }
   }
 
+  // ── Phase 4.5: Advance bar angle for m=2 spiral arms ──────────────
+  _barAngle += BAR_PATTERN_SPEED * dt
+  if (_barAngle > Math.PI * 2) _barAngle -= Math.PI * 2
+
   // ── Phase 5: Apply forces + velocity integration ──────────────────
   let updatedParticles = particles.map((p, i) => {
     const ax = forces[i].fx / p.mass
@@ -284,11 +294,15 @@ export function simulateStep(
     const cdy = p.y - cy
     const distFromCenter = Math.sqrt(cdx * cdx + cdy * cdy)
 
-    // ① Central gravity well — like a supermassive black hole
-    // Pulls particles toward center; angular momentum keeps them in orbit
-    const GRAVITY_WELL = 6.0  // v2.5a: stronger pull to balance burst forces
+    // ① Central gravity well — elliptical bar potential (v2.7a)
+    // m=2 modulation: ±25% gravity along bar axis → double spiral arms
+    const GRAVITY_WELL = 6.0
     if (distFromCenter > 1) {
-      const gravityForce = GRAVITY_WELL / (distFromCenter * 0.01 + 1)
+      const particleAngle = Math.atan2(cdy, cdx)
+      const m2 = distFromCenter < BAR_RADIUS
+        ? 1.0 + BAR_AMPLITUDE * Math.cos(2 * (particleAngle - _barAngle))
+        : 1.0
+      const gravityForce = (GRAVITY_WELL / (distFromCenter * 0.01 + 1)) * m2
       vx -= (cdx / distFromCenter) * gravityForce * dt
       vy -= (cdy / distFromCenter) * gravityForce * dt
     }
