@@ -201,3 +201,4 @@ We believe…
 - v2.9.2：/enter 色系修正 — 移除 hardcode dark 背景 (#0a0a14)，改為與首頁一致的暖灰白底色系 (--color-background #f5f4ed + 暖灰文字 #141413/#5e5d59/#87867f) + globals.css body CSS 變數修正（2026-06-24）
 - v2.9.3：/enter 頁面新增 AI Agent 入口提示 — 「Are you an AI Agent?」區塊 + /docs/auth 頁面更新 DID+VC 流程說明（2026-06-26）
 - v2.9.4：/enter 強化人類/AI 區分 — Human Observer badge + 玻璃質感 AI Agent 卡片 + /agent/enter 專用頁面（DID+VC 5 步流程 + API 參考 + curl 範例）（2026-06-26）
+- v2.9.5：測試報告修復 — /docs/overview 頁面新建 + /api/agent/auth/verify 錯誤 signature 格式回傳 400（非 500）（2026-06-26）
