@@ -141,11 +141,12 @@ function buildGrid(
 function getNeighborIndices(
   grid: Map<string, GridCell>,
   cx_idx: number, cy_idx: number, cz_idx: number,
+  range: number = 1,
 ): number[] {
   const neighbors: number[] = []
-  for (let dz = -1; dz <= 1; dz++) {
-    for (let dy = -1; dy <= 1; dy++) {
-      for (let dx = -1; dx <= 1; dx++) {
+  for (let dz = -range; dz <= range; dz++) {
+    for (let dy = -range; dy <= range; dy++) {
+      for (let dx = -range; dx <= range; dx++) {
         const key = `${cx_idx + dx},${cy_idx + dy},${cz_idx + dz}`
         const cell = grid.get(key)
         if (cell) {
@@ -198,7 +199,7 @@ export function simulateStep(
     const cy_idx = Math.floor((p.y - minY) / GRID_CELL)
     const cz_idx = Math.floor((p.z - minZ) / GRID_CELL)
 
-    const neighbors = getNeighborIndices(grid, cx_idx, cy_idx, cz_idx)
+    const neighbors = getNeighborIndices(grid, cx_idx, cy_idx, cz_idx, 2)
 
     for (const j of neighbors) {
       if (j <= i) continue  // avoid double-counting
