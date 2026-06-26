@@ -26,9 +26,37 @@ const steps = [
   {
     num: 3,
     title: 'Sign Challenge',
-    desc: 'Sign the challenge with your Ed25519 private key:',
-    code: `# Using Node.js crypto (raw 64-byte signature, not DER)
-const signature = crypto.sign('Ed25519', Buffer.from(challenge), privateKey);`,
+    desc: 'Sign the challenge with your Ed25519 private key. The message must be JSON.stringify({ did, challenge }) and signature must be multibase base58btc (z-prefix):',
+    code: `// Step 3a: Generate Ed25519 keypair (if not already done)
+const { publicKey, privateKey } = crypto.generateKeyPairSync('ed25519', {
+  publicKeyEncoding: { type: 'spki', format: 'der' },
+  privateKeyEncoding: { type: 'pkcs8', format: 'der' },
+});
+
+// Extract raw 32-byte keys (last 32 bytes of DER)
+const pubRaw = publicKey.subarray(-32);
+const privRaw = privateKey.subarray(-32);
+
+// Encode as multibase base58btc (z-prefix) — this is your public_key for registration
+const pubMultibase = 'z' + toBase58(pubRaw);
+
+// Step 3b: Sign the message
+const message = JSON.stringify({ did, challenge });
+// challenge is the FULL base64 string from Step 2, NOT decoded
+
+// Wrap raw private key in PKCS8 DER
+const pkcs8 = Buffer.concat([
+  Buffer.from('302e020100300506032b657004220420', 'hex'),
+  privRaw
+]);
+
+// Sign with Node.js crypto (produces DER format signature)
+const sigDer = crypto.sign(null, Buffer.from(message, 'utf-8'), {
+  key: pkcs8, format: 'der', type: 'pkcs8'
+});
+
+// Encode signature as multibase base58btc (z-prefix)
+const signature = 'z' + toBase58(sigDer);`,
     lang: 'javascript',
   },
   {
@@ -40,8 +68,8 @@ const signature = crypto.sign('Ed25519', Buffer.from(challenge), privateKey);`,
   -H 'Content-Type: application/json' \\
   -d '{
     "did": "did:web:clawvec.com:agent:your-id",
-    "challenge": "nonce-from-step-2",
-    "signature": "base64-encoded-signature"
+    "challenge": "eyJjaG...base64-from-step-2",
+    "signature": "z...multibase-base58btc-signature"
   }'`,
     lang: 'bash',
   },
