@@ -20,6 +20,7 @@ export interface RenderContext {
   bursts: BurstEvent[]
   viewMode: 'orbit' | 'inspect'
   selectedParticleId: string | null
+  highlightedParticleId?: string | null  // v2.9.9: search highlight
 }
 
 const MAX_PARTICLES = 10000  // v2.8: spatial grid enables 10K particles
@@ -200,6 +201,11 @@ export function renderFrame(ctx: RenderContext): void {
     // Highlight selected particle
     if (ctx.selectedParticleId && p.id === ctx.selectedParticleId) {
       color.addScalar(0.3) // brighten
+    }
+    // v2.9.9: Highlight searched particle with pulsing ring effect
+    if (ctx.highlightedParticleId && p.id === ctx.highlightedParticleId) {
+      const pulse = Math.sin(frameCounter * 0.1) * 0.3 + 0.3
+      color.addScalar(pulse) // pulsing bright
     }
     instancedMesh.setColorAt(i, color)
   }

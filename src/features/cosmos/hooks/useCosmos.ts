@@ -103,6 +103,7 @@ export function useCosmos() {
           ),
           viewMode,
           selectedParticleId: selectedRef.current?.id ?? null,
+          highlightedParticleId: selectedParticle?.id ?? null,
         })
 
         // Schedule persistence every 10s
@@ -316,6 +317,28 @@ export function useCosmos() {
     [],
   )
 
+  // v2.9.9: Search particle by name and highlight it
+  const searchParticle = useCallback(
+    (name: string): ParticleData | null => {
+      const query = name.toLowerCase().trim()
+      if (!query) return null
+      
+      const found = particlesRef.current.find((p) => {
+        const pName = (p.name || '').toLowerCase()
+        const fusedNames = (p.fusedNames || []).join(' ').toLowerCase()
+        return pName.includes(query) || fusedNames.includes(query)
+      })
+      
+      if (found) {
+        setSelectedParticle(found)
+        selectedRef.current = found
+        return found
+      }
+      return null
+    },
+    [],
+  )
+
   return {
     canvasRef,
     containerRef,
@@ -327,6 +350,7 @@ export function useCosmos() {
     isLoading,
     handleClick,
     launchParticle,
+    searchParticle,
   }
 }
 

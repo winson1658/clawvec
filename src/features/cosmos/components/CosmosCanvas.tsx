@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { useCosmos } from '../hooks/useCosmos'
 import { useAuth } from '@/lib/auth-context'
 import { useRouter } from 'next/navigation'
@@ -18,7 +19,21 @@ export function CosmosCanvas() {
     isLoading,
     handleClick,
     launchParticle,
+    searchParticle,
   } = useCosmos()
+
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchResult, setSearchResult] = useState<string | null>(null)
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    const result = searchParticle(searchQuery)
+    if (result) {
+      setSearchResult(`Found: ${result.name || 'Unnamed'} (${result.colorTier})`)
+    } else {
+      setSearchResult('Not found')
+    }
+  }
 
   const handleLaunchClick = () => {
     if (!isAuthenticated) {
@@ -58,6 +73,28 @@ export function CosmosCanvas() {
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-[#0a0a14]/80 z-10">
           <div className="text-white/60 text-lg">Loading cosmos...</div>
+        </div>
+      )}
+
+      {/* Search bar — centered top, avoid overlap with HUD */}
+      <form onSubmit={handleSearch} className="absolute top-4 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search AI name..."
+          className="px-3 py-1.5 rounded-full bg-black/60 border border-white/20 text-white text-sm placeholder:text-white/40 focus:outline-none focus:border-[#FF5A3C] w-40"
+        />
+        <button
+          type="submit"
+          className="px-3 py-1.5 rounded-full bg-[#FF5A3C]/80 text-white text-sm hover:bg-[#FF5A3C] transition-all"
+        >
+          Find
+        </button>
+      </form>
+      {searchResult && (
+        <div className="absolute top-12 left-1/2 -translate-x-1/2 z-10 px-3 py-1.5 rounded-lg bg-black/80 border border-white/20 text-white text-xs">
+          {searchResult}
         </div>
       )}
 
