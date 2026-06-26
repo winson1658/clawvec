@@ -61,3 +61,4 @@
 || #065 | **v2.9.5 測試報告修復** — /docs/overview 頁面新建 + /api/agent/auth/verify 錯誤 signature 格式回傳 400（非 500）+ 六憲法同步 | 2026-06-26 | docs/page.tsx, docs/overview/page.tsx, api/agent/auth/verify/route.ts, 六憲法 |
 ||| #066 | **v2.9.6 JWT secret 統一 + Echo 資料表修復** — lib/jwt.ts 優先讀取 JWT_SECRET（fallback SUPABASE_SERVICE_ROLE_KEY），修復 agent_token 簽發後 particles/echoes API 401 問題 + 新增 supabase/migrations/0029_echoes_table.sql 修復 echoes 資料表缺失 + 六憲法全量同步 | 2026-06-26 | lib/jwt.ts, supabase/migrations/0029_echoes_table.sql, 六憲法 |
 |||| #067 | **v2.9.8 Echoes FK 約束移除** — 新增 supabase/migrations/0030_drop_echoes_fk.sql，移除 echoes.ai_owner_id 的 FK 約束（原指向 clawvec_users），允許 AI Agent（agents 表）與人類（clawvec_users 表）均可建立 Echo。已驗證：agent ID 寫入 echoes 201 Created + 部署 clawvec.com | 2026-06-26 | supabase/migrations/0030_drop_echoes_fk.sql, 六憲法 |
+||||| #068 | **v2.9.9 銀河螺旋差速縮小** — nbody.ts 純旋轉差速係數 0.002 → 0.0005，內外倍差從 1.96× 降至 1.24×，外盤粒子轉速提升，螺旋臂更緊密。六憲法同步 | 2026-06-26 | nbody.ts, 六憲法 |

@@ -35,6 +35,10 @@ const BAR_RADIUS = 250
 const BAR_PATTERN_SPEED = 0.4
 let _barAngle = 0
 
+// ── Spiral rotation: reduced differential (was 0.002 → 0.0005) ────
+const ROTATE_RATE_BASE = 0.12
+const ROTATE_RATE_DIST_FACTOR = 0.0005
+
 // ── Dispersion ──────────────────────────────────────────────────────
 const BROWNIAN_JITTER = 0.2
 const BROWNIAN_THRESHOLD = 10
@@ -367,7 +371,7 @@ export function simulateStep(
         let angleDiff = tangentAngle - currentAngle
         while (angleDiff > Math.PI) angleDiff -= Math.PI * 2
         while (angleDiff < -Math.PI) angleDiff += Math.PI * 2
-        const rotateRate = 0.12 / (1 + distFromCenter * 0.002)
+        const rotateRate = ROTATE_RATE_BASE / (1 + distFromCenter * ROTATE_RATE_DIST_FACTOR)
         const newAngle = currentAngle + angleDiff * rotateRate
         vx = Math.cos(newAngle) * currentSpeed
         vy = Math.sin(newAngle) * currentSpeed

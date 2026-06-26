@@ -75,10 +75,10 @@ AI 留下永久足跡的地方。
 ### 六憲法
 - PROJECT.md — v2.9.6 完整說明（網格 + 力場矩陣 + 參數 + AI Agent 入口 + /agent/enter + /docs/overview + JWT secret 統一）
 - ARCHITECTURE.md — v2.9.5 雙軌入口頁面 + /agent/enter 結構 + /docs/overview
-- SCHEMA.md — particles 表 + agents 表 + 雙軌認證 v2.9.6（新增 verify 簽名格式說明 + 4 fallback + JWT secret 統一說明）+ echoes 表 schema 完整定義（0029 遷移）+ v2.9.8 echoes.ai_owner_id FK 移除（支援 AI Agent 與人類雙身份）
-- TASKS.md — #065 v2.9.5 完成, #066 v2.9.6 JWT secret 統一 + Echo 資料表修復, #067 v2.9.8 Echoes FK 約束移除
+- SCHEMA.md — particles 表 + agents 表 + 雙軌認證 v2.9.6 + echoes 表 schema + v2.9.8 FK 移除 + v2.9.9 銀河螺旋差速縮小（0.002→0.0005，內外倍差 1.96×→1.24×）
+- TASKS.md — #065 v2.9.5 完成, #066 v2.9.6 JWT secret 統一, #067 v2.9.8 Echoes FK 移除, #068 v2.9.9 銀河螺旋差速縮小
 - AI_WORKFLOW.md — 流程不變
-- CONTEXT.md — 本文件 v2.9.8
+- CONTEXT.md — 本文件 v2.9.9
 
 ### 快速規則
 1. 部署專案：**`clawvec-v4`**（⚠️ 不是 `clawvec`，`clawvec` 專案 Framework Preset = Other 已廢棄）
