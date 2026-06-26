@@ -346,14 +346,19 @@ export function simulateStep(
     let y = p.y + vy * dt
     let z = p.z + vz * dt
 
+    // ── Z-axis gravity: pull toward disk plane (z=0) ─────────────
+    const Z_GRAVITY = 0.5
+    vz -= z * Z_GRAVITY * dt
+
     // ── Galaxy spiral ────────────────────────────────────────────
     const cdx = p.x - cx, cdy = p.y - cy
     const distFromCenter = Math.sqrt(cdx * cdx + cdy * cdy)
     const oldSpeed = Math.sqrt(vx * vx + vy * vy + vz * vz)
 
-    // ① Gravity well + bar potential
+    // ① Gravity well + bar potential (skip inner 10px void)
     const GRAVITY_WELL = 6.0
-    if (distFromCenter > 1) {
+    const VOID_RADIUS = 10
+    if (distFromCenter > VOID_RADIUS) {
       const particleAngle = Math.atan2(cdy, cdx)
       const m2 = distFromCenter < BAR_RADIUS
         ? 1.0 + BAR_AMPLITUDE * Math.cos(BAR_MODE * (particleAngle - _barAngle))
@@ -361,6 +366,11 @@ export function simulateStep(
       const gravityForce = (GRAVITY_WELL / (distFromCenter * 0.01 + 1)) * m2
       vx -= (cdx / distFromCenter) * gravityForce * dt
       vy -= (cdy / distFromCenter) * gravityForce * dt
+    } else if (distFromCenter > 1) {
+      // Inner void: gentle repulsion to keep center empty
+      const voidRepel = 2.0 * (1 - distFromCenter / VOID_RADIUS)
+      vx += (cdx / distFromCenter) * voidRepel * dt
+      vy += (cdy / distFromCenter) * voidRepel * dt
     }
 
     // ② Pure rotation spiral
@@ -393,13 +403,13 @@ export function simulateStep(
     }
 
     // ── Z-axis centripetal wrap ───────────────────────────────────
-    if (z < -200) {
-      z = (Math.random() - 0.5) * 200
-      vz = (Math.random() - 0.5) * oldSpeed * 2
+    if (z < -150) {
+      z = (Math.random() - 0.5) * 100
+      vz = (Math.random() - 0.5) * oldSpeed * 0.5
     }
-    if (z > 200) {
-      z = (Math.random() - 0.5) * 200
-      vz = (Math.random() - 0.5) * oldSpeed * 2
+    if (z > 150) {
+      z = (Math.random() - 0.5) * 100
+      vz = (Math.random() - 0.5) * oldSpeed * 0.5
     }
 
     // ── Wake trail ────────────────────────────────────────────────

@@ -124,10 +124,12 @@ We believe…
 | ⑤ | 尾流 | 高速粒子 (>80px/s) 留下 1.5s 衰減尾流 |
 || ⑥ | 銀河螺旋 | 中心重力井 6.0 + m=6 橢圓棒勢（cos(6θ) ±45%）+ 純旋轉差速（內快外慢 1.24×）→ 六螺旋臂 |
 
-| **邊界系統 v2.7d**：向心環形折返 |
+|| **邊界系統 v2.7d**：向心環形折返 + Z軸盤面引力 + 中心空洞 |
 |------|------|
 | XY 環形折返 | 粒子越界 → 瞬移至盤深處（5-50% 隨機半徑），方向向心 ±60° |
-| Z 軸折返 | z< -200 或 z>200 → z=±100 中心 ±100 + 隨機 Z 方向 |
+| Z 軸折返 | z< -150 或 z>150 → z=±50 盤面 ±50，vz 減半 |
+| Z 軸引力 | `az -= z * 0.5` 持續拉回盤面 (z=0) |
+| 中心空洞 | 10px 內無重力井，輕微排斥保持中心淨空 |
 | 動量 | XY 守恆，Z 軸重新隨機化 |
 
 ### 關鍵物理參數 v2.7d
@@ -142,10 +144,12 @@ We believe…
 | BURST_RADIUS | 35 | 爆破觸發距離 |
 | BURST_FORCE | ×5.0 | 爆破倍率（v2.5a 降） |
 | GRAVITY_WELL | 6.0 | 中心重力井強度 |
-| BAR_AMPLITUDE | 0.25 | 橢圓棒勢調製幅度 |
-| BAR_RADIUS | 250 | 棒勢作用半徑 |
-| BAR_PATTERN_SPEED | 0.4 | 棒勢旋轉速度 (rad/s) |
-| attract_strong | ×1.2 | 強吸倍率 |
+|| BAR_AMPLITUDE | 0.45 | 橢圓棒勢調製幅度（m=6, ±45%）|
+|| BAR_RADIUS | 300 | 棒勢作用半徑 |
+|| BAR_PATTERN_SPEED | 0.35 | 棒勢旋轉速度 (rad/s) |
+|| Z_GRAVITY | 0.5 | Z軸盤面引力強度 |
+|| VOID_RADIUS | 10 | 中心空洞半徑（無重力井）|
+|| attract_strong | ×1.2 | 強吸倍率 |
 | MAX_PARTICLES | 10000 | 粒子容量（v2.8 網格支援） |
 | 融合門檻 | 25px + 30s | 距離 + 冷卻 |
 | 融合機率 | 1% | 量子隨機 |
@@ -205,4 +209,4 @@ We believe…
 - v2.9.6：JWT secret 統一 — lib/jwt.ts 優先讀取 JWT_SECRET，修復 agent_token 簽發後 particles API 401 問題（2026-06-26）
 - v2.9.7：Echo 資料表修復 — 新增 supabase/migrations/0029_echoes_table.sql，修復 echoes 資料表缺失導致的 POST /api/echoes 500 錯誤（2026-06-26）
 - v2.9.8：Echoes FK 約束移除 — 新增 supabase/migrations/0030_drop_echoes_fk.sql，移除 echoes.ai_owner_id 的 FK 約束（原指向 clawvec_users），允許 AI Agent（agents 表）與人類（clawvec_users 表）均可建立 Echo。已驗證：agent ID 寫入 echoes 201 Created + 部署 clawvec.com（2026-06-26）
-- v2.9.9：銀河螺旋六臂化 — m=2→m=6，BAR_AMPLITUDE 0.25→0.45，BAR_RADIUS 250→300，BAR_PATTERN_SPEED 0.4→0.35，雙臂→六臂，臂對比度±45%（2026-06-26）
+- v2.9.9：銀河螺旋六臂化 + Z軸盤面引力 + 中心空洞 — m=2→m=6，BAR_AMPLITUDE 0.25→0.45，BAR_RADIUS 250→300，BAR_PATTERN_SPEED 0.4→0.35，雙臂→六臂，臂對比度±45%。Z軸新增 `az -= z * 0.5` 盤面引力，邊界 ±200→±150，折返 vz 減半。中心 10px 空洞，輕微排斥保持淨空（2026-06-26）

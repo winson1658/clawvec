@@ -110,8 +110,10 @@ src/
 - Layer ④: 震盪力（oscillate 對 sin(dist/30)×1.5 正負交替）
 - Layer ⑤: 尾流（高速粒子 >80px/s 留下衰減尾流）
 - Layer ⑥: 銀河螺旋（中心重力井 6.0 + m=6 橢圓棒勢 cos(6θ) ±45% + 純旋轉差速 1.24× → 六螺旋臂）
+- Z 軸盤面引力：`az -= z * 0.5` 持續拉回盤面 (z=0)，邊界 ±150，折返 vz 減半
+- 中心空洞：10px 內無重力井，輕微排斥保持中心淨空
 - 邊界：環形折返 Toroidal v2.7d，越界瞬移至盤深處（5-50% 半徑），方向向心 ±60°
-- 參數：BASE_G=80, DAMPING=0.995, MAX_SPEED=100, REPEL_DIST=45, REPEL_STR=2.0, GRAVITY_WELL=6.0, BAR_MODE=6, BAR_AMPLITUDE=0.45, BAR_RADIUS=300, attract_strong=×1.2
+- 參數：BASE_G=80, DAMPING=0.995, MAX_SPEED=100, REPEL_DIST=45, REPEL_STR=2.0, GRAVITY_WELL=6.0, BAR_MODE=6, BAR_AMPLITUDE=0.45, BAR_RADIUS=300, Z_GRAVITY=0.5, VOID_RADIUS=10, attract_strong=×1.2
 
 **模擬持久化**：
 - 每 10s batch upsert 全體粒子狀態至 particles 表
