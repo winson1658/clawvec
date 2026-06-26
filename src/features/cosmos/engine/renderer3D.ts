@@ -146,13 +146,32 @@ function animate(): void {
   }
 }
 
+// v2.9.9: 融合體輪替閃爍 — 每 60 幀切換一個組成色
+const CYCLE_FRAMES = 60
+let frameCounter = 0
+
+const nameToHue: Record<string, number> = {
+  'Red': 0, 'Orange': 30, 'Yellow': 60, 'Green': 120,
+  'Blue': 195, 'Indigo': 255, 'Violet': 290,
+}
+
 export function renderFrame(ctx: RenderContext): void {
   const { particles } = ctx
   const count = Math.min(particles.length, MAX_PARTICLES)
+  frameCounter++
 
   for (let i = 0; i < count; i++) {
     const p = particles[i]
-    const [r, g, b] = hueToColor(p.hue)
+
+    // v2.9.9: 融合體輪替閃爍視覺效果
+    let displayHue = p.hue
+    if (p.fusedNames.length > 1) {
+      const cycleIndex = Math.floor(frameCounter / CYCLE_FRAMES) % p.fusedNames.length
+      const cycleName = p.fusedNames[cycleIndex]
+      displayHue = nameToHue[cycleName] ?? p.hue
+    }
+
+    const [r, g, b] = hueToColor(displayHue)
 
     // Position
     dummy.position.set(p.x, p.y, p.z)

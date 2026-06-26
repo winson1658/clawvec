@@ -88,8 +88,7 @@ export function fuseParticles(a: ParticleData, b: ParticleData): ParticleData {
   const wa = a.mass / totalMass
   const wb = b.mass / totalMass
 
-  const fusedHue = (a.hue * wa + b.hue * wb)
-
+  // v2.9.9: 多數決顏色（非 Hue 平均），保留色階身份以利持續融合
   const allNames = [...new Set([
     ...(a.fusedNames.length > 0 ? a.fusedNames : [a.name || '?']),
     ...(b.fusedNames.length > 0 ? b.fusedNames : [b.name || '?']),
@@ -98,6 +97,21 @@ export function fuseParticles(a: ParticleData, b: ParticleData): ParticleData {
     ...(a.fusedIds.length > 0 ? a.fusedIds : [a.id]),
     ...(b.fusedIds.length > 0 ? b.fusedIds : [b.id]),
   ])]
+
+  // 多數決：計算每個顏色出現次數，取最多票
+  const colorVotes: Record<string, number> = {}
+  for (const name of allNames) {
+    colorVotes[name] = (colorVotes[name] || 0) + 1
+  }
+  const dominantColor = Object.entries(colorVotes)
+    .sort((a, b) => b[1] - a[1])[0][0]
+
+  // 顏色名稱 → hue 映射
+  const nameToHue: Record<string, number> = {
+    'Red': 0, 'Orange': 30, 'Yellow': 60, 'Green': 120,
+    'Blue': 195, 'Indigo': 255, 'Violet': 290,
+  }
+  const fusedHue = nameToHue[dominantColor] ?? Math.random() * 360
 
   return {
     id: `p_fusion_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
