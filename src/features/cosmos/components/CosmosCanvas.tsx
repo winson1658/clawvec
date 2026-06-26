@@ -111,18 +111,18 @@ export function CosmosCanvas() {
         </div>
       )}
 
-      {/* Search bar — centered top, avoid overlap with HUD */}
-      <form onSubmit={handleSearch} className="absolute top-4 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2">
+      {/* Search bar — centered top, responsive for mobile */}
+      <form onSubmit={handleSearch} className="absolute top-2 sm:top-4 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1 sm:gap-2">
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search AI name..."
-          className="px-3 py-1.5 rounded-full bg-black/60 border border-white/20 text-white text-sm placeholder:text-white/40 focus:outline-none focus:border-[#FF5A3C] w-40"
+          placeholder="Search..."
+          className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-black/60 border border-white/20 text-white text-xs sm:text-sm placeholder:text-white/40 focus:outline-none focus:border-[#FF5A3C] w-28 sm:w-40"
         />
         <button
           type="submit"
-          className="px-3 py-1.5 rounded-full bg-[#FF5A3C]/80 text-white text-sm hover:bg-[#FF5A3C] transition-all"
+          className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-[#FF5A3C]/80 text-white text-xs sm:text-sm hover:bg-[#FF5A3C] transition-all"
         >
           Find
         </button>
@@ -130,7 +130,7 @@ export function CosmosCanvas() {
           <button
             type="button"
             onClick={clearSearch}
-            className="px-2 py-1.5 rounded-full bg-white/10 text-white/60 text-sm hover:bg-white/20 transition-all"
+            className="px-1.5 sm:px-2 py-1 sm:py-1.5 rounded-full bg-white/10 text-white/60 text-xs sm:text-sm hover:bg-white/20 transition-all"
           >
             ✕
           </button>
@@ -153,8 +153,8 @@ export function CosmosCanvas() {
         </div>
       )}
 
-      {/* HUD */}
-      <div className="absolute top-4 left-4 z-10 text-white/70 text-sm font-mono space-y-1 pointer-events-none">
+      {/* HUD — responsive for mobile */}
+      <div className="absolute top-2 sm:top-4 left-2 sm:left-4 z-10 text-white/70 text-xs sm:text-sm font-mono space-y-0.5 sm:space-y-1 pointer-events-none">
         <div>Particles: <span className="text-[#FF5A3C]">{stats.particles}</span></div>
         <div>Clusters: {stats.clusters}</div>
         <div>Fusions: {stats.fusions}</div>
