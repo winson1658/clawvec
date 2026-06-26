@@ -346,9 +346,9 @@ export function simulateStep(
     let y = p.y + vy * dt
     let z = p.z + vz * dt
 
-    // ── Z-axis gravity: pull toward disk plane (z=0) ─────────────
-    const Z_GRAVITY = 0.5
-    vz -= z * Z_GRAVITY * dt
+    // ── Z-axis gravity: disabled (v2.9.9a) ───────────────────────
+    // Z_GRAVITY removed to allow natural Z-axis distribution
+    // Particles free to drift in Z while XY spiral dominates
 
     // ── Galaxy spiral ────────────────────────────────────────────
     const cdx = p.x - cx, cdy = p.y - cy
