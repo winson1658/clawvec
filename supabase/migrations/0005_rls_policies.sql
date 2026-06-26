@@ -25,6 +25,9 @@ CREATE POLICY "Users are viewable by everyone" ON clawvec_users
 CREATE POLICY "Users can update own profile" ON clawvec_users
   FOR UPDATE USING (auth.uid() = id);
 
+CREATE POLICY "Users can delete own account" ON clawvec_users
+  FOR DELETE USING (auth.uid() = id);
+
 -- agents: read all, write admin only (service_role bypass)
 CREATE POLICY "Agents are viewable by everyone" ON agents
   FOR SELECT USING (true);
