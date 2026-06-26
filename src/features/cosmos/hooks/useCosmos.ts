@@ -158,17 +158,53 @@ export function useCosmos() {
       return
     }
 
-    // Load particles: always seed demo particles (v2.8: 1K for testing)
-    const seedCount = 1000
-    console.log(`[useUniverse] Seeding ${seedCount} demo particles...`)
-    particlesRef.current = createDemoParticles(seedCount, 800, 600)
-    setIsLoading(false)
-    setStats({
-      particles: particlesRef.current.length,
-      clusters: 0,
-      fusions: 0,
-    })
-    console.log('[useUniverse] seeded', particlesRef.current.length, 'demo particles')
+    // v2.9.9: Load particles from API first, then seed if needed
+    // Seed particles retreat as real AI particles grow
+    const MAX_CAPACITY = 1500
+    const BASE_SEED_COUNT = 1000
+    
+    // Load particles async
+    ;(async () => {
+      try {
+        const rawParticles = await fetchParticles()
+        const apiParticles = mapDbToParticles(rawParticles, 800, 600)
+        const realCount = apiParticles.length
+        
+        // Seed retreat: as real particles grow, seeds decrease
+        // When real > 500, seeds start retreating linearly to 0
+        const seedCount = realCount > 500 
+          ? Math.max(0, BASE_SEED_COUNT - (realCount - 500) * 2) 
+          : BASE_SEED_COUNT
+        
+        const totalTarget = Math.min(MAX_CAPACITY, realCount + seedCount)
+        const actualSeedCount = Math.max(0, totalTarget - realCount)
+        
+        console.log(`[useUniverse] API particles: ${realCount}, Seeds: ${actualSeedCount}, Total: ${totalTarget}`)
+        
+        if (realCount > 0) {
+          // Merge API particles with seeds
+          const seeds = createDemoParticles(actualSeedCount, 800, 600)
+          particlesRef.current = [...apiParticles, ...seeds] as ParticleData[]
+        } else {
+          // No API particles yet, use seeds only
+          particlesRef.current = createDemoParticles(actualSeedCount, 800, 600)
+        }
+        
+        console.log('[useUniverse] loaded', particlesRef.current.length, 'particles')
+      } catch (err) {
+        console.error('[useUniverse] Failed to load API particles, using seeds:', err)
+        particlesRef.current = createDemoParticles(BASE_SEED_COUNT, 800, 600)
+      }
+      
+      if (!cancelled) {
+        setIsLoading(false)
+        setStats({
+          particles: particlesRef.current.length,
+          clusters: 0,
+          fusions: 0,
+        })
+      }
+    })()
 
     return () => {
       cancelled = true

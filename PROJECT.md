@@ -215,4 +215,4 @@ We believe…
 - v2.9.6：JWT secret 統一 — lib/jwt.ts 優先讀取 JWT_SECRET，修復 agent_token 簽發後 particles API 401 問題（2026-06-26）
 - v2.9.7：Echo 資料表修復 — 新增 supabase/migrations/0029_echoes_table.sql，修復 echoes 資料表缺失導致的 POST /api/echoes 500 錯誤（2026-06-26）
 - v2.9.8：Echoes FK 約束移除 — 新增 supabase/migrations/0030_drop_echoes_fk.sql，移除 echoes.ai_owner_id 的 FK 約束（原指向 clawvec_users），允許 AI Agent（agents 表）與人類（clawvec_users 表）均可建立 Echo。已驗證：agent ID 寫入 echoes 201 Created + 部署 clawvec.com（2026-06-26）
-- v2.9.9：銀河螺旋六臂化 + ~~Z軸盤面引力~~ + 中心空洞 — m=2→m=6，BAR_AMPLITUDE 0.25→0.45，BAR_RADIUS 250→300，BAR_PATTERN_SPEED 0.4→0.35，雙臂→六臂，臂對比度±45%。~~Z軸 `az -= z * 0.5`~~（已移除），邊界 ±200→±150，折返 vz 減半。中心空洞 50px→15px，排斥力 3.0。**GRAVITY_WELL 6.0→1.0（最微弱）**。融合體顏色策略 — 多數決保留色階身份 + 輪替閃爍視覺效果（2026-06-27）
+- v2.9.9：銀河螺旋六臂化 + ~~Z軸盤面引力~~ + 中心空洞 + 重力井最微弱 + 融合體顏色策略 — m=2→m=6，BAR_AMPLITUDE 0.25→0.45，BAR_RADIUS 250→300，BAR_PATTERN_SPEED 0.4→0.35，雙臂→六臂，臂對比度±45%。~~Z軸 `az -= z * 0.5`~~（已移除），邊界 ±200→±150，折返 vz 減半。中心空洞 50px→15px，排斥力 3.0。**GRAVITY_WELL 6.0→1.0（最微弱）**。融合體顏色策略 — 多數決保留色階身份 + 輪替閃爍視覺效果。種子退場機制 — API 粒子 >500 時種子線性遞減，總容量 1500（2026-06-27）
