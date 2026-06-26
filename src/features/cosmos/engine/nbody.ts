@@ -355,9 +355,9 @@ export function simulateStep(
     const distFromCenter = Math.sqrt(cdx * cdx + cdy * cdy)
     const oldSpeed = Math.sqrt(vx * vx + vy * vy + vz * vz)
 
-    // ① Gravity well + bar potential (skip inner 50px void)
+    // ① Gravity well + bar potential (skip inner 15px void)
     const GRAVITY_WELL = 6.0
-    const VOID_RADIUS = 50
+    const VOID_RADIUS = 15
     if (distFromCenter > VOID_RADIUS) {
       const particleAngle = Math.atan2(cdy, cdx)
       const m2 = distFromCenter < BAR_RADIUS
@@ -367,7 +367,7 @@ export function simulateStep(
       vx -= (cdx / distFromCenter) * gravityForce * dt
       vy -= (cdy / distFromCenter) * gravityForce * dt
     } else if (distFromCenter > 1) {
-      // Inner void (1-50px): gentle repulsion to keep center empty
+      // Inner void (1-15px): gentle repulsion to keep center empty
       const voidRepel = 3.0 * (1 - distFromCenter / VOID_RADIUS)
       vx += (cdx / distFromCenter) * voidRepel * dt
       vy += (cdy / distFromCenter) * voidRepel * dt
