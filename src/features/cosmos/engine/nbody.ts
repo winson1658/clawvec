@@ -29,10 +29,11 @@ const REPEL_DIST = 45
 const REPEL_STRENGTH = 2.0
 const MAX_SPEED = 100
 
-// ── Bar potential: m=2 elliptical gravity → double spiral arms ─────
-const BAR_AMPLITUDE = 0.25
-const BAR_RADIUS = 250
-const BAR_PATTERN_SPEED = 0.4
+// ── Bar potential: m=6 elliptical gravity → hexagonal spiral arms ───
+const BAR_MODE = 6
+const BAR_AMPLITUDE = 0.45
+const BAR_RADIUS = 300
+const BAR_PATTERN_SPEED = 0.35
 let _barAngle = 0
 
 // ── Spiral rotation: reduced differential (was 0.002 → 0.0005) ────
@@ -355,7 +356,7 @@ export function simulateStep(
     if (distFromCenter > 1) {
       const particleAngle = Math.atan2(cdy, cdx)
       const m2 = distFromCenter < BAR_RADIUS
-        ? 1.0 + BAR_AMPLITUDE * Math.cos(2 * (particleAngle - _barAngle))
+        ? 1.0 + BAR_AMPLITUDE * Math.cos(BAR_MODE * (particleAngle - _barAngle))
         : 1.0
       const gravityForce = (GRAVITY_WELL / (distFromCenter * 0.01 + 1)) * m2
       vx -= (cdx / distFromCenter) * gravityForce * dt

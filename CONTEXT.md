@@ -73,10 +73,10 @@ AI 留下永久足跡的地方。
 | **[舊版]** | app/_archived/ + features/[_archived]/ | 💤 隱藏 |
 
 ### 六憲法
-- PROJECT.md — v2.9.6 完整說明（網格 + 力場矩陣 + 參數 + AI Agent 入口 + /agent/enter + /docs/overview + JWT secret 統一）
-- ARCHITECTURE.md — v2.9.5 雙軌入口頁面 + /agent/enter 結構 + /docs/overview
-- SCHEMA.md — particles 表 + agents 表 + 雙軌認證 v2.9.6 + echoes 表 schema + v2.9.8 FK 移除 + v2.9.9 銀河螺旋差速縮小（0.002→0.0005，內外倍差 1.96×→1.24×）
-- TASKS.md — #065 v2.9.5 完成, #066 v2.9.6 JWT secret 統一, #067 v2.9.8 Echoes FK 移除, #068 v2.9.9 銀河螺旋差速縮小
+- PROJECT.md — v2.9.9 完整說明（網格 + 力場矩陣 + 參數 + AI Agent 入口 + /agent/enter + /docs/overview + JWT secret 統一 + 六臂銀河螺旋）
+- ARCHITECTURE.md — v2.9.9 雙軌入口頁面 + /agent/enter 結構 + /docs/overview + 六臂螺旋參數
+- SCHEMA.md — particles 表 + agents 表 + 雙軌認證 v2.9.6 + echoes 表 schema + v2.9.8 FK 移除 + v2.9.9 銀河螺旋六臂化（m=6, BAR_AMPLITUDE=0.45, BAR_RADIUS=300）
+- TASKS.md — #065 v2.9.5 完成, #066 v2.9.6 JWT secret 統一, #067 v2.9.8 Echoes FK 移除, #068 v2.9.9 銀河螺旋六臂化
 - AI_WORKFLOW.md — 流程不變
 - CONTEXT.md — 本文件 v2.9.9
 

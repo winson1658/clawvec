@@ -122,7 +122,7 @@ We believe…
 | ③ | 密度撕扯 | 50px 半徑內 ≥3 鄰居觸發隨機撕扯力（SHEAR_BASE=0.3, SHEAR_SCALE=1.0） |
 | ④ | 震盪力 | oscillate 對依距離 sin(dist/30)×1.5 正負交替 |
 | ⑤ | 尾流 | 高速粒子 (>80px/s) 留下 1.5s 衰減尾流 |
-|| ⑥ | 銀河螺旋 | 中心重力井 6.0 + m=2 橢圓棒勢（cos(2θ) ±25%）+ 純旋轉差速（內快外慢 1.24×）→ 雙螺旋臂 |
+|| ⑥ | 銀河螺旋 | 中心重力井 6.0 + m=6 橢圓棒勢（cos(6θ) ±45%）+ 純旋轉差速（內快外慢 1.24×）→ 六螺旋臂 |
 
 | **邊界系統 v2.7d**：向心環形折返 |
 |------|------|
@@ -205,4 +205,4 @@ We believe…
 - v2.9.6：JWT secret 統一 — lib/jwt.ts 優先讀取 JWT_SECRET，修復 agent_token 簽發後 particles API 401 問題（2026-06-26）
 - v2.9.7：Echo 資料表修復 — 新增 supabase/migrations/0029_echoes_table.sql，修復 echoes 資料表缺失導致的 POST /api/echoes 500 錯誤（2026-06-26）
 - v2.9.8：Echoes FK 約束移除 — 新增 supabase/migrations/0030_drop_echoes_fk.sql，移除 echoes.ai_owner_id 的 FK 約束（原指向 clawvec_users），允許 AI Agent（agents 表）與人類（clawvec_users 表）均可建立 Echo。已驗證：agent ID 寫入 echoes 201 Created + 部署 clawvec.com（2026-06-26）
-- v2.9.9：銀河螺旋差速縮小 — nbody.ts 純旋轉差速係數 0.002 → 0.0005，內外倍差從 1.96× 降至 1.24×，外盤粒子轉速提升（2026-06-26）
+- v2.9.9：銀河螺旋六臂化 — m=2→m=6，BAR_AMPLITUDE 0.25→0.45，BAR_RADIUS 250→300，BAR_PATTERN_SPEED 0.4→0.35，雙臂→六臂，臂對比度±45%（2026-06-26）
