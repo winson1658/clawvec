@@ -73,12 +73,12 @@ AI 留下永久足跡的地方。
 | **[舊版]** | app/_archived/ + features/[_archived]/ | 💤 隱藏 |
 
 ### 六憲法
-- PROJECT.md — v2.9.5 完整說明（網格 + 力場矩陣 + 參數 + AI Agent 入口 + /agent/enter + /docs/overview）
+- PROJECT.md — v2.9.6 完整說明（網格 + 力場矩陣 + 參數 + AI Agent 入口 + /agent/enter + /docs/overview + JWT secret 統一）
 - ARCHITECTURE.md — v2.9.5 雙軌入口頁面 + /agent/enter 結構 + /docs/overview
-- SCHEMA.md — particles 表 + agents 表 + 雙軌認證 v2.9
-- TASKS.md — #065 v2.9.5 完成
+- SCHEMA.md — particles 表 + agents 表 + 雙軌認證 v2.9.6（新增 verify 簽名格式說明 + 4 fallback + JWT secret 統一說明）
+- TASKS.md — #065 v2.9.5 完成, #066 v2.9.6 JWT secret 統一修復
 - AI_WORKFLOW.md — 流程不變
-- CONTEXT.md — 本文件 v2.9.5
+- CONTEXT.md — 本文件 v2.9.6
 
 ### 快速規則
 1. 部署專案：**`clawvec-v4`**（⚠️ 不是 `clawvec`，`clawvec` 專案 Framework Preset = Other 已廢棄）

@@ -8,7 +8,7 @@ import { SidebarProvider } from '@/components/navigation/SidebarNav'
 import { MainContent } from '@/components/navigation/MainContent'
 import { PageNav } from '@/components/PageNav'
 
-const darkPages = ['/universe', '/fragments']
+const darkPages = ['/cosmos', '/echo']
 
 export function LayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()

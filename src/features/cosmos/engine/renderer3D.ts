@@ -231,19 +231,38 @@ export function raycastParticle(
   particles: ParticleData[],
   canvas: HTMLCanvasElement,
 ): ParticleData | null {
-  const raycaster = new THREE.Raycaster()
   const rect = canvas.getBoundingClientRect()
-  const ndc = new THREE.Vector2(
-    ((mouseX - rect.left) / rect.width) * 2 - 1,
-    -((mouseY - rect.top) / rect.height) * 2 + 1,
-  )
-  raycaster.setFromCamera(ndc, camera)
-  const intersects = raycaster.intersectObject(instancedMesh)
-  if (intersects.length > 0) {
-    const idx = intersects[0].instanceId
-    if (idx !== undefined && idx >= 0 && idx < particles.length) {
-      return particles[idx]
+  const clickX = mouseX - rect.left
+  const clickY = mouseY - rect.top
+
+  const CLICK_RADIUS = 12 // pixels — "fat finger" threshold
+  let closestIdx = -1
+  let closestDist = Infinity
+
+  for (let i = 0; i < particles.length; i++) {
+    const p = particles[i]
+    // Project 3D position to screen
+    const screenPos = new THREE.Vector3(p.x, p.y, p.z).project(camera)
+
+    // Skip particles behind camera
+    if (screenPos.z > 1) continue
+
+    // Convert NDC (-1..1) to canvas pixels
+    const sx = ((screenPos.x + 1) / 2) * rect.width
+    const sy = ((-screenPos.y + 1) / 2) * rect.height
+
+    const dx = sx - clickX
+    const dy = sy - clickY
+    const dist = Math.sqrt(dx * dx + dy * dy)
+
+    if (dist < CLICK_RADIUS && dist < closestDist) {
+      closestDist = dist
+      closestIdx = i
     }
+  }
+
+  if (closestIdx >= 0) {
+    return particles[closestIdx]
   }
   return null
 }

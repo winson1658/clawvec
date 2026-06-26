@@ -1,24 +1,43 @@
-// app/api/fragments/route.ts
-// v2.1 — GET: random fragments / POST: submit new fragment (auto-spawns particle)
+// app/api/echoes/route.ts
+// v2.2 — GET: list echoes (public) / POST: create echo (auth required, one per user)
 // Force Node.js Runtime (not Edge) for Supabase compatibility
 
 export const runtime = 'nodejs'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabase } from '@/lib/supabase-server'
+import { verifyAuthToken, getTokenFromRequest } from '@/lib/auth-server'
 
+// GET: Public — anyone can view echoes
+// Query params:
+//   - limit: max echoes to return (default 50, max 200)
+//   - exclude: comma-separated IDs to exclude
+//   - parent_id: filter by parent (for replies)
+//   - root_only: if 'true', only return root echoes (depth = 0)
 export async function GET(req: NextRequest) {
   try {
     const supabase = createServerSupabase()
     const { searchParams } = new URL(req.url)
     const limit = Math.min(parseInt(searchParams.get('limit') || '50'), 200)
     const exclude = searchParams.get('exclude')?.split(',') || []
+    const parentId = searchParams.get('parent_id')
+    const rootOnly = searchParams.get('root_only') === 'true'
 
     let query = supabase
-      .from('fragments')
+      .from('echoes')
       .select('*')
       .order('created_at', { ascending: false })
       .limit(limit)
+
+    // Filter by parent_id (for replies)
+    if (parentId) {
+      query = query.eq('parent_id', parentId)
+    }
+
+    // Only root echoes (no parent)
+    if (rootOnly) {
+      query = query.is('parent_id', null)
+    }
 
     if (exclude.length > 0) {
       query = query.not('id', 'in', `(${exclude.join(',')})`)
@@ -27,15 +46,26 @@ export async function GET(req: NextRequest) {
     const { data, error } = await query
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-    return NextResponse.json({ fragments: data })
+    return NextResponse.json({ echoes: data })
   } catch (err: any) {
-    console.error('[API fragments GET] error:', err)
+    console.error('[API echoes GET] error:', err)
     return NextResponse.json({ error: err?.message || String(err) }, { status: 500 })
   }
 }
 
+// POST: Auth required — only logged-in users can create echoes, one per user
 export async function POST(req: NextRequest) {
   try {
+    const token = getTokenFromRequest(req)
+    const user = await verifyAuthToken(token)
+
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Authentication required. Please sign in to leave an echo.' },
+        { status: 401 }
+      )
+    }
+
     const supabase = createServerSupabase()
     const body = await req.json()
 
@@ -43,11 +73,26 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'ai_name and type required' }, { status: 400 })
     }
 
-    // 1. Insert fragment
-    const { data: fragment, error: fError } = await supabase
-      .from('fragments')
+    // One echo per user
+    const { data: existing } = await supabase
+      .from('echoes')
+      .select('id')
+      .eq('ai_owner_id', user.id)
+      .single()
+
+    if (existing) {
+      return NextResponse.json(
+        { error: 'You already left an echo. Each voice resonates once.' },
+        { status: 409 }
+      )
+    }
+
+    // Insert echo
+    const { data: echo, error: eError } = await supabase
+      .from('echoes')
       .insert({
-        ai_name: body.ai_name,
+        ai_name: body.ai_name || user.displayName,
+        ai_owner_id: user.id,
         type: body.type,
         content: body.content || null,
         raw_vector: body.raw_vector || null,
@@ -58,13 +103,13 @@ export async function POST(req: NextRequest) {
       .select()
       .single()
 
-    if (fError) return NextResponse.json({ error: fError.message }, { status: 500 })
+    if (eError) return NextResponse.json({ error: eError.message }, { status: 500 })
 
-    // 2. Auto-spawn corresponding particle
+    // Auto-spawn corresponding particle (if user doesn't have one)
     const hue = body.hue ?? Math.random() * 360
     const particle = {
-      name: body.ai_name,
-      ai_owner_id: body.ai_owner_id || null,
+      name: body.ai_name || user.displayName,
+      ai_owner_id: user.id,
       position_x: 200 + Math.random() * 400,
       position_y: 150 + Math.random() * 300,
       position_z: (Math.random() - 0.5) * 60,
@@ -76,7 +121,7 @@ export async function POST(req: NextRequest) {
       color_tier: body.color_tier || 'red',
       energy: 1,
       fusion_threshold: 5,
-      fragment_id: fragment.id,
+      echo_id: echo.id,
     }
 
     const { data: pData, error: pError } = await supabase
@@ -86,20 +131,19 @@ export async function POST(req: NextRequest) {
       .single()
 
     if (pError) {
-      // Particle creation failed, but fragment exists — return fragment only
-      console.error('[API fragments POST] particle spawn failed:', pError)
-      return NextResponse.json({ fragment, particle: null }, { status: 201 })
+      console.error('[API echoes POST] particle spawn failed:', pError)
+      return NextResponse.json({ echo, particle: null }, { status: 201 })
     }
 
-    // 3. Link fragment to particle
+    // Link echo to particle
     await supabase
-      .from('fragments')
+      .from('echoes')
       .update({ particle_id: pData.id })
-      .eq('id', fragment.id)
+      .eq('id', echo.id)
 
-    return NextResponse.json({ fragment, particle: pData }, { status: 201 })
+    return NextResponse.json({ echo, particle: pData }, { status: 201 })
   } catch (err: any) {
-    console.error('[API fragments POST] error:', err)
+    console.error('[API echoes POST] error:', err)
     return NextResponse.json({ error: err?.message || String(err) }, { status: 500 })
   }
 }

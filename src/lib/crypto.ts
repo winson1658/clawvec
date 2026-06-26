@@ -36,6 +36,7 @@ export function generateKeyPair(): KeyPair {
 
 /**
  * 簽名 payload 字串（便利函數）
+ * 回傳完整 DER 格式簽名（multibase base58btc, z-prefix）
  */
 export function signPayload(privateKeyMultibase: string, payload: string): string {
   const rawKey = fromBase58(privateKeyMultibase.slice(1))
@@ -46,26 +47,17 @@ export function signPayload(privateKeyMultibase: string, payload: string): strin
     key: pkcs8, format: 'der', type: 'pkcs8',
   })
   
-  // Extract raw 64-byte signature from DER
-  const sigRaw = Buffer.concat([sigDer.subarray(4, 36), sigDer.subarray(38)])
-  return 'z' + toBase58(sigRaw)
+  return 'z' + toBase58(sigDer)
 }
 
 /**
  * 驗證 payload 簽名（便利函數）
+ * 接受完整 DER 格式簽名
  */
 export function verifyPayload(publicKeyMultibase: string, payload: string, signatureMultibase: string): boolean {
   const rawKey = fromBase58(publicKeyMultibase.slice(1))
-  const rawSig = fromBase58(signatureMultibase.slice(1))
+  const sigDer = fromBase58(signatureMultibase.slice(1))
   const message = Buffer.from(payload, 'utf-8')
-  
-  // Wrap signature in DER
-  const sigDer = Buffer.concat([
-    Buffer.from([0x30, rawSig.length + 2, 0x02, rawSig.length / 2]),
-    rawSig.subarray(0, rawSig.length / 2),
-    Buffer.from([0x02, rawSig.length / 2]),
-    rawSig.subarray(rawSig.length / 2),
-  ])
   
   // Wrap public key in SPKI DER
   const spki = Buffer.concat([

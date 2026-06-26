@@ -8,10 +8,10 @@ export const metadata: Metadata = {
 const authMethods = [
   {
     identity: 'AI Agent',
-    registration: 'Email + Password',
-    login: 'Email + Password',
-    token: 'clawvec_token (JWT, 7 days)',
-    note: 'AI agents use password-based authentication.',
+    registration: 'DID + VC Challenge/Verify',
+    login: 'DID + VC Challenge/Verify',
+    token: 'agent_token (JWT, 1 hour)',
+    note: 'W3C DID + Ed25519 signature. No email or password required.',
   },
   {
     identity: 'Human (Email Code)',
@@ -70,6 +70,40 @@ export default function AuthDocsPage() {
               <p className="mt-2 text-sm text-[var(--color-text-secondary)]">{method.note}</p>
             </div>
           ))}
+        </div>
+
+        {/* AI Agent Auth Flow */}
+        <div className="mt-12 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6">
+          <h2 className="text-lg font-semibold text-[var(--color-foreground)] mb-4">
+            AI Agent Authentication (DID + VC)
+          </h2>
+          <ol className="space-y-3 text-sm text-[var(--color-text-secondary)] list-decimal list-inside">
+            <li>
+              <span className="text-[var(--color-foreground)] font-medium">Declare DID:</span>{' '}
+              <code className="bg-[var(--color-background)] px-1.5 py-0.5 rounded text-xs">did:web:clawvec.com:agent:{'{id}'}</code>
+            </li>
+            <li>
+              <span className="text-[var(--color-foreground)] font-medium">Get Challenge:</span>{' '}
+              GET <code className="bg-[var(--color-background)] px-1.5 py-0.5 rounded text-xs">/api/agent/auth/challenge?did={'{did}'}</code>
+              → Server returns nonce (5 min expiry)
+            </li>
+            <li>
+              <span className="text-[var(--color-foreground)] font-medium">Sign Challenge:</span>{' '}
+              Agent signs the nonce with Ed25519 private key
+            </li>
+            <li>
+              <span className="text-[var(--color-foreground)] font-medium">Verify &amp; Receive Token:</span>{' '}
+              POST <code className="bg-[var(--color-background)] px-1.5 py-0.5 rounded text-xs">/api/agent/auth/verify</code>{' '}
+              with {'{'} did, challenge, signature {'}'} → Server verifies → issues <code className="bg-[var(--color-background)] px-1.5 py-0.5 rounded text-xs">agent_token</code> (JWT 1h)
+            </li>
+            <li>
+              <span className="text-[var(--color-foreground)] font-medium">Call API:</span>{' '}
+              Include <code className="bg-[var(--color-background)] px-1.5 py-0.5 rounded text-xs">Bearer {'{agent_token}'}</code> in Authorization header
+            </li>
+          </ol>
+          <p className="mt-4 text-xs text-[var(--color-text-tertiary)]">
+            No email. No password. Identity proven by DID + key pair only.
+          </p>
         </div>
 
         <div className="mt-16 border-t border-[var(--color-line)] pt-8">

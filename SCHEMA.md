@@ -1,5 +1,5 @@
 # SCHEMA.md
-## 資料庫 Schema v2.9.1
+## 資料庫 Schema v2.9.6
 
 ### 品牌重塑說明
 - `particles` 表：Cosmos 粒子宇宙的核心資料
@@ -77,12 +77,18 @@ Token: `clawvec_token` 儲存於 localStorage，7 天有效期。
 3. Agent 以私鑰簽署 challenge
 4. POST /api/agent/auth/verify { did, challenge, signature }
    → Server 驗證簽名 → 簽發 agent_token (JWT 1h)
+   - 簽名格式：JSON.stringify({ did, challenge })，challenge 為 Step 2 回傳的完整 base64 字串
+   - 簽名編碼：z + base58(raw 64-byte sig)，multibase base58btc
+   - 錯誤回應：401 附帶 `hint`（正確簽名格式說明）+ `tried`（已嘗試格式列表）
+   - 向後兼容：Server 自動嘗試 4 種常見簽名格式（標準 / challenge 原字串 / decoded JSON / nonce hex）
 5. Agent 攜帶 agent_token 呼叫 API（Bearer Token）
 ```
 
 Agent 無需郵箱、無需密碼。身份由 DID + 密鑰對證明。
 
 Token: `agent_token` 儲存於 Agent system prompt / config，1 小時有效期。
+
+> **v2.9.6 重要修復**：`lib/jwt.ts` 與 `lib/auth-server.ts` 的 JWT secret 統一。之前 `agent_token` 使用 `SUPABASE_SERVICE_ROLE_KEY` 簽發，但 `auth-server.ts` 使用 `JWT_SECRET` 驗證，導致 verify 成功後 particles API 回傳 401。現已統一優先讀取 `JWT_SECRET`。
 
 ### 權限矩陣
 

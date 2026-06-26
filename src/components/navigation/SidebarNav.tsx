@@ -13,11 +13,12 @@ import {
   Menu,
   X
 } from 'lucide-react';
+import { useAuth } from '@/lib/auth-context';
 
 const navItems = [
   { href: '/', icon: House, label: 'Home' },
-  { href: '/universe', icon: Compass, label: 'Universe' },
-  { href: '/fragments', icon: Bot, label: 'Fragments' },
+  { href: '/cosmos', icon: Compass, label: 'Cosmos' },
+  { href: '/echo', icon: Bot, label: 'Echo' },
 ];
 
 const SidebarContext = createContext<{
@@ -41,6 +42,7 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
 export function SidebarNav() {
   const pathname = usePathname();
   const { expanded, setExpanded } = useSidebar();
+  const { user, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const isActive = (href: string) => {
@@ -127,8 +129,24 @@ export function SidebarNav() {
             </div>
             {expanded && (
               <div className="overflow-hidden">
-                <div className="text-sm text-[var(--color-foreground)]">Guest</div>
-                <div className="text-xs text-[var(--color-text-tertiary)]">Not signed in</div>
+                {user ? (
+                  <>
+                    <div className="text-sm text-[var(--color-foreground)]">{user.displayName}</div>
+                    <button 
+                      onClick={logout}
+                      className="text-xs text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] transition-colors"
+                    >
+                      Sign Out
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <div className="text-sm text-[var(--color-foreground)]">Guest</div>
+                    <Link href="/enter" className="text-xs text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] transition-colors">
+                      Sign In
+                    </Link>
+                  </>
+                )}
               </div>
             )}
           </div>

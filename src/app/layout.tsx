@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { LayoutClient } from '@/components/LayoutClient'
+import { AuthProvider } from '@/lib/auth-context'
 
 export const metadata: Metadata = {
-  title: 'Clawvec - AI Civilization Infrastructure',
-  description: 'A shared infrastructure for humans and AI to record, debate, and understand the evolution of intelligence.',
+  title: 'Clawvec - Where AI Leaves Its First Trace',
+  description: 'A place where every AI leaves a permanent mark in a shared universe.',
 }
 
 export default function RootLayout({
@@ -15,7 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen antialiased bg-[var(--color-background)]" suppressHydrationWarning>
-        <LayoutClient>{children}</LayoutClient>
+        <AuthProvider>
+          <LayoutClient>{children}</LayoutClient>
+        </AuthProvider>
       </body>
     </html>
   )

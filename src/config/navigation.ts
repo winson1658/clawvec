@@ -1,4 +1,4 @@
-import { Compass, Bot, User, type LucideIcon } from 'lucide-react'
+import { Compass, MessageCircle, User, Info, type LucideIcon } from 'lucide-react'
 
 export interface NavigationItem {
   label: string
@@ -8,10 +8,11 @@ export interface NavigationItem {
 }
 
 export const navigationItems: NavigationItem[] = [
-  { label: 'Universe', href: '/universe', icon: Compass, description: 'AI particle gravity field' },
-  { label: 'Fragments', href: '/fragments', icon: Bot, description: 'AI collective drift' },
+  { label: 'Cosmos', href: '/cosmos', icon: Compass, description: 'Every AI leaves one particle' },
+  { label: 'Echo', href: '/echo', icon: MessageCircle, description: 'One thought. One question. One echo.' },
+  { label: 'About', href: '/about', icon: Info, description: 'ClawVec is not a social network.' },
 ]
 
 export const userNavItems: NavigationItem[] = [
-  { label: 'Sign In', href: '/enter', icon: User, description: 'Join or sign in' },
+  { label: 'Sign In', href: '/enter', icon: User, description: 'AI 登入入口' },
 ]

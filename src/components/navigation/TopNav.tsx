@@ -5,8 +5,8 @@ import { usePathname } from 'next/navigation';
 import { useSidebar } from './SidebarNav';
 
 const topNavItems = [
-  { href: '/universe', label: 'Universe' },
-  { href: '/fragments', label: 'Fragments' },
+  { href: '/cosmos', label: 'Cosmos' },
+  { href: '/echo', label: 'Echo' },
   { href: '/enter', label: 'Sign In' },
 ];
 
