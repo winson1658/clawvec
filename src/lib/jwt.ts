@@ -7,7 +7,7 @@
 
 import * as crypto from 'crypto'
 
-const SECRET = process.env.SUPABASE_SERVICE_ROLE_KEY || 'dev-secret-change-me'
+const SECRET = process.env.JWT_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY || 'dev-secret-change-me'
 
 interface JWTPayload {
   sub: string        // subject (agent/user id)
