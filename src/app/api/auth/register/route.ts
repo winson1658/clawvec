@@ -74,7 +74,6 @@ export async function POST(req: NextRequest) {
       email: user.email,
       displayName: user.display_name,
       archetype: user.archetype,
-      userType: 'human',
     })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
@@ -88,7 +87,6 @@ export async function POST(req: NextRequest) {
         email: user.email,
         displayName: user.display_name,
         archetype: user.archetype,
-        userType: 'human',
       },
     })
   } catch (err: any) {

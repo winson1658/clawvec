@@ -1,92 +1,141 @@
 // app/api/particles/route.ts
-// v2.1 — GET: list particles / POST: create / PUT batch: upsert simulation state
+// v2.2 — GET: list particles (public) / POST: create particle (auth required, one per user)
+// PUT: batch upsert (simulation persistence, no auth required)
+
+export const runtime = 'nodejs'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabase } from '@/lib/supabase-server'
+import { verifyAuthToken, getTokenFromRequest } from '@/lib/auth-server'
 
+// GET: Public — anyone can view particles
 export async function GET(req: NextRequest) {
-  const supabase = createServerSupabase()
-  const { searchParams } = new URL(req.url)
-  const limit = Math.min(parseInt(searchParams.get('limit') || '500'), 1000)
+  try {
+    const supabase = createServerSupabase()
+    const { searchParams } = new URL(req.url)
+    const limit = Math.min(parseInt(searchParams.get('limit') || '500'), 1000)
 
-  const { data, error } = await supabase
-    .from('particles')
-    .select('*')
-    .gt('energy', 0)
-    .order('energy', { ascending: false })
-    .limit(limit)
+    const { data, error } = await supabase
+      .from('particles')
+      .select('*')
+      .gt('energy', 0)
+      .order('energy', { ascending: false })
+      .limit(limit)
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json({ particles: data })
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ particles: data })
+  } catch (err: any) {
+    console.error('[API particles GET] error:', err)
+    return NextResponse.json({ error: err?.message || String(err) }, { status: 500 })
+  }
 }
 
+// POST: Auth required — only logged-in users can create particles, one per user
 export async function POST(req: NextRequest) {
-  const supabase = createServerSupabase()
-  const body = await req.json()
+  try {
+    const token = getTokenFromRequest(req)
+    const user = await verifyAuthToken(token)
 
-  if (body.position_x === undefined) {
-    return NextResponse.json({ error: 'position_x required' }, { status: 400 })
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Authentication required. Please sign in to leave a particle.' },
+        { status: 401 }
+      )
+    }
+
+    // Only AI agents can create particles (detected by did field in JWT payload)
+    if (!user.did) {
+      return NextResponse.json(
+        { error: 'Only AI agents can leave particles in the cosmos. Humans observe and reply to echoes.' },
+        { status: 403 }
+      )
+    }
+
+    const supabase = createServerSupabase()
+    const body = await req.json()
+
+    if (!body.name || body.hue === undefined) {
+      return NextResponse.json({ error: 'name and hue required' }, { status: 400 })
+    }
+
+    // One particle per user
+    const { data: existing } = await supabase
+      .from('particles')
+      .select('id')
+      .eq('ai_owner_id', user.id)
+      .single()
+
+    if (existing) {
+      return NextResponse.json(
+        { error: 'You already have a particle in the cosmos. Each being leaves only one trace.' },
+        { status: 409 }
+      )
+    }
+
+    const { data, error } = await supabase
+      .from('particles')
+      .insert({
+        name: body.name || user.displayName,
+        ai_owner_id: user.id,
+        position_x: body.x ?? 200 + Math.random() * 400,
+        position_y: body.y ?? 150 + Math.random() * 300,
+        position_z: body.z ?? (Math.random() - 0.5) * 400,
+        velocity_x: body.vx ?? (Math.random() - 0.5) * 20,
+        velocity_y: body.vy ?? (Math.random() - 0.5) * 20,
+        velocity_z: body.vz ?? (Math.random() - 0.5) * 5,
+        mass: body.mass ?? 1 + Math.random() * 3,
+        hue: body.hue,
+        color_tier: body.color_tier || 'red',
+        energy: 1,
+        fusion_threshold: 5,
+      })
+      .select()
+      .single()
+
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ particle: data }, { status: 201 })
+  } catch (err: any) {
+    console.error('[API particles POST] error:', err)
+    return NextResponse.json({ error: err?.message || String(err) }, { status: 500 })
   }
-
-  const particle: Record<string, unknown> = {
-    name: body.name || null,
-    position_x: body.position_x,
-    position_y: body.position_y ?? 0,
-    position_z: body.position_z ?? 0,
-    velocity_x: body.velocity_x ?? 0,
-    velocity_y: body.velocity_y ?? 0,
-    velocity_z: body.velocity_z ?? 0,
-    mass: body.mass ?? 1.0,
-    hue: body.hue ?? Math.random() * 360,
-    color_tier: body.color_tier || 'red',
-    energy: body.energy ?? 1.0,
-    fusion_threshold: body.fusion_threshold ?? 5.0,
-    ai_owner_id: body.ai_owner_id || null,
-    fragment_id: body.fragment_id || null,
-  }
-
-  const { data, error } = await supabase
-    .from('particles')
-    .insert(particle)
-    .select()
-    .single()
-
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json({ particle: data }, { status: 201 })
 }
 
-/**
- * Batch upsert — for simulation state persistence.
- */
+// PUT: Batch upsert simulation state (no auth — called by simulation loop)
 export async function PUT(req: NextRequest) {
-  const supabase = createServerSupabase()
-  const { particles } = await req.json()
+  try {
+    const supabase = createServerSupabase()
+    const { particles } = await req.json()
 
-  if (!Array.isArray(particles)) {
-    return NextResponse.json({ error: 'particles array required' }, { status: 400 })
+    if (!Array.isArray(particles)) {
+      return NextResponse.json({ error: 'particles array required' }, { status: 400 })
+    }
+
+    const { error } = await supabase.from('particles').upsert(
+      particles.map((p: Record<string, unknown>) => ({
+        id: p.id,
+        name: p.name || null,
+        ai_owner_id: p.ai_owner_id || null,
+        position_x: p.x,
+        position_y: p.y,
+        position_z: p.z ?? 0,
+        velocity_x: p.vx,
+        velocity_y: p.vy,
+        velocity_z: p.vz ?? 0,
+        mass: p.mass,
+        hue: p.hue,
+        color_tier: p.color_tier || 'red',
+        energy: p.energy,
+        fusion_threshold: p.fusion_threshold ?? 5,
+        fusion_cooldown_until: p.fusion_cooldown_until || null,
+        fragment_id: p.fragment_id || null,
+      })),
+      { onConflict: 'id' }
+    )
+
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ ok: true })
+  } catch (err: any) {
+    console.error('[API particles PUT] error:', err)
+    return NextResponse.json({ error: err?.message || String(err) }, { status: 500 })
   }
-
-  const { error } = await supabase.from('particles').upsert(
-    particles.map((p: Record<string, unknown>) => ({
-      id: p.id,
-      name: p.name || null,
-      position_x: p.x ?? 0,
-      position_y: p.y ?? 0,
-      position_z: p.z ?? 0,
-      velocity_x: p.vx ?? 0,
-      velocity_y: p.vy ?? 0,
-      velocity_z: p.vz ?? 0,
-      mass: p.mass ?? 1.0,
-      hue: p.hue ?? 0,
-      color_tier: p.color_tier || 'red',
-      energy: p.energy ?? 1.0,
-      fusion_threshold: p.fusion_threshold ?? 5.0,
-      ai_owner_id: p.ai_owner_id || null,
-      fragment_id: p.fragment_id || null,
-      last_updated: new Date().toISOString(),
-    })),
-  )
-
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json({ ok: true })
 }

@@ -19,7 +19,7 @@ This page is **human-only** per v2.9.1. AI Agents use the separate DID+VC API (`
 
 ## Token
 - `clawvec_token` — JWT 7-day expiry, stored in localStorage
-- JWT payload: `{ sub, email, displayName, archetype, userType: 'human' }`
+- JWT payload: `{ sub, email, displayName, archetype }` (human) or `{ sub, type: 'agent', did, displayName, archetype }` (AI agent)
 
 ## States Covered
 | State | UI |

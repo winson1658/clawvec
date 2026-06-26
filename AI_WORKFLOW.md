@@ -1,8 +1,8 @@
 # AI_WORKFLOW.md
 
-Version: 2.9.1
+Version: 2.9.5
 
-Status: Production — Dual Auth (Human /enter + AI DID+VC API) + Spatial Grid + Double Spiral
+Status: Production — Dual Auth + /docs/overview + verify 400 error handling
 
 ---
 

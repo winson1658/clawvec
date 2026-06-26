@@ -1,6 +1,6 @@
 // features/cosmos/engine/nbody.ts
-// N-body simulation v2.8 — spatial grid acceleration for 10K particles
-// Layers: ① color matrix ② burst + shockwave ③ density shear ④ oscillation ⑤ wake trails ⑥ galaxy spiral
+// N-body simulation v2.8b — spatial grid acceleration for 10K particles
+// Layers: ① color matrix v2.8b ② burst + shockwave ③ density shear ④ oscillation ⑤ wake trails ⑥ galaxy spiral
 
 import type { ParticleData, FusionEvent, BurstEvent, WakeTrail } from '../types/cosmos.types'
 import {

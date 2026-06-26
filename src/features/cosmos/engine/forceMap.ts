@@ -1,5 +1,6 @@
 // features/cosmos/engine/forceMap.ts
-// 7×7 color tier interaction matrix for the v2.3 force system
+// 7×7 color tier interaction matrix for the v2.8b force system
+// v2.8b: blue↔indigo oscillate/attract_weak, orange⇄green oscillate
 // v2.3: +oscillate, +burst, +shear_attract force types
 
 export type ColorTier = 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'indigo' | 'violet'

@@ -60,8 +60,9 @@ export async function POST(request: NextRequest) {
     try {
       const message = JSON.stringify({ did, challenge })
       valid = verifyPayload(agent.public_key, message, signature)
-    } catch {
-      return NextResponse.json({ error: 'Invalid signature format' }, { status: 400 })
+    } catch (err: any) {
+      console.error('[Agent auth verify] signature verification error:', err?.message || err)
+      return NextResponse.json({ error: 'Invalid signature format', detail: err?.message || 'Signature decoding failed' }, { status: 400 })
     }
     if (!valid) {
       return NextResponse.json({ error: 'Invalid signature — identity not proven' }, { status: 401 })

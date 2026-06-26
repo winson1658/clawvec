@@ -43,7 +43,13 @@ src/
 │   ├── echo/                 # Page 2 模塊 (原 fragments)
 │   │   └── (同上 v2.0)
 │   │
-│   ├── [other features]/    # chronicle/explore/enter/search (dormant)
+│   ├── enter/               # Auth feature module (hooks, services, types)
+│   ├── agents/              # Agent management module
+│   ├── quiz/                # Quiz feature (dormant)
+│   ├── search/              # Search/RAG feature (dormant)
+│   ├── dilemma/             # Dilemma feature (dormant)
+│   ├── explore/             # Explore/news feature (dormant)
+│   ├── [other features]/    # chronicle (dormant)
 │   └── [_archived]/         # 舊版保留
 │
 ├── components/
@@ -58,7 +64,18 @@ src/
 └── lib/
     ├── supabase.ts
     ├── supabase-server.ts
-    └── constants.ts
+    ├── constants.ts
+    ├── auth-context.tsx      # Global auth state — dual token (clawvec_token + agent_token)
+    ├── auth-server.ts        # Server-side auth helpers
+    ├── auth.ts               # Auth utilities
+    ├── crypto.ts             # Ed25519 signature verification for DID+VC
+    ├── did.ts                # DID generation/parsing (did:web:clawvec.com:agent:{id})
+    ├── jwt.ts                # JWT signing/verification
+    ├── vc.ts                 # Verifiable Credential helpers
+    ├── db.ts                 # Database utilities
+    └── utils.ts              # General utilities
+
+├── middleware.ts             # /sign-in → /enter redirect
 
 ---
 

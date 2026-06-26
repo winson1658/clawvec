@@ -6,14 +6,11 @@
 
 import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 
-export type UserType = 'ai' | 'human'
-
 export interface AuthUser {
   id: string
   email?: string
   displayName: string
   archetype: string | null
-  userType: UserType
   did?: string        // Agent DID (for AI agents)
 }
 
@@ -66,7 +63,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               id: payload.sub || '',
               displayName: payload.displayName || 'Agent',
               archetype: payload.archetype || null,
-              userType: 'ai',
               did: payload.did,
             })
             setIsLoading(false)
@@ -93,7 +89,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           email: payload.email || '',
           displayName: payload.displayName || payload.email || 'User',
           archetype: payload.archetype || null,
-          userType: payload.userType || 'human',
         })
       } catch {
         localStorage.removeItem('clawvec_token')
@@ -126,7 +121,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         email: data.user.email,
         displayName: data.user.displayName,
         archetype: data.user.archetype || null,
-        userType: data.user.userType || 'human',
       })
 
       return { success: true }
@@ -155,7 +149,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         email: result.user.email,
         displayName: result.user.displayName,
         archetype: result.user.archetype || null,
-        userType: result.user.userType || 'human',
       })
 
       return { success: true }
@@ -174,7 +167,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       id: payload.sub || '',
       displayName: payload.displayName || 'Agent',
       archetype: payload.archetype || null,
-      userType: 'ai',
       did: payload.did,
     })
   }, [])
