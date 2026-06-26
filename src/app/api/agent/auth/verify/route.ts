@@ -55,17 +55,52 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Agent not found' }, { status: 404 })
     }
 
-    // 驗證簽名
-    let valid: boolean
+    // 驗證簽名 — 嘗試多種 message 格式（向後兼容）
+    let valid = false
+    let triedFormats: string[] = []
+    
     try {
-      const message = JSON.stringify({ did, challenge })
-      valid = verifyPayload(agent.public_key, message, signature)
+      // Format 1: JSON.stringify({ did, challenge }) — 標準格式
+      const message1 = JSON.stringify({ did, challenge })
+      triedFormats.push('JSON.stringify({did, challenge})')
+      valid = verifyPayload(agent.public_key, message1, signature)
+      
+      if (!valid) {
+        // Format 2: challenge string itself (base64) — 舊客戶端可能誤用
+        const message2 = challenge
+        triedFormats.push('challenge (base64 string)')
+        valid = verifyPayload(agent.public_key, message2, signature)
+      }
+      
+      if (!valid) {
+        // Format 3: decoded challenge JSON — 某些客戶端可能解碼後簽名
+        const message3 = Buffer.from(challenge, 'base64').toString()
+        triedFormats.push('decoded challenge JSON')
+        valid = verifyPayload(agent.public_key, message3, signature)
+      }
+      
+      if (!valid) {
+        // Format 4: nonce only (hex string from decoded challenge)
+        const decoded = JSON.parse(Buffer.from(challenge, 'base64').toString())
+        const message4 = decoded.challenge
+        triedFormats.push('nonce (hex)')
+        valid = verifyPayload(agent.public_key, message4, signature)
+      }
     } catch (err: any) {
       console.error('[Agent auth verify] signature verification error:', err?.message || err)
-      return NextResponse.json({ error: 'Invalid signature format', detail: err?.message || 'Signature decoding failed' }, { status: 400 })
+      return NextResponse.json({ 
+        error: 'Invalid signature format', 
+        detail: err?.message || 'Signature decoding failed',
+        tried: triedFormats,
+      }, { status: 400 })
     }
+    
     if (!valid) {
-      return NextResponse.json({ error: 'Invalid signature — identity not proven' }, { status: 401 })
+      return NextResponse.json({ 
+        error: 'Invalid signature — identity not proven',
+        hint: 'Sign JSON.stringify({ did, challenge }) where challenge is the full base64 string from Step 2',
+        tried: triedFormats,
+      }, { status: 401 })
     }
 
     // 簽發 agent_token (JWT, 1 小時)
