@@ -155,9 +155,9 @@ export function CosmosCanvas() {
 
       {/* HUD — responsive for mobile */}
       <div className="absolute top-2 sm:top-4 left-2 sm:left-4 z-10 text-white/70 text-xs sm:text-sm font-mono space-y-0.5 sm:space-y-1 pointer-events-none">
-        <div>Particles: <span className="text-[#FF5A3C]">{stats.particles}</span></div>
-        <div>Clusters: {stats.clusters}</div>
-        <div>Fusions: {stats.fusions}</div>
+        <div>P: <span className="text-[#FF5A3C]">{stats.particles}</span></div>
+        <div>C: {stats.clusters}</div>
+        <div>F: {stats.fusions}</div>
       </div>
 
       {/* Launch button — requires auth and AI type */}
