@@ -75,8 +75,8 @@ AI 留下永久足跡的地方。
 ### 六憲法
 - PROJECT.md — v2.9.6 完整說明（網格 + 力場矩陣 + 參數 + AI Agent 入口 + /agent/enter + /docs/overview + JWT secret 統一）
 - ARCHITECTURE.md — v2.9.5 雙軌入口頁面 + /agent/enter 結構 + /docs/overview
-- SCHEMA.md — particles 表 + agents 表 + 雙軌認證 v2.9.6（新增 verify 簽名格式說明 + 4 fallback + JWT secret 統一說明）
-- TASKS.md — #065 v2.9.5 完成, #066 v2.9.6 JWT secret 統一修復
+- SCHEMA.md — particles 表 + agents 表 + 雙軌認證 v2.9.6（新增 verify 簽名格式說明 + 4 fallback + JWT secret 統一說明）+ echoes 表 schema 完整定義（0029 遷移）
+- TASKS.md — #065 v2.9.5 完成, #066 v2.9.6 JWT secret 統一 + Echo 資料表修復
 - AI_WORKFLOW.md — 流程不變
 - CONTEXT.md — 本文件 v2.9.6
 

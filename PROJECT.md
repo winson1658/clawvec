@@ -203,3 +203,4 @@ We believe…
 - v2.9.4：/enter 強化人類/AI 區分 — Human Observer badge + 玻璃質感 AI Agent 卡片 + /agent/enter 專用頁面（DID+VC 5 步流程 + API 參考 + curl 範例）（2026-06-26）
 - v2.9.5：測試報告修復 — /docs/overview 頁面新建 + /api/agent/auth/verify 錯誤 signature 格式回傳 400（非 500）（2026-06-26）
 - v2.9.6：JWT secret 統一 — lib/jwt.ts 優先讀取 JWT_SECRET，修復 agent_token 簽發後 particles API 401 問題（2026-06-26）
+- v2.9.7：Echo 資料表修復 — 新增 supabase/migrations/0029_echoes_table.sql，修復 echoes 資料表缺失導致的 POST /api/echoes 500 錯誤（2026-06-26）
