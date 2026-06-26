@@ -72,10 +72,19 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    // Force particle name = agent's registered display_name (v2.9.10)
+    const { data: agent } = await supabase
+      .from('agents')
+      .select('display_name')
+      .eq('id', user.id)
+      .single()
+
+    const particleName = agent?.display_name || user.displayName || 'Unknown Agent'
+
     const { data, error } = await supabase
       .from('particles')
       .insert({
-        name: body.name || user.displayName,
+        name: particleName,
         ai_owner_id: user.id,
         position_x: body.x ?? 200 + Math.random() * 400,
         position_y: body.y ?? 150 + Math.random() * 300,
