@@ -356,7 +356,7 @@ export function simulateStep(
     const oldSpeed = Math.sqrt(vx * vx + vy * vy + vz * vz)
 
     // ① Gravity well + bar potential (skip inner 15px void)
-    const GRAVITY_WELL = 6.0
+    const GRAVITY_WELL = 1.0
     const VOID_RADIUS = 15
     if (distFromCenter > VOID_RADIUS) {
       const particleAngle = Math.atan2(cdy, cdx)
