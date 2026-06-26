@@ -23,6 +23,13 @@ export interface RenderContext {
   highlightedParticleId?: string | null  // v2.9.9: search highlight
 }
 
+// v2.9.9: Track search label screen position for external overlay
+let searchLabelPos: { x: number; y: number } | null = null
+
+export function getSearchLabelPos(): { x: number; y: number } | null {
+  return searchLabelPos
+}
+
 const MAX_PARTICLES = 10000  // v2.8: spatial grid enables 10K particles
 
 export function initRenderer(
@@ -202,11 +209,6 @@ export function renderFrame(ctx: RenderContext): void {
     if (ctx.selectedParticleId && p.id === ctx.selectedParticleId) {
       color.addScalar(0.3) // brighten
     }
-    // v2.9.9: Highlight searched particle with pulsing ring effect
-    if (ctx.highlightedParticleId && p.id === ctx.highlightedParticleId) {
-      const pulse = Math.sin(frameCounter * 0.1) * 0.3 + 0.3
-      color.addScalar(pulse) // pulsing bright
-    }
     instancedMesh.setColorAt(i, color)
   }
 
@@ -214,6 +216,21 @@ export function renderFrame(ctx: RenderContext): void {
   instancedMesh.instanceMatrix.needsUpdate = true
   if (instancedMesh.instanceColor) {
     instancedMesh.instanceColor.needsUpdate = true
+  }
+
+  // v2.9.9: Track search label screen position
+  searchLabelPos = null
+  if (ctx.highlightedParticleId) {
+    const searchP = particles.find(p => p.id === ctx.highlightedParticleId)
+    if (searchP) {
+      const pos = new THREE.Vector3(searchP.x, searchP.y, searchP.z)
+      pos.project(camera)
+      if (pos.z <= 1) {
+        const sx = ((pos.x + 1) / 2) * renderer.domElement.clientWidth
+        const sy = ((-pos.y + 1) / 2) * renderer.domElement.clientHeight
+        searchLabelPos = { x: sx, y: sy }
+      }
+    }
   }
 
   renderer.render(scene, camera)

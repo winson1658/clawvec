@@ -45,6 +45,8 @@ export function useCosmos() {
   const selectedRef = useRef<ParticleData | null>(null)
   const [tooltip, setTooltip] = useState<{ x: number; y: number; name: string } | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  // v2.9.9: Separate search highlight from click selection
+  const searchedParticleRef = useRef<ParticleData | null>(null)
 
   // Track mouse for raycasting
   const mouseRef = useRef({ x: 0, y: 0 })
@@ -103,7 +105,7 @@ export function useCosmos() {
           ),
           viewMode,
           selectedParticleId: selectedRef.current?.id ?? null,
-          highlightedParticleId: selectedParticle?.id ?? null,
+          highlightedParticleId: searchedParticleRef.current?.id ?? null,
         })
 
         // Schedule persistence every 10s
@@ -242,6 +244,7 @@ export function useCosmos() {
     })
     setSelectedParticle(null)
     selectedRef.current = null
+    searchedParticleRef.current = null
     setTooltip(null)
   }, [])
 
@@ -262,6 +265,9 @@ export function useCosmos() {
       if (hit) {
         setSelectedParticle(hit)
         selectedRef.current = hit
+
+        // v2.9.9: Clicking another particle clears search highlight
+        searchedParticleRef.current = null
 
         // v2.4 Immortal Traces: show all fused names when clicked
         const displayNames = hit.fusedNames?.length ? hit.fusedNames : [hit.name || 'Unknown']
@@ -332,12 +338,19 @@ export function useCosmos() {
       if (found) {
         setSelectedParticle(found)
         selectedRef.current = found
+        searchedParticleRef.current = found
         return found
       }
       return null
     },
     [],
   )
+
+  const clearSearch = useCallback(() => {
+    searchedParticleRef.current = null
+    setSelectedParticle(null)
+    selectedRef.current = null
+  }, [])
 
   return {
     canvasRef,
@@ -351,6 +364,7 @@ export function useCosmos() {
     handleClick,
     launchParticle,
     searchParticle,
+    clearSearch,
   }
 }
 
