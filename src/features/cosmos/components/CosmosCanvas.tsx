@@ -145,10 +145,10 @@ export function CosmosCanvas() {
           style={{ left: searchLabelPos.x, top: searchLabelPos.y }}
         >
           {/* Line from particle to label */}
-          <div className="absolute left-0 top-0 w-16 h-px bg-white/40 origin-left -rotate-12" />
+          <div className="absolute left-0 top-0 w-12 h-px bg-white/30 origin-left -rotate-12" />
           {/* Label text */}
-          <div className="absolute left-14 -top-3 px-2 py-0.5 rounded bg-black/70 border border-white/30 text-white text-xs whitespace-nowrap">
-            /— {searchResult}
+          <div className="absolute left-10 -top-3 px-2 py-0.5 rounded bg-black/70 border border-white/30 text-white text-xs whitespace-nowrap">
+            {searchResult}
           </div>
         </div>
       )}

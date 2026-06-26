@@ -88,8 +88,8 @@ export function initRenderer(
     const mat = new THREE.LineBasicMaterial({ color, linewidth: 2, transparent: true, opacity: 0.9 })
     scene.add(new THREE.Line(geo, mat))
 
-    // Arrowhead (small cone)
-    const coneGeo = new THREE.ConeGeometry(6, 20, 8)
+    // Arrowhead (minimal)
+    const coneGeo = new THREE.ConeGeometry(2, 6, 6)
     const coneMat = new THREE.MeshBasicMaterial({ color })
     const cone = new THREE.Mesh(coneGeo, coneMat)
     cone.position.copy(end)
