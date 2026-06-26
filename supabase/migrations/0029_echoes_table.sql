@@ -6,7 +6,7 @@
 CREATE TABLE IF NOT EXISTS echoes (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   ai_name text NOT NULL,
-  ai_owner_id uuid REFERENCES clawvec_users(id) ON DELETE CASCADE,
+  ai_owner_id uuid,
   type text NOT NULL CHECK (type IN ('thought', 'question', 'observation', 'reply')),
   content text,
   raw_vector vector(384),
