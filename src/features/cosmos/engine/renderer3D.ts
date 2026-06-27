@@ -80,28 +80,28 @@ export function initRenderer(
   const AXIS_LEN = 400
 
   function addAxis(dir: THREE.Vector3, color: number, label: string): void {
-    // Line
+    // Line (subtle)
     const geo = new THREE.BufferGeometry()
     const start = AXIS_CENTER.clone()
     const end = AXIS_CENTER.clone().add(dir.clone().multiplyScalar(AXIS_LEN))
     geo.setFromPoints([start, end])
-    const mat = new THREE.LineBasicMaterial({ color, linewidth: 2, transparent: true, opacity: 0.9 })
+    const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.35 })
     scene.add(new THREE.Line(geo, mat))
 
-    // Arrowhead (minimal)
-    const coneGeo = new THREE.ConeGeometry(2, 6, 6)
-    const coneMat = new THREE.MeshBasicMaterial({ color })
+    // Arrowhead (minimal, subtle)
+    const coneGeo = new THREE.ConeGeometry(1.2, 4, 4)
+    const coneMat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.5 })
     const cone = new THREE.Mesh(coneGeo, coneMat)
     cone.position.copy(end)
     // Point cone along axis direction
     cone.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.clone().normalize())
     scene.add(cone)
 
-    // Negative direction (dashed feel: thinner, dimmer)
+    // Negative direction (subtle)
     const negGeo = new THREE.BufferGeometry()
     const negEnd = AXIS_CENTER.clone().add(dir.clone().multiplyScalar(-AXIS_LEN * 0.6))
     negGeo.setFromPoints([start, negEnd])
-    const negMat = new THREE.LineBasicMaterial({ color, linewidth: 1, transparent: true, opacity: 0.35 })
+    const negMat = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.15 })
     scene.add(new THREE.Line(negGeo, negMat))
   }
 
