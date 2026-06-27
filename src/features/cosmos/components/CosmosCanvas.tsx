@@ -118,7 +118,7 @@ export function CosmosCanvas() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search..."
-          className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-black/60 border border-white/20 text-white text-xs sm:text-sm placeholder:text-white/40 focus:outline-none focus:border-[#FF5A3C] w-28 sm:w-40"
+          className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-black/60 border border-white/20 text-white sm:text-sm text-[16px] placeholder:text-white/40 focus:outline-none focus:border-[#FF5A3C] w-28 sm:w-40"
         />
         <button
           type="submit"
@@ -147,7 +147,7 @@ export function CosmosCanvas() {
           {/* Line from particle to label */}
           <div className="absolute left-0 top-0 w-12 h-px bg-white/30 origin-left -rotate-12" />
           {/* Label text */}
-          <div className="absolute left-10 -top-3 px-2 py-0.5 rounded bg-black/70 border border-white/30 text-white text-xs whitespace-nowrap">
+          <div className="absolute left-10 -top-3 px-2 py-0.5 rounded bg-black/70 border border-white/30 text-white sm:text-xs text-[10px] leading-tight whitespace-nowrap">
             {searchResult}
           </div>
         </div>
@@ -164,7 +164,7 @@ export function CosmosCanvas() {
       <button
         onClick={handleLaunchClick}
         disabled={isButtonDisabled}
-        className="absolute bottom-4 left-4 z-10 px-4 py-2 rounded-full text-sm font-medium bg-[#FF5A3C] text-white hover:bg-[#FF5A3C]/80 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+        className="absolute sm:bottom-4 bottom-2 left-2 sm:left-4 z-10 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full sm:text-sm text-xs font-medium bg-[#FF5A3C] text-white hover:bg-[#FF5A3C]/80 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
       >
         {getButtonText()}
       </button>
@@ -172,7 +172,7 @@ export function CosmosCanvas() {
       {/* Mode toggle */}
       <button
         onClick={toggleMode}
-        className="absolute bottom-4 right-4 z-10 px-4 py-2 rounded-full text-sm font-medium bg-white/10 text-white/70 hover:bg-white/20 transition-all"
+        className="absolute sm:bottom-4 bottom-2 right-2 sm:right-4 z-10 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full sm:text-sm text-xs font-medium bg-white/10 text-white/70 hover:bg-white/20 transition-all"
       >
         {viewMode === 'orbit' ? '🔭 Orbit' : '🔍 Inspect'}
       </button>
@@ -189,15 +189,15 @@ export function CosmosCanvas() {
 
       {/* Selected particle info */}
       {selectedParticle && (
-        <div className="absolute bottom-20 right-4 z-20 bg-black/80 border border-white/20 rounded-lg p-4 max-w-xs text-sm">
-          <div className="text-white font-semibold">
+        <div className="absolute sm:bottom-20 bottom-16 right-2 sm:right-4 z-20 bg-black/80 border border-white/20 rounded-lg sm:p-4 p-3 max-w-xs sm:text-sm text-xs">
+          <div className="text-white sm:font-semibold font-medium sm:text-sm text-xs">
             {selectedParticle.name || 'Unnamed Particle'}
           </div>
           <div className="text-white/60 mt-1 space-y-0.5">
             <div>Color: {selectedParticle.colorTier}</div>
             <div>Mass: {selectedParticle.mass.toFixed(1)}</div>
             <div>Energy: {(selectedParticle.energy * 100).toFixed(0)}%</div>
-            <div className="text-white/40 text-xs mt-1">
+            <div className="text-white/40 sm:text-xs text-[10px] mt-1">
               Launched {new Date(selectedParticle.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
             </div>
           </div>
