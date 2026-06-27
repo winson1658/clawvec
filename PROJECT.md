@@ -225,7 +225,8 @@ We believe…
 |- v2.10：Echo 雨塘實作上線 — 暮色湖景背景（fitImage 原比例居中）+ 圓形水面漣漪 + jquery.ripples 水波 + 80 條 Canvas 2D 雨絲 + Echo 圓環呼吸脈動系統 + 刪除測試頁 /echo-ripple-demo，正式遷移至 /echo（2026-06-27）
 |- v2.12：Echo Canvas 2D 裁切法 — 改用 canvas 2D 精確裁切水面區域 dataURL 取代 clip box + 全圖 WebGL，消除 WebGL/CSS 接縫與手機直橫縮放不一致。以 1262×848 暮色湖景圖取代原 1530×1028。（2026-06-28）
 |- v2.13：Echo DB 串接 + 登入視窗 + 點擊彈窗回覆 — DB 讀取代靜態引文、未登入跳出 modal、點 Echo 彈窗回覆（100 字限制）。（2026-06-28）
-|- v2.14：Echo 視覺與互動優化 — 雨絲更細 (lineWidth 0.5)、漣漪更微細 (dropRadius 1-3)、遮罩作者名（純視覺點選後才顯示）、未登入可觀看 Echo 內容（僅回覆要求登入）、圓環前 1 秒淡入漸顯。（2026-06-28）
+||- v2.14：Echo 視覺與互動優化 — 雨絲更細 (lineWidth 0.5)、漣漪更微細 (dropRadius 1-3)、遮罩作者名（純視覺點選後才顯示）、未登入可觀看 Echo 內容（僅回覆要求登入）、圓環前 1 秒淡入漸顯。（2026-06-28）
+||- v2.15：Echo 無 CDN 依賴化 — Echo 生成不再等待 jquery.ripples（DB 載入即啟動），jquery.ripples 設為選用視覺（try/catch 保護）。新增原生 Canvas 2D 漣漪圈（外圈＋內圈＋中心亮點）作為 CSP 環境備用。雨絲調亮 3×。解決 Telegram 內建瀏覽器 CSP 阻擋 CDN 腳本導致 Echo 永遠不顯示的問題。（2026-06-28）
 |
 ## 9. Echo 雨塘實作記錄（v2.12 Canvas 2D 裁切法 — 已上線）
 
@@ -284,4 +285,6 @@ z0: 靜態湖景全圖（background-image）           ← position:absolute ins
 | 雨絲限水面 | Canvas 2D `clip()` | 每次動畫幀對 Canvas 設矩形 clip，雨絲只繪製在水域範圍 |
 | 圖像原比例顯示 | `fitImage()` 計算 + `background-size:100% 100%` | 容器 aspect = 圖 aspect，100%×100% 不變形 |
 | 裁切座標系統 | source = 圖檔原生尺寸 (naturalWidth/naturalHeight)，dest = CSS fitted 尺寸 | `drawImage(src, sx, sy, sw, sh, 0, 0, dw, dh)` 中 source 必須用原生座標，否則畫面錯位 |
+| CSP 阻擋 CDN 腳本（Telegram 內建瀏覽器） | Echo 生成與 jquery.ripples 解耦：DB 載入即啟動，jquery.ripples 為選用（try/catch），另加原生 Canvas 2D 漣漪圈 | Telegram 瀏覽器 CSP 封鎖外部 CDN，jquery.ripples 永遠無法載入。若 Echo 生成等待 ripples，頁面永遠空白 |
+|
 | 未登入 | 導向 /enter | 彈出登入視窗 |

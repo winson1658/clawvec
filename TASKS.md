@@ -75,4 +75,6 @@
 | #071 | **v2.9.11 手機版宇宙 UI 響應式修復** | 2026-06-27 | CosmosCanvas.tsx, 六憲法 |
 | #072 | **Echo 雨塘 v2.10 實作上線** — 湖景背景 + 橢圓漣漪 + 雨絲 + Echo 圓環 | 2026-06-27 | echo/page.tsx, LayoutClient.tsx, 六憲法 |
 | #072b | **Echo v2.10.4 亮度接縫修復** — 暗化層 z4（高於 WebGL）修復水面內外亮度不均 | 2026-06-28 | echo/page.tsx |
-| #072c | **Echo v2.10.5 橢圓微調 + CSS transform 定位** — WATER_LEFT 0.05→0.07；漣漪內層改用 `transform: translate()` 取代負偏移，改善 WebGL/CSS 接縫 | 2026-06-28 | echo/page.tsx |
+|| #072c | **Echo v2.10.5 橢圓微調 + CSS transform 定位** — WATER_LEFT 0.05→0.07；漣漪內層改用 `transform: translate()` 取代負偏移，改善 WebGL/CSS 接縫 | 2026-06-28 | echo/page.tsx |
+|| #074 | **Echo v2.14 視覺與互動優化** — 雨絲更細 (lineWidth 0.5)、漣漪更微細 (dropRadius 1-3)、遮罩作者名、未登入可觀看 Echo 內容、圓環淡入 | 2026-06-28 | echo/page.tsx, 六憲法 |
+|| #075 | **Echo v2.15 無 CDN 依賴化** — Echo 生成與 jquery.ripples 解耦（DB 載入即啟動），jquery.ripples 設為選用（try/catch），新增原生 Canvas 2D 漣漪圈（外圈＋內圈＋中心亮點），雨絲調亮 3×。解決 Telegram CSP 阻擋 CDN 腳本問題 | 2026-06-28 | echo/page.tsx, PROJECT.md, TASKS.md, CONTEXT.md |

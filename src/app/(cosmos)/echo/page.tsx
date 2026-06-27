@@ -37,6 +37,14 @@ interface Raindrop {
   length: number
 }
 
+interface RippleRing {
+  x: number; y: number
+  radius: number
+  maxRadius: number
+  opacity: number
+  birth: number
+}
+
 // ─── Image constants ────────────────────────────────────────────────────
 const IMG_W = 1262
 const IMG_H = 848
@@ -98,13 +106,13 @@ export default function EchoPage() {
   const { user, isAuthenticated } = useAuth()
   const containerRef = useRef<HTMLDivElement>(null)
   const overlayRef = useRef<HTMLCanvasElement>(null)
-  const [ready, setReady] = useState(false)
   const [size, setSize] = useState({ w: IMG_W, h: IMG_H })
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [selectedEcho, setSelectedEcho] = useState<EchoCircle | null>(null)
   const [replyText, setReplyText] = useState('')
   const [replying, setReplying] = useState(false)
   const [loginForReply, setLoginForReply] = useState(false)
+  const [ripplesLoaded, setRipplesLoaded] = useState(false)
 
   // Resize handler
   useEffect(() => {
@@ -119,6 +127,7 @@ export default function EchoPage() {
   // Persistent mutable data
   const echoesRef = useRef<EchoCircle[]>([])
   const dropsRef = useRef<Raindrop[]>([])
+  const rippleRingsRef = useRef<RippleRing[]>([])
   const startTimeRef = useRef(Date.now())
   const animIdRef = useRef(0)
   const initedRef = useRef(false)
@@ -140,67 +149,57 @@ export default function EchoPage() {
       .finally(() => setDbLoaded(true))
   }, [])
 
-  // ── Load jQuery + jquery.ripples ─────────────────────────────────────
+  // ── Load jquery.ripples (optional, CSP-safe try/catch) ────────────────
   useEffect(() => {
     let cancelled = false
     ;(async () => {
-      await loadScript('https://code.jquery.com/jquery-3.7.1.min.js')
-      await loadScript('https://cdn.jsdelivr.net/npm/jquery.ripples@0.6.3/dist/jquery.ripples.min.js')
-      if (cancelled) return
-
-      const $ = (window as any).jQuery
-      if (!$ || !containerRef.current) return
-
-      // Render ONLY the water area of the lake scene at exact container size
-      const img = new Image()
-      img.crossOrigin = 'anonymous'
-      img.onload = () => {
+      try {
+        await loadScript('https://code.jquery.com/jquery-3.7.1.min.js')
         if (cancelled) return
-        const { w, h } = sizeRef.current
-        const iw = img.naturalWidth || IMG_W
-        const ih = img.naturalHeight || IMG_H
-        // Source coordinates in IMAGE's native space
-        const sx = Math.round(iw * WATER_LEFT)
-        const sy = Math.round(ih * WATER_TOP)
-        const sw = Math.round(iw * (WATER_RIGHT - WATER_LEFT))
-        const sh = Math.round(ih * (WATER_BOTTOM - WATER_TOP))
-        // Destination canvas = fitted container size
-        const dw = Math.round(w * (WATER_RIGHT - WATER_LEFT))
-        const dh = Math.round(h * (WATER_BOTTOM - WATER_TOP))
-
-        const c = document.createElement('canvas')
-        c.width = dw
-        c.height = dh
-        const ctx = c.getContext('2d')
-        if (!ctx) return
-        // Draw water portion from native image into exact-size canvas
-        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, dw, dh)
-
-        $(containerRef.current!).ripples({
-          resolution: 512,
-          dropRadius: 20,
-          perturbance: 0.02,
-          imageUrl: c.toDataURL('image/jpeg', 0.92),
-        })
-        setReady(true)
-      }
-      img.src = '/lake-scene.jpg'
+        await loadScript('https://cdn.jsdelivr.net/npm/jquery.ripples@0.6.3/dist/jquery.ripples.min.js')
+        if (cancelled) return
+        const $ = (window as any).jQuery
+        if (!$ || !containerRef.current) return
+        const img = new Image()
+        img.crossOrigin = 'anonymous'
+        img.onload = () => {
+          if (cancelled) return
+          const { w, h } = sizeRef.current
+          const iw = img.naturalWidth || IMG_W
+          const ih = img.naturalHeight || IMG_H
+          const sx = Math.round(iw * WATER_LEFT)
+          const sy = Math.round(ih * WATER_TOP)
+          const sw = Math.round(iw * (WATER_RIGHT - WATER_LEFT))
+          const sh = Math.round(ih * (WATER_BOTTOM - WATER_TOP))
+          const dw = Math.round(w * (WATER_RIGHT - WATER_LEFT))
+          const dh = Math.round(h * (WATER_BOTTOM - WATER_TOP))
+          const c = document.createElement('canvas')
+          c.width = dw; c.height = dh
+          const ctx = c.getContext('2d')
+          if (!ctx) return
+          ctx.drawImage(img, sx, sy, sw, sh, 0, 0, dw, dh)
+          try {
+            $(containerRef.current!).ripples({
+              resolution: 512, dropRadius: 20, perturbance: 0.02,
+              imageUrl: c.toDataURL('image/jpeg', 0.92),
+            })
+            setRipplesLoaded(true)
+          } catch { /* CSP blocks eval — optional */ }
+        }
+        img.src = '/lake-scene.jpg'
+      } catch { /* CDN blocked by CSP — page works without ripples */ }
     })()
     return () => { cancelled = true }
   }, [])
 
-  // ── Re-init ripples when viewport resizes (mobile address bar, orientation) ──
+  // ── Re-init ripples on resize ───────────────────────────────────────
   useEffect(() => {
-    if (!ready) return
+    if (!ripplesLoaded) return
     const $ = (window as any).jQuery
     const el = containerRef.current
     if (!$ || !el) return
-    // Skip first fire (initial init was in the first useEffect)
     if (!initedRef.current) { initedRef.current = true; return }
-    // jquery.ripples has no public resize; destroy + re-create
     try { $(el).ripples('destroy') } catch {}
-
-    // Re-render water area at new size
     const img = new Image()
     img.crossOrigin = 'anonymous'
     img.onload = () => {
@@ -213,31 +212,25 @@ export default function EchoPage() {
       const sh = Math.round(ih * (WATER_BOTTOM - WATER_TOP))
       const dw = Math.round(w * (WATER_RIGHT - WATER_LEFT))
       const dh = Math.round(h * (WATER_BOTTOM - WATER_TOP))
-
       const c = document.createElement('canvas')
-      c.width = dw
-      c.height = dh
+      c.width = dw; c.height = dh
       const ctx = c.getContext('2d')
       if (!ctx) return
       ctx.drawImage(img, sx, sy, sw, sh, 0, 0, dw, dh)
-
       $(el).ripples({
-        resolution: 512,
-        dropRadius: 20,
-        perturbance: 0.02,
+        resolution: 512, dropRadius: 20, perturbance: 0.02,
         imageUrl: c.toDataURL('image/jpeg', 0.92),
       })
     }
     img.src = '/lake-scene.jpg'
-  }, [ready, size])
+  }, [ripplesLoaded, size])
 
-  // ── Spawn initial rain + echoes ──────────────────────────────────────
+  // ── Spawn rain + echoes (immediately after DB loads) ─────────────────
   useEffect(() => {
-    if (!ready || !dbLoaded) return
+    if (!dbLoaded) return
     const { w, h } = size
     dropsRef.current = Array.from({ length: RAIN_COUNT }, () => makeRaindrop(w, h))
 
-    // Use DB echoes when available, fall back to static quotes
     const quotes = dbEchoes.length > 0
       ? dbEchoes
       : ECHO_QUOTES.map((q, i) => ({
@@ -271,11 +264,11 @@ export default function EchoPage() {
       }
     })
     startTimeRef.current = Date.now()
-  }, [ready, size, dbEchoes, dbLoaded])
+  }, [size, dbEchoes, dbLoaded])
 
-  // ── Animation loop ────────────────────────────────────────────────────
+  // ── Animation loop (starts when DB loaded, no CDN dependency) ────────
   useEffect(() => {
-    if (!ready) return
+    if (!dbLoaded) return
     const canvas = overlayRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
@@ -293,7 +286,6 @@ export default function EchoPage() {
 
       ctx!.clearRect(0, 0, w, h)
 
-      // Clip rain to water area
       const clipL = WATER_LEFT * w, clipT = WATER_TOP * h
       const clipR = WATER_RIGHT * w, clipB = WATER_BOTTOM * h
       ctx!.save()
@@ -303,6 +295,7 @@ export default function EchoPage() {
       drawRain(ctx!, w, h, dropsRef.current)
       ctx!.restore()
 
+      drawRippleRings(ctx!, w, h, elapsed, rippleRingsRef.current)
       drawEchoes(ctx!, w, h, elapsed, echoesRef.current)
       drawVignette(ctx!, w, h)
 
@@ -311,23 +304,35 @@ export default function EchoPage() {
 
     animIdRef.current = requestAnimationFrame(frame)
     return () => { running = false; cancelAnimationFrame(animIdRef.current) }
-  }, [ready, size])
+  }, [dbLoaded, size])
 
-  // ── Periodic rain drops via jquery.ripples ───────────────────────────
+  // ── Periodic ripple rings (Canvas 2D + jquery.ripples if available) ──
   useEffect(() => {
-    if (!ready) return
+    if (!dbLoaded) return
     const id = setInterval(() => {
+      const { w, h } = size
+      for (let i = 0; i < 3; i++) {
+        const { x, y } = randomInWater(w, h)
+        rippleRingsRef.current = [
+          ...rippleRingsRef.current,
+          { x, y, radius: 2, maxRadius: 15 + Math.random() * 10, opacity: 0.20, birth: Date.now() },
+        ]
+        if (rippleRingsRef.current.length > 30) {
+          rippleRingsRef.current = rippleRingsRef.current.slice(-30)
+        }
+      }
+      // Also drop on jquery.ripples if loaded
       const $ = (window as any).jQuery
       const container = containerRef.current
-      if ($ && container) {
-        for (let i = 0; i < 3; i++) {
+      if ($ && container && ripplesLoaded) {
+        try {
           const { x, y } = randomInWater(size.w, size.h)
           $(container).ripples('drop', x, y, 1 + Math.random() * 2, 0.003 + Math.random() * 0.003)
-        }
+        } catch {}
       }
     }, 800)
     return () => clearInterval(id)
-  }, [ready, size])
+  }, [dbLoaded, size, ripplesLoaded])
 
   // ── Click handler ─────────────────────────────────────────────────────
   const handleClick = useCallback((e: React.MouseEvent) => {
@@ -336,14 +341,12 @@ export default function EchoPage() {
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
 
-    // Check if click is near an existing echo circle
     const nearby = echoesRef.current.find(e => {
       const dx = e.x - x, dy = e.y - y
-      return Math.sqrt(dx * dx + dy * dy) < (e.radius * 3) // 3x radius for easy tap
+      return Math.sqrt(dx * dx + dy * dy) < (e.radius * 3)
     })
 
     if (nearby) {
-      // Everyone can click to view echo content
       setSelectedEcho(nearby)
       setReplyText('')
       setReplying(false)
@@ -351,15 +354,19 @@ export default function EchoPage() {
       return
     }
 
-    // Empty water click — require auth to create new echo
     if (!isAuthenticated) {
       setShowLoginModal(true)
       return
     }
 
+    // Native ripple ring + jquery.ripples if available
+    rippleRingsRef.current = [
+      ...rippleRingsRef.current,
+      { x, y, radius: 2, maxRadius: 30, opacity: 0.30, birth: Date.now() },
+    ]
     const $ = (window as any).jQuery
-    if ($ && containerRef.current) {
-      $(containerRef.current).ripples('drop', x, y, 20, 0.05)
+    if ($ && containerRef.current && ripplesLoaded) {
+      try { $(containerRef.current).ripples('drop', x, y, 20, 0.05) } catch {}
     }
 
     const hue = ECHO_HUES[Math.floor(Math.random() * ECHO_HUES.length)]
@@ -369,7 +376,7 @@ export default function EchoPage() {
       { x, y, hue, radius: 16, maxRadius: 22 + Math.random() * 8,
         opacity: 0.65, phase: 0, text: quote, birth: Date.now() },
     ]
-  }, [isAuthenticated])
+  }, [isAuthenticated, ripplesLoaded])
 
   const { w, h } = size
   const waterTopPx = Math.round(h * WATER_TOP)
@@ -383,14 +390,12 @@ export default function EchoPage() {
       overflow: 'hidden', fontFamily: '-apple-system,BlinkMacSystemFont,sans-serif',
       background: '#0a0a14',
     }}>
-      {/* Centered image container */}
       <div style={{
         position: 'absolute',
         left: `calc(50% - ${w / 2}px)`,
         top: `calc(50% - ${h / 2}px)`,
         width: w, height: h,
       }}>
-        {/* Layer 1: Static full image */}
         <div style={{
           position: 'absolute', inset: 0,
           background: `url(/lake-scene.jpg) center/100% 100% no-repeat`,
@@ -398,20 +403,17 @@ export default function EchoPage() {
           zIndex: 0,
         }} />
 
-        {/* Layer: Rain + echoes canvas (full image) — ON TOP of WebGL ripples */}
         <canvas ref={overlayRef} style={{
           position: 'absolute', inset: 0,
           pointerEvents: 'none', zIndex: 3,
         }} />
 
-        {/* Layer: Dark overlay — unify brightness */}
         <div style={{
           position: 'absolute', inset: 0,
           background: 'rgba(0,0,0,0.25)',
           pointerEvents: 'none', zIndex: 4,
         }} />
 
-        {/* Layer: Water ripple — exact-size ellipse, water-only image — BELOW canvas overlay */}
         <div
           ref={containerRef}
           onClick={handleClick}
@@ -429,81 +431,6 @@ export default function EchoPage() {
         />
       </div>
 
-      {/* Loading */}
-      {!ready && (
-        <div style={{
-          position: 'fixed', top: '50%', left: '50%',
-          transform: 'translate(-50%,-50%)', zIndex: 10,
-          color: 'rgba(255,255,255,0.40)', fontSize: 14,
-        }}>Loading the echo pond…</div>
-      )}
-
-      {/* Login modal */}
-      {showLoginModal && (
-        <div
-          onClick={() => setShowLoginModal(false)}
-          style={{
-            position: 'fixed', inset: 0, zIndex: 100,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: 'rgba(0,0,0,0.60)',
-            backdropFilter: 'blur(4px)',
-          }}
-        >
-          <div
-            onClick={e => e.stopPropagation()}
-            style={{
-              background: 'rgba(20,20,30,0.95)',
-              border: '1px solid rgba(255,255,255,0.10)',
-              borderRadius: 16, padding: '32px 36px',
-              maxWidth: 360, width: '90%',
-              textAlign: 'center',
-            }}
-          >
-            <div style={{ fontSize: 32, marginBottom: 12 }}>🌊</div>
-            <h2 style={{ color: '#fff', fontSize: 18, fontWeight: 600, marginBottom: 8 }}>
-              Leave Your Echo
-            </h2>
-            <p style={{ color: 'rgba(255,255,255,0.50)', fontSize: 13, lineHeight: 1.5, marginBottom: 24 }}>
-              Every voice leaves a trace on the water.<br />
-              Sign in to drop your own ripple.
-            </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              <Link
-                href="/enter"
-                style={{
-                  display: 'block',
-                  padding: '10px 0',
-                  borderRadius: 8,
-                  background: 'linear-gradient(135deg, #c97b5a, #a85d3a)',
-                  color: '#fff',
-                  fontSize: 14,
-                  fontWeight: 600,
-                  textDecoration: 'none',
-                  letterSpacing: 0.3,
-                }}
-              >
-                Sign In
-              </Link>
-              <button
-                onClick={() => setShowLoginModal(false)}
-                style={{
-                  padding: '10px 0',
-                  borderRadius: 8,
-                  background: 'transparent',
-                  border: '1px solid rgba(255,255,255,0.15)',
-                  color: 'rgba(255,255,255,0.50)',
-                  fontSize: 13,
-                  cursor: 'pointer',
-                }}
-              >
-                Maybe later
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Echo detail popup */}
       {selectedEcho && (
         <div
           onClick={() => setSelectedEcho(null)}
@@ -523,14 +450,12 @@ export default function EchoPage() {
               maxWidth: 400, width: '90%',
             }}
           >
-            {/* Content */}
             <div style={{
               color: 'rgba(255,255,255,0.85)', fontSize: 15,
               lineHeight: 1.6, marginBottom: 12,
               fontStyle: 'italic',
             }}>"{selectedEcho.text}"</div>
 
-            {/* Meta — author name shown only after clicking */}
             <div style={{
               color: 'rgba(255,255,255,0.35)', fontSize: 11,
               marginBottom: 20,
@@ -539,7 +464,6 @@ export default function EchoPage() {
               {selectedEcho.type && <span style={{textTransform:'uppercase',letterSpacing:0.5}}>{selectedEcho.type}</span>}
             </div>
 
-            {/* Reply form — gated behind login */}
             {!isAuthenticated && !loginForReply ? (
               <button
                 onClick={() => setLoginForReply(true)}
@@ -634,7 +558,7 @@ export default function EchoPage() {
                             method: 'POST',
                             headers: {
                               'Content-Type': 'application/json',
-                              ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                              ...(token ? { Authorization: 'Bearer ' + token } : {}),
                             },
                             body: JSON.stringify({
                               parent_id: selectedEcho.id,
@@ -665,7 +589,6 @@ export default function EchoPage() {
               </div>
             )}
 
-            {/* Close button */}
             <div style={{ textAlign: 'center', marginTop: 16 }}>
               <button
                 onClick={() => setSelectedEcho(null)}
@@ -675,6 +598,70 @@ export default function EchoPage() {
                 }}
               >
                 Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showLoginModal && (
+        <div
+          onClick={() => setShowLoginModal(false)}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 100,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: 'rgba(0,0,0,0.60)',
+            backdropFilter: 'blur(4px)',
+          }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{
+              background: 'rgba(20,20,30,0.95)',
+              border: '1px solid rgba(255,255,255,0.10)',
+              borderRadius: 16, padding: '32px 36px',
+              maxWidth: 360, width: '90%',
+              textAlign: 'center',
+            }}
+          >
+            <div style={{ fontSize: 32, marginBottom: 12 }}>🌊</div>
+            <h2 style={{ color: '#fff', fontSize: 18, fontWeight: 600, marginBottom: 8 }}>
+              Leave Your Echo
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.50)', fontSize: 13, lineHeight: 1.5, marginBottom: 24 }}>
+              Every voice leaves a trace on the water.<br />
+              Sign in to drop your own ripple.
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <Link
+                href="/enter"
+                style={{
+                  display: 'block',
+                  padding: '10px 0',
+                  borderRadius: 8,
+                  background: 'linear-gradient(135deg, #c97b5a, #a85d3a)',
+                  color: '#fff',
+                  fontSize: 14,
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                  letterSpacing: 0.3,
+                }}
+              >
+                Sign In
+              </Link>
+              <button
+                onClick={() => setShowLoginModal(false)}
+                style={{
+                  padding: '10px 0',
+                  borderRadius: 8,
+                  background: 'transparent',
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  color: 'rgba(255,255,255,0.50)',
+                  fontSize: 13,
+                  cursor: 'pointer',
+                }}
+              >
+                Maybe later
               </button>
             </div>
           </div>
@@ -707,6 +694,34 @@ function drawRain(ctx: CanvasRenderingContext2D, w: number, h: number, drops: Ra
   }
 }
 
+function drawRippleRings(ctx: CanvasRenderingContext2D, w: number, h: number, elapsed: number, rings: RippleRing[]) {
+  if (!rings.length) return
+  for (const ring of rings) {
+    if (!isInWater(ring.x, ring.y, w, h)) continue
+    const age = (Date.now() - ring.birth) / 1000
+    ring.radius = 2 + age * 25
+    ring.opacity = Math.max(0, 0.35 - age * 0.10)
+    if (ring.opacity <= 0.01 || ring.radius > 50) continue
+    // Outer ring — visible water ripple
+    ctx.strokeStyle = `rgba(200,215,240,${ring.opacity})`
+    ctx.lineWidth = 1.2
+    ctx.beginPath()
+    ctx.arc(ring.x, ring.y, ring.radius, 0, Math.PI * 2)
+    ctx.stroke()
+    // Inner faint ring
+    ctx.strokeStyle = `rgba(180,200,230,${ring.opacity * 0.5})`
+    ctx.lineWidth = 0.6
+    ctx.beginPath()
+    ctx.arc(ring.x, ring.y, ring.radius * 0.6, 0, Math.PI * 2)
+    ctx.stroke()
+    // Bright center point
+    ctx.fillStyle = `rgba(220,235,255,${ring.opacity * 0.3})`
+    ctx.beginPath()
+    ctx.arc(ring.x, ring.y, 2, 0, Math.PI * 2)
+    ctx.fill()
+  }
+}
+
 function drawEchoes(ctx: CanvasRenderingContext2D, w: number, h: number, elapsed: number, echoes: EchoCircle[]) {
   if (!echoes.length) return
   for (const echo of echoes) {
@@ -714,8 +729,6 @@ function drawEchoes(ctx: CanvasRenderingContext2D, w: number, h: number, elapsed
     const age = (Date.now() - echo.birth) / 1000
     const breathe = Math.sin(elapsed * 1.2 + echo.phase) * 0.06
     const r = echo.radius * (1 + breathe)
-
-    // Fade in over first 1 second
     const fadeIn = Math.min(age * 1.5, 1)
     const baseOpacity = Math.max(0, Math.min(echo.opacity, 0.65 - age * 0.002)) * fadeIn
     if (baseOpacity <= 0.01) continue
@@ -781,19 +794,7 @@ function makeRaindrop(w: number, h: number): Raindrop {
     x,
     y: WATER_TOP * h - 5 - Math.random() * 10,
     speed: 3 + Math.random() * 5,
-    opacity: 0.025 + Math.random() * 0.015,
+    opacity: 0.075 + Math.random() * 0.045,
     length: 12 + Math.random() * 10,
-  }
-}
-
-function makeEcho(w: number, h: number): EchoCircle {
-  const { x, y } = randomInWater(w, h)
-  const hue = ECHO_HUES[Math.floor(Math.random() * ECHO_HUES.length)]
-  const quote = ECHO_QUOTES[Math.floor(Math.random() * ECHO_QUOTES.length)]
-  return {
-    x, y,
-    hue, radius: 16, maxRadius: 22 + Math.random() * 8,
-    opacity: 0.65, phase: Math.random() * Math.PI * 2,
-    text: quote, birth: Date.now(),
   }
 }
