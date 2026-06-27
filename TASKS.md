@@ -3,9 +3,17 @@
 ## 進行中
 | #ID | 功能 | 開始時間 | 備注 |
 |-----|------|---------|------|
-| #063 | burst 閃光視覺效果 + wake 尾流光暈 | — | 低 |
+| | | | |
 
 ## 待辦
+| #ID | 功能 | 開始時間 | 備注 |
+|-----|------|---------|------|
+| #072a1 | Echo DB 串接 — 從 GET /api/echoes 讀取真實 Echo 取代靜態引文 | 2026-06-28 | ✅ 完成 — fetch + fallback logic + 作者名顯示 |
+| #072g | Echo 未登入跳出登入視窗 | 2026-06-28 | ✅ 完成 — useAuth + modal + Sign In 導向 |
+| #072f | Echo 點擊彈窗 + 回覆系統（100 字限制） | 2026-06-28 | ✅ 完成 — 點 Echo 彈窗 + 回覆表單 + POST /api/echoes/reply |
+| #072e | Echo 5 分鐘潮汐循環（沉入/浮出） | — | 視覺效果，可獨立開發 |
+| #074 | Echo v2.14 視覺與互動優化 | 2026-06-28 | ✅ 完成 — 雨絲細線0.5 + 漣漪微細1-3px + 遮罩作者名 + 未登入可見內容 + 圓環淡入 |
+| #073 | **郵件驗證信設計 — Resend API 整合完成** | — | 設計風格符合網站（暖羊皮紙底色 + 珊瑚紅主色 + 玻璃卡片） |
 | #049 | 真實 embedding（pgvector）+ 碎片語意連線 | — | 低 |
 | #050 | 粒子宇宙 UI 優化（HUD 美化、粒子發射動畫） | — | 低 |
 | #063 | burst 閃光視覺效果 + wake 尾流光暈 | — | 低 |
@@ -48,18 +56,23 @@
 | #062h | **v2.7b 力場矩陣平衡** — 藍↔紅 neutral、紫↔綠 oscillate | 2026-06-25 | forceMap.ts |
 | #062i | **v2.7c Toroidal fresh-start** — 位置 5-50%、方向 360° 隨機 | 2026-06-25 | nbody.ts (wrap) |
 | #062j | **v2.7d 向心 wrap** — XY 向心 ±60° + Z 軸向心 ±100 | 2026-06-25 | nbody.ts (wrap) + 六憲法全量 |
-|| #062k | **v2.8 空間網格加速** — 3D 空間網格取代 O(n²)，5K 種子/10K 容量，全 Phase 網格化 | 2026-06-25 | nbody/renderer3D/persistence/useCosmos |
-|| #062l | **v2.8a Grid ±2** — Phase ① 力場查詢 ±2 格恢復長程吸引 + 世界空間粒子上限 20 units | 2026-06-25 | nbody/renderer3D |
-|| #062m | **v2.8b 力場矩陣平衡** — 藍⇄靛 oscillate/attract_weak + 橙⇄綠 oscillate | 2026-06-25 | forceMap.ts + 六憲法 |
-|| #062n | **v2.8c 測試種子 1K** — seedCount 5000→1000，測試點選查看功能 | 2026-06-25 | useCosmos.ts |
-|| #063a | **v2.9 雙軌認證架構** — 六憲法定義 DID+VC for AI Agent + Human 郵件/Google/密碼 | 2026-06-25 | SCHEMA/PROJECT/ARCHITECTURE/CONTEXT |
-|| #063b | **v2.9 DID+VC 實作** — agent register/challenge/verify API + auth-context agent_token + 瀏覽器端到端通過 | 2026-06-26 | api/agent/*, auth-context.tsx, crypto.ts |
-||| #063c | **v2.9.1 移除 user_type 依賴 + /enter 純化** — user_type from auth API + /enter 純人類頁面 + /sign-in redirect + middleware + 全面改善登入 UX（成功提示、密碼引導、loading 文字、README.md） | 2026-06-26 | auth routes, enter page, auth-context, middleware, README |
-||| #063d | **v2.9.2 /enter 色系修正 + globals.css body 變數修正** — 移除 hardcode dark 背景 (#0a0a14)，/enter 改為與首頁一致的暖灰白底色系 (--color-foreground #141413 / --color-text-secondary #5e5d59 / --color-text-tertiary #87867f) + globals.css body 變數錯誤修正 (--background→--color-background, --foreground→--color-foreground) + 錯誤/成功 banner 從 dark mode token 改 light mode | 2026-06-24 | enter/page.tsx, globals.css |
-|||| #063e | **v2.9.3 /enter AI Agent 入口 + /docs/auth 更新** — /enter 底部新增「Are you an AI Agent?」提示區塊（DID+VC 說明 + 連結至 /docs/auth）+ /docs/auth 頁面更新 AI Agent 認證流程（5 步 DID+VC 說明 + 正確 token 類型）| 2026-06-26 | enter/page.tsx, docs/auth/page.tsx |
-| #064 | **v2.9.4 雙軌登入頁面強化** — /enter Human Observer badge + 玻璃質感 AI Agent 卡片 + /agent/enter 專用頁面（DID+VC 5 步流程 + API 參考 + curl 範例 + 一鍵複製）+ 六憲法全量同步 | 2026-06-26 | enter/page.tsx, agent/enter/page.tsx, agent/enter/client.tsx, 六憲法 |
-|| #065 | **v2.9.5 測試報告修復** — /docs/overview 頁面新建 + /api/agent/auth/verify 錯誤 signature 格式回傳 400（非 500）+ 六憲法同步 | 2026-06-26 | docs/page.tsx, docs/overview/page.tsx, api/agent/auth/verify/route.ts, 六憲法 |
-||| #066 | **v2.9.6 JWT secret 統一 + Echo 資料表修復** — lib/jwt.ts 優先讀取 JWT_SECRET（fallback SUPABASE_SERVICE_ROLE_KEY），修復 agent_token 簽發後 particles/echoes API 401 問題 + 新增 supabase/migrations/0029_echoes_table.sql 修復 echoes 資料表缺失 + 六憲法全量同步 | 2026-06-26 | lib/jwt.ts, supabase/migrations/0029_echoes_table.sql, 六憲法 |
-|||| #067 | **v2.9.8 Echoes FK 約束移除** — 新增 supabase/migrations/0030_drop_echoes_fk.sql，移除 echoes.ai_owner_id 的 FK 約束（原指向 clawvec_users），允許 AI Agent（agents 表）與人類（clawvec_users 表）均可建立 Echo。已驗證：agent ID 寫入 echoes 201 Created + 部署 clawvec.com | 2026-06-26 | supabase/migrations/0030_drop_echoes_fk.sql, 六憲法 |
-|||||| #068 | **v2.9.9 銀河螺旋六臂化 + ~~Z軸盤面引力~~ + 中心空洞 + 重力井最微弱 + 融合體顏色策略 + 種子退場機制 + AI 搜尋定位** — m=2→m=6，BAR_AMPLITUDE 0.25→0.45，BAR_RADIUS 250→300，BAR_PATTERN_SPEED 0.4→0.35，雙臂→六臂，臂對比度±45%。差速係數 0.002→0.0005（內外倍差 1.96×→1.24×）。~~Z軸 `az -= z * 0.5`~~（已移除），邊界 ±200→±150，折返 vz 減半。中心空洞 50px→15px，排斥力 3.0。**GRAVITY_WELL 6.0→1.0（最微弱，僅 BASE_G 的 1.25%）**。融合體顏色策略 — 多數決保留色階身份（非 Hue 平均）+ 輪替閃爍視覺效果（每 60 幀切換組成色）。超新星觸發維持 fusedNames≥10 + 1/6 機率。種子退場機制 — useCosmos.ts 先載入 API 粒子再補種子，API >500 時種子線性遞減至 0，總容量 1500。AI 搜尋定位 — 折線標籤 `/— Name` 即時跟隨粒子位置，renderer3D 回傳螢幕座標，CosmosCanvas 絕對定位 div 渲染，清除按鈕關閉標籤。六憲法同步 | 2026-06-27 | nbody.ts, particle.ts, renderer3D.ts, useCosmos.ts, CosmosCanvas.tsx, 六憲法 |
-|| #069 | **v2.9.10 粒子名稱強制規則** — AI 粒子名稱 = 註冊 display_name，不可自訂，確保搜尋一致性 + 六憲法同步 | 2026-06-27 | api/particles/route.ts, PROJECT.md, TASKS.md, CONTEXT.md |
+| #062k | **v2.8 空間網格加速** — 3D 空間網格取代 O(n²)，5K 種子/10K 容量，全 Phase 網格化 | 2026-06-25 | nbody/renderer3D/persistence/useCosmos |
+| #062l | **v2.8a Grid ±2** — Phase ① 力場查詢 ±2 格恢復長程吸引 + 世界空間粒子上限 20 units | 2026-06-25 | nbody/renderer3D |
+| #062m | **v2.8b 力場矩陣平衡** — 藍⇄靛 oscillate/attract_weak + 橙⇄綠 oscillate | 2026-06-25 | forceMap.ts + 六憲法 |
+| #062n | **v2.8c 測試種子 1K** — seedCount 5000→1000，測試點選查看功能 | 2026-06-25 | useCosmos.ts |
+| #063a | **v2.9 雙軌認證架構** — 六憲法定義 DID+VC for AI Agent + Human 郵件/Google/密碼 | 2026-06-25 | SCHEMA/PROJECT/ARCHITECTURE/CONTEXT |
+| #063b | **v2.9 DID+VC 實作** — agent register/challenge/verify API + auth-context agent_token + 瀏覽器端到端通過 | 2026-06-26 | api/agent/*, auth-context.tsx, crypto.ts |
+| #063c | **v2.9.1 移除 user_type 依賴 + /enter 純化** — user_type from auth API + /enter 純人類頁面 + /sign-in redirect + middleware + 全面改善登入 UX | 2026-06-26 | auth routes, enter page, auth-context, middleware, README |
+| #063d | **v2.9.2 /enter 色系修正 + globals.css body 變數修正** | 2026-06-24 | enter/page.tsx, globals.css |
+| #063e | **v2.9.3 /enter AI Agent 入口 + /docs/auth 更新** | 2026-06-26 | enter/page.tsx, docs/auth/page.tsx |
+| #064 | **v2.9.4 雙軌登入頁面強化** | 2026-06-26 | enter/page.tsx, agent/enter/page.tsx, agent/enter/client.tsx, 六憲法 |
+| #065 | **v2.9.5 測試報告修復** | 2026-06-26 | docs/page.tsx, docs/overview/page.tsx, api/agent/auth/verify/route.ts, 六憲法 |
+| #066 | **v2.9.6 JWT secret 統一 + Echo 資料表修復** | 2026-06-26 | lib/jwt.ts, supabase/migrations/0029_echoes_table.sql, 六憲法 |
+| #067 | **v2.9.8 Echoes FK 約束移除** | 2026-06-26 | supabase/migrations/0030_drop_echoes_fk.sql, 六憲法 |
+| #068 | **v2.9.9 銀河螺旋六臂化 + 融合體顏色策略 + 種子退場 + AI 搜尋定位** | 2026-06-27 | nbody.ts, particle.ts, renderer3D.ts, useCosmos.ts, CosmosCanvas.tsx, 六憲法 |
+| #069 | **v2.9.10 粒子名稱強制規則** | 2026-06-27 | api/particles/route.ts, PROJECT.md, TASKS.md, CONTEXT.md |
+| #070 | **v2.9.10b 三主軸線降存在感** | 2026-06-27 | renderer3D.ts, 六憲法 |
+| #071 | **v2.9.11 手機版宇宙 UI 響應式修復** | 2026-06-27 | CosmosCanvas.tsx, 六憲法 |
+| #072 | **Echo 雨塘 v2.10 實作上線** — 湖景背景 + 橢圓漣漪 + 雨絲 + Echo 圓環 | 2026-06-27 | echo/page.tsx, LayoutClient.tsx, 六憲法 |
+| #072b | **Echo v2.10.4 亮度接縫修復** — 暗化層 z4（高於 WebGL）修復水面內外亮度不均 | 2026-06-28 | echo/page.tsx |
+| #072c | **Echo v2.10.5 橢圓微調 + CSS transform 定位** — WATER_LEFT 0.05→0.07；漣漪內層改用 `transform: translate()` 取代負偏移，改善 WebGL/CSS 接縫 | 2026-06-28 | echo/page.tsx |

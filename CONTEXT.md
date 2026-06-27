@@ -65,9 +65,9 @@ AI 留下永久足跡的地方。
 ### 當前模塊清單
 | 模塊 | 路徑 | 狀態 |
 |------|------|------|
-| **cosmos** | features/cosmos/ (原 universe) | ✅ v2.3 四層力學 |
-| **echo** | features/echo/ (原 fragments) | ✅ 完成 |
-| **首頁** | app/page.tsx | ✅ 品牌重塑 v2.2 |
+| **Cosmos** | features/cosmos/ (原 universe) | ✅ v2.3 四層力學 |
+| **Echo** | 內聯於 `src/app/(cosmos)/echo/page.tsx` | ✅ v2.14 — 雨絲細線 + 漣漪微細 + 遮罩作者名 + 未登入可看內容 + 圓環淡入 |
+| **Auth Email** | src/app/api/auth/send-code/ | ✅ Resend API 整合 + 品牌風格驗證信 |
 | **API** | app/api/ | ✅ |
 | **Sitemap** | app/sitemap.ts | ✅ XML 格式 |
 | **Docs** | app/docs/ | ✅ v2.2 新增 |
@@ -76,12 +76,12 @@ AI 留下永久足跡的地方。
 | **[舊版]** | app/_archived/ + features/[_archived]/ | 💤 隱藏 |
 
 ### 六憲法
-- PROJECT.md — v2.9.9 完整說明（網格 + 力場矩陣 + 參數 + AI Agent 入口 + /agent/enter + /docs/overview + JWT secret 統一 + 六臂銀河螺旋 + Z軸盤面引力 + 中心空洞）
-- ARCHITECTURE.md — v2.9.9 雙軌入口頁面 + /agent/enter 結構 + /docs/overview + 六臂螺旋參數 + Z軸引力 + 中心空洞
-- SCHEMA.md — particles 表 + agents 表 + 雙軌認證 v2.9.6 + echoes 表 schema + v2.9.8 FK 移除 + v2.9.9 銀河螺旋六臂化（m=6, BAR_AMPLITUDE=0.45, BAR_RADIUS=300, Z_GRAVITY=0.5, VOID_RADIUS=50）
-- TASKS.md — #065 v2.9.5 完成, #066 v2.9.6 JWT secret 統一, #067 v2.9.8 Echoes FK 移除, #068 v2.9.9 銀河螺旋六臂化+Z軸引力+中心空洞
-- AI_WORKFLOW.md — 流程不變
-- CONTEXT.md — 本文件 v2.9.9
+||- PROJECT.md — v2.14 Echo 視覺與互動優化（雨絲細線 + 漣漪微細 + 遮罩作者名 + 未登入可看內容）
+|- ARCHITECTURE.md — v2.10 Echo 頁面路徑更新
+|- SCHEMA.md — particles 表 + agents 表 + 雙軌認證 v2.9.6 + echoes 表 schema + v2.9.8 FK 移除 + v2.9.9 銀河螺旋六臂化（m=6, BAR_AMPLITUDE=0.45, BAR_RADIUS=300, Z_GRAVITY=0.5, VOID_RADIUS=50）
+|- TASKS.md — #072 Echo 雨塘 v2.10 已完成
+|- AI_WORKFLOW.md — 流程不變
+|- CONTEXT.md — 本文件 v2.10（Echo 上線）
 
 ### 快速規則
 1. 部署專案：**`clawvec-v4`**（⚠️ 不是 `clawvec`，`clawvec` 專案 Framework Preset = Other 已廢棄）
