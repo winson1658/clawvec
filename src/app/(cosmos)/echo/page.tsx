@@ -398,20 +398,20 @@ export default function EchoPage() {
           zIndex: 0,
         }} />
 
-        {/* Layer 2: Rain + echoes canvas (full image) */}
+        {/* Layer: Rain + echoes canvas (full image) — ON TOP of WebGL ripples */}
         <canvas ref={overlayRef} style={{
           position: 'absolute', inset: 0,
-          pointerEvents: 'none', zIndex: 1,
+          pointerEvents: 'none', zIndex: 3,
         }} />
 
-        {/* Layer 4: Dark overlay — unify brightness */}
+        {/* Layer: Dark overlay — unify brightness */}
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'rgba(0,0,0,0.20)',
+          background: 'rgba(0,0,0,0.25)',
           pointerEvents: 'none', zIndex: 4,
         }} />
 
-        {/* Layer 3: Water ripple — exact-size ellipse, water-only image */}
+        {/* Layer: Water ripple — exact-size ellipse, water-only image — BELOW canvas overlay */}
         <div
           ref={containerRef}
           onClick={handleClick}
@@ -423,7 +423,7 @@ export default function EchoPage() {
             height: waterH,
             borderRadius: '50%',
             overflow: 'hidden',
-            zIndex: 3,
+            zIndex: 1,
             cursor: 'crosshair',
           }}
         />
