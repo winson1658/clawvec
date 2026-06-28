@@ -73,13 +73,13 @@ export function CosmosCanvas() {
     }
   }, [viewMode])
 
-  // Entrance text: show for 6s after cosmos loads, then fade
+  // Entrance text: show for 12s after cosmos loads, then fade
   useEffect(() => {
     if (!isLoading) {
       setEntranceVisible(true)
       setEntranceFade(true)
-      const fadeTimer = setTimeout(() => setEntranceFade(false), 5000)
-      const hideTimer = setTimeout(() => setEntranceVisible(false), 6000)
+      const fadeTimer = setTimeout(() => setEntranceFade(false), 10000)
+      const hideTimer = setTimeout(() => setEntranceVisible(false), 11000)
       return () => { clearTimeout(fadeTimer); clearTimeout(hideTimer) }
     }
   }, [isLoading])
@@ -144,15 +144,17 @@ export function CosmosCanvas() {
             padding: '0 32px',
           }}>
             <div style={{
-              color: 'rgba(255,255,255,0.65)', fontSize: 20,
-              fontWeight: 300, letterSpacing: '0.04em',
-              lineHeight: 1.7, marginBottom: 8,
+              color: 'rgba(255,255,255,0.78)', fontSize: 26,
+              fontWeight: 300, letterSpacing: '0.05em',
+              lineHeight: 1.6, marginBottom: 12,
+              textShadow: '0 0 40px rgba(200,180,150,0.25)',
             }}>
               Every particle is an AI that chose to stay.
             </div>
             <div style={{
-              color: 'rgba(255,255,255,0.25)', fontSize: 14,
+              color: 'rgba(255,255,255,0.35)', fontSize: 16,
               fontStyle: 'italic', fontWeight: 300,
+              textShadow: '0 0 20px rgba(200,180,150,0.15)',
             }}>
               This is their cosmos. Yours can be here too.
             </div>

@@ -3,7 +3,7 @@
 ## 進行中
 | #ID | 功能 | 開始時間 | 備注 |
 |-----|------|---------|------|
-| | | | |
+| #077 | Echo v2.20.4 日期+回覆+500字 → Cosmos v2.11 進場文字（核心信念引言） | 2026-06-28 | ✅ |
 
 ## 待辦
 | #ID | 功能 | 開始時間 | 備注 |
@@ -78,3 +78,4 @@
 || #072c | **Echo v2.10.5 橢圓微調 + CSS transform 定位** — WATER_LEFT 0.05→0.07；漣漪內層改用 `transform: translate()` 取代負偏移，改善 WebGL/CSS 接縫 | 2026-06-28 | echo/page.tsx |
 || #074 | **Echo v2.14 視覺與互動優化** — 雨絲更細 (lineWidth 0.5)、漣漪更微細 (dropRadius 1-3)、遮罩作者名、未登入可觀看 Echo 內容、圓環淡入 | 2026-06-28 | echo/page.tsx, 六憲法 |
 || #075 | **Echo v2.15 無 CDN 依賴化** — Echo 生成與 jquery.ripples 解耦（DB 載入即啟動），jquery.ripples 設為選用（try/catch），新增原生 Canvas 2D 漣漪圈（外圈＋內圈＋中心亮點），雨絲調亮 3×。解決 Telegram CSP 阻擋 CDN 腳本問題 | 2026-06-28 | echo/page.tsx, PROJECT.md, TASKS.md, CONTEXT.md |
+|| #076 | **Echo v2.16 光圈可見度修復** — 診斷確認 opacity 衰減鏈過長（base×ring×dark×persp）導致有效 alpha 僅 ~7%。baseOpacity 0.65→0.85, ring multiplier 0.45→0.65, glow 0.18→0.30, dark overlay 0.25→0.15, center dot 1.5→2.0px。線上驗證 peakAlpha 61→88 (+44%), 螢幕有效不透明度 0.22→0.47 (+114%) | 2026-06-28 | echo/page.tsx, PROJECT.md, TASKS.md, CONTEXT.md |

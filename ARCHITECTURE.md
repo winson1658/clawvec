@@ -40,8 +40,7 @@ src/
 │   │   │   └── cosmos.types.ts
 │   │   └── index.ts
 │   │
-│   ├── echo/                 # Page 2 模塊 (原 fragments)
-│   │   └── (同上 v2.0)
+│   ├── echo/                 # Page 2 — 內聯於 app/(cosmos)/echo/page.tsx（v2.10 雨塘實作）
 │   │
 │   ├── enter/               # Auth feature module (hooks, services, types)
 │   ├── agents/              # Agent management module

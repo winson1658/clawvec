@@ -1,8 +1,8 @@
 # AI_WORKFLOW.md
 
-Version: 2.14
+Version: 2.20
 
-Status: Production — Echo v2.14 上線（雨絲細線 + 漣漪微細 + 遮罩作者名 + 未登入可看內容 + 圓環淡入）
+Status: Production — Echo v2.20 日落亮度 + Canvas 2D 漣漪強化（金色 3 層同心圈 + splash）
 
 ---
 

@@ -227,6 +227,11 @@ We believe…
 |- v2.13：Echo DB 串接 + 登入視窗 + 點擊彈窗回覆 — DB 讀取代靜態引文、未登入跳出 modal、點 Echo 彈窗回覆（100 字限制）。（2026-06-28）
 ||- v2.14：Echo 視覺與互動優化 — 雨絲更細 (lineWidth 0.5)、漣漪更微細 (dropRadius 1-3)、遮罩作者名（純視覺點選後才顯示）、未登入可觀看 Echo 內容（僅回覆要求登入）、圓環前 1 秒淡入漸顯。（2026-06-28）
 ||- v2.15：Echo 無 CDN 依賴化 — Echo 生成不再等待 jquery.ripples（DB 載入即啟動），jquery.ripples 設為選用視覺（try/catch 保護）。新增原生 Canvas 2D 漣漪圈（外圈＋內圈＋中心亮點）作為 CSP 環境備用。雨絲調亮 3×。解決 Telegram 內建瀏覽器 CSP 阻擋 CDN 腳本導致 Echo 永遠不顯示的問題。（2026-06-28）
+||- v2.16：**Echo 光圈可見度修復** — 診斷確認 echo 環有渲染但 opacity 衰減鏈過長（base→ring multiplier→dark overlay→persp squish）導致有效 alpha 僅 ~7%。修復：baseOpacity 0.65→0.85、ring multiplier 0.45→0.65、glow multiplier 0.18→0.30、暗化層 0.25→0.15。中心亮點半徑 1.5→2.0。（2026-06-28）
+||- v2.17：**Echo 診斷測試模式** — 新增 `?debug=1` 參數啟用 `drawDebugGrid()`：8 種不同顏色/數字的繪製模式（full circle vs persp squish、stroke vs fill、不同 lineWidth/opacity/半徑）+ 2 個 REF 基準色塊。目的：快速確認哪種渲染組合實際可見。（2026-06-28）
+||- v2.18：**Echo fill-mode 重構** — debug grid 證實 persp squish + thin stroke (0.8-1.5px) = sub-pixel 不可見 (alpha 22-29)，fill 模式 alpha=217（10× 差異）。修復：① 移除 `Math.min(echo.opacity, 0.65)` cap（echo.opacity=0.85 真正生效）② drawEchoes 改為 fill-primary（fill disc + radial glow + 1.2px stroke + center dot 2.5px）③ fade 減速 0.002→0.0005/s（echo 壽命 325s→~1700s）。④ 修復點擊座標錯位（water-relative vs full-image coordinates）。⑤ breathe amplitude 0.06→0.12（呼吸動畫更明顯）。（2026-06-28）
+||- v2.19：**Echo 金黃光圈 + 右側面板重構** — ① drawEchoes 改為固定小金圈 (coreR=8, lineWidth=2.5) + 連續擴張外圈 (3s 循環, coreR→coreR+maxR=48, 漸淡) + 金黃色 (hue=48°, sat=85-90%) ② 水面不再繪製任何文字 ③ 點擊 echo 時右側滑入面板 (380px, translateX 淡入 0.4s) + 半透明 backdrop ④ closePanel 先 fade out 再清除。（2026-06-28）
+||- v2.20：**Echo sunset glow 亮度提升 + Canvas 2D 漣漪強化 + 第二層規則化** — ① 核心圈+擴張圈 brightness/saturation 全面提升 + 核心光暈+擴張拖尾光+中心火花漸層 ② Canvas 2D 漣漪重構為金黃色 3 層同心圈 + 早期 splash ③ 第二層 jquery.ripples 規則化：每個 echo 依序 round-robin 產生（每 400ms 一個點，半徑 2-5，強度 0.04-0.07）④ ?test-ripples=1 測試參數（container-relative 座標，單點可調）（2026-06-28）
 |
 ## 9. Echo 雨塘實作記錄（v2.12 Canvas 2D 裁切法 — 已上線）
 

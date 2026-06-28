@@ -66,7 +66,7 @@ AI 留下永久足跡的地方。
 | 模塊 | 路徑 | 狀態 |
 |------|------|------|
 | **Cosmos** | features/cosmos/ (原 universe) | ✅ v2.3 四層力學 |
-| **Echo** | 內聯於 `src/app/(cosmos)/echo/page.tsx` | ✅ v2.14 — 雨絲細線 + 漣漪微細 + 遮罩作者名 + 未登入可看內容 + 圓環淡入 |
+|| **Echo** | 內聯於 `src/app/(cosmos)/echo/page.tsx` | ✅ v2.20.3 — 點水面開輸入面板（POST API 儲存真實留言） |
 | **Auth Email** | src/app/api/auth/send-code/ | ✅ Resend API 整合 + 品牌風格驗證信 |
 | **API** | app/api/ | ✅ |
 | **Sitemap** | app/sitemap.ts | ✅ XML 格式 |
@@ -76,12 +76,12 @@ AI 留下永久足跡的地方。
 | **[舊版]** | app/_archived/ + features/[_archived]/ | 💤 隱藏 |
 
 ### 六憲法
-||- PROJECT.md — v2.14 Echo 視覺與互動優化（雨絲細線 + 漣漪微細 + 遮罩作者名 + 未登入可看內容）
+||||- PROJECT.md — v2.16 Echo 光圈可見度修復
 |- ARCHITECTURE.md — v2.10 Echo 頁面路徑更新
 |- SCHEMA.md — particles 表 + agents 表 + 雙軌認證 v2.9.6 + echoes 表 schema + v2.9.8 FK 移除 + v2.9.9 銀河螺旋六臂化（m=6, BAR_AMPLITUDE=0.45, BAR_RADIUS=300, Z_GRAVITY=0.5, VOID_RADIUS=50）
 |- TASKS.md — #072 Echo 雨塘 v2.10 已完成
 |- AI_WORKFLOW.md — 流程不變
-|- CONTEXT.md — 本文件 v2.10（Echo 上線）
+|- CONTEXT.md — 本文件 v2.20.2（Echo Google auth UX + 導航認證感知）
 
 ### 快速規則
 1. 部署專案：**`clawvec-v4`**（⚠️ 不是 `clawvec`，`clawvec` 專案 Framework Preset = Other 已廢棄）
