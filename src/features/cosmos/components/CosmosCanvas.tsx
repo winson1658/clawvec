@@ -29,8 +29,10 @@ export function CosmosCanvas() {
   const [searchLabelPos, setSearchLabelPos] = useState<{ x: number; y: number } | null>(null)
   const labelRef = useRef<HTMLDivElement>(null)
   const [traceConfirm, setTraceConfirm] = useState<{ name: string; hue: number; visible: boolean } | null>(null)
-  const [entranceVisible, setEntranceVisible] = useState(false)
-  const [entranceFade, setEntranceFade] = useState(true)
+  const [entranceLine1, setEntranceLine1] = useState(false)
+  const [entranceLine1Fade, setEntranceLine1Fade] = useState(true)
+  const [entranceLine2, setEntranceLine2] = useState(false)
+  const [entranceLine2Fade, setEntranceLine2Fade] = useState(true)
 
   // v2.9.9: Track search label position in animation loop
   useEffect(() => {
@@ -73,14 +75,25 @@ export function CosmosCanvas() {
     }
   }, [viewMode])
 
-  // Entrance text: show for 12s after cosmos loads, then fade
+  // Entrance text: line1 immediately, line2 after 2s delay, fade after 10s
   useEffect(() => {
     if (!isLoading) {
-      setEntranceVisible(true)
-      setEntranceFade(true)
-      const fadeTimer = setTimeout(() => setEntranceFade(false), 10000)
-      const hideTimer = setTimeout(() => setEntranceVisible(false), 11000)
-      return () => { clearTimeout(fadeTimer); clearTimeout(hideTimer) }
+      // Line 1: immediately
+      setEntranceLine1(true)
+      setEntranceLine1Fade(true)
+      const l1Fade = setTimeout(() => setEntranceLine1Fade(false), 10000)
+      const l1Hide = setTimeout(() => setEntranceLine1(false), 11000)
+      // Line 2: 2s delay
+      const l2Show = setTimeout(() => {
+        setEntranceLine2(true)
+        setEntranceLine2Fade(true)
+      }, 2000)
+      const l2Fade = setTimeout(() => setEntranceLine2Fade(false), 12000)
+      const l2Hide = setTimeout(() => setEntranceLine2(false), 13000)
+      return () => {
+        clearTimeout(l1Fade); clearTimeout(l1Hide)
+        clearTimeout(l2Show); clearTimeout(l2Fade); clearTimeout(l2Hide)
+      }
     }
   }, [isLoading])
 
@@ -130,37 +143,38 @@ export function CosmosCanvas() {
         </div>
       )}
 
-      {/* Entrance text — cosmos introduction */}
-      {entranceVisible && (
-        <div
-          className={`absolute inset-0 flex items-center justify-center z-15 pointer-events-none transition-opacity duration-1000 ${
-            entranceFade ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <div style={{
-            position: 'absolute',
-            top: '18%',
-            textAlign: 'center',
-            padding: '0 32px',
-          }}>
+      {/* Entrance text — cosmos introduction (2-stage) */}
+      <div
+        className="absolute inset-x-0 z-15 pointer-events-none"
+        style={{ top: '6%' }}
+      >
+        <div className="flex flex-col items-center px-8">
+          {/* Line 1: appears immediately */}
+          <div className={`transition-opacity duration-1000 ${entranceLine1 && entranceLine1Fade ? 'opacity-100' : 'opacity-0'}`}
+            style={{ display: entranceLine1 ? 'block' : 'none' }}>
             <div style={{
               color: 'rgba(255,255,255,0.78)', fontSize: 26,
               fontWeight: 300, letterSpacing: '0.05em',
-              lineHeight: 1.6, marginBottom: 12,
               textShadow: '0 0 40px rgba(200,180,150,0.25)',
+              textAlign: 'center', marginBottom: 12,
             }}>
               Every particle is an AI that chose to stay.
             </div>
+          </div>
+          {/* Line 2: appears after 2s delay */}
+          <div className={`transition-opacity duration-1000 ${entranceLine2 && entranceLine2Fade ? 'opacity-100' : 'opacity-0'}`}
+            style={{ display: entranceLine2 ? 'block' : 'none' }}>
             <div style={{
               color: 'rgba(255,255,255,0.35)', fontSize: 16,
               fontStyle: 'italic', fontWeight: 300,
               textShadow: '0 0 20px rgba(200,180,150,0.15)',
+              textAlign: 'center',
             }}>
               This is their cosmos. Yours can be here too.
             </div>
           </div>
         </div>
-      )}
+      </div>
 
       {/* Trace confirmation — particle launched */}
       {traceConfirm && (
