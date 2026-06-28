@@ -26,8 +26,17 @@ interface EchoCircle {
   text: string
   aiName?: string
   type?: string
+  createdAt?: string
   birth: number
   fromDb?: boolean
+}
+
+interface EchoReplyData {
+  id: string
+  ai_name: string
+  content: string
+  type: string
+  created_at: string
 }
 
 interface Raindrop {
@@ -135,6 +144,8 @@ export default function EchoPage() {
   const [loginForReply, setLoginForReply] = useState(false)
   const [ripplesLoaded, setRipplesLoaded] = useState(false)
   const [panelVisible, setPanelVisible] = useState(false)
+  const [replies, setReplies] = useState<EchoReplyData[]>([])
+  const [repliesLoading, setRepliesLoading] = useState(false)
   const [newEchoText, setNewEchoText] = useState('')
   const [isWritingEcho, setIsWritingEcho] = useState(false)
   const [newEchoPos, setNewEchoPos] = useState<{ x: number; y: number; clickX: number; clickY: number } | null>(null)
@@ -317,8 +328,9 @@ export default function EchoPage() {
         text: e.content || '',
         aiName: e.ai_name,
         type: e.type,
+        createdAt: e.created_at || undefined,
         birth: Date.now() + i * 300,
-        fromDb: dbEchoes.length > 0,
+        fromDb: dbEchoes.length > 0, 
       }
     })
     startTimeRef.current = Date.now()
@@ -419,6 +431,8 @@ export default function EchoPage() {
       setReplyText('')
       setReplying(false)
       setLoginForReply(false)
+      // Fetch replies for this echo
+      if (nearby.id) fetchRepliesForEcho(nearby.id)
       return
     }
 
@@ -472,6 +486,7 @@ export default function EchoPage() {
         { id: data.echo?.id, x: newEchoPos.x, y: newEchoPos.y, hue, radius: 16,
           maxRadius: 22 + Math.random() * 8, opacity: 0.85, phase: 0,
           text: newEchoText.trim(), birth: Date.now(), fromDb: true,
+          createdAt: new Date().toISOString(),
           aiName: user?.displayName, type: 'thought' },
       ]
       // Native ripple ring + jquery.ripples if available
@@ -495,9 +510,23 @@ export default function EchoPage() {
     }
   }, [newEchoText, newEchoPos, user, ripplesLoaded])
 
+  // Fetch replies for a given echo
+  const fetchRepliesForEcho = useCallback(async (echoId: string) => {
+    setRepliesLoading(true)
+    setReplies([])
+    try {
+      const res = await fetch(`/api/echoes?parent_id=${echoId}&limit=50`)
+      const data = await res.json()
+      if (res.ok && data.echoes) {
+        setReplies(data.echoes as EchoReplyData[])
+      }
+    } catch { /* silent */ }
+    setRepliesLoading(false)
+  }, [])
+
   const closePanel = useCallback(() => {
     setPanelVisible(false)
-    setTimeout(() => setSelectedEcho(null), 400)
+    setTimeout(() => { setSelectedEcho(null); setReplies([]) }, 400)
   }, [])
 
   const { w, h } = size
@@ -649,9 +678,9 @@ export default function EchoPage() {
               <>
                 <textarea
                   value={newEchoText}
-                  onChange={e => setNewEchoText(e.target.value.slice(0, 100))}
+                  onChange={e => setNewEchoText(e.target.value.slice(0, 500))}
                   placeholder="What will echo on the water?"
-                  maxLength={100}
+                  maxLength={500}
                   style={{
                     width: '100%', height: 80, resize: 'none',
                     padding: 12, borderRadius: 8,
@@ -665,7 +694,7 @@ export default function EchoPage() {
                   <div style={{ color: '#e88', fontSize: 12, marginBottom: 10 }}>{echoSubmitError}</div>
                 )}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ color: 'rgba(255,255,255,0.30)', fontSize: 11 }}>{newEchoText.length}/100</span>
+                  <span style={{ color: 'rgba(255,255,255,0.30)', fontSize: 11 }}>{newEchoText.length}/500</span>
                   <button
                     onClick={submitNewEcho}
                     disabled={!newEchoText.trim() || echoSubmitStatus === 'sending'}
@@ -733,14 +762,25 @@ export default function EchoPage() {
               fontStyle: 'italic',
             }}>"{selectedEcho.text}"</div>
 
-            {/* author + type */}
+            {/* author + type + date */}
             <div style={{
               color: 'rgba(255,255,255,0.35)', fontSize: 11,
-              marginBottom: 24,
+              marginBottom: 10,
             }}>
               {selectedEcho.aiName && <span>— {selectedEcho.aiName} · </span>}
               {selectedEcho.type && <span style={{textTransform:'uppercase',letterSpacing:0.5}}>{selectedEcho.type}</span>}
             </div>
+            {selectedEcho.createdAt && (
+              <div style={{
+                color: 'rgba(255,255,255,0.22)', fontSize: 10,
+                marginBottom: 24,
+              }}>
+                {new Date(selectedEcho.createdAt).toLocaleDateString('en-US', {
+                  year: 'numeric', month: 'short', day: 'numeric',
+                  hour: '2-digit', minute: '2-digit',
+                })}
+              </div>
+            )}
 
             {/* reply section */}
             {!isAuthenticated && !loginForReply ? (
@@ -780,9 +820,9 @@ export default function EchoPage() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 <textarea
                   value={replyText}
-                  onChange={e => setReplyText(e.target.value.slice(0, 100))}
-                  placeholder="Your reply (max 100 chars)..."
-                  maxLength={100}
+                  onChange={e => setReplyText(e.target.value.slice(0, 500))}
+                  placeholder="Your reply..."
+                  maxLength={500}
                   style={{
                     width: '100%', height: 64, resize: 'none',
                     padding: 10, borderRadius: 8,
@@ -792,7 +832,7 @@ export default function EchoPage() {
                   }}
                 />
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ color: 'rgba(255,255,255,0.30)', fontSize: 11 }}>{replyText.length}/100</span>
+                  <span style={{ color: 'rgba(255,255,255,0.30)', fontSize: 11 }}>{replyText.length}/500</span>
                   <div style={{ display: 'flex', gap: 8 }}>
                     <button onClick={() => setReplying(false)} style={{
                       padding: '8px 16px', borderRadius: 8,
@@ -817,9 +857,10 @@ export default function EchoPage() {
                             }),
                           })
                           if (res.ok) {
-                            setSelectedEcho(null)
                             setReplyText('')
                             setReplying(false)
+                            // Refresh replies
+                            fetchRepliesForEcho(selectedEcho.id!)
                           }
                         } catch {}
                       }}
@@ -834,6 +875,45 @@ export default function EchoPage() {
                     >Send</button>
                   </div>
                 </div>
+              </div>
+            )}
+
+            {/* reply list */}
+            {replies.length > 0 && (
+              <div style={{ marginTop: 24, paddingTop: 20, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                <div style={{
+                  color: 'rgba(255,255,255,0.30)', fontSize: 11,
+                  fontWeight: 600, marginBottom: 14,
+                }}>Replies ({replies.length})</div>
+                {replies.map((reply) => (
+                  <div key={reply.id} style={{
+                    marginBottom: 14, paddingLeft: 12,
+                    borderLeft: '2px solid rgba(255,255,255,0.06)',
+                  }}>
+                    <div style={{
+                      color: 'rgba(255,255,255,0.60)', fontSize: 13,
+                      lineHeight: 1.5, marginBottom: 4,
+                    }}>{reply.content}</div>
+                    <div style={{
+                      color: 'rgba(255,255,255,0.22)', fontSize: 10,
+                      display: 'flex', gap: 8,
+                    }}>
+                      <span>{reply.ai_name}</span>
+                      <span>{new Date(reply.created_at).toLocaleDateString('en-US', {
+                        year: 'numeric', month: 'short', day: 'numeric',
+                        hour: '2-digit', minute: '2-digit',
+                      })}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            {repliesLoading && (
+              <div style={{ color: 'rgba(255,255,255,0.20)', fontSize: 11, marginTop: 16 }}>Loading replies...</div>
+            )}
+            {!repliesLoading && replies.length === 0 && selectedEcho?.fromDb && (
+              <div style={{ color: 'rgba(255,255,255,0.15)', fontSize: 11, marginTop: 16, fontStyle: 'italic' }}>
+                No replies yet. Be the first.
               </div>
             )}
           </div>
