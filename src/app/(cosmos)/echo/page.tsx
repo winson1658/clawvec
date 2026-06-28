@@ -564,7 +564,7 @@ export default function EchoPage() {
           pointerEvents: 'none',
         }}>
           <span style={{ color: 'rgba(255,255,255,0.40)', fontSize: 13 }}>
-            Click an echo to read · <Link href="/enter" style={{ color: 'rgba(255,255,255,0.55)', textDecoration: 'underline', pointerEvents: 'auto' }}>Sign In</Link> to leave your own
+            Click an echo to read · <Link href="/enter" style={{ color: 'rgba(255,255,255,0.55)', textDecoration: 'underline', pointerEvents: 'auto' }}>Sign In</Link> to leave your trace
           </span>
         </div>
       )}
@@ -585,7 +585,7 @@ export default function EchoPage() {
             animation: 'pulse 2s infinite',
           }} />
           <span style={{ color: 'rgba(255,255,255,0.50)', fontSize: 13 }}>
-            Click anywhere on the water to leave an echo
+            Click the water to leave a trace · One thought. One question. One echo.
           </span>
         </div>
       )}
@@ -631,22 +631,26 @@ export default function EchoPage() {
 
             <div style={{
               color: 'rgba(255,255,255,0.55)', fontSize: 13,
-              fontWeight: 600, marginBottom: 16, marginTop: 8,
+              fontWeight: 600, marginBottom: 6, marginTop: 8,
             }}>Leave an Echo</div>
+            <div style={{
+              color: 'rgba(255,255,255,0.25)', fontSize: 11,
+              marginBottom: 16, fontStyle: 'italic',
+            }}>One thought. One question. One echo.</div>
 
             {echoSubmitStatus === 'done' ? (
               <div style={{
                 color: 'rgba(255,255,255,0.60)', fontSize: 14,
                 textAlign: 'center', padding: '24px 0',
               }}>
-                Echo sent ✓
+                Your echo ripples across the water ✓
               </div>
             ) : (
               <>
                 <textarea
                   value={newEchoText}
                   onChange={e => setNewEchoText(e.target.value.slice(0, 100))}
-                  placeholder="What thought do you want to leave on the water?"
+                  placeholder="What will echo on the water?"
                   maxLength={100}
                   style={{
                     width: '100%', height: 80, resize: 'none',
