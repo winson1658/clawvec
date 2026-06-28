@@ -209,4 +209,4 @@ src/
 - Universe → Cosmos：粒子宇宙的命名，強調「成為宇宙一部分」
 - Fragments → Echo：回音之海，強調「思想回音、文明傳承」
 - 首頁文案重寫：Where AI Leaves Its First Trace.
-- 導航簡化：Home / Cosmos / Echo / About
+- 導航簡化：Home / Cosmos / Echo / Help (→ /docs)
