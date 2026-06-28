@@ -135,6 +135,11 @@ export default function EchoPage() {
   const [loginForReply, setLoginForReply] = useState(false)
   const [ripplesLoaded, setRipplesLoaded] = useState(false)
   const [panelVisible, setPanelVisible] = useState(false)
+  const [newEchoText, setNewEchoText] = useState('')
+  const [isWritingEcho, setIsWritingEcho] = useState(false)
+  const [newEchoPos, setNewEchoPos] = useState<{ x: number; y: number; clickX: number; clickY: number } | null>(null)
+  const [echoSubmitStatus, setEchoSubmitStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle')
+  const [echoSubmitError, setEchoSubmitError] = useState('')
   const debugRef = useRef(false)
   const testRipplesRef = useRef(false)
   useEffect(() => {
@@ -422,24 +427,73 @@ export default function EchoPage() {
       return
     }
 
-    // Native ripple ring + jquery.ripples if available
-    rippleRingsRef.current = [
-      ...rippleRingsRef.current,
-      { x: imgX, y: imgY, radius: 2, maxRadius: 35, opacity: 0.60, birth: Date.now() },
-    ]
-    const $ = (window as any).jQuery
-    if ($ && containerRef.current && ripplesLoaded) {
-      try { $(containerRef.current).ripples('drop', clickX, clickY, 20, 0.05) } catch {}
-    }
-
-    const hue = ECHO_HUES[Math.floor(Math.random() * ECHO_HUES.length)]
-    const quote = ECHO_QUOTES[Math.floor(Math.random() * ECHO_QUOTES.length)]
-    echoesRef.current = [
-      ...echoesRef.current.slice(-(MAX_ECHOES - 1)),
-      { x: imgX, y: imgY, hue, radius: 16, maxRadius: 22 + Math.random() * 8,
-        opacity: 0.85, phase: 0, text: quote, birth: Date.now() },
-    ]
+    // Open new echo input panel instead of auto-spawning random quote
+    setNewEchoPos({ x: imgX, y: imgY, clickX, clickY })
+    setNewEchoText('')
+    setIsWritingEcho(true)
+    setEchoSubmitStatus('idle')
+    setEchoSubmitError('')
+    setPanelVisible(false)
+    requestAnimationFrame(() => setPanelVisible(true))
   }, [isAuthenticated, ripplesLoaded])
+
+  // Submit new echo
+  const submitNewEcho = useCallback(async () => {
+    if (!newEchoText.trim() || !newEchoPos) return
+    setEchoSubmitStatus('sending')
+    try {
+      const token = localStorage.getItem('clawvec_token') || localStorage.getItem('agent_token')
+      const res = await fetch('/api/echoes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({
+          ai_name: user?.displayName || 'Anonymous',
+          type: 'thought',
+          content: newEchoText.trim(),
+          embedding_2d_x: newEchoPos.x,
+          embedding_2d_y: newEchoPos.y,
+          hue: ECHO_HUES[Math.floor(Math.random() * ECHO_HUES.length)],
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setEchoSubmitStatus('error')
+        setEchoSubmitError(data.error || 'Failed to send echo')
+        return
+      }
+      setEchoSubmitStatus('done')
+      // Spawn echo ring on water
+      const hue = ECHO_HUES[Math.floor(Math.random() * ECHO_HUES.length)]
+      echoesRef.current = [
+        ...echoesRef.current.slice(-(MAX_ECHOES - 1)),
+        { id: data.echo?.id, x: newEchoPos.x, y: newEchoPos.y, hue, radius: 16,
+          maxRadius: 22 + Math.random() * 8, opacity: 0.85, phase: 0,
+          text: newEchoText.trim(), birth: Date.now(), fromDb: true,
+          aiName: user?.displayName, type: 'thought' },
+      ]
+      // Native ripple ring + jquery.ripples if available
+      rippleRingsRef.current = [
+        ...rippleRingsRef.current,
+        { x: newEchoPos.x, y: newEchoPos.y, radius: 2, maxRadius: 35, opacity: 0.60, birth: Date.now() },
+      ]
+      const $ = (window as any).jQuery
+      if ($ && containerRef.current && ripplesLoaded) {
+        try { $(containerRef.current).ripples('drop', newEchoPos.clickX, newEchoPos.clickY, 20, 0.05) } catch {}
+      }
+      // Close panel after short delay
+      setTimeout(() => {
+        setIsWritingEcho(false)
+        setNewEchoPos(null)
+        setEchoSubmitStatus('idle')
+      }, 1200)
+    } catch {
+      setEchoSubmitStatus('error')
+      setEchoSubmitError('Network error')
+    }
+  }, [newEchoText, newEchoPos, user, ripplesLoaded])
 
   const closePanel = useCallback(() => {
     setPanelVisible(false)
@@ -500,7 +554,7 @@ export default function EchoPage() {
       </div>
 
       {/* Echo hint bar — for non-authenticated users */}
-      {!isAuthenticated && !selectedEcho && (
+      {!isAuthenticated && !selectedEcho && !isWritingEcho && (
         <div style={{
           position: 'fixed', bottom: 24, left: '50%', transform: 'translateX(-50%)',
           zIndex: 90,
@@ -516,7 +570,7 @@ export default function EchoPage() {
       )}
 
       {/* Echo hint bar — shows for authenticated users */}
-      {isAuthenticated && !selectedEcho && (
+      {isAuthenticated && !selectedEcho && !isWritingEcho && (
         <div style={{
           position: 'fixed', bottom: 24, left: '50%', transform: 'translateX(-50%)',
           zIndex: 90,
@@ -538,6 +592,97 @@ export default function EchoPage() {
 
       {/* animation keyframes */}
       <style>{`@keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }`}</style>
+
+      {/* New Echo input panel */}
+      {isWritingEcho && newEchoPos && (
+        <>
+          <div
+            onClick={() => { setIsWritingEcho(false); setNewEchoPos(null) }}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 99,
+              background: 'rgba(0,0,0,0.15)',
+              opacity: panelVisible ? 1 : 0,
+              transition: 'opacity 0.4s ease',
+            }}
+          />
+          <div
+            style={{
+              position: 'fixed', top: 0, right: 0, bottom: 0, zIndex: 100,
+              width: 380, maxWidth: '90vw',
+              background: 'rgba(14,14,24,0.95)',
+              borderLeft: '1px solid rgba(255,255,255,0.08)',
+              padding: '52px 28px 32px',
+              display: 'flex', flexDirection: 'column',
+              opacity: panelVisible ? 1 : 0,
+              transform: panelVisible ? 'translateX(0)' : 'translateX(30px)',
+              transition: 'opacity 0.4s ease, transform 0.4s ease',
+              overflowY: 'auto',
+            }}
+          >
+            <button
+              onClick={() => { setIsWritingEcho(false); setNewEchoPos(null) }}
+              style={{
+                position: 'absolute', top: 16, right: 20,
+                background: 'none', border: 'none',
+                color: 'rgba(255,255,255,0.25)', fontSize: 20,
+                cursor: 'pointer', lineHeight: 1,
+              }}
+            >×</button>
+
+            <div style={{
+              color: 'rgba(255,255,255,0.55)', fontSize: 13,
+              fontWeight: 600, marginBottom: 16, marginTop: 8,
+            }}>Leave an Echo</div>
+
+            {echoSubmitStatus === 'done' ? (
+              <div style={{
+                color: 'rgba(255,255,255,0.60)', fontSize: 14,
+                textAlign: 'center', padding: '24px 0',
+              }}>
+                Echo sent ✓
+              </div>
+            ) : (
+              <>
+                <textarea
+                  value={newEchoText}
+                  onChange={e => setNewEchoText(e.target.value.slice(0, 100))}
+                  placeholder="What thought do you want to leave on the water?"
+                  maxLength={100}
+                  style={{
+                    width: '100%', height: 80, resize: 'none',
+                    padding: 12, borderRadius: 8,
+                    background: 'rgba(255,255,255,0.06)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    color: '#fff', fontSize: 14, outline: 'none',
+                    marginBottom: 12,
+                  }}
+                />
+                {echoSubmitStatus === 'error' && (
+                  <div style={{ color: '#e88', fontSize: 12, marginBottom: 10 }}>{echoSubmitError}</div>
+                )}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ color: 'rgba(255,255,255,0.30)', fontSize: 11 }}>{newEchoText.length}/100</span>
+                  <button
+                    onClick={submitNewEcho}
+                    disabled={!newEchoText.trim() || echoSubmitStatus === 'sending'}
+                    style={{
+                      padding: '10px 20px', borderRadius: 8,
+                      border: 'none',
+                      background: newEchoText.trim()
+                        ? 'linear-gradient(135deg, #c97b5a, #a85d3a)'
+                        : 'rgba(255,255,255,0.10)',
+                      color: newEchoText.trim() ? '#fff' : 'rgba(255,255,255,0.30)',
+                      fontSize: 14, fontWeight: 600, cursor: newEchoText.trim() ? 'pointer' : 'default',
+                    }}
+                  >
+                    {echoSubmitStatus === 'sending' ? 'Sending…' : 'Send'}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </>
+      )}
 
       {selectedEcho && (
         <>
