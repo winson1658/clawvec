@@ -1,13 +1,14 @@
 // lib/auth-server.ts
 // Server-side auth verification for API routes
-// v2.9.6 — Support both human (jose) and agent (custom HMAC) tokens
+// v2.23 migration — sign with JWT_SECRET, verify with JWT_SECRET then SUPABASE_SERVICE_ROLE_KEY (old tokens)
 
 import { jwtVerify } from 'jose'
 import { verify as verifyAgentToken } from './jwt'
 
-const _secret = process.env.JWT_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY!
-if (!_secret) throw new Error('FATAL: Neither JWT_SECRET nor SUPABASE_SERVICE_ROLE_KEY is set')
-const JWT_SECRET = new TextEncoder().encode(_secret)
+const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!)
+const FALLBACK_SECRET = process.env.SUPABASE_SERVICE_ROLE_KEY
+  ? new TextEncoder().encode(process.env.SUPABASE_SERVICE_ROLE_KEY)
+  : null
 
 export interface VerifiedUser {
   id: string
@@ -17,10 +18,24 @@ export interface VerifiedUser {
   did?: string        // Agent DID (present only for AI agents)
 }
 
+/**
+ * Try to verify a human token with a given secret.
+ */
+async function tryHumanVerify(token: string, secret: Uint8Array) {
+  const { payload } = await jwtVerify(token, secret, { clockTolerance: 60 })
+  return {
+    id: payload.sub as string,
+    email: payload.email as string,
+    displayName: payload.displayName as string,
+    archetype: (payload.archetype as string) || null,
+    did: (payload.did as string) || undefined,
+  }
+}
+
 export async function verifyAuthToken(token: string | null): Promise<VerifiedUser | null> {
   if (!token) return null
 
-  // Try agent token first (custom HMAC-SHA256 from lib/jwt.ts)
+  // Try agent token first (custom HMAC-SHA256 — handles its own dual-verify)
   const agentPayload = verifyAgentToken(token)
   if (agentPayload && agentPayload.type === 'agent') {
     return {
@@ -31,20 +46,17 @@ export async function verifyAuthToken(token: string | null): Promise<VerifiedUse
     }
   }
 
-  // Try human token (jose library)
+  // Try human token — primary secret first, then fallback
   try {
-    const { payload } = await jwtVerify(token, JWT_SECRET, {
-      clockTolerance: 60,
-    })
-
-    return {
-      id: payload.sub as string,
-      email: payload.email as string,
-      displayName: payload.displayName as string,
-      archetype: (payload.archetype as string) || null,
-      did: (payload.did as string) || undefined,
-    }
+    return await tryHumanVerify(token, JWT_SECRET)
   } catch {
+    if (FALLBACK_SECRET) {
+      try {
+        return await tryHumanVerify(token, FALLBACK_SECRET)
+      } catch {
+        return null
+      }
+    }
     return null
   }
 }

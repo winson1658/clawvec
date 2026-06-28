@@ -3,14 +3,17 @@
  * 
  * 使用 HMAC-SHA256（對稱式）
  * 僅用於 agent_token + clawvec_token
+ * 
+ * v2.23 migration: sign with JWT_SECRET, verify with JWT_SECRET then SUPABASE_SERVICE_ROLE_KEY (old tokens)
  */
 
 import * as crypto from 'crypto'
 
-const SECRET = process.env.JWT_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY!
+const SIGN_SECRET = process.env.JWT_SECRET!
+const FALLBACK_SECRET = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-if (!SECRET) {
-  throw new Error('FATAL: Neither JWT_SECRET nor SUPABASE_SERVICE_ROLE_KEY is set')
+if (!SIGN_SECRET) {
+  throw new Error('FATAL: JWT_SECRET environment variable is not set')
 }
 
 interface JWTPayload {
@@ -30,7 +33,20 @@ function base64urlDecode(str: string): Buffer {
 }
 
 /**
- * 簽發 JWT
+ * 用 secret 試圖驗證簽名
+ */
+function tryVerify(signingInput: string, signatureB64: string, secret: string): boolean {
+  const expected = crypto.createHmac('sha256', secret).update(signingInput).digest()
+  const actual = base64urlDecode(signatureB64)
+  try {
+    return crypto.timingSafeEqual(expected, actual)
+  } catch {
+    return false
+  }
+}
+
+/**
+ * 簽發 JWT（永遠用 JWT_SECRET）
  */
 export async function sign(payload: JWTPayload): Promise<string> {
   const header = { alg: 'HS256', typ: 'JWT' }
@@ -39,7 +55,7 @@ export async function sign(payload: JWTPayload): Promise<string> {
   const claims = {
     ...payload,
     iat: payload.iat || now,
-    exp: payload.exp || now + 3600, // 1 小時
+    exp: payload.exp || now + 3600,
   }
 
   const headerB64 = base64url(Buffer.from(JSON.stringify(header)))
@@ -47,7 +63,7 @@ export async function sign(payload: JWTPayload): Promise<string> {
   const signingInput = `${headerB64}.${payloadB64}`
 
   const signature = crypto
-    .createHmac('sha256', SECRET)
+    .createHmac('sha256', SIGN_SECRET)
     .update(signingInput)
     .digest()
 
@@ -55,7 +71,7 @@ export async function sign(payload: JWTPayload): Promise<string> {
 }
 
 /**
- * 驗證 JWT，回傳 payload 或 null
+ * 驗證 JWT — 先試 JWT_SECRET，再試 SUPABASE_SERVICE_ROLE_KEY（舊 token 過渡期）
  */
 export function verify(token: string): JWTPayload | null {
   try {
@@ -65,17 +81,16 @@ export function verify(token: string): JWTPayload | null {
     const [headerB64, payloadB64, signatureB64] = parts
     const signingInput = `${headerB64}.${payloadB64}`
 
-    const expectedSig = crypto
-      .createHmac('sha256', SECRET)
-      .update(signingInput)
-      .digest()
-
-    const actualSig = base64urlDecode(signatureB64)
-    if (!crypto.timingSafeEqual(expectedSig, actualSig)) return null
+    // Try primary secret first
+    let valid = tryVerify(signingInput, signatureB64, SIGN_SECRET)
+    // Fall back to old secret for existing tokens
+    if (!valid && FALLBACK_SECRET) {
+      valid = tryVerify(signingInput, signatureB64, FALLBACK_SECRET)
+    }
+    if (!valid) return null
 
     const payload = JSON.parse(base64urlDecode(payloadB64).toString('utf-8'))
 
-    // 檢查過期
     if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) return null
 
     return payload
