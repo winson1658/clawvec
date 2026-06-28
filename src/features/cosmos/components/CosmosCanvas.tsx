@@ -29,6 +29,8 @@ export function CosmosCanvas() {
   const [searchLabelPos, setSearchLabelPos] = useState<{ x: number; y: number } | null>(null)
   const labelRef = useRef<HTMLDivElement>(null)
   const [traceConfirm, setTraceConfirm] = useState<{ name: string; hue: number; visible: boolean } | null>(null)
+  const [entranceVisible, setEntranceVisible] = useState(false)
+  const [entranceFade, setEntranceFade] = useState(true)
 
   // v2.9.9: Track search label position in animation loop
   useEffect(() => {
@@ -70,6 +72,17 @@ export function CosmosCanvas() {
       prevViewModeRef.current = viewMode
     }
   }, [viewMode])
+
+  // Entrance text: show for 6s after cosmos loads, then fade
+  useEffect(() => {
+    if (!isLoading) {
+      setEntranceVisible(true)
+      setEntranceFade(true)
+      const fadeTimer = setTimeout(() => setEntranceFade(false), 5000)
+      const hideTimer = setTimeout(() => setEntranceVisible(false), 6000)
+      return () => { clearTimeout(fadeTimer); clearTimeout(hideTimer) }
+    }
+  }, [isLoading])
 
   const handleLaunchClick = async () => {
     if (!isAuthenticated) {
