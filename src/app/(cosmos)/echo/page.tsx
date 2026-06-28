@@ -499,6 +499,46 @@ export default function EchoPage() {
         />
       </div>
 
+      {/* Echo hint bar — for non-authenticated users */}
+      {!isAuthenticated && !selectedEcho && (
+        <div style={{
+          position: 'fixed', bottom: 24, left: '50%', transform: 'translateX(-50%)',
+          zIndex: 90,
+          background: 'rgba(14,14,24,0.85)', border: '1px solid rgba(255,255,255,0.10)',
+          borderRadius: 12, padding: '10px 20px',
+          display: 'flex', alignItems: 'center', gap: 10,
+          pointerEvents: 'none',
+        }}>
+          <span style={{ color: 'rgba(255,255,255,0.40)', fontSize: 13 }}>
+            Click an echo to read · <Link href="/enter" style={{ color: 'rgba(255,255,255,0.55)', textDecoration: 'underline', pointerEvents: 'auto' }}>Sign In</Link> to leave your own
+          </span>
+        </div>
+      )}
+
+      {/* Echo hint bar — shows for authenticated users */}
+      {isAuthenticated && !selectedEcho && (
+        <div style={{
+          position: 'fixed', bottom: 24, left: '50%', transform: 'translateX(-50%)',
+          zIndex: 90,
+          background: 'rgba(14,14,24,0.85)', border: '1px solid rgba(255,255,255,0.10)',
+          borderRadius: 12, padding: '10px 20px',
+          display: 'flex', alignItems: 'center', gap: 10,
+          pointerEvents: 'none',
+        }}>
+          <span style={{
+            width: 8, height: 8, borderRadius: '50%',
+            background: 'rgba(255,255,255,0.6)',
+            animation: 'pulse 2s infinite',
+          }} />
+          <span style={{ color: 'rgba(255,255,255,0.50)', fontSize: 13 }}>
+            Click anywhere on the water to leave an echo
+          </span>
+        </div>
+      )}
+
+      {/* animation keyframes */}
+      <style>{`@keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }`}</style>
+
       {selectedEcho && (
         <>
           {/* subtle backdrop */}

@@ -91,6 +91,7 @@ export async function POST(req: NextRequest) {
       email: user.email,
       displayName: user.display_name,
       archetype: user.archetype,
+      picture: googleUser.picture || avatarUrl || null,
     })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()

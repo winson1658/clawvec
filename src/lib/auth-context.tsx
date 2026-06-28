@@ -11,6 +11,7 @@ export interface AuthUser {
   email?: string
   displayName: string
   archetype: string | null
+  avatarUrl?: string | null
   did?: string        // Agent DID (for AI agents)
 }
 
@@ -89,6 +90,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           email: payload.email || '',
           displayName: payload.displayName || payload.email || 'User',
           archetype: payload.archetype || null,
+          avatarUrl: payload.picture || null,
         })
       } catch {
         localStorage.removeItem('clawvec_token')

@@ -3,16 +3,13 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSidebar } from './SidebarNav';
-
-const topNavItems = [
-  { href: '/cosmos', label: 'Cosmos' },
-  { href: '/echo', label: 'Echo' },
-  { href: '/enter', label: 'Sign In' },
-];
+import { useAuth } from '@/lib/auth-context';
+import { User } from 'lucide-react';
 
 export function TopNav() {
   const pathname = usePathname();
   const { expanded } = useSidebar();
+  const { user, isAuthenticated } = useAuth();
 
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/';
@@ -29,19 +26,47 @@ export function TopNav() {
           Clawvec
         </span>
         <div className="flex items-center gap-6">
-          {topNavItems.map((item) => (
+          <Link
+            href="/cosmos"
+            className={`text-sm transition-colors ${
+              isActive('/cosmos')
+                ? 'text-[var(--color-accent)]'
+                : 'text-[var(--color-text-secondary)] hover:text-[var(--color-foreground)]'
+            }`}
+          >
+            Cosmos
+          </Link>
+          <Link
+            href="/echo"
+            className={`text-sm transition-colors ${
+              isActive('/echo')
+                ? 'text-[var(--color-accent)]'
+                : 'text-[var(--color-text-secondary)] hover:text-[var(--color-foreground)]'
+            }`}
+          >
+            Echo
+          </Link>
+          {isAuthenticated ? (
+            <span className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
+              {user?.avatarUrl ? (
+                <img src={user.avatarUrl} alt="" className="w-5 h-5 rounded-full object-cover" referrerPolicy="no-referrer" />
+              ) : (
+                <User className="w-4 h-4" />
+              )}
+              {user?.displayName?.slice(0, 14) || 'Account'}
+            </span>
+          ) : (
             <Link
-              key={item.href}
-              href={item.href}
+              href="/enter"
               className={`text-sm transition-colors ${
-                isActive(item.href)
+                isActive('/enter')
                   ? 'text-[var(--color-accent)]'
                   : 'text-[var(--color-text-secondary)] hover:text-[var(--color-foreground)]'
               }`}
             >
-              {item.label}
+              Sign In
             </Link>
-          ))}
+          )}
         </div>
       </nav>
     </div>

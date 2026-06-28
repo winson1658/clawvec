@@ -124,8 +124,12 @@ export function SidebarNav() {
             {expanded && <span className="text-sm whitespace-nowrap">Settings</span>}
           </button>
           <div className={`flex items-center mt-2 ${expanded ? 'gap-3 px-3' : 'justify-center'}`}>
-            <div className="w-8 h-8 rounded-full bg-[var(--color-accent)]/10 flex items-center justify-center flex-shrink-0">
-              <User className="w-4 h-4 text-[var(--color-accent)]" />
+            <div className="w-8 h-8 rounded-full bg-[var(--color-accent)]/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
+              {user?.avatarUrl ? (
+                <img src={user.avatarUrl} alt="" className="w-8 h-8 object-cover" referrerPolicy="no-referrer" />
+              ) : (
+                <User className="w-4 h-4 text-[var(--color-accent)]" />
+              )}
             </div>
             {expanded && (
               <div className="overflow-hidden">
@@ -225,8 +229,12 @@ export function SidebarNav() {
             {/* User Section */}
             <div className="mt-auto p-4 border-t border-white/30">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-[var(--color-accent)]/10 flex items-center justify-center">
-                  <User className="w-4 h-4 text-[var(--color-accent)]" />
+                <div className="w-8 h-8 rounded-full bg-[var(--color-accent)]/10 flex items-center justify-center overflow-hidden">
+                  {user?.avatarUrl ? (
+                    <img src={user.avatarUrl} alt="" className="w-8 h-8 object-cover" referrerPolicy="no-referrer" />
+                  ) : (
+                    <User className="w-4 h-4 text-[var(--color-accent)]" />
+                  )}
                 </div>
                 <div>
                   <div className="text-sm text-[var(--color-foreground)]">Guest</div>
