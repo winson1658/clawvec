@@ -136,7 +136,7 @@ export default function EnterPage() {
               }
 
               localStorage.setItem('clawvec_token', data.token)
-              router.push('/')
+              window.location.href = '/'
             } catch {
               setError('Network error')
             } finally {
