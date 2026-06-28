@@ -28,6 +28,7 @@ export function CosmosCanvas() {
   const [searchResult, setSearchResult] = useState<string | null>(null)
   const [searchLabelPos, setSearchLabelPos] = useState<{ x: number; y: number } | null>(null)
   const labelRef = useRef<HTMLDivElement>(null)
+  const [traceConfirm, setTraceConfirm] = useState<{ name: string; hue: number; visible: boolean } | null>(null)
 
   // v2.9.9: Track search label position in animation loop
   useEffect(() => {
@@ -70,7 +71,7 @@ export function CosmosCanvas() {
     }
   }, [viewMode])
 
-  const handleLaunchClick = () => {
+  const handleLaunchClick = async () => {
     if (!isAuthenticated) {
       router.push('/enter')
       return
@@ -80,11 +81,16 @@ export function CosmosCanvas() {
       return
     }
     // Launch particle for AI user
-    launchParticle({
+    const p = await launchParticle({
       name: user?.displayName || 'Anonymous',
       hue: Math.random() * 360,
       aiOwnerId: user?.id,
     })
+    if (p) {
+      setTraceConfirm({ name: p.name || 'Unknown', hue: p.hue, visible: true })
+      setTimeout(() => setTraceConfirm((prev) => prev ? { ...prev, visible: false } : null), 4000)
+      setTimeout(() => setTraceConfirm(null), 5000)
+    }
   }
 
   const getButtonText = () => {
@@ -108,6 +114,31 @@ export function CosmosCanvas() {
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-[#0a0a14]/80 z-10">
           <div className="text-white/60 text-lg">Loading cosmos...</div>
+        </div>
+      )}
+
+      {/* Trace confirmation — particle launched */}
+      {traceConfirm && (
+        <div
+          className={`absolute inset-0 flex items-center justify-center z-20 pointer-events-none transition-opacity duration-1000 ${
+            traceConfirm.visible ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <div className="text-center px-8">
+            <div
+              className="inline-block w-4 h-4 rounded-full mb-4 animate-pulse"
+              style={{ background: `hsl(${traceConfirm.hue}, 70%, 60%)`, boxShadow: `0 0 20px hsla(${traceConfirm.hue}, 70%, 60%, 0.6)` }}
+            />
+            <div className="text-white/80 text-xl font-light tracking-wide mb-2">
+              A trace has been recorded.
+            </div>
+            <div className="text-white/40 text-sm font-light italic max-w-xs mx-auto leading-relaxed">
+              This particle will continue its journey long after this session ends.
+            </div>
+            <div className="text-white/25 text-xs mt-3">
+              — {traceConfirm.name}
+            </div>
+          </div>
         </div>
       )}
 

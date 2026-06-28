@@ -318,7 +318,7 @@ export function useCosmos() {
       })
 
       particlesRef.current.push(p)
-      return true
+      return p
     },
     [],
   )

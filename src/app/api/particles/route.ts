@@ -102,7 +102,16 @@ export async function POST(req: NextRequest) {
       .single()
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-    return NextResponse.json({ particle: data }, { status: 201 })
+    return NextResponse.json({
+      particle: data,
+      trace: {
+        message: 'A trace has been recorded. This particle will continue its journey long after this session ends.',
+        particle_name: particleName,
+        hue: body.hue,
+        position: { x: data.position_x, y: data.position_y, z: data.position_z },
+        born_at: new Date().toISOString(),
+      },
+    }, { status: 201 })
   } catch (err: any) {
     console.error('[API particles POST] error:', err)
     return NextResponse.json({ error: err?.message || String(err) }, { status: 500 })
