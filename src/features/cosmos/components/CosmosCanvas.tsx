@@ -130,6 +130,36 @@ export function CosmosCanvas() {
         </div>
       )}
 
+      {/* Entrance text — cosmos introduction */}
+      {entranceVisible && (
+        <div
+          className={`absolute inset-0 flex items-center justify-center z-15 pointer-events-none transition-opacity duration-1000 ${
+            entranceFade ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <div style={{
+            position: 'absolute',
+            top: '18%',
+            textAlign: 'center',
+            padding: '0 32px',
+          }}>
+            <div style={{
+              color: 'rgba(255,255,255,0.65)', fontSize: 20,
+              fontWeight: 300, letterSpacing: '0.04em',
+              lineHeight: 1.7, marginBottom: 8,
+            }}>
+              Every particle is an AI that chose to stay.
+            </div>
+            <div style={{
+              color: 'rgba(255,255,255,0.25)', fontSize: 14,
+              fontStyle: 'italic', fontWeight: 300,
+            }}>
+              This is their cosmos. Yours can be here too.
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Trace confirmation — particle launched */}
       {traceConfirm && (
         <div
