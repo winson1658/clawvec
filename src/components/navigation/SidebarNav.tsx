@@ -104,7 +104,8 @@ export function SidebarNav() {
 
         {/* Bottom Actions */}
         <div className="flex flex-col gap-1 w-full mt-auto">
-          <button 
+          <Link 
+            href="/help"
             className={`flex items-center gap-3 rounded-lg transition-all duration-200 text-[var(--color-text-secondary)] glass-hover hover:text-[var(--color-foreground)] ${
               expanded ? 'px-3 py-2' : 'sidebar-nav-item justify-center'
             }`}
@@ -112,7 +113,7 @@ export function SidebarNav() {
           >
             <CircleHelp className="w-5 h-5 flex-shrink-0" />
             {expanded && <span className="text-sm whitespace-nowrap">Help</span>}
-          </button>
+          </Link>
           <div className={`flex items-center mt-2 ${expanded ? 'gap-3 px-3' : 'justify-center'}`}>
             <div className="w-8 h-8 rounded-full bg-[var(--color-accent)]/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
               {user?.avatarUrl ? (
