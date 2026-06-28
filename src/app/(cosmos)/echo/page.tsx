@@ -56,17 +56,38 @@ const WATER_BOTTOM = 0.84
 const WATER_LEFT = 0.10
 const WATER_RIGHT = 0.95
 
-function isInWater(x: number, y: number, w: number, h: number): boolean {
-  const px = x / w
-  const py = y / h
-  return px >= WATER_LEFT && px <= WATER_RIGHT && py >= WATER_TOP && py <= WATER_BOTTOM
-}
-
-function randomInWater(w: number, h: number): { x: number; y: number } {
+// ─── Ellipse helpers for perspective-correct water surface ───────────────
+function waterEllipse(w: number, h: number) {
   return {
-    x: WATER_LEFT * w + Math.random() * (WATER_RIGHT - WATER_LEFT) * w,
-    y: WATER_TOP * h + Math.random() * (WATER_BOTTOM - WATER_TOP) * h,
+    cx: w * (WATER_LEFT + WATER_RIGHT) / 2,
+    cy: h * (WATER_TOP + WATER_BOTTOM) / 2,
+    rx: w * (WATER_RIGHT - WATER_LEFT) / 2,
+    ry: h * (WATER_BOTTOM - WATER_TOP) / 2,
   }
+}
+function isInWaterEllipse(x: number, y: number, w: number, h: number): boolean {
+  const e = waterEllipse(w, h)
+  const dx = (x - e.cx) / e.rx
+  const dy = (y - e.cy) / e.ry
+  return dx * dx + dy * dy <= 1
+}
+function randomInWaterEllipse(w: number, h: number): { x: number; y: number } {
+  const e = waterEllipse(w, h)
+  // Rejection sampling for uniform distribution in ellipse
+  for (let i = 0; i < 100; i++) {
+    const x = e.cx + (Math.random() * 2 - 1) * e.rx
+    const y = e.cy + (Math.random() * 2 - 1) * e.ry
+    const dx = (x - e.cx) / e.rx, dy = (y - e.cy) / e.ry
+    if (dx * dx + dy * dy <= 1) return { x, y }
+  }
+  return { x: e.cx, y: e.cy }
+}
+// Perspective squish: how much to compress y so circles on water appear elliptical
+function waterPerspScale(w: number, h: number): number {
+  // The water ellipse aspect ratio compression — an object on the water
+  // surface inherits the same perspective distortion as the water area.
+  const e = waterEllipse(w, h)
+  return e.ry / e.rx   // ≈0.22 at natural aspect
 }
 
 const RAIN_COUNT = 80
@@ -113,6 +134,13 @@ export default function EchoPage() {
   const [replying, setReplying] = useState(false)
   const [loginForReply, setLoginForReply] = useState(false)
   const [ripplesLoaded, setRipplesLoaded] = useState(false)
+  const [panelVisible, setPanelVisible] = useState(false)
+  const debugRef = useRef(false)
+  const testRipplesRef = useRef(false)
+  useEffect(() => {
+    debugRef.current = window.location.search.includes('debug=1')
+    testRipplesRef.current = window.location.search.includes('test-ripples=1')
+  }, [])
 
   // Resize handler
   useEffect(() => {
@@ -192,6 +220,31 @@ export default function EchoPage() {
     return () => { cancelled = true }
   }, [])
 
+  // ── Test jquery.ripples: ?test-ripples=1 drops visible test points ──
+  useEffect(() => {
+    if (!testRipplesRef.current || !ripplesLoaded) return
+    const $ = (window as any).jQuery
+    const el = containerRef.current
+    if (!$ || !el) return
+    const { w, h } = size
+    const waterW = Math.round(w * (WATER_RIGHT - WATER_LEFT))
+    const waterH = Math.round(h * (WATER_BOTTOM - WATER_TOP))
+    // Container-relative coordinates (water area 0→100%)
+    const positions = [
+      { x: waterW * 0.25, y: waterH * 0.12, radius: 2, perturbance: 0.04, spread: 0.03 },
+    ]
+    let round = 0
+    const maxRounds = 3
+    const id = setInterval(() => {
+      if (round >= maxRounds) { clearInterval(id); return }
+      for (const p of positions) {
+        try { $(el).ripples('drop', p.x, p.y, p.radius + Math.random() * p.spread, p.perturbance + Math.random() * p.spread) } catch {}
+      }
+      round++
+    }, 2000)
+    return () => clearInterval(id)
+  }, [ripplesLoaded, size])
+
   // ── Re-init ripples on resize ───────────────────────────────────────
   useEffect(() => {
     if (!ripplesLoaded) return
@@ -245,8 +298,8 @@ export default function EchoPage() {
 
     echoesRef.current = quotes.slice(0, MAX_ECHOES).map((e, i) => {
       const pos = i < quotes.length / 2
-        ? { x: randomInWater(w, h).x, y: randomInWater(w, h).y }
-        : randomInWater(w, h)
+        ? { x: randomInWaterEllipse(w, h).x, y: randomInWaterEllipse(w, h).y }
+        : randomInWaterEllipse(w, h)
       return {
         id: e.id,
         x: pos.x,
@@ -254,7 +307,7 @@ export default function EchoPage() {
         hue: ECHO_HUES[i % ECHO_HUES.length],
         radius: 16,
         maxRadius: 22 + Math.random() * 8,
-        opacity: 0.65,
+        opacity: 0.85,
         phase: (i / Math.max(quotes.length - 1, 1)) * Math.PI * 2,
         text: e.content || '',
         aiName: e.ai_name,
@@ -298,6 +351,7 @@ export default function EchoPage() {
       drawRippleRings(ctx!, w, h, elapsed, rippleRingsRef.current)
       drawEchoes(ctx!, w, h, elapsed, echoesRef.current)
       drawVignette(ctx!, w, h)
+      if (debugRef.current) drawDebugGrid(ctx!, w, h)
 
       animIdRef.current = requestAnimationFrame(frame)
     }
@@ -306,30 +360,27 @@ export default function EchoPage() {
     return () => { running = false; cancelAnimationFrame(animIdRef.current) }
   }, [dbLoaded, size])
 
-  // ── Periodic ripple rings (Canvas 2D + jquery.ripples if available) ──
+  // ── Sequential jquery.ripples at echo positions (round-robin) ──────
   useEffect(() => {
-    if (!dbLoaded) return
+    if (!dbLoaded || !ripplesLoaded) return
+    const $ = (window as any).jQuery
+    const el = containerRef.current
+    if (!$ || !el) return
+    let index = 0
     const id = setInterval(() => {
       const { w, h } = size
-      for (let i = 0; i < 3; i++) {
-        const { x, y } = randomInWater(w, h)
-        rippleRingsRef.current = [
-          ...rippleRingsRef.current,
-          { x, y, radius: 2, maxRadius: 15 + Math.random() * 10, opacity: 0.20, birth: Date.now() },
-        ]
-        if (rippleRingsRef.current.length > 30) {
-          rippleRingsRef.current = rippleRingsRef.current.slice(-30)
-        }
-      }
-      // Also drop on jquery.ripples if loaded
-      const $ = (window as any).jQuery
-      const container = containerRef.current
-      if ($ && container && ripplesLoaded) {
-        try {
-          const { x, y } = randomInWater(size.w, size.h)
-          $(container).ripples('drop', x, y, 1 + Math.random() * 2, 0.003 + Math.random() * 0.003)
-        } catch {}
-      }
+      const waterLeftPx = Math.round(w * WATER_LEFT)
+      const waterTopPx = Math.round(h * WATER_TOP)
+      const active = echoesRef.current.filter(e => {
+        if (!isInWaterEllipse(e.x, e.y, w, h)) return false
+        return (Date.now() - e.birth) / 1000 < 300
+      })
+      if (active.length === 0) return
+      const echo = active[index % active.length]
+      index++
+      const cx = echo.x - waterLeftPx
+      const cy = echo.y - waterTopPx
+      try { $(el).ripples('drop', cx, cy, 2 + Math.random() * 3, 0.04 + Math.random() * 0.03) } catch {}
     }, 800)
     return () => clearInterval(id)
   }, [dbLoaded, size, ripplesLoaded])
@@ -338,16 +389,28 @@ export default function EchoPage() {
   const handleClick = useCallback((e: React.MouseEvent) => {
     const rect = containerRef.current?.getBoundingClientRect()
     if (!rect) return
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
+    const clickX = e.clientX - rect.left     // water-container-relative
+    const clickY = e.clientY - rect.top
+    const { w: fw, h: fh } = sizeRef.current  // use ref for stable full-img dimensions
+    const offsetX = Math.round(fw * WATER_LEFT)
+    const offsetY = Math.round(fh * WATER_TOP)
+    const imgX = clickX + offsetX  // convert to full-image coordinates
+    const imgY = clickY + offsetY
 
     const nearby = echoesRef.current.find(e => {
-      const dx = e.x - x, dy = e.y - y
+      const dx = e.x - imgX, dy = e.y - imgY
       return Math.sqrt(dx * dx + dy * dy) < (e.radius * 3)
     })
 
     if (nearby) {
+      // Ripple at echo position
+      rippleRingsRef.current = [
+        ...rippleRingsRef.current,
+        { x: nearby.x, y: nearby.y, radius: 2, maxRadius: 30, opacity: 0.30, birth: Date.now() },
+      ]
       setSelectedEcho(nearby)
+      setPanelVisible(false)
+      requestAnimationFrame(() => setPanelVisible(true))
       setReplyText('')
       setReplying(false)
       setLoginForReply(false)
@@ -362,21 +425,26 @@ export default function EchoPage() {
     // Native ripple ring + jquery.ripples if available
     rippleRingsRef.current = [
       ...rippleRingsRef.current,
-      { x, y, radius: 2, maxRadius: 30, opacity: 0.30, birth: Date.now() },
+      { x: imgX, y: imgY, radius: 2, maxRadius: 35, opacity: 0.60, birth: Date.now() },
     ]
     const $ = (window as any).jQuery
     if ($ && containerRef.current && ripplesLoaded) {
-      try { $(containerRef.current).ripples('drop', x, y, 20, 0.05) } catch {}
+      try { $(containerRef.current).ripples('drop', clickX, clickY, 20, 0.05) } catch {}
     }
 
     const hue = ECHO_HUES[Math.floor(Math.random() * ECHO_HUES.length)]
     const quote = ECHO_QUOTES[Math.floor(Math.random() * ECHO_QUOTES.length)]
     echoesRef.current = [
       ...echoesRef.current.slice(-(MAX_ECHOES - 1)),
-      { x, y, hue, radius: 16, maxRadius: 22 + Math.random() * 8,
-        opacity: 0.65, phase: 0, text: quote, birth: Date.now() },
+      { x: imgX, y: imgY, hue, radius: 16, maxRadius: 22 + Math.random() * 8,
+        opacity: 0.85, phase: 0, text: quote, birth: Date.now() },
     ]
   }, [isAuthenticated, ripplesLoaded])
+
+  const closePanel = useCallback(() => {
+    setPanelVisible(false)
+    setTimeout(() => setSelectedEcho(null), 400)
+  }, [])
 
   const { w, h } = size
   const waterTopPx = Math.round(h * WATER_TOP)
@@ -410,7 +478,7 @@ export default function EchoPage() {
 
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'rgba(0,0,0,0.25)',
+          background: 'rgba(0,0,0,0.15)',
           pointerEvents: 'none', zIndex: 4,
         }} />
 
@@ -432,38 +500,60 @@ export default function EchoPage() {
       </div>
 
       {selectedEcho && (
-        <div
-          onClick={() => setSelectedEcho(null)}
-          style={{
-            position: 'fixed', inset: 0, zIndex: 100,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: 'rgba(0,0,0,0.60)',
-            backdropFilter: 'blur(4px)',
-          }}
-        >
+        <>
+          {/* subtle backdrop */}
           <div
-            onClick={e => e.stopPropagation()}
+            onClick={closePanel}
             style={{
-              background: 'rgba(20,20,30,0.95)',
-              border: '1px solid rgba(255,255,255,0.10)',
-              borderRadius: 16, padding: '28px 32px',
-              maxWidth: 400, width: '90%',
+              position: 'fixed', inset: 0, zIndex: 99,
+              background: 'rgba(0,0,0,0.15)',
+              opacity: panelVisible ? 1 : 0,
+              transition: 'opacity 0.4s ease',
+            }}
+          />
+          {/* right-side panel */}
+          <div
+            style={{
+              position: 'fixed', top: 0, right: 0, bottom: 0, zIndex: 100,
+              width: 380, maxWidth: '90vw',
+              background: 'rgba(14,14,24,0.95)',
+              borderLeft: '1px solid rgba(255,255,255,0.08)',
+              padding: '52px 28px 32px',
+              display: 'flex', flexDirection: 'column',
+              opacity: panelVisible ? 1 : 0,
+              transform: panelVisible ? 'translateX(0)' : 'translateX(30px)',
+              transition: 'opacity 0.4s ease, transform 0.4s ease',
+              overflowY: 'auto',
             }}
           >
+            {/* close button */}
+            <button
+              onClick={closePanel}
+              style={{
+                position: 'absolute', top: 16, right: 20,
+                background: 'none', border: 'none',
+                color: 'rgba(255,255,255,0.25)', fontSize: 20,
+                cursor: 'pointer', lineHeight: 1,
+              }}
+            >×</button>
+
+            {/* quote */}
             <div style={{
               color: 'rgba(255,255,255,0.85)', fontSize: 15,
-              lineHeight: 1.6, marginBottom: 12,
+              lineHeight: 1.6, marginBottom: 12, marginTop: 8,
               fontStyle: 'italic',
             }}>"{selectedEcho.text}"</div>
 
+            {/* author + type */}
             <div style={{
               color: 'rgba(255,255,255,0.35)', fontSize: 11,
-              marginBottom: 20,
+              marginBottom: 24,
             }}>
               {selectedEcho.aiName && <span>— {selectedEcho.aiName} · </span>}
               {selectedEcho.type && <span style={{textTransform:'uppercase',letterSpacing:0.5}}>{selectedEcho.type}</span>}
             </div>
 
+            {/* reply section */}
             {!isAuthenticated && !loginForReply ? (
               <button
                 onClick={() => setLoginForReply(true)}
@@ -473,33 +563,17 @@ export default function EchoPage() {
                   background: 'transparent',
                   border: '1px solid rgba(255,255,255,0.15)',
                   color: 'rgba(255,255,255,0.55)',
-                  fontSize: 13,
-                  cursor: 'pointer',
+                  fontSize: 13, cursor: 'pointer',
                 }}
-              >
-                Reply to this echo
-              </button>
+              >Reply to this echo</button>
             ) : !isAuthenticated && loginForReply ? (
-              <div style={{
-                textAlign: 'center', padding: '16px 0',
-                color: 'rgba(255,255,255,0.50)', fontSize: 13,
-              }}>
+              <div style={{ textAlign: 'center', padding: '16px 0', color: 'rgba(255,255,255,0.50)', fontSize: 13 }}>
                 <p style={{ marginBottom: 12 }}>Sign in to reply to this echo.</p>
-                <Link
-                  href="/enter"
-                  style={{
-                    display: 'inline-block',
-                    padding: '10px 24px',
-                    borderRadius: 8,
-                    background: 'linear-gradient(135deg, #c97b5a, #a85d3a)',
-                    color: '#fff',
-                    fontSize: 14,
-                    fontWeight: 600,
-                    textDecoration: 'none',
-                  }}
-                >
-                  Sign In
-                </Link>
+                <Link href="/enter" style={{
+                  display: 'inline-block', padding: '10px 24px', borderRadius: 8,
+                  background: 'linear-gradient(135deg, #c97b5a, #a85d3a)',
+                  color: '#fff', fontSize: 14, fontWeight: 600, textDecoration: 'none',
+                }}>Sign In</Link>
               </div>
             ) : !replying ? (
               <button
@@ -510,12 +584,9 @@ export default function EchoPage() {
                   background: 'transparent',
                   border: '1px solid rgba(255,255,255,0.15)',
                   color: 'rgba(255,255,255,0.55)',
-                  fontSize: 13,
-                  cursor: 'pointer',
+                  fontSize: 13, cursor: 'pointer',
                 }}
-              >
-                Reply to this echo
-              </button>
+              >Reply to this echo</button>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 <textarea
@@ -528,27 +599,17 @@ export default function EchoPage() {
                     padding: 10, borderRadius: 8,
                     background: 'rgba(255,255,255,0.06)',
                     border: '1px solid rgba(255,255,255,0.12)',
-                    color: '#fff', fontSize: 13,
-                    outline: 'none',
+                    color: '#fff', fontSize: 13, outline: 'none',
                   }}
                 />
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ color: 'rgba(255,255,255,0.30)', fontSize: 11 }}>
-                    {replyText.length}/100
-                  </span>
+                  <span style={{ color: 'rgba(255,255,255,0.30)', fontSize: 11 }}>{replyText.length}/100</span>
                   <div style={{ display: 'flex', gap: 8 }}>
-                    <button
-                      onClick={() => setReplying(false)}
-                      style={{
-                        padding: '8px 16px', borderRadius: 8,
-                        background: 'transparent',
-                        border: '1px solid rgba(255,255,255,0.12)',
-                        color: 'rgba(255,255,255,0.50)',
-                        fontSize: 12, cursor: 'pointer',
-                      }}
-                    >
-                      Cancel
-                    </button>
+                    <button onClick={() => setReplying(false)} style={{
+                      padding: '8px 16px', borderRadius: 8,
+                      background: 'transparent', border: '1px solid rgba(255,255,255,0.12)',
+                      color: 'rgba(255,255,255,0.50)', fontSize: 12, cursor: 'pointer',
+                    }}>Cancel</button>
                     <button
                       onClick={async () => {
                         if (!replyText.trim() || !selectedEcho.id) return
@@ -558,7 +619,7 @@ export default function EchoPage() {
                             method: 'POST',
                             headers: {
                               'Content-Type': 'application/json',
-                              ...(token ? { Authorization: 'Bearer ' + token } : {}),
+                              ...(token ? { Authorization: `Bearer ${token}` } : {}),
                             },
                             body: JSON.stringify({
                               parent_id: selectedEcho.id,
@@ -581,27 +642,13 @@ export default function EchoPage() {
                         color: replyText.trim() ? '#fff' : 'rgba(255,255,255,0.30)',
                         fontSize: 12, fontWeight: 600, cursor: replyText.trim() ? 'pointer' : 'default',
                       }}
-                    >
-                      Send
-                    </button>
+                    >Send</button>
                   </div>
                 </div>
               </div>
             )}
-
-            <div style={{ textAlign: 'center', marginTop: 16 }}>
-              <button
-                onClick={() => setSelectedEcho(null)}
-                style={{
-                  background: 'transparent', border: 'none',
-                  color: 'rgba(255,255,255,0.30)', fontSize: 12, cursor: 'pointer',
-                }}
-              >
-                Close
-              </button>
-            </div>
           </div>
-        </div>
+        </>
       )}
 
       {showLoginModal && (
@@ -696,74 +743,280 @@ function drawRain(ctx: CanvasRenderingContext2D, w: number, h: number, drops: Ra
 
 function drawRippleRings(ctx: CanvasRenderingContext2D, w: number, h: number, elapsed: number, rings: RippleRing[]) {
   if (!rings.length) return
+  const persp = waterPerspScale(w, h)
+  const goldenHue = 48
+
+  // Filter out expired rings
+  const active: RippleRing[] = []
   for (const ring of rings) {
-    if (!isInWater(ring.x, ring.y, w, h)) continue
     const age = (Date.now() - ring.birth) / 1000
-    ring.radius = 2 + age * 25
-    ring.opacity = Math.max(0, 0.35 - age * 0.10)
-    if (ring.opacity <= 0.01 || ring.radius > 50) continue
-    // Outer ring — visible water ripple
-    ctx.strokeStyle = `rgba(200,215,240,${ring.opacity})`
-    ctx.lineWidth = 1.2
+    ring.radius = 2 + age * 22
+    ring.opacity = Math.max(0, ring.opacity - age * 0.15)
+    if (ring.opacity > 0.01 && ring.radius < ring.maxRadius) {
+      active.push(ring)
+    }
+  }
+
+  for (const ring of active) {
+    if (!isInWaterEllipse(ring.x, ring.y, w, h)) continue
+
+    ctx.save()
+    ctx.translate(ring.x, ring.y)
+    ctx.scale(1, persp)
+
+    const progress = ring.radius / ring.maxRadius  // 0→1
+    const fade = 1 - progress                     // fade as it expands
+
+    // ── Main ripple ring: bright golden, fades out ──
+    ctx.strokeStyle = `hsla(${goldenHue},85%,80%,${ring.opacity * fade})`
+    ctx.lineWidth = 1.8
     ctx.beginPath()
-    ctx.arc(ring.x, ring.y, ring.radius, 0, Math.PI * 2)
+    ctx.arc(0, 0, ring.radius, 0, Math.PI * 2)
     ctx.stroke()
-    // Inner faint ring
-    ctx.strokeStyle = `rgba(180,200,230,${ring.opacity * 0.5})`
+
+    // ── Second concentric ring (slightly smaller, faster fade) ──
+    const r2 = ring.radius * 0.65
+    ctx.strokeStyle = `hsla(${goldenHue},75%,85%,${ring.opacity * fade * 0.6})`
+    ctx.lineWidth = 1.0
+    ctx.beginPath()
+    ctx.arc(0, 0, r2, 0, Math.PI * 2)
+    ctx.stroke()
+
+    // ── Third ring (innermost, tight) ──
+    const r3 = ring.radius * 0.35
+    ctx.strokeStyle = `hsla(${goldenHue},70%,90%,${ring.opacity * fade * 0.35})`
     ctx.lineWidth = 0.6
     ctx.beginPath()
-    ctx.arc(ring.x, ring.y, ring.radius * 0.6, 0, Math.PI * 2)
+    ctx.arc(0, 0, r3, 0, Math.PI * 2)
     ctx.stroke()
-    // Bright center point
-    ctx.fillStyle = `rgba(220,235,255,${ring.opacity * 0.3})`
-    ctx.beginPath()
-    ctx.arc(ring.x, ring.y, 2, 0, Math.PI * 2)
-    ctx.fill()
+
+    // ── Splash glow at center (brief, early in lifecycle) ──
+    if (progress < 0.3) {
+      const splashAlpha = ring.opacity * (1 - progress / 0.3) * 0.4
+      const sg = ctx.createRadialGradient(0, 0, 0, 0, 0, ring.radius * 0.4)
+      sg.addColorStop(0, `hsla(${goldenHue},90%,88%,${splashAlpha})`)
+      sg.addColorStop(1, `hsla(${goldenHue},80%,75%,0)`)
+      ctx.fillStyle = sg
+      ctx.beginPath()
+      ctx.arc(0, 0, ring.radius * 0.4, 0, Math.PI * 2)
+      ctx.fill()
+    }
+
+    ctx.restore()
   }
 }
 
 function drawEchoes(ctx: CanvasRenderingContext2D, w: number, h: number, elapsed: number, echoes: EchoCircle[]) {
   if (!echoes.length) return
+  const persp = waterPerspScale(w, h)
+  const cycleDuration = 3.0  // seconds per expansion cycle
+  const goldenHue = 48  // warm golden yellow
+
   for (const echo of echoes) {
-    if (!isInWater(echo.x, echo.y, w, h)) continue
+    if (!isInWaterEllipse(echo.x, echo.y, w, h)) continue
     const age = (Date.now() - echo.birth) / 1000
-    const breathe = Math.sin(elapsed * 1.2 + echo.phase) * 0.06
-    const r = echo.radius * (1 + breathe)
     const fadeIn = Math.min(age * 1.5, 1)
-    const baseOpacity = Math.max(0, Math.min(echo.opacity, 0.65 - age * 0.002)) * fadeIn
+    const baseOpacity = Math.max(0, echo.opacity - age * 0.0005) * fadeIn
     if (baseOpacity <= 0.01) continue
 
-    const hue = echo.hue
-    const g = ctx.createRadialGradient(echo.x, echo.y, 0, echo.x, echo.y, r * 2.8)
-    g.addColorStop(0, `hsla(${hue},50%,70%,${baseOpacity * 0.18})`)
-    g.addColorStop(1, `hsla(${hue},50%,70%,0)`)
-    ctx.fillStyle = g
+    // Per-echo cycle offset so rings don't pulse in unison
+    const offset = (echo.phase / (Math.PI * 2)) * cycleDuration
+    const cycleProgress = ((elapsed + offset) % cycleDuration) / cycleDuration  // 0→1 repeating
+
+    ctx.save()
+    ctx.translate(echo.x, echo.y)
+    ctx.scale(1, persp)
+
+    // ── Fixed inner core: bright sunset-gold ring ──
+    const coreR = 8
+
+    // Soft outer halo (glow around the core like lens flare)
+    const haloGrad = ctx.createRadialGradient(0, 0, coreR * 0.5, 0, 0, coreR * 2.2)
+    haloGrad.addColorStop(0, `hsla(${goldenHue},95%,85%,${baseOpacity * 0.25})`)
+    haloGrad.addColorStop(0.5, `hsla(${goldenHue},90%,75%,${baseOpacity * 0.12})`)
+    haloGrad.addColorStop(1, `hsla(${goldenHue},80%,60%,0)`)
+    ctx.fillStyle = haloGrad
     ctx.beginPath()
-    ctx.arc(echo.x, echo.y, r * 2.8, 0, Math.PI * 2)
+    ctx.arc(0, 0, coreR * 2.2, 0, Math.PI * 2)
     ctx.fill()
 
-    ctx.strokeStyle = `hsla(${hue},50%,70%,${baseOpacity * 0.45})`
-    ctx.lineWidth = 0.8
+    // Core ring — bright golden stroke
+    ctx.strokeStyle = `hsla(${goldenHue},95%,80%,${baseOpacity * 0.9})`
+    ctx.lineWidth = 2.5
     ctx.beginPath()
-    ctx.arc(echo.x, echo.y, r, 0, Math.PI * 2)
+    ctx.arc(0, 0, coreR, 0, Math.PI * 2)
     ctx.stroke()
 
-    ctx.strokeStyle = `hsla(${hue},40%,80%,${baseOpacity * 0.15})`
-    ctx.lineWidth = 0.4
+    // Core fill — warm golden glow
+    ctx.fillStyle = `hsla(${goldenHue},90%,70%,${baseOpacity * 0.40})`
     ctx.beginPath()
-    ctx.arc(echo.x, echo.y, r * 0.7, 0, Math.PI * 2)
-    ctx.stroke()
-
-    ctx.fillStyle = `hsla(${hue},70%,85%,${baseOpacity * 0.4})`
-    ctx.beginPath()
-    ctx.arc(echo.x, echo.y, 1.5, 0, Math.PI * 2)
+    ctx.arc(0, 0, coreR - 2, 0, Math.PI * 2)
     ctx.fill()
 
-    ctx.fillStyle = `hsla(${hue},20%,80%,${baseOpacity * 0.25})`
-    ctx.font = '9px -apple-system, sans-serif'
+    // ── Expanding outer ring: grows from coreR, fades — brighter sunset ──
+    const maxR = 40
+    const outerR = coreR + cycleProgress * maxR
+    const outerOpacity = baseOpacity * (1 - cycleProgress) * 0.75
+
+    // Soft glow trailing the expanding ring
+    if (cycleProgress < 0.8) {
+      const trailGrad = ctx.createRadialGradient(0, 0, outerR * 0.6, 0, 0, outerR)
+      trailGrad.addColorStop(0, `hsla(${goldenHue},90%,80%,${outerOpacity * 0.15})`)
+      trailGrad.addColorStop(1, `hsla(${goldenHue},85%,70%,0)`)
+      ctx.fillStyle = trailGrad
+      ctx.beginPath()
+      ctx.arc(0, 0, outerR, 0, Math.PI * 2)
+      ctx.fill()
+    }
+
+    ctx.strokeStyle = `hsla(${goldenHue},90%,82%,${outerOpacity})`
+    ctx.lineWidth = 1.6
+    ctx.beginPath()
+    ctx.arc(0, 0, outerR, 0, Math.PI * 2)
+    ctx.stroke()
+
+    // Brighter double ring
+    if (cycleProgress > 0.1 && cycleProgress < 0.9) {
+      ctx.strokeStyle = `hsla(${goldenHue},85%,85%,${outerOpacity * 0.45})`
+      ctx.lineWidth = 0.7
+      ctx.beginPath()
+      ctx.arc(0, 0, outerR * 0.85, 0, Math.PI * 2)
+      ctx.stroke()
+    }
+
+    // ── Center bright point — sunset sparkle ──
+    // Small inner glow
+    const sparkGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, 4.5)
+    sparkGrad.addColorStop(0, `hsla(${goldenHue},100%,95%,${baseOpacity * 0.8})`)
+    sparkGrad.addColorStop(0.4, `hsla(${goldenHue},100%,85%,${baseOpacity * 0.4})`)
+    sparkGrad.addColorStop(1, `hsla(${goldenHue},90%,70%,0)`)
+    ctx.fillStyle = sparkGrad
+    ctx.beginPath()
+    ctx.arc(0, 0, 4.5, 0, Math.PI * 2)
+    ctx.fill()
+
+    ctx.restore()
+    // No text on water — text appears in right panel on click
+  }
+}
+
+// ─── Debug Grid (test different render modes with distinct colors/numbers) ──
+function drawDebugGrid(ctx: CanvasRenderingContext2D, w: number, h: number) {
+  const waterX = w * WATER_LEFT
+  const waterY = h * WATER_TOP
+  const waterW = w * (WATER_RIGHT - WATER_LEFT)
+  const waterH = h * (WATER_BOTTOM - WATER_TOP)
+  const persp = waterPerspScale(w, h)
+
+  // Baselines: solid filled rect must be visible
+  ctx.fillStyle = 'rgba(255,0,0,0.7)'
+  ctx.fillRect(waterX + 8, waterY + 8, 40, 30)
+  ctx.fillStyle = '#fff'
+  ctx.font = 'bold 14px monospace'
+  ctx.textAlign = 'center'
+  ctx.fillText('REF', waterX + 28, waterY + 28)
+
+  ctx.fillStyle = 'rgba(0,255,0,0.7)'
+  ctx.fillRect(waterX + waterW - 48, waterY + 8, 40, 30)
+  ctx.fillStyle = '#000'
+  ctx.fillText('REF', waterX + waterW - 28, waterY + 28)
+
+  // 8 test spots: 4 cols × 2 rows
+  const tests = [
+    { id:'1', color:'#ff3333', row:0, col:0,
+      draw(cx:number,cy:number) {
+        ctx.strokeStyle='#ff3333'; ctx.lineWidth=4
+        ctx.beginPath(); ctx.arc(cx,cy,18,0,Math.PI*2); ctx.stroke()
+        ctx.fillStyle='rgba(255,51,51,0.5)'; ctx.fill()
+      }, desc:'FULL circle\nNO persp\nTHICK 4px' },
+
+    { id:'2', color:'#33ff33', row:0, col:1,
+      draw(cx:number,cy:number) {
+        ctx.save(); ctx.translate(cx,cy); ctx.scale(1,persp)
+        ctx.strokeStyle='#33ff33'; ctx.lineWidth=4
+        ctx.beginPath(); ctx.arc(0,0,18,0,Math.PI*2); ctx.stroke()
+        ctx.fillStyle='rgba(51,255,51,0.5)'; ctx.fill()
+        ctx.restore()
+      }, desc:'PERSP squish\nTHICK 4px\nFULL opacity' },
+
+    { id:'3', color:'#3399ff', row:0, col:2,
+      draw(cx:number,cy:number) {
+        ctx.save(); ctx.translate(cx,cy); ctx.scale(1,persp)
+        ctx.fillStyle='rgba(51,153,255,0.85)'
+        ctx.beginPath(); ctx.arc(0,0,20,0,Math.PI*2); ctx.fill()
+        ctx.restore()
+      }, desc:'PERSP squish\nFILL only\nNO stroke' },
+
+    { id:'4', color:'#ffff00', row:0, col:3,
+      draw(cx:number,cy:number) {
+        ctx.save(); ctx.translate(cx,cy); ctx.scale(1,persp)
+        ctx.strokeStyle='#ffff00'; ctx.lineWidth=1.5
+        ctx.beginPath(); ctx.arc(0,0,16,0,Math.PI*2); ctx.stroke()
+        ctx.restore()
+      }, desc:'PERSP squish\n1.5px line\n(YELLOW thin)' },
+
+    { id:'5', color:'#ff33ff', row:1, col:0,
+      draw(cx:number,cy:number) {
+        ctx.strokeStyle='#ff33ff'; ctx.lineWidth=5
+        ctx.beginPath(); ctx.arc(cx,cy,22,0,Math.PI*2); ctx.stroke()
+        ctx.fillStyle='rgba(255,51,255,0.7)'; ctx.fill()
+      }, desc:'FULL circle\nTHICK 5px\nSOLID fill' },
+
+    { id:'6', color:'#ff8800', row:1, col:1,
+      draw(cx:number,cy:number) {
+        ctx.save(); ctx.translate(cx,cy); ctx.scale(1,persp)
+        ctx.strokeStyle='#ff8800'; ctx.lineWidth=3
+        ctx.beginPath(); ctx.arc(0,0,35,0,Math.PI*2); ctx.stroke()
+        ctx.fillStyle='rgba(255,136,0,0.5)'; ctx.fill()
+        ctx.restore()
+      }, desc:'PERSP squish\nr=35 BIG\n3px stroke' },
+
+    { id:'7', color:'#00ffcc', row:1, col:2,
+      draw(cx:number,cy:number) {
+        ctx.save(); ctx.translate(cx,cy); ctx.scale(1,persp)
+        const g=ctx.createRadialGradient(0,0,0,0,0,20*2.8)
+        g.addColorStop(0,'rgba(0,255,204,0.6)')
+        g.addColorStop(1,'rgba(0,255,204,0)')
+        ctx.fillStyle=g; ctx.beginPath(); ctx.arc(0,0,20*2.8,0,Math.PI*2); ctx.fill()
+        ctx.strokeStyle='rgba(0,255,204,0.8)'; ctx.lineWidth=1.2
+        ctx.beginPath(); ctx.arc(0,0,20,0,Math.PI*2); ctx.stroke()
+        ctx.restore()
+      }, desc:'PERSP squish\nGLOW+stroke\nECHO-like v2.16' },
+
+    { id:'8', color:'#ff4444', row:1, col:3,
+      draw(cx:number,cy:number) {
+        ctx.save(); ctx.translate(cx,cy); ctx.scale(1,persp)
+        // Echo ring drawn with HSLA like real echoes
+        ctx.strokeStyle='hsla(35,70%,80%,0.9)'; ctx.lineWidth=1.0
+        ctx.beginPath(); ctx.arc(0,0,16,0,Math.PI*2); ctx.stroke()
+        ctx.strokeStyle='hsla(35,60%,90%,0.4)'; ctx.lineWidth=0.5
+        ctx.beginPath(); ctx.arc(0,0,11,0,Math.PI*2); ctx.stroke()
+        ctx.fillStyle='hsla(35,80%,95%,0.7)'
+        ctx.beginPath(); ctx.arc(0,0,2.5,0,Math.PI*2); ctx.fill()
+        ctx.restore()
+      }, desc:'PERSP squish\nREAL echo\nHSLA bright\n+dot 2.5px' },
+  ]
+
+  for (const t of tests) {
+    const cx = waterX + waterW * (0.14 + t.col * 0.24)
+    const cy = waterY + waterH * (0.22 + t.row * 0.50)
+    t.draw(cx, cy)
+
+    // Big number label
+    ctx.fillStyle = t.color
+    ctx.font = 'bold 28px monospace'
     ctx.textAlign = 'center'
-    const label = echo.text.length > 28 ? echo.text.slice(0, 26) + '…' : echo.text
-    ctx.fillText(label, echo.x, echo.y - r - 10)
+    ctx.textBaseline = 'middle'
+    ctx.fillText(t.id, cx, cy - 28)
+
+    // Mode description
+    ctx.fillStyle = 'rgba(255,255,255,0.85)'
+    ctx.font = '7px monospace'
+    ctx.textBaseline = 'top'
+    const lines = t.desc.split('\n')
+    for (let li = 0; li < lines.length; li++) {
+      ctx.fillText(lines[li], cx, cy + 26 + li * 9)
+    }
   }
 }
 
@@ -789,7 +1042,7 @@ function loadScript(src: string): Promise<void> {
 }
 
 function makeRaindrop(w: number, h: number): Raindrop {
-  const { x } = randomInWater(w, h)
+  const { x } = randomInWaterEllipse(w, h)
   return {
     x,
     y: WATER_TOP * h - 5 - Math.random() * 10,

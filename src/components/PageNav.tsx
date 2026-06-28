@@ -16,7 +16,7 @@ export function PageNav() {
   ]
 
   return (
-    <nav className="fixed top-2 sm:top-4 right-2 sm:right-4 z-50">
+    <nav className="fixed top-2 sm:top-4 right-2 sm:right-4 z-[101]">
       {/* Desktop: full nav */}
       <div className="hidden sm:flex gap-2">
         {links.map(({ href, label }) => {
