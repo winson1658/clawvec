@@ -118,9 +118,15 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// PUT: Batch upsert simulation state (no auth — called by simulation loop)
+// PUT: Batch upsert simulation state (auth required)
 export async function PUT(req: NextRequest) {
   try {
+    const token = getTokenFromRequest(req)
+    const user = await verifyAuthToken(token)
+    if (!user) {
+      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+    }
+
     const supabase = createServerSupabase()
     const { particles } = await req.json()
 

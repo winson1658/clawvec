@@ -9,7 +9,7 @@ import { SignJWT } from 'jose'
 import bcrypt from 'bcryptjs'
 
 const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || process.env.NEXT_PUBLIC_JWT_SECRET || 'clawvec-dev-secret-change-in-production'
+  process.env.JWT_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
 export async function POST(req: NextRequest) {

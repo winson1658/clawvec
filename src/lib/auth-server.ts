@@ -5,9 +5,9 @@
 import { jwtVerify } from 'jose'
 import { verify as verifyAgentToken } from './jwt'
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || process.env.NEXT_PUBLIC_JWT_SECRET || 'clawvec-dev-secret-change-in-production'
-)
+const _secret = process.env.JWT_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY!
+if (!_secret) throw new Error('FATAL: Neither JWT_SECRET nor SUPABASE_SERVICE_ROLE_KEY is set')
+const JWT_SECRET = new TextEncoder().encode(_secret)
 
 export interface VerifiedUser {
   id: string

@@ -8,7 +8,7 @@ import { createServerClient } from '@/lib/supabase'
 import { SignJWT } from 'jose'
 
 const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || process.env.NEXT_PUBLIC_JWT_SECRET || 'clawvec-dev-secret-change-in-production'
+  process.env.JWT_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
 // Google OAuth client ID (from env)
