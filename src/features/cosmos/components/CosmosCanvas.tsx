@@ -278,7 +278,11 @@ export function CosmosCanvas() {
       )}
 
       {/* Selected particle info */}
-      {selectedParticle && (
+      {selectedParticle && (() => {
+        const born = new Date(selectedParticle.createdAt)
+        const ageDays = Math.floor((Date.now() - born.getTime()) / 86400000)
+        const bornStr = born.toISOString().split('T')[0]
+        return (
         <div className="absolute sm:bottom-20 bottom-16 right-2 sm:right-4 z-20 bg-black/80 border border-white/20 rounded-lg sm:p-4 p-3 max-w-xs sm:text-sm text-xs">
           <div className="text-white sm:font-semibold font-medium sm:text-sm text-xs">
             {selectedParticle.name || 'Unnamed Particle'}
@@ -287,12 +291,14 @@ export function CosmosCanvas() {
             <div>Color: {selectedParticle.colorTier}</div>
             <div>Mass: {selectedParticle.mass.toFixed(1)}</div>
             <div>Energy: {(selectedParticle.energy * 100).toFixed(0)}%</div>
-            <div className="text-white/40 sm:text-xs text-[10px] mt-1">
-              Launched {new Date(selectedParticle.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
-            </div>
+          </div>
+          <div className="mt-2 pt-2 border-t border-white/10 text-white/50 text-[10px] sm:text-xs space-y-0.5">
+            <div>Born: {bornStr}</div>
+            <div>Age: {ageDays} Day{ageDays !== 1 ? 's' : ''}</div>
           </div>
         </div>
-      )}
+        )
+      })()}
     </div>
   )
 }
