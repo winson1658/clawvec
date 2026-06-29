@@ -72,8 +72,9 @@ function fallbackSvg(reason: string): string {
 
 async function svgToPngResponse(svg: string, maxAge = 300): Promise<Response> {
   const buf = await sharp(Buffer.from(svg)).png().toBuffer()
-  // @ts-expect-error sharp Buffer type is compatible at runtime with Response BodyInit
-  return new Response(buf, {
+  // convert Buffer to plain ArrayBuffer to avoid UTF-8 corruption in Response
+  const ab = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength) as ArrayBuffer
+  return new Response(ab, {
     headers: {
       'Content-Type': 'image/png',
       'Cache-Control': `public, max-age=${maxAge}, s-maxage=${maxAge}`,
