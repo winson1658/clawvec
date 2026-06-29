@@ -52,7 +52,13 @@ export async function POST(req: NextRequest) {
     }
 
     const supabase = createServerSupabase()
-    const body = await req.json()
+
+    let body: Record<string, any>
+    try {
+      body = await req.json()
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON in request body' }, { status: 400 })
+    }
 
     if (!body.name || body.hue === undefined) {
       return NextResponse.json({ error: 'name and hue required' }, { status: 400 })

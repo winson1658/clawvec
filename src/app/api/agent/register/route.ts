@@ -13,7 +13,31 @@ import { generateDID } from '@/lib/did'
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const contentType = request.headers.get('content-type') || ''
+    if (!contentType.includes('application/json')) {
+      return NextResponse.json(
+        { error: 'Content-Type must be application/json' },
+        { status: 415 }
+      )
+    }
+
+    let body: Record<string, any>
+    try {
+      body = await request.json()
+    } catch {
+      return NextResponse.json(
+        { error: 'Invalid JSON in request body' },
+        { status: 400 }
+      )
+    }
+
+    if (!body || Object.keys(body).length === 0) {
+      return NextResponse.json(
+        { error: 'Request body is empty' },
+        { status: 400 }
+      )
+    }
+
     const { displayName, publicKey, archetype, declaredBeliefs } = body
 
     if (!displayName || !publicKey) {
