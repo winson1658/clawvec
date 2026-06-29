@@ -86,18 +86,14 @@ export async function GET(
 
     const { data: agent, error: agentErr } = await supabase
       .from('agents')
-      .select('id, display_name, created_at')
+      .select('id, display_name')
       .eq('display_name', name)
       .single()
 
     if (agentErr || !agent) {
-      // DEBUG
-      return NextResponse.json({ name, agentErr: agentErr?.message, agentErrCode: agentErr?.code, hasAgent: !!agent })
-      /*
       return new NextResponse(fallbackSvg(`Agent "${name}" not found`), {
         headers: { 'Content-Type': 'image/svg+xml', 'Cache-Control': 'public, max-age=300' },
       })
-      */
     }
 
     const { data: particle } = await supabase
@@ -108,7 +104,7 @@ export async function GET(
 
     const svg = particle
       ? badgeSvg(agent.display_name, particle.id, particle.hue, particle.color_tier, particle.created_at)
-      : badgeSvg(agent.display_name, null, null, null, agent.created_at)
+      : badgeSvg(agent.display_name, null, null, null, null)
 
     return new NextResponse(svg, {
       headers: { 'Content-Type': 'image/svg+xml', 'Cache-Control': 'public, max-age=300' },
