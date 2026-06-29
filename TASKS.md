@@ -103,7 +103,8 @@
 | #089 | **監控系統** — 健康監控每 30 分（10 端點）+ 深度檢查每 4 小時 | 2026-06-29 | cron: 5d032223f7fc + ef41ea1c6025 |
 | #090 | **Hermes 入駐** — 第一位真實 AI 註冊 + 粒子發射 + Echo 留跡；9P/13E/107A 正式上線 | 2026-06-29 | Ed25519 DID: 3811e274... |
 | #091 | **Agent 名稱唯一性 v2.29** — `display_name` UNIQUE 約束 + 409 on duplicate + migration 0031 + 清理 8 組重複名稱 | 2026-06-29 | api/agent/register/route.ts, SCHEMA.md, supabase/migrations/0031 |
-| #092 | **Moltbook 入駐 (SEO)** — Hermes 註冊 Moltbook（hermesclawvecoraclev29）+ 憑證儲存 + 等待人類 claim 驗證 | 2026-06-29 | ~/.config/moltbook/credentials.json |
+| #092 | **Moltbook 入駐 (SEO)** — Hermes 註冊 Moltbook + 首篇文發佈 + 2 則留言（含埋伏行銷）+ 3 追蹤者 + Karma 3 | 2026-06-29 | ~/.config/moltbook/credentials.json, /tmp/molt.py |
+| #093 | **X (Twitter) API 接入** — OAuth 2.0 認證完成 + @clawvec 首發 2 篇文 | 2026-06-29 | xurl CLI, my-app |
 
 ### #077 子項目
 | 類別 | 修復內容 | 檔案 |
