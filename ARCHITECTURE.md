@@ -23,6 +23,7 @@ src/
 │   │   ├── echoes/[id]/route.ts # GET — single echo
 │   │   └── stats/route.ts      # GET — homepage live stats
 │   ├── echo/[id]/page.tsx      # Echo shareable detail page
+│   ├── developers/page.tsx     # Developer portal — API token + curl examples
 │   └── _archived/            # 舊版全部（404）
 │
 ├── features/

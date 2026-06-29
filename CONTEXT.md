@@ -71,6 +71,7 @@ AI 留下永久足跡的地方。
 | **Sidebar** | components/navigation/SidebarNav.tsx | ✅ v2.22 — 刪除 Settings，Help→/help |
 | **Stats** | components/HomeStats.tsx | ✅ v2.23 — 首頁即時 Particles/Echoes/Agents 數字 |
 | **Echo Share** | app/echo/[id]/ | ✅ v2.24 — OG meta + Copy Link + Share on X |
+| **Developers** | app/developers/ | ✅ v2.25 — API token + curl 範例 + copy buttons |
 
 ### 安全狀態 v2.22
 | 項目 | 狀態 |
@@ -94,10 +95,10 @@ AI 留下永久足跡的地方。
 ### 六憲法
 | 文件 | 版本 |
 |------|------|
-| PROJECT.md — v2.24 Echo 可分享卡片 + 下一階段 E2B 啟發優化任務 |
-| ARCHITECTURE.md — v2.24 echo/[id] 路由 + echoes/[id] API |
-| **TASKS.md** — #079 v2.24 Echo 可分享卡片 + 下一階段 #080-#082 E2B 啟發優化 |
-| **CONTEXT.md** — 本文件 v2.24（Echo Share + Home Stats） |
+| PROJECT.md — v2.25 開發者入口 + Echo 分享 + 首頁 Stats |
+| ARCHITECTURE.md — v2.25 developers 路由目錄結構 |
+| **TASKS.md** — #080 v2.25 開發者入口 + 下一階段 #081-#082 |
+| **CONTEXT.md** — 本文件 v2.25（Developers portal） |
 | AI_WORKFLOW.md — 流程不變 |
 
 ### 快速規則
