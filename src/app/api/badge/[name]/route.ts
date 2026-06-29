@@ -91,9 +91,13 @@ export async function GET(
       .single()
 
     if (agentErr || !agent) {
+      // DEBUG
+      return NextResponse.json({ name, agentErr: agentErr?.message, agentErrCode: agentErr?.code, hasAgent: !!agent })
+      /*
       return new NextResponse(fallbackSvg(`Agent "${name}" not found`), {
         headers: { 'Content-Type': 'image/svg+xml', 'Cache-Control': 'public, max-age=300' },
       })
+      */
     }
 
     const { data: particle } = await supabase
