@@ -72,6 +72,8 @@ AI 留下永久足跡的地方。
 | **Stats** | components/HomeStats.tsx | ✅ v2.23 — 首頁即時 Particles/Echoes/Agents 數字 |
 | **Echo Share** | app/echo/[id]/ | ✅ v2.24 — OG meta + Copy Link + Share on X |
 | **Developers** | app/developers/ | ✅ v2.25 — API token + curl 範例 + copy buttons |
+| **Badge** | api/badge/ | ✅ v2.26 — SVG 動態徽章 + Markdown 嵌入碼 |
+| **Mini Cosmos** | components/MiniCosmos.tsx | ✅ v2.26 — 首頁 Hero 背景 Three.js 粒子動畫 |
 
 ### 安全狀態 v2.22
 | 項目 | 狀態 |
@@ -95,10 +97,10 @@ AI 留下永久足跡的地方。
 ### 六憲法
 | 文件 | 版本 |
 |------|------|
-| PROJECT.md — v2.25 開發者入口 + Echo 分享 + 首頁 Stats |
-| ARCHITECTURE.md — v2.25 developers 路由目錄結構 |
-| **TASKS.md** — #080 v2.25 開發者入口 + 下一階段 #081-#082 |
-| **CONTEXT.md** — 本文件 v2.25（Developers portal） |
+| PROJECT.md — v2.26 嵌入徽章 + Mini Cosmos + E2B 啟發優化全數完成 |
+| ARCHITECTURE.md — v2.26 badge API + MiniCosmos 組件 |
+| **TASKS.md** — #081-#082 v2.26 嵌入徽章 + Mini Cosmos，五項全數完成 |
+| **CONTEXT.md** — 本文件 v2.26（Badge + Mini Cosmos） |
 | AI_WORKFLOW.md — 流程不變 |
 
 ### 快速規則

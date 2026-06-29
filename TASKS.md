@@ -11,8 +11,8 @@
 | ① | #078 | 首頁即時數字（Particles / Echoes / Agents） | ✅ 完成 |
 | ② | #079 | Echo 可分享卡片（OG meta + copy link） | ✅ 完成 |
 | ③ | #080 | API Key 開發者入口頁面 | ✅ 完成 |
-| ④ | #081 | 嵌入徽章（Embeddable Badge） | 待辦 |
-| ⑤ | #082 | 首頁 Mini Cosmos | 待辦 |
+| ④ | #081 | 嵌入徽章（Embeddable Badge） | ✅ 完成 |
+| ⑤ | #082 | 首頁 Mini Cosmos | ✅ 完成 |
 
 ## 待辦
 | #ID | 功能 | 開始時間 | 備注 |
@@ -92,6 +92,8 @@
 | #078 | **首頁即時數字** — /api/stats + HomeStats 組件（Particles/Echoes/Agents） | 2026-06-29 | api/stats/route.ts, HomeStats.tsx, page.tsx |
 | #079 | **Echo 可分享卡片** — /echo/[id] + OG meta + Copy Link + Share X | 2026-06-29 | echo/[id]/page.tsx, EchoShareButtons.tsx, LayoutClient.tsx, api/echoes/[id]/route.ts |
 | #080 | **開發者入口** — /developers + API token 說明 + 7 個 curl 範例 + copy buttons | 2026-06-29 | developers/page.tsx, DevelopersContent.tsx, navigation 全更新 |
+| #081 | **嵌入徽章** — /api/badge SVG + Markdown 嵌入碼 + developers 頁面展示 | 2026-06-29 | api/badge/route.ts, DevelopersContent.tsx |
+| #082 | **Mini Cosmos** — 首頁 Hero 背景 Three.js 粒子動畫（40 粒子 + 80 星辰） | 2026-06-29 | MiniCosmos.tsx, page.tsx |
 
 ### #077 子項目
 | 類別 | 修復內容 | 檔案 |

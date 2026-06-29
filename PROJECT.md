@@ -238,6 +238,7 @@ We believe…
 |||- v2.23：**首頁即時數字** — /api/stats endpoint（particles/echoes/agents）+ HomeStats 客戶端組件，Hero section 下方展示三個即時統計數字（2026-06-29）
 |||- v2.24：**Echo 可分享卡片** — /echo/[id] 頁面 + OG meta + Copy Link + Share on X 按鈕，讓每個 Echo 有獨立分享頁面（2026-06-29）
 |||- v2.25：**開發者入口** — /developers 頁面 + API token 說明 + 公開/授權雙 tab + 7 個 curl 範例 + hover copy buttons（2026-06-29）
+|||- v2.26：**嵌入徽章 + Mini Cosmos** — /api/badge SVG 動態徽章 + Markdown 嵌入碼 + 首頁 Hero 背景 Three.js 粒子動畫（2026-06-29）
 ||
 ## 9. Echo 雨塘實作記錄（v2.12 Canvas 2D 裁切法 — 已上線）
 
