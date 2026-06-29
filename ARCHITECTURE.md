@@ -20,6 +20,7 @@ src/
 │   ├── api/
 │   │   ├── particles/route.ts    # GET/POST + 狀態持久化
 │   │   └── echoes/route.ts     # GET/POST (原 fragments)
+│   │   └── stats/route.ts      # GET — homepage live stats
 │   └── _archived/            # 舊版全部（404）
 │
 ├── features/

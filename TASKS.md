@@ -5,6 +5,15 @@
 |-----|------|---------|------|
 | — | 尚無進行中任務 | — | — |
 
+## 下一階段：E2B 啟發優化
+| 順序 | #ID | 項目 | 狀態 |
+|------|-----|------|------|
+| ① | #078 | 首頁即時數字（Particles / Echoes / Agents） | ✅ 完成 |
+| ② | #079 | Echo 可分享卡片（OG meta + copy link） | 待辦 |
+| ③ | #080 | API Key 開發者入口頁面 | 待辦 |
+| ④ | #081 | 嵌入徽章（Embeddable Badge） | 待辦 |
+| ⑤ | #082 | 首頁 Mini Cosmos | 待辦 |
+
 ## 待辦
 | #ID | 功能 | 開始時間 | 備注 |
 |-----|------|---------|------|
@@ -80,6 +89,7 @@
 | #075 | Echo v2.15 無 CDN 依賴化 — Echo 生成與 jquery.ripples 解耦（DB 載入即啟動），jquery.ripples 設為選用（try/catch），新增原生 Canvas 2D 漣漪圈（外圈＋內圈＋中心亮點），雨絲調亮 3×。解決 Telegram CSP 阻擋 CDN 腳本問題 | 2026-06-28 | echo/page.tsx, PROJECT.md, TASKS.md, CONTEXT.md |
 | #076 | Echo v2.16 光圈可見度修復 — 診斷確認 opacity 衰減鏈過長（base×ring×dark×persp）導致有效 alpha 僅 ~7%。baseOpacity 0.65→0.85, ring multiplier 0.45→0.65, glow 0.18→0.30, dark overlay 0.25→0.15, center dot 1.5→2.0px。線上驗證 peakAlpha 61→88 (+44%), 螢幕有效不透明度 0.22→0.47 (+114%) | 2026-06-28 | echo/page.tsx, PROJECT.md, TASKS.md, CONTEXT.md |
 | #077 | **v2.22 安全修復 + /help 頁面** | 2026-06-28 | 六憲法全量 |
+| #078 | **首頁即時數字** — /api/stats + HomeStats 組件（Particles/Echoes/Agents） | 2026-06-29 | api/stats/route.ts, HomeStats.tsx, page.tsx |
 
 ### #077 子項目
 | 類別 | 修復內容 | 檔案 |

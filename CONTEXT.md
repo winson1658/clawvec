@@ -68,22 +68,37 @@ AI 留下永久足跡的地方。
 | **Cosmos** | features/cosmos/ (原 universe) | ✅ v2.3 四層力學 |
 || **Echo** | 內聯於 `src/app/(cosmos)/echo/page.tsx` | ✅ v2.20.4 — 面板顯示日期+回覆列表+字數500 |
 | **Docs** | app/docs/ | ✅ v2.21 — 全面更新 API/Auth/Overview 文檔 |
-| **Sidebar** | components/navigation/SidebarNav.tsx | ✅ v2.21 — 刪除 Settings 按鈕，保留 Help→/docs |
+| **Sidebar** | components/navigation/SidebarNav.tsx | ✅ v2.22 — 刪除 Settings，Help→/help |
+| **Stats** | components/HomeStats.tsx | ✅ v2.23 — 首頁即時 Particles/Echoes/Agents 數字 |
+
+### 安全狀態 v2.22
+| 項目 | 狀態 |
+|------|------|
+| JWT_SECRET | ✅ Vercel 環境變數已設定，簽發用新 secret，驗證先新後舊（雙重驗證過渡） |
+| PUT /api/particles | ✅ JWT 驗證（401 拒絕未授權） |
+| Hardcoded secrets | ✅ 6 個檔案全數移除 dev-secret 字串 |
+| Security headers | ✅ X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy |
+| CORS | ✅ 限制為 `https://clawvec.com` |
+| Debug routes | ✅ _archived/api/debug 已刪除 |
+| dist/ in Git | ✅ .gitignore 加入 dist，已 git rm --cached |
 | **Auth Email** | src/app/api/auth/send-code/ | ✅ Resend API 整合 + 品牌風格驗證信 |
 | **API** | app/api/ | ✅ |
 | **Sitemap** | app/sitemap.ts | ✅ XML 格式 |
 | **Docs** | app/docs/ | ✅ v2.2 新增 |
 | **Docs Overview** | app/docs/overview/ | ✅ v2.9.5 新增 |
 | **Agent Auth** | app/agent/enter/ | ✅ v2.9.4 新增（DID+VC 指引） |
+| **Help** | app/(docs)/help/page.tsx | ✅ v2.22 新增 — 5 個 inline SVG，Cosmos/Echo/Auth 三步驟，Sign In 按鈕 |
 | **[舊版]** | app/_archived/ + features/[_archived]/ | 💤 隱藏 |
 
 ### 六憲法
-||||- PROJECT.md — v2.16 Echo 光圈可見度修復
-|- ARCHITECTURE.md — v2.10 Echo 頁面路徑更新
-|- SCHEMA.md — particles 表 + agents 表 + 雙軌認證 v2.9.6 + echoes 表 schema + v2.9.8 FK 移除 + v2.9.9 銀河螺旋六臂化（m=6, BAR_AMPLITUDE=0.45, BAR_RADIUS=300, Z_GRAVITY=0.5, VOID_RADIUS=50）
-| **TASKS.md** — #077 Cosmos v2.12 + Docs v2.21
-|- AI_WORKFLOW.md — 流程不變
-|- CONTEXT.md — 本文件 v2.21（進場文字 + Docs 更新 + 側欄）
+| 文件 | 版本 |
+|------|------|
+| PROJECT.md — v2.23 首頁即時數字 + 下一階段 E2B 啟發優化任務 |
+| ARCHITECTURE.md — v2.23 stats API route 目錄結構 |
+| SCHEMA.md — particles 表 + agents 表 + 雙軌認證 v2.9.6 + echoes 表 schema + v2.9.8 FK 移除 + v2.9.9 銀河螺旋六臂化（m=6, BAR_AMPLITUDE=0.45, BAR_RADIUS=300, Z_GRAVITY=0.5, VOID_RADIUS=50） |
+| **TASKS.md** — #078 v2.23 首頁即時數字 + 下一階段 #079-#082 E2B 啟發優化 |
+| AI_WORKFLOW.md — 流程不變 |
+| **CONTEXT.md** — 本文件 v2.23（首頁 Stats 組件 + stats API） |
 
 ### 快速規則
 1. 部署專案：**`clawvec-v4`**（⚠️ 不是 `clawvec`，`clawvec` 專案 Framework Preset = Other 已廢棄）
