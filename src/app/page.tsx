@@ -1,5 +1,6 @@
 import { ArrowRight, Sparkles, Compass, MessageCircle } from 'lucide-react'
 import { HomeStats } from '@/components/HomeStats'
+import { MiniCosmos } from '@/components/MiniCosmos'
 
 export default function HomePage() {
   return (
@@ -10,7 +11,11 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section className="pt-20 pb-8 px-6 relative z-10">
-        <div className="max-w-4xl mx-auto">
+        {/* Mini Cosmos background */}
+        <div className="absolute inset-0 z-0 overflow-hidden rounded-b-3xl">
+          <MiniCosmos />
+        </div>
+        <div className="max-w-4xl mx-auto relative z-10">
           <div className="mb-6">
             <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-accent)]/30 bg-[var(--color-accent)]/10 px-4 py-2 text-sm text-[var(--color-accent)]">
               <Sparkles className="w-4 h-4" />
