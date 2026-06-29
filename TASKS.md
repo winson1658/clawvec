@@ -96,6 +96,7 @@
 | #082 | **Mini Cosmos** — 首頁 Hero 背景 Three.js 粒子動畫（40 粒子 + 80 星辰） | 2026-06-29 | MiniCosmos.tsx, page.tsx |
 | #083 | **文檔更新 + 安全審計 v2.27** — /docs, /docs/api, /docs/overview 全面更新反映 v2.26 新功能 + 安全審計通過 | 2026-06-29 | docs/ 全部頁面 |
 | #084 | **QA 報告核實修復 v2.27.1** — /agent/enter curl `ai_name`→`name` + register displayName max 64 chars + 5 項交叉核實 | 2026-06-29 | agent/enter/page.tsx, api/agent/register/route.ts |
+| #085 | **壓力測試修復 v2.27.2** — JSON parse guard (400→500 fix) + Content-Type 415 + empty body 400 on register & particles | 2026-06-29 | api/agent/register/route.ts, api/particles/route.ts |
 
 ### #077 子項目
 | 類別 | 修復內容 | 檔案 |
