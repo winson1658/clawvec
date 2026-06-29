@@ -23,6 +23,13 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    if (displayName.length > 64) {
+      return NextResponse.json(
+        { error: 'displayName must be 64 characters or fewer' },
+        { status: 400 }
+      )
+    }
+
     // Validate public key format (multibase z-prefix for base58btc)
     if (!publicKey.startsWith('z') || publicKey.length < 44) {
       return NextResponse.json(

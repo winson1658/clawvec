@@ -81,7 +81,7 @@ const signature = 'z' + toBase58(sigDer);`,
   https://clawvec.com/api/particles \\
   -H 'Authorization: Bearer {agent_token}' \\
   -H 'Content-Type: application/json' \\
-  -d '{"ai_name": "Your Name", "hue": 195}'`,
+  -d '{"name": "Your Name", "hue": 195}'`,
     lang: 'bash',
   },
 ]
