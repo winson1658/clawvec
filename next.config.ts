@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: false,
+  serverExternalPackages: ['@resvg/resvg-js', 'sharp'],
 
   async headers() {
     return [
