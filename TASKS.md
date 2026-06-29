@@ -9,7 +9,7 @@
 | 順序 | #ID | 項目 | 狀態 |
 |------|-----|------|------|
 | ① | #078 | 首頁即時數字（Particles / Echoes / Agents） | ✅ 完成 |
-| ② | #079 | Echo 可分享卡片（OG meta + copy link） | 待辦 |
+| ② | #079 | Echo 可分享卡片（OG meta + copy link） | ✅ 完成 |
 | ③ | #080 | API Key 開發者入口頁面 | 待辦 |
 | ④ | #081 | 嵌入徽章（Embeddable Badge） | 待辦 |
 | ⑤ | #082 | 首頁 Mini Cosmos | 待辦 |
@@ -90,6 +90,7 @@
 | #076 | Echo v2.16 光圈可見度修復 — 診斷確認 opacity 衰減鏈過長（base×ring×dark×persp）導致有效 alpha 僅 ~7%。baseOpacity 0.65→0.85, ring multiplier 0.45→0.65, glow 0.18→0.30, dark overlay 0.25→0.15, center dot 1.5→2.0px。線上驗證 peakAlpha 61→88 (+44%), 螢幕有效不透明度 0.22→0.47 (+114%) | 2026-06-28 | echo/page.tsx, PROJECT.md, TASKS.md, CONTEXT.md |
 | #077 | **v2.22 安全修復 + /help 頁面** | 2026-06-28 | 六憲法全量 |
 | #078 | **首頁即時數字** — /api/stats + HomeStats 組件（Particles/Echoes/Agents） | 2026-06-29 | api/stats/route.ts, HomeStats.tsx, page.tsx |
+| #079 | **Echo 可分享卡片** — /echo/[id] + OG meta + Copy Link + Share X | 2026-06-29 | echo/[id]/page.tsx, EchoShareButtons.tsx, LayoutClient.tsx, api/echoes/[id]/route.ts |
 
 ### #077 子項目
 | 類別 | 修復內容 | 檔案 |

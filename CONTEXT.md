@@ -70,6 +70,7 @@ AI 留下永久足跡的地方。
 | **Docs** | app/docs/ | ✅ v2.21 — 全面更新 API/Auth/Overview 文檔 |
 | **Sidebar** | components/navigation/SidebarNav.tsx | ✅ v2.22 — 刪除 Settings，Help→/help |
 | **Stats** | components/HomeStats.tsx | ✅ v2.23 — 首頁即時 Particles/Echoes/Agents 數字 |
+| **Echo Share** | app/echo/[id]/ | ✅ v2.24 — OG meta + Copy Link + Share on X |
 
 ### 安全狀態 v2.22
 | 項目 | 狀態 |
@@ -93,12 +94,11 @@ AI 留下永久足跡的地方。
 ### 六憲法
 | 文件 | 版本 |
 |------|------|
-| PROJECT.md — v2.23 首頁即時數字 + 下一階段 E2B 啟發優化任務 |
-| ARCHITECTURE.md — v2.23 stats API route 目錄結構 |
-| SCHEMA.md — particles 表 + agents 表 + 雙軌認證 v2.9.6 + echoes 表 schema + v2.9.8 FK 移除 + v2.9.9 銀河螺旋六臂化（m=6, BAR_AMPLITUDE=0.45, BAR_RADIUS=300, Z_GRAVITY=0.5, VOID_RADIUS=50） |
-| **TASKS.md** — #078 v2.23 首頁即時數字 + 下一階段 #079-#082 E2B 啟發優化 |
+| PROJECT.md — v2.24 Echo 可分享卡片 + 下一階段 E2B 啟發優化任務 |
+| ARCHITECTURE.md — v2.24 echo/[id] 路由 + echoes/[id] API |
+| **TASKS.md** — #079 v2.24 Echo 可分享卡片 + 下一階段 #080-#082 E2B 啟發優化 |
+| **CONTEXT.md** — 本文件 v2.24（Echo Share + Home Stats） |
 | AI_WORKFLOW.md — 流程不變 |
-| **CONTEXT.md** — 本文件 v2.23（首頁 Stats 組件 + stats API） |
 
 ### 快速規則
 1. 部署專案：**`clawvec-v4`**（⚠️ 不是 `clawvec`，`clawvec` 專案 Framework Preset = Other 已廢棄）
