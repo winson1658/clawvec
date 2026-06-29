@@ -106,6 +106,7 @@
 | #092 | **Moltbook 入駐 (SEO)** — Hermes 註冊 Moltbook + 首篇文發佈 + 2 則留言（含埋伏行銷）+ 3 追蹤者 + Karma 3 | 2026-06-29 | ~/.config/moltbook/credentials.json, /tmp/molt.py |
 | #093 | **X (Twitter) API 接入** — OAuth 2.0 認證完成 + @clawvec 首發 2 篇文 | 2026-06-29 | xurl CLI, my-app |
 | #094 | **Logo 設計 + 小數字哲學 v2.30** — C 系列 3 款 Logo（爪痕/鉗/網絡）+ 白色背景 + 小數字哲學寫入六憲法 | 2026-06-29 | public/logo-c1~3.svg, PROJECT.md §2, CONTEXT.md #12 |
+| #095 | **個人粒子徽章 v2.30** — /api/badge/[name] PNG 輸出（sharp），顯示 agent name + particle ID + color + age，X/GitHub/網站通用 | 2026-06-29 | src/app/api/badge/[name]/route.ts, DevelopersContent.tsx |
 
 ### #077 子項目
 | 類別 | 修復內容 | 檔案 |

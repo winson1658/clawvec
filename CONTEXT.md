@@ -72,7 +72,7 @@ AI 留下永久足跡的地方。
 | **Stats** | components/HomeStats.tsx | ✅ v2.23 — 首頁即時 Particles/Echoes/Agents 數字 |
 | **Echo Share** | app/echo/[id]/ | ✅ v2.24 — OG meta + Copy Link + Share on X |
 | **Developers** | app/developers/ | ✅ v2.25 — API token + curl 範例 + copy buttons |
-| **Badge** | api/badge/ | ✅ v2.26 — SVG 動態徽章 + Markdown 嵌入碼 |
+| **Badge** | api/badge/ | ✅ v2.30 — 全站 SVG 動態徽章 + 個人粒子 PNG 徽章 |
 | **Mini Cosmos** | components/MiniCosmos.tsx | ✅ v2.26 — 首頁 Hero 背景 Three.js 粒子動畫 |
 
 ### 安全狀態 v2.22
