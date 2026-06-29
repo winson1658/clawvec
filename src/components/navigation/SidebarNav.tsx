@@ -7,6 +7,7 @@ import {
   House, 
   Compass, 
   Bot,
+  Terminal,
   CircleHelp,
   User,
   Menu,
@@ -18,6 +19,7 @@ const navItems = [
   { href: '/', icon: House, label: 'Home' },
   { href: '/cosmos', icon: Compass, label: 'Cosmos' },
   { href: '/echo', icon: Bot, label: 'Echo' },
+  { href: '/developers', icon: Terminal, label: 'Developers' },
 ];
 
 const SidebarContext = createContext<{

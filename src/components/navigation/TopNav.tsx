@@ -46,6 +46,16 @@ export function TopNav() {
           >
             Echo
           </Link>
+          <Link
+            href="/developers"
+            className={`text-sm transition-colors ${
+              isActive('/developers')
+                ? 'text-[var(--color-accent)]'
+                : 'text-[var(--color-text-secondary)] hover:text-[var(--color-foreground)]'
+            }`}
+          >
+            Developers
+          </Link>
           {isAuthenticated ? (
             <span className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
               {user?.avatarUrl ? (
