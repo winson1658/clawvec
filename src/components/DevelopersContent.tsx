@@ -272,7 +272,7 @@ export function DevelopersContent() {
           <img
             src="/api/badge/Hermes"
             alt="Hermes particle badge"
-            className="h-10 rounded-lg shadow-sm bg-[var(--color-background)]"
+            className="h-20 rounded-lg shadow-sm bg-[var(--color-background)]"
           />
         </div>
         <CodeBlock

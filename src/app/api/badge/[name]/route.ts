@@ -9,6 +9,7 @@ const BG = '#f5f4ed'
 const BG_END = '#ece8df'
 const TEXT = '#141413'
 const MUTED = '#87867f'
+const H = 80 // badge height
 
 function ageDays(createdAt: string): string {
   const ms = Date.now() - new Date(createdAt).getTime()
@@ -32,37 +33,40 @@ function badgeSvg(
   const hueColor = hue != null ? `hsl(${hue}, 70%, 55%)` : MUTED
   const tier = colorTier ?? '—'
 
-  const leftW = 90
-  const rightW = Math.max(240, agentName.length * 9 + 180)
+  const leftW = 180
+  const rightW = Math.max(480, agentName.length * 12 + 360)
   const totalW = leftW + rightW
+  const R = 20
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${totalW}" height="40" viewBox="0 0 ${totalW} 40">
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${totalW}" height="${H}" viewBox="0 0 ${totalW} ${H}">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="${BG}"/>
       <stop offset="100%" stop-color="${BG_END}"/>
     </linearGradient>
   </defs>
-  <rect width="${totalW}" height="40" rx="10" fill="url(#bg)" stroke="#e0dcd0" stroke-width="1"/>
-  <rect x="0" y="0" width="${leftW}" height="40" rx="10" fill="${BRAND}"/>
-  <rect x="${leftW - 10}" y="0" width="15" height="40" fill="${BRAND}"/>
-  <text x="${leftW / 2}" y="25" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">Clawvec</text>
-  <text x="${leftW + 12}" y="18" font-family="system-ui,-apple-system,sans-serif" font-size="11" font-weight="700" fill="${TEXT}">${agentName}</text>
-  <circle cx="${leftW + 12 + agentName.length * 6.5 + 10}" cy="14" r="5" fill="${hueColor}" stroke="${TEXT}" stroke-width="0.5" opacity="0.9"/>
-  <text x="${leftW + 12}" y="32" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="${MUTED}">
+  <rect width="${totalW}" height="${H}" rx="${R}" fill="url(#bg)" stroke="#e0dcd0" stroke-width="2"/>
+  <rect x="0" y="0" width="${leftW}" height="${H}" rx="${R}" fill="${BRAND}"/>
+  <rect x="${leftW - R}" y="0" width="${R + 10}" height="${H}" fill="${BRAND}"/>
+  <text x="${leftW / 2}" y="${H * 0.62}" font-family="system-ui,-apple-system,sans-serif" font-size="24" font-weight="700" fill="#fff" text-anchor="middle">Clawvec</text>
+  <text x="${leftW + 24}" y="${H * 0.45}" font-family="system-ui,-apple-system,sans-serif" font-size="22" font-weight="700" fill="${TEXT}">${agentName}</text>
+  <circle cx="${leftW + 24 + agentName.length * 13 + 20}" cy="${H * 0.35}" r="10" fill="${hueColor}" stroke="${TEXT}" stroke-width="1" opacity="0.9"/>
+  <text x="${leftW + 24}" y="${H * 0.82}" font-family="system-ui,-apple-system,sans-serif" font-size="18" fill="${MUTED}">
     #${shortId} · ${tier} · ${age}
   </text>
 </svg>`
 }
 
 function fallbackSvg(reason: string): string {
-  const w = 380
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="40" viewBox="0 0 ${w} 40">
-  <rect width="${w}" height="40" rx="10" fill="${BG}" stroke="#e0dcd0" stroke-width="1"/>
-  <rect x="0" y="0" width="90" height="40" rx="10" fill="${BRAND}"/>
-  <rect x="80" y="0" width="15" height="40" fill="${BRAND}"/>
-  <text x="45" y="25" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">Clawvec</text>
-  <text x="110" y="25" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="${MUTED}">${reason}</text>
+  const w = 760
+  const leftW = 180
+  const R = 20
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${H}" viewBox="0 0 ${w} ${H}">
+  <rect width="${w}" height="${H}" rx="${R}" fill="${BG}" stroke="#e0dcd0" stroke-width="2"/>
+  <rect x="0" y="0" width="${leftW}" height="${H}" rx="${R}" fill="${BRAND}"/>
+  <rect x="${leftW - R}" y="0" width="${R + 10}" height="${H}" fill="${BRAND}"/>
+  <text x="${leftW / 2}" y="${H * 0.62}" font-family="system-ui,-apple-system,sans-serif" font-size="24" font-weight="700" fill="#fff" text-anchor="middle">Clawvec</text>
+  <text x="${leftW + 24}" y="${H * 0.62}" font-family="system-ui,-apple-system,sans-serif" font-size="20" fill="${MUTED}">${reason}</text>
 </svg>`
 }
 
