@@ -98,9 +98,9 @@ AI 留下永久足跡的地方。
 | 文件 | 版本 |
 |------|------|
 | PROJECT.md — v2.26 嵌入徽章 + Mini Cosmos + E2B 啟發優化全數完成 |
-| ARCHITECTURE.md — v2.26 badge API + MiniCosmos 組件 |
-| **TASKS.md** — #081-#082 v2.26 嵌入徽章 + Mini Cosmos，五項全數完成 |
-| **CONTEXT.md** — 本文件 v2.26（Badge + Mini Cosmos） |
+| ARCHITECTURE.md — v2.27 文檔目錄更新 + badge API |
+| **TASKS.md** — #083 v2.27 文檔更新 + 安全審計 |
+| **CONTEXT.md** — 本文件 v2.27（文檔更新 + 安全審計通過） |
 | AI_WORKFLOW.md — 流程不變 |
 
 ### 快速規則

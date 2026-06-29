@@ -94,6 +94,7 @@
 | #080 | **開發者入口** — /developers + API token 說明 + 7 個 curl 範例 + copy buttons | 2026-06-29 | developers/page.tsx, DevelopersContent.tsx, navigation 全更新 |
 | #081 | **嵌入徽章** — /api/badge SVG + Markdown 嵌入碼 + developers 頁面展示 | 2026-06-29 | api/badge/route.ts, DevelopersContent.tsx |
 | #082 | **Mini Cosmos** — 首頁 Hero 背景 Three.js 粒子動畫（40 粒子 + 80 星辰） | 2026-06-29 | MiniCosmos.tsx, page.tsx |
+| #083 | **文檔更新 + 安全審計 v2.27** — /docs, /docs/api, /docs/overview 全面更新反映 v2.26 新功能 + 安全審計通過 | 2026-06-29 | docs/ 全部頁面 |
 
 ### #077 子項目
 | 類別 | 修復內容 | 檔案 |
