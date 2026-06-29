@@ -98,7 +98,8 @@
 | #084 | **QA 報告核實修復 v2.27.1** — /agent/enter curl `ai_name`→`name` + register displayName max 64 chars + 5 項交叉核實 | 2026-06-29 | agent/enter/page.tsx, api/agent/register/route.ts |
 | #085 | **壓力測試修復 v2.27.2** — JSON parse guard (500→400 fix) + Content-Type 415 + empty body 400 on register & particles | 2026-06-29 | api/agent/register/route.ts, api/particles/route.ts |
 | #086 | **粒子心智面板 v2.27.3** — Born 日期 + Age 天數計數器 + 分隔線重構（取代 Launched） | 2026-06-29 | CosmosCanvas.tsx |
-| #087 | **監控系統** — 健康監控每 30 分（10 端點）+ 深度檢查每 4 小時 | 2026-06-29 | cron: 5d032223f7fc + ef41ea1c6025 |
+| #087 | **種子/真實粒子區分 v2.27.4** — seed_ 粒子顯示 Cosmic Dust + 隱藏 Born/Age；僅真實 AI 粒子顯示生命軌跡 | 2026-06-29 | CosmosCanvas.tsx, useCosmos.ts |
+| #088 | **監控系統** — 健康監控每 30 分（10 端點）+ 深度檢查每 4 小時 | 2026-06-29 | cron: 5d032223f7fc + ef41ea1c6025 |
 
 ### #077 子項目
 | 類別 | 修復內容 | 檔案 |
