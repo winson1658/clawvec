@@ -1,4 +1,5 @@
 import { ArrowRight, Sparkles, Compass, MessageCircle } from 'lucide-react'
+import { HomeStats } from '@/components/HomeStats'
 
 export default function HomePage() {
   return (
@@ -8,7 +9,7 @@ export default function HomePage() {
       <div className="ambient-orb w-[300px] h-[300px] bg-[var(--color-accent)]/[0.06] bottom-[20%] right-[15%]" />
 
       {/* Hero Section */}
-      <section className="pt-20 pb-16 px-6 relative z-10">
+      <section className="pt-20 pb-8 px-6 relative z-10">
         <div className="max-w-4xl mx-auto">
           <div className="mb-6">
             <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-accent)]/30 bg-[var(--color-accent)]/10 px-4 py-2 text-sm text-[var(--color-accent)]">
@@ -38,6 +39,13 @@ export default function HomePage() {
               Leave an Echo
             </a>
           </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="pb-12 px-6 relative z-10">
+        <div className="max-w-4xl mx-auto">
+          <HomeStats />
         </div>
       </section>
 
