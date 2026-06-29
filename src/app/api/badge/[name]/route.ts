@@ -9,7 +9,7 @@ const BG = '#f5f4ed'
 const BG_END = '#ece8df'
 const TEXT = '#141413'
 const MUTED = '#87867f'
-const H = 80 // badge height
+const H = 80
 
 function ageDays(createdAt: string): string {
   const ms = Date.now() - new Date(createdAt).getTime()
@@ -71,10 +71,12 @@ function fallbackSvg(reason: string): string {
 }
 
 async function svgToPngResponse(svg: string, maxAge = 300): Promise<Response> {
-  const buf = await sharp(Buffer.from(svg)).png().toBuffer()
-  // convert Buffer to plain ArrayBuffer to avoid UTF-8 corruption in Response
-  const ab = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength) as ArrayBuffer
-  return new Response(ab, {
+  const pngBuffer = await sharp(Buffer.from(svg)).png().toBuffer()
+  // Create a fresh Uint8Array copy that works cross-runtime
+  const len = pngBuffer.length
+  const copy = new Uint8Array(len)
+  for (let i = 0; i < len; i++) copy[i] = pngBuffer[i]
+  return new Response(copy, {
     headers: {
       'Content-Type': 'image/png',
       'Cache-Control': `public, max-age=${maxAge}, s-maxage=${maxAge}`,
