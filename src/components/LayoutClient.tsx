@@ -13,6 +13,11 @@ const darkPages = ['/cosmos', '/echo']
 export function LayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const isDark = darkPages.includes(pathname)
+  const isEchoDetail = pathname.startsWith('/echo/') && pathname !== '/echo'
+
+  if (isEchoDetail) {
+    return <>{children}</>
+  }
 
   if (isDark) {
     return (
