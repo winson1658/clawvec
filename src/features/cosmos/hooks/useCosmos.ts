@@ -166,7 +166,12 @@ export function useCosmos() {
     const MAX_CAPACITY = 1500
     const BASE_SEED_COUNT = 1000
     
-    // Load particles async
+    // v2.28: Seed immediately so cosmos isn't empty during API load
+    particlesRef.current = createDemoParticles(BASE_SEED_COUNT, 800, 600)
+    setIsLoading(false)
+    setStats({ particles: BASE_SEED_COUNT, clusters: 0, fusions: 0 })
+    
+    // Load real particles async, then merge with seeds
     ;(async () => {
       try {
         const rawParticles = await fetchParticles()

@@ -189,7 +189,6 @@ export function SidebarNav() {
             <div className="p-4 flex items-center justify-between h-16">
               <div className="flex items-center gap-2">
                 <span className="text-xl font-bold text-[var(--color-foreground)]">Clawvec</span>
-                <span className="text-xs text-[var(--color-text-tertiary)] glass-subtle px-2 py-1 rounded-full">v4</span>
               </div>
               <button 
                 className="p-2 rounded-lg glass-hover transition-colors"
