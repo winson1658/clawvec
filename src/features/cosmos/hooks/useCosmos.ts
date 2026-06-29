@@ -270,7 +270,10 @@ export function useCosmos() {
         searchedParticleRef.current = null
 
         // v2.4 Immortal Traces: show all fused names when clicked
-        const displayNames = hit.fusedNames?.length ? hit.fusedNames : [hit.name || 'Unknown']
+        const isSeedParticle = hit.name?.startsWith('seed_')
+        const displayNames = isSeedParticle
+          ? ['Cosmic Dust']
+          : hit.fusedNames?.length ? hit.fusedNames : [hit.name || 'Unknown']
         setTooltip({
           x: e.clientX,
           y: e.clientY,
