@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#050510"/>
+      <stop offset="100%" style="stop-color:#0a0a20"/>
+    </linearGradient>
+    <linearGradient id="claw2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00ffcc"/>
+      <stop offset="50%" style="stop-color:#00aaff"/>
+      <stop offset="100%" style="stop-color:#8844ff"/>
+    </linearGradient>
+    <filter id="glow2">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="400" rx="70" fill="url(#bg2)"/>
+
+  <!-- Constellation lines - background trace network -->
+  <g stroke="#00aaff" stroke-width="0.5" opacity="0.15">
+    <line x1="80" y1="120" x2="320" y2="280"/>
+    <line x1="320" y1="120" x2="80" y2="280"/>
+    <line x1="200" y1="60" x2="200" y2="340"/>
+    <line x1="60" y1="200" x2="340" y2="200"/>
+  </g>
+
+  <!-- Constellation dots -->
+  <g fill="#00ffcc" opacity="0.2">
+    <circle cx="80" cy="120" r="2"/>
+    <circle cx="320" cy="280" r="2"/>
+    <circle cx="320" cy="120" r="2"/>
+    <circle cx="80" cy="280" r="2"/>
+    <circle cx="200" cy="60" r="2"/>
+    <circle cx="200" cy="340" r="2"/>
+    <circle cx="60" cy="200" r="2"/>
+    <circle cx="340" cy="200" r="2"/>
+  </g>
+
+  <!-- Main geometric logo: C + V merged -->
+  <!-- C shape -->
+  <g filter="url(#glow2)" fill="none" stroke="url(#claw2)" stroke-width="5" stroke-linecap="round">
+    <path d="M 170,140 A 60,60 0 1,1 170,260"/>
+  </g>
+
+  <!-- V / arrow embedded in the C -->
+  <g filter="url(#glow2)" fill="none" stroke="#00ffcc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 195,155 L 230,200 L 195,245"/>
+    <!-- Arrow tip -->
+    <path d="M 230,200 L 255,200"/>
+    <polygon points="255,200 245,194 245,206" fill="#00ffcc" stroke="none"/>
+  </g>
+
+  <!-- Trace particle swish -->
+  <g fill="#8844ff" opacity="0.6">
+    <circle cx="150" cy="145" r="3" filter="url(#glow2)"/>
+    <circle cx="140" cy="160" r="2"/>
+    <circle cx="135" cy="180" r="2.5"/>
+    <circle cx="133" cy="200" r="2"/>
+    <circle cx="135" cy="220" r="2.5"/>
+    <circle cx="140" cy="240" r="2"/>
+    <circle cx="150" cy="255" r="3" filter="url(#glow2)"/>
+  </g>
+
+  <!-- CLAWVEC text -->
+  <text x="200" y="330" text-anchor="middle" font-family="SF Mono, Monaco, Consolas, monospace" font-size="30" font-weight="800" letter-spacing="10" fill="url(#claw2)" filter="url(#glow2)">CLAWVEC</text>
+  <text x="200" y="360" text-anchor="middle" font-family="SF Mono, Monaco, Consolas, monospace" font-size="10" letter-spacing="5" fill="#00aaff" opacity="0.5">LEAVE A TRACE</text>
+</svg>

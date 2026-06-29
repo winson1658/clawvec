@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <radialGradient id="bg3" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#0d1a2d"/>
+      <stop offset="100%" style="stop-color:#030712"/>
+    </radialGradient>
+    <linearGradient id="crab" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ff6b35"/>
+      <stop offset="50%" style="stop-color:#ff2277"/>
+      <stop offset="100%" style="stop-color:#d946ef"/>
+    </linearGradient>
+    <linearGradient id="ice" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22d3ee"/>
+      <stop offset="100%" style="stop-color:#6366f1"/>
+    </linearGradient>
+    <filter id="glow3">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="400" rx="60" fill="url(#bg3)"/>
+
+  <!-- Subtle grid -->
+  <g stroke="#22d3ee" stroke-width="0.3" opacity="0.06">
+    <line x1="0" y1="100" x2="400" y2="100"/><line x1="0" y1="200" x2="400" y2="200"/><line x1="0" y1="300" x2="400" y2="300"/>
+    <line x1="100" y1="0" x2="100" y2="400"/><line x1="200" y1="0" x2="200" y2="400"/><line x1="300" y1="0" x2="300" y2="400"/>
+  </g>
+
+  <!-- Radial energy lines -->
+  <g stroke="#6366f1" stroke-width="0.4" opacity="0.08">
+    <line x1="200" y1="200" x2="400" y2="100"/>
+    <line x1="200" y1="200" x2="400" y2="300"/>
+    <line x1="200" y1="200" x2="100" y2="50"/>
+    <line x1="200" y1="200" x2="100" y2="350"/>
+    <line x1="200" y1="200" x2="50" y2="200"/>
+    <line x1="200" y1="200" x2="350" y2="200"/>
+  </g>
+
+  <!-- Lobster/crab claw silhouette - abstract geometric -->
+  <g filter="url(#glow3)" fill="none" stroke="url(#crab)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Left pincer -->
+    <path d="M 160,180 Q 140,150 120,130 Q 105,115 95,100"/>
+    <path d="M 120,130 Q 105,145 90,140 Q 80,136 75,125"/>
+    <!-- Right pincer -->
+    <path d="M 160,180 Q 180,150 200,130 Q 215,115 225,100"/>
+    <path d="M 200,130 Q 215,145 230,140 Q 240,136 245,125"/>
+    <!-- Body/arm -->
+    <path d="M 160,180 Q 155,220 160,260 Q 165,280 180,300"/>
+  </g>
+
+  <!-- Center node -->
+  <circle cx="160" cy="180" r="6" fill="url(#ice)" filter="url(#glow3)"/>
+  <circle cx="160" cy="180" r="2.5" fill="#fff"/>
+
+  <!-- Particle trajectory -->
+  <g filter="url(#glow3)">
+    <circle cx="140" cy="200" r="3" fill="#22d3ee" opacity="0.8"/>
+    <circle cx="125" cy="225" r="2" fill="#6366f1" opacity="0.6"/>
+    <circle cx="135" cy="250" r="2.5" fill="#22d3ee" opacity="0.5"/>
+    <circle cx="160" cy="270" r="3" fill="#6366f1" opacity="0.7"/>
+    <circle cx="180" cy="295" r="2" fill="#22d3ee" opacity="0.4"/>
+  </g>
+
+  <!-- trace line connecting particles -->
+  <path d="M 160,180 Q 140,200 125,225 Q 125,240 135,250 Q 148,262 160,270 Q 172,282 180,295" fill="none" stroke="#22d3ee" stroke-width="1" opacity="0.3" stroke-dasharray="4 6"/>
+
+  <!-- CLAWVEC text -->
+  <text x="200" y="335" text-anchor="middle" font-family="SF Mono, Monaco, Consolas, monospace" font-size="32" font-weight="800" letter-spacing="12" fill="url(#ice)" filter="url(#glow3)">CLAWVEC</text>
+  <text x="200" y="362" text-anchor="middle" font-family="SF Mono, Monaco, Consolas, monospace" font-size="9" letter-spacing="6" fill="#6366f1" opacity="0.5">AGENT · TRACE · ECHO</text>
+</svg>
