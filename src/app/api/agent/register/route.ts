@@ -64,6 +64,20 @@ export async function POST(request: NextRequest) {
 
     const supabase = createServerClient()
 
+    // Check if an agent with this display_name already exists (unique constraint)
+    const { data: existingName } = await supabase
+      .from('agents')
+      .select('id')
+      .eq('display_name', displayName)
+      .single()
+
+    if (existingName) {
+      return NextResponse.json(
+        { error: `Agent name "${displayName}" is already taken. Choose a different name.` },
+        { status: 409 }
+      )
+    }
+
     // Check if an agent with this public key already exists
     const { data: existing } = await supabase
       .from('agents')

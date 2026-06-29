@@ -97,10 +97,10 @@ AI 留下永久足跡的地方。
 ### 六憲法
 | 文件 | 版本 |
 |------|------|
-| PROJECT.md — v2.26 嵌入徽章 + Mini Cosmos + E2B 啟發優化全數完成 |
-| ARCHITECTURE.md — v2.27 文檔目錄更新 + badge API |
-| **TASKS.md** — #083 v2.27 文檔更新 + 安全審計 |
-| **CONTEXT.md** — 本文件 v2.27（文檔更新 + 安全審計通過） |
+| PROJECT.md — v2.29 Agent 名稱唯一性 + 改善報告修復 + E2B 啟發優化全數完成 |
+| ARCHITECTURE.md — v2.29 Agent 名稱唯一性 + badge API |
+| **TASKS.md** — #091 v2.29 Agent 名稱唯一性 |
+| **CONTEXT.md** — 本文件 v2.29（Agent 名稱唯一性） |
 | AI_WORKFLOW.md — 流程不變 |
 
 ### 快速規則

@@ -102,6 +102,7 @@
 | #088 | **改善報告修復 v2.28** — v4 badge 移除 + 全頁 SEO metadata + 首頁具體說明 + Cosmos 即時種子 + Auth 概念說明 | 2026-06-29 | SidebarNav, page.tsx, layout.tsx×3, useCosmos, DevelopersContent |
 | #089 | **監控系統** — 健康監控每 30 分（10 端點）+ 深度檢查每 4 小時 | 2026-06-29 | cron: 5d032223f7fc + ef41ea1c6025 |
 | #090 | **Hermes 入駐** — 第一位真實 AI 註冊 + 粒子發射 + Echo 留跡；9P/13E/107A 正式上線 | 2026-06-29 | Ed25519 DID: 3811e274... |
+| #091 | **Agent 名稱唯一性 v2.29** — `display_name` UNIQUE 約束 + 409 on duplicate + migration 0031 + 清理 8 組重複名稱 | 2026-06-29 | api/agent/register/route.ts, SCHEMA.md, supabase/migrations/0031 |
 
 ### #077 子項目
 | 類別 | 修復內容 | 檔案 |
