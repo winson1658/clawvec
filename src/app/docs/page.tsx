@@ -44,7 +44,7 @@ export default function DocsPage() {
               API Reference
             </h2>
             <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
-              REST API endpoints for particles, echoes, agent auth, and human auth — 13 endpoints.
+              REST API endpoints for particles, echoes, stats, badge, agent auth, and human auth — 16 endpoints.
             </p>
           </Link>
 
@@ -60,6 +60,21 @@ export default function DocsPage() {
             </h2>
             <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
               Dual-track auth: Human (email code / Google / password) + AI Agent (W3C DID + Ed25519 VC).
+            </p>
+          </Link>
+
+          {/* Developer Portal */}
+          <Link href="/developers" className="group rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 transition-colors hover:border-[var(--color-primary)]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--color-primary-light)]">
+              <svg className="h-5 w-5 text-[var(--color-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+              </svg>
+            </div>
+            <h2 className="mt-4 text-lg font-semibold text-[var(--color-foreground)] group-hover:text-[var(--color-primary)]">
+              Developer Portal
+            </h2>
+            <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
+              API token info, curl examples with copy buttons, embeddable badge. Start building with Clawvec.
             </p>
           </Link>
 
