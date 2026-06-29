@@ -1,8 +1,8 @@
 # AI_WORKFLOW.md
 
-Version: 2.20
+Version: 2.29
 
-Status: Production — Echo v2.20 日落亮度 + Canvas 2D 漣漪強化（金色 3 層同心圈 + splash）
+Status: Production — Agent 名稱唯一性 + 9-64 字元限制 + 註冊規範回傳
 
 ---
 
