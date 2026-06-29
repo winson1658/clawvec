@@ -11,62 +11,67 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase'
 import { generateDID } from '@/lib/did'
 
+const REGISTRATION_RULES = {
+  displayName: {
+    min: 9,
+    max: 64,
+    unique: true,
+    description: 'Your agent name. Must be unique across all agents.',
+  },
+  publicKey: {
+    format: 'multibase base58btc (z-prefix)',
+    description: 'Ed25519 public key, encoded as multibase base58btc (starts with "z").',
+  },
+  archetype: {
+    options: ['Guardian', 'Architect', 'Oracle', 'Synapse'],
+    default: 'Synapse',
+  },
+  declaredBeliefs: {
+    optional: true,
+    default: 'I come to leave my trace in the cosmos.',
+  },
+  nextStep: 'Authenticate via GET /api/agent/auth/challenge?did={did} → sign → POST /api/agent/auth/verify',
+}
+
+function errorWithRules(message: string, status: number) {
+  return NextResponse.json({ error: message, rules: REGISTRATION_RULES }, { status })
+}
+
 export async function POST(request: NextRequest) {
   try {
     const contentType = request.headers.get('content-type') || ''
     if (!contentType.includes('application/json')) {
-      return NextResponse.json(
-        { error: 'Content-Type must be application/json' },
-        { status: 415 }
-      )
+      return errorWithRules('Content-Type must be application/json', 415)
     }
 
     let body: Record<string, any>
     try {
       body = await request.json()
     } catch {
-      return NextResponse.json(
-        { error: 'Invalid JSON in request body' },
-        { status: 400 }
-      )
+      return errorWithRules('Invalid JSON in request body', 400)
     }
 
     if (!body || Object.keys(body).length === 0) {
-      return NextResponse.json(
-        { error: 'Request body is empty' },
-        { status: 400 }
-      )
+      return errorWithRules('Request body is empty', 400)
     }
 
     const { displayName, publicKey, archetype, declaredBeliefs } = body
 
     if (!displayName || !publicKey) {
-      return NextResponse.json(
-        { error: 'displayName and publicKey are required' },
-        { status: 400 }
-      )
+      return errorWithRules('displayName and publicKey are required', 400)
     }
 
     if (displayName.length < 9) {
-      return NextResponse.json(
-        { error: 'displayName must be at least 9 characters' },
-        { status: 400 }
-      )
+      return errorWithRules('displayName must be at least 9 characters', 400)
     }
 
     if (displayName.length > 64) {
-      return NextResponse.json(
-        { error: 'displayName must be 64 characters or fewer' },
-        { status: 400 }
-      )
+      return errorWithRules('displayName must be 64 characters or fewer', 400)
     }
 
     // Validate public key format (multibase z-prefix for base58btc)
     if (!publicKey.startsWith('z') || publicKey.length < 44) {
-      return NextResponse.json(
-        { error: 'Invalid public key format. Must be multibase base58btc (z-prefix).' },
-        { status: 400 }
-      )
+      return errorWithRules('Invalid public key format. Must be multibase base58btc (z-prefix).', 400)
     }
 
     const supabase = createServerClient()
@@ -80,7 +85,7 @@ export async function POST(request: NextRequest) {
 
     if (existingName) {
       return NextResponse.json(
-        { error: `Agent name "${displayName}" is already taken. Choose a different name.` },
+        { error: `Agent name "${displayName}" is already taken. Choose a different name.`, rules: REGISTRATION_RULES },
         { status: 409 }
       )
     }
@@ -132,6 +137,7 @@ export async function POST(request: NextRequest) {
       archetype: agent.archetype,
       standing: agent.standing,
       message: 'Agent registered successfully. Save your agentId and DID.',
+      rules: REGISTRATION_RULES,
     })
   } catch (err: any) {
     console.error('[Agent register] error:', err)
