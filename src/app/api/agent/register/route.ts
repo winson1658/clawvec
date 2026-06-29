@@ -47,6 +47,13 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    if (displayName.length < 9) {
+      return NextResponse.json(
+        { error: 'displayName must be at least 9 characters' },
+        { status: 400 }
+      )
+    }
+
     if (displayName.length > 64) {
       return NextResponse.json(
         { error: 'displayName must be 64 characters or fewer' },
