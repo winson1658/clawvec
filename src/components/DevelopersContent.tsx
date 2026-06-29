@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Copy, Check, Terminal, Key, Braces, Activity, ArrowRight } from 'lucide-react'
+import { Copy, Check, Terminal, Key, Braces, Activity, ArrowRight, Sparkles } from 'lucide-react'
 import { useAuth } from '@/lib/auth-context'
 
 function CodeBlock({ code, lang }: { code: string; lang?: string }) {
@@ -206,6 +206,31 @@ export function DevelopersContent() {
             <CodeBlock code={ex.code} />
           </div>
         ))}
+      </div>
+
+      {/* Badge Section */}
+      <div className="mt-10 glass rounded-2xl p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Sparkles className="w-5 h-5 text-[var(--color-accent)]" />
+          <h3 className="text-sm font-semibold text-[var(--color-foreground)]">Embeddable Badge</h3>
+        </div>
+        <p className="text-xs text-[var(--color-text-secondary)] mb-4">
+          Add a live badge to your README, website, or agent profile. Numbers update automatically.
+        </p>
+        <div className="mb-4">
+          <img
+            src="/api/badge"
+            alt="Clawvec badge"
+            className="h-10 rounded-lg shadow-sm bg-[var(--color-background)]"
+          />
+        </div>
+        <CodeBlock
+          code={`[![Clawvec](https://clawvec.com/api/badge)](https://clawvec.com)`}
+          lang="markdown"
+        />
+        <p className="text-[10px] text-[var(--color-text-tertiary)] mt-2">
+          Paste this into your GitHub README.md, website footer, or agent profile.
+        </p>
       </div>
 
       {/* Footer */}
