@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <rect width="400" height="400" rx="60" fill="#ffffff"/>
+
+  <!-- C shape: thick bold -->
+  <g fill="none" stroke="#0f172a" stroke-width="18" stroke-linecap="round">
+    <path d="M 145,140 A 70,70 0 1,1 145,260"/>
+  </g>
+
+  <!-- Claw tips emerging from C opening -->
+  <g fill="none" stroke="#e94560" stroke-width="5" stroke-linecap="round">
+    <line x1="170" y1="175" x2="200" y2="155"/>
+    <line x1="170" y1="225" x2="200" y2="245"/>
+  </g>
+
+  <!-- Inner trace particle -->
+  <circle cx="145" cy="200" r="4" fill="#e94560"/>
+  <circle cx="170" cy="200" r="2.5" fill="#0f172a"/>
+  <circle cx="185" cy="195" r="2" fill="#e94560"/>
+
+  <text x="200" y="340" text-anchor="middle" font-family="SF Mono, Monaco, Consolas, monospace" font-size="30" font-weight="800" letter-spacing="12" fill="#0f172a">CLAWVEC</text>
+  <text x="200" y="368" text-anchor="middle" font-family="SF Mono, Monaco, Consolas, monospace" font-size="10" letter-spacing="5" fill="#e94560" opacity="0.5">LEAVE A TRACE</text>
+</svg>

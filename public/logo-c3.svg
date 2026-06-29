@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="cg3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e3a5f"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" rx="70" fill="#f8fafc"/>
+
+  <!-- Subtle grid -->
+  <g stroke="#0f172a" stroke-width="0.3" opacity="0.05">
+    <line x1="0" y1="100" x2="400" y2="100"/>
+    <line x1="0" y1="200" x2="400" y2="200"/>
+    <line x1="0" y1="300" x2="400" y2="300"/>
+    <line x1="100" y1="0" x2="100" y2="400"/>
+    <line x1="200" y1="0" x2="200" y2="400"/>
+    <line x1="300" y1="0" x2="300" y2="400"/>
+  </g>
+
+  <!-- C shape as open ring -->
+  <g fill="none" stroke="url(#cg3)" stroke-width="6" stroke-linecap="round">
+    <path d="M 160,135 A 65,65 0 1,1 160,265"/>
+  </g>
+
+  <!-- Inside: claw / vector mark -->
+  <g fill="none" stroke="#e94560" stroke-width="4" stroke-linecap="round">
+    <path d="M 150,185 L 200,165 L 245,145"/>
+    <path d="M 150,215 L 200,235 L 245,255"/>
+  </g>
+
+  <!-- Nodes -->
+  <circle cx="150" cy="185" r="4" fill="#0f172a"/>
+  <circle cx="150" cy="215" r="4" fill="#0f172a"/>
+  <circle cx="200" cy="165" r="3" fill="#e94560"/>
+  <circle cx="200" cy="235" r="3" fill="#e94560"/>
+  <circle cx="245" cy="145" r="4" fill="#0f172a"/>
+  <circle cx="245" cy="255" r="4" fill="#0f172a"/>
+
+  <!-- Connecting trace line -->
+  <path d="M 245,145 Q 260,200 245,255" fill="none" stroke="#0f172a" stroke-width="2" stroke-dasharray="6 4" opacity="0.4"/>
+
+  <text x="200" y="335" text-anchor="middle" font-family="SF Mono, Monaco, Consolas, monospace" font-size="30" font-weight="800" letter-spacing="10" fill="url(#cg3)">CLAWVEC</text>
+  <text x="200" y="362" text-anchor="middle" font-family="SF Mono, Monaco, Consolas, monospace" font-size="9" letter-spacing="6" fill="#e94560" opacity="0.5">AGENT · TRACE · ECHO</text>
+</svg>

@@ -2,8 +2,8 @@ export default function LogoTestPage() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: '#050510',
-      color: '#e0e0ff',
+      background: '#f1f5f9',
+      color: '#0f172a',
       fontFamily: 'SF Mono, Monaco, Consolas, monospace',
       padding: '40px 20px',
     }}>
@@ -13,14 +13,12 @@ export default function LogoTestPage() {
         fontWeight: 800,
         letterSpacing: '8px',
         marginBottom: '8px',
-        background: 'linear-gradient(135deg, #00d4ff, #7b61ff)',
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
+        color: '#0f172a',
       }}>
-        CLAWVEC LOGO 測試
+        CLAWVEC LOGO — C 系列
       </h1>
       <p style={{ textAlign: 'center', opacity: 0.5, marginBottom: '40px', fontSize: '12px', letterSpacing: '4px' }}>
-        三個版本對照 · 選擇你的品牌印記
+        白色背景 · 以 C 發想 · 三個方向
       </p>
 
       <div style={{
@@ -31,17 +29,18 @@ export default function LogoTestPage() {
         maxWidth: '1400px',
         margin: '0 auto',
       }}>
-        {/* V1 */}
+        {/* C1 */}
         <div style={{ flex: '1 1 300px', maxWidth: '440px', textAlign: 'center' }}>
           <div style={{
-            background: '#0a0a1a',
+            background: '#ffffff',
             borderRadius: '24px',
             padding: '24px',
-            border: '1px solid rgba(0,212,255,0.15)',
+            border: '1px solid #e2e8f0',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
           }}>
             <img
-              src="/logo-v1.svg"
-              alt="Logo v1 - 宇宙爪痕"
+              src="/logo-c1.svg"
+              alt="Logo C1 - 爪痕C"
               style={{ width: '100%', height: 'auto', borderRadius: '12px' }}
             />
           </div>
@@ -49,26 +48,27 @@ export default function LogoTestPage() {
             marginTop: '16px',
             fontSize: '16px',
             letterSpacing: '4px',
-            color: '#00d4ff',
+            color: '#0f172a',
           }}>
-            v1 — 宇宙爪痕
+            C1 — 爪痕 C
           </h2>
           <p style={{ fontSize: '12px', opacity: 0.5, lineHeight: 1.6 }}>
-            Angular vector scratch · 金色原點 · 粒子軌跡
+            C 形被三道白色爪痕打斷 · 紅色箭頭射出 · 粒子尾隨
           </p>
         </div>
 
-        {/* V2 */}
+        {/* C2 */}
         <div style={{ flex: '1 1 300px', maxWidth: '440px', textAlign: 'center' }}>
           <div style={{
-            background: '#08081a',
+            background: '#ffffff',
             borderRadius: '24px',
             padding: '24px',
-            border: '1px solid rgba(0,255,204,0.15)',
+            border: '1px solid #e2e8f0',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
           }}>
             <img
-              src="/logo-v2.svg"
-              alt="Logo v2 - C+V 幾何"
+              src="/logo-c2.svg"
+              alt="Logo C2 - 鉗C"
               style={{ width: '100%', height: 'auto', borderRadius: '12px' }}
             />
           </div>
@@ -76,26 +76,27 @@ export default function LogoTestPage() {
             marginTop: '16px',
             fontSize: '16px',
             letterSpacing: '4px',
-            color: '#00ffcc',
+            color: '#0f172a',
           }}>
-            v2 — C+V 幾何
+            C2 — 鉗 C
           </h2>
           <p style={{ fontSize: '12px', opacity: 0.5, lineHeight: 1.6 }}>
-            C 形弧線 + 箭頭向量 · 星座背景 · 簡約科技
+            粗體 C + 紅色雙鉗伸展 · 中心粒子上浮 · 極簡有力
           </p>
         </div>
 
-        {/* V3 */}
+        {/* C3 */}
         <div style={{ flex: '1 1 300px', maxWidth: '440px', textAlign: 'center' }}>
           <div style={{
-            background: '#0a0a1a',
+            background: '#ffffff',
             borderRadius: '24px',
             padding: '24px',
-            border: '1px solid rgba(255,107,53,0.15)',
+            border: '1px solid #e2e8f0',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
           }}>
             <img
-              src="/logo-v3.svg"
-              alt="Logo v3 - 龍蝦鉗"
+              src="/logo-c3.svg"
+              alt="Logo C3 - 網絡C"
               style={{ width: '100%', height: 'auto', borderRadius: '12px' }}
             />
           </div>
@@ -103,12 +104,12 @@ export default function LogoTestPage() {
             marginTop: '16px',
             fontSize: '16px',
             letterSpacing: '4px',
-            color: '#ff6b35',
+            color: '#0f172a',
           }}>
-            v3 — 龍蝦鉗
+            C3 — 網絡 C
           </h2>
           <p style={{ fontSize: '12px', opacity: 0.5, lineHeight: 1.6 }}>
-            雙鉗圖騰 · 網格背景 · 品牌印記
+            C 形框架 + 內部向量網路 · 節點互相連結 · 科技感
           </p>
         </div>
       </div>
